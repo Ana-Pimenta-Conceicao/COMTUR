@@ -1,6 +1,6 @@
 ## 📝 - Descrição do Projeto - COMTUR - Conselho Municipal de Turismo
 
-Este Projeto tem como principal objetivo divulgar os pontos turísticos de Jales, além de criar um canal de comunicação com a sociedade através da valorização de patrimônios públicos dentro da cidade.  
+O projeto tem como missão proporcionar à comunidade em geral um acesso facilitado ao conhecimento mais profundo do patrimônio público de sua própria cidade. O Comtur, em sua essência, atua como um apoio fundamental para o setor de turismo, o qual carece de maior visibilidade e aprimoramento em relação aos seus pontos-chave.
 </br>
 
 ## 🤝 Colaboradores

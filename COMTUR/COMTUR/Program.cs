@@ -24,8 +24,9 @@ namespace COMTUR
 						  options.UseNpgsql(connectionString));
 
 			builder.Services.AddTransient<ITipoTurismoRepositorio, TipoTurismoRepositorio>();
+            builder.Services.AddTransient<ITipoAtracaoRepositorio, TipoAtracaoRepositorio>();
 
-			var app = builder.Build();
+            var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())

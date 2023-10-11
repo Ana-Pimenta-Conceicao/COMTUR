@@ -2,7 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\COMTUR",
-    "\\COMTUR\\COMTUR"
+    "\\COMTUR\\COMTUR",
+    "\\COMTUR\\COMTUR\\Migrations",
+    "\\COMTUR\\COMTUR\\Models",
+    "\\COMTUR\\COMTUR\\Properties",
+    "\\COMTUR\\COMTUR\\Repositorios"
   ],
   "SelectedNode": "\\COMTUR\\COMTUR\\COMTUR.sln",
   "PreviewInSolutionExplorer": false

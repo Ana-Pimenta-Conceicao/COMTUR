@@ -9,7 +9,5 @@ namespace COMTUR.Repositorios.Interfaces
         Task<TipoAtracaoModel> Adicionar(TipoAtracaoModel tipoAtracao);
         Task<TipoAtracaoModel> Atualizar(TipoAtracaoModel tipoAtracao, int id);
         Task<bool> Apagar(int id);
-
-
     }
 }

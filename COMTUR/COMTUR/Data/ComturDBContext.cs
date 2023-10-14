@@ -12,11 +12,13 @@ namespace COMTUR.Data
 
 		public DbSet<TipoTurismoModel> TipoTurismo { get; set; }
         public DbSet<TipoAtracaoModel> TipoAtracao { get; set; }
+		public DbSet<NoticiaModel> Noticia { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.ApplyConfiguration(new TipoTurismoMap());
             modelBuilder.ApplyConfiguration(new TipoAtracaoMap());
+            modelBuilder.ApplyConfiguration(new NoticiaMap());
 
             base.OnModelCreating(modelBuilder);
 		}

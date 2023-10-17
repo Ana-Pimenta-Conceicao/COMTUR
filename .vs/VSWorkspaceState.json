@@ -2,12 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\COMTUR",
-    "\\COMTUR\\COMTUR",
-    "\\COMTUR\\COMTUR\\Migrations",
-    "\\COMTUR\\COMTUR\\Models",
-    "\\COMTUR\\COMTUR\\Properties",
-    "\\COMTUR\\COMTUR\\Repositorios"
+    "\\COMTUR\\COMTUR"
   ],
-  "SelectedNode": "\\COMTUR\\COMTUR\\Repositorios\\TipoTurismoRepositorios.cs",
+  "SelectedNode": "\\COMTUR\\COMTUR\\COMTUR.sln",
   "PreviewInSolutionExplorer": false
 }

@@ -1,8 +1,17 @@
-﻿namespace COMTUR.Models
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace COMTUR.Models;
+
+[Table("tipoturismo")]
+
+public class TipoTurismoModel
 {
-	public class TipoTurismoModel
-	{
-		public int Id { get; set; }
-		public string? Nome { get; set; }
-	}
+
+	[Key]
+	[Column("tipoturismoid")]
+	public int Id { get; set; }
+	[Column("nome")]
+	public string? Nome { get; set; }
 }

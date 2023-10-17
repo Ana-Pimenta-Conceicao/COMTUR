@@ -1,13 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace COMTUR.Models
 {
-    public class NoticiaModel
+	[Table("noticia")]
+	public class NoticiaModel
     {
-        public int Id { get; set; }
-        public string Titulo { get; set; }
-        public string Subtitulo { get; set; }
-        public string Conteudo { get; set; }
-        public DateTime Data { get; set; }
+		[Key]
+		[Column("noticiaid")]
+		public int Id { get; set; }
+
+		[Column("titulo")]
+		public string Titulo { get; set; }
+
+		[Column("subtitulo")]
+		public string Subtitulo { get; set; }
+
+		[Column("conteudo")]
+		public string Conteudo { get; set; }
+
+		[Column("data")]
+		public DateTime Data { get; set; }
     }
 }

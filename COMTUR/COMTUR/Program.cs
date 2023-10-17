@@ -20,6 +20,15 @@ namespace COMTUR
 
 			var connectionString = builder.Configuration.GetConnectionString("DataBase");
 
+			builder.Services.AddCors(o => o.AddPolicy("MyPolicy",
+					builder =>
+					{
+						builder.WithOrigins("http://localhost:3000")
+						.AllowAnyMethod()
+						.AllowAnyHeader()
+						.AllowCredentials();
+					}));
+
 			builder.Services.AddDbContext<ComturDBContext>(options =>
 						  options.UseNpgsql(connectionString));
 
@@ -43,6 +52,9 @@ namespace COMTUR
 
 			app.MapControllers();
 
+			app.UseCors("MyPolicy");
+
+			app.UseRouting();
 			app.Run();
 		}
 	}

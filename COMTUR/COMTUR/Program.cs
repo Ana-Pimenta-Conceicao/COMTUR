@@ -36,8 +36,9 @@ namespace COMTUR
             builder.Services.AddTransient<ITipoAtracaoRepositorio, TipoAtracaoRepositorio>();
 			builder.Services.AddTransient<INoticiaRepository, NoticiaRepository>();
 			builder.Services.AddTransient<IRamoEmpresaRepositorio, RamoEmpresaRepositorio>();
+			builder.Services.AddTransient<IEmpresarioRepositorio, EmpresarioRepositorio>();
 
-            var app = builder.Build();
+			var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())

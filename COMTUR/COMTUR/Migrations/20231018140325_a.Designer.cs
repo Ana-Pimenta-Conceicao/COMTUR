@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20231017123648_testeRamoBack")]
-    partial class testeRamoBack
+    [Migration("20231018140325_a")]
+    partial class a
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,41 @@ namespace COMTUR.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("COMTUR.Models.EmpresarioModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("empresarioid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmailEmpresario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("emailempresario");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("nome");
+
+                    b.Property<string>("SenhaEmpresario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("senhaempresario");
+
+                    b.Property<string>("TelefoneEmpresario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("telefoneempresario");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("empresario");
+                });
 
             modelBuilder.Entity("COMTUR.Models.NoticiaModel", b =>
                 {

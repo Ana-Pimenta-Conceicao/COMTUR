@@ -22,6 +22,41 @@ namespace COMTUR.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("COMTUR.Models.EmpresarioModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("empresarioid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmailEmpresario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("emailempresario");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("nome");
+
+                    b.Property<string>("SenhaEmpresario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("senhaempresario");
+
+                    b.Property<string>("TelefoneEmpresario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("telefoneempresario");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("empresario");
+                });
+
             modelBuilder.Entity("COMTUR.Models.NoticiaModel", b =>
                 {
                     b.Property<int>("Id")

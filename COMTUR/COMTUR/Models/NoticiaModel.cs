@@ -1,18 +1,20 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace COMTUR.Models
 {
 	[Table("noticia")]
-	public class NoticiaModel
+    [Keyless]
+    public class NoticiaModel
     {
 		[Key]
 		[Column("noticiaid")]
 		public int Id { get; set; }
 
-		[Column("titulo")]
-		public string Titulo { get; set; }
+        [Column(TypeName = "citext")]
+        public string Titulo { get; set; }
 
 		[Column("subtitulo")]
 		public string Subtitulo { get; set; }

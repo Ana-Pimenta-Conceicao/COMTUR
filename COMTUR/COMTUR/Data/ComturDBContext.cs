@@ -13,7 +13,6 @@ namespace COMTUR.Data
 		public DbSet<TipoTurismoModel> TipoTurismo { get; set; }
         public DbSet<TipoAtracaoModel> TipoAtracao { get; set; }
 		public DbSet<NoticiaModel> Noticia { get; set; }
-		public DbSet<RamoEmpresaModel> RamoEmpresa { get; set; }
 		public DbSet<EmpresarioModel> Empresario { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -21,10 +20,10 @@ namespace COMTUR.Data
 			modelBuilder.ApplyConfiguration(new TipoTurismoMap());
             modelBuilder.ApplyConfiguration(new TipoAtracaoMap());
             modelBuilder.ApplyConfiguration(new NoticiaMap());
-			modelBuilder.ApplyConfiguration(new RamoEmpresaMap());
 			modelBuilder.ApplyConfiguration(new EmpresarioMap());
 
 			base.OnModelCreating(modelBuilder);
-		}
+        
+    }
 	}
 }

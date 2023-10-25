@@ -11,12 +11,12 @@ namespace COMTUR.Controllers
 	{
 		private readonly IEmpresarioRepositorio _empresarioRepositorio;
 
-		public EmpresarioController(IEmpresarioRepositorio _empresarioRepositorio)
-		{
-			this._empresarioRepositorio = _empresarioRepositorio;
-		}
+        public EmpresarioController(IEmpresarioRepositorio empresarioRepositorio)
+        {
+            _empresarioRepositorio = empresarioRepositorio;
+        }
 
-		[HttpGet]
+        [HttpGet]
 		public async Task<ActionResult<List<EmpresarioModel>>> BuscarEmpresario()
 		{
 			List<EmpresarioModel> empresario = await _empresarioRepositorio.BuscarEmpresario();
@@ -53,5 +53,11 @@ namespace COMTUR.Controllers
 			bool apagado = await _empresarioRepositorio.Apagar(nome);
 			return Ok(apagado);
 		}
-	}
+
+        public override bool Equals(object? obj)
+        {
+            return obj is EmpresarioController controller &&
+                   EqualityComparer<IEmpresarioRepositorio>.Default.Equals(_empresarioRepositorio, controller._empresarioRepositorio);
+        }
+    }
 }

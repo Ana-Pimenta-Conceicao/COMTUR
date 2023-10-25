@@ -7,18 +7,21 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class a : Migration
+    public partial class TesteBanco : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:citext", ",,");
+
             migrationBuilder.CreateTable(
                 name: "empresario",
                 columns: table => new
                 {
                     empresarioid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Nome = table.Column<string>(type: "citext", maxLength: 50, nullable: false),
                     emailempresario = table.Column<string>(type: "text", nullable: false),
                     senhaempresario = table.Column<string>(type: "text", nullable: false),
                     telefoneempresario = table.Column<string>(type: "text", nullable: false)
@@ -34,7 +37,7 @@ namespace COMTUR.Migrations
                 {
                     noticiaid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    titulo = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Titulo = table.Column<string>(type: "citext", maxLength: 50, nullable: false),
                     subtitulo = table.Column<string>(type: "text", nullable: false),
                     conteudo = table.Column<string>(type: "text", nullable: false),
                     data = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -45,25 +48,12 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ramoempresa",
-                columns: table => new
-                {
-                    ramoempresaid = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ramoempresa", x => x.ramoempresaid);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "tipoatracao",
                 columns: table => new
                 {
                     tipoatracaoid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
+                    Nome = table.Column<string>(type: "citext", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,7 +66,7 @@ namespace COMTUR.Migrations
                 {
                     tipoturismoid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
+                    Nome = table.Column<string>(type: "citext", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,9 +82,6 @@ namespace COMTUR.Migrations
 
             migrationBuilder.DropTable(
                 name: "noticia");
-
-            migrationBuilder.DropTable(
-                name: "ramoempresa");
 
             migrationBuilder.DropTable(
                 name: "tipoatracao");

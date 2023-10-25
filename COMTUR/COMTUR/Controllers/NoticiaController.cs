@@ -23,10 +23,10 @@ namespace COMTUR.Controllers
             return Ok(noticia);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<NoticiaModel>> BuscarPorId(int id)
+        [HttpGet("{titulo}")]
+        public async Task<ActionResult<NoticiaModel>> BuscarPorNome(string titulo)
         {
-            NoticiaModel noticia = await _noticiaRepository.BuscarPorId(id);
+            NoticiaModel noticia = await _noticiaRepository.BuscarPorNome(titulo);
             return Ok(noticia);
         }
 
@@ -39,18 +39,18 @@ namespace COMTUR.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<NoticiaModel>> Atualizar([FromBody] NoticiaModel noticiaModel, int id)
+        public async Task<ActionResult<NoticiaModel>> Atualizar([FromBody] NoticiaModel noticiaModel, string titulo)
         {
-            noticiaModel.Id = id;
-            NoticiaModel noticia = await _noticiaRepository.Atualizar(noticiaModel, id);
+            noticiaModel.Titulo = titulo;
+            NoticiaModel noticia = await _noticiaRepository.Atualizar(noticiaModel, titulo);
 
             return Ok(noticia);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<NoticiaModel>> Apagar(int id)
+        [HttpDelete("{titulo}")]
+        public async Task<ActionResult<NoticiaModel>> Apagar(string titulo)
         {
-            bool apagado = await _noticiaRepository.Apagar(id);
+            bool apagado = await _noticiaRepository.Apagar(titulo);
             return Ok(apagado);
         }
     }

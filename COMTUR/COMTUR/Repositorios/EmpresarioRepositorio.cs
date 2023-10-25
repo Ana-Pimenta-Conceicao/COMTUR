@@ -13,9 +13,9 @@ namespace COMTUR.Repositorios
 		{
 			_dbContext = dbContext;
 		}
-		public async Task<EmpresarioModel> BuscarPorId(int id)
+		public async Task<EmpresarioModel> BuscarPorNome(string nome)
 		{
-			return await _dbContext.Empresario.FirstOrDefaultAsync(x => x.Id == id);
+			return await _dbContext.Empresario.FirstOrDefaultAsync(x => x.Nome == nome);
 		}
 
 		public async Task<List<EmpresarioModel>> BuscarEmpresario()
@@ -31,32 +31,32 @@ namespace COMTUR.Repositorios
 			return empresarioModel;
 		}
 
-		public async Task<EmpresarioModel> Atualizar(EmpresarioModel empresarioModel, int id)
+		public async Task<EmpresarioModel> Atualizar(EmpresarioModel empresarioModel, string nome)
 		{
-			EmpresarioModel empresarioPorId = await BuscarPorId(id);
-			if (empresarioPorId == null)
+			EmpresarioModel empresarioPorNome = await BuscarPorNome(nome);
+			if (empresarioPorNome == null)
 			{
-				throw new Exception($"Empresário para o ID: {id} nao foi encontrado no banco de dados. ");
+				throw new Exception($"Empresário {nome} nao foi encontrado no banco de dados. ");
 			}
 
-			empresarioPorId.Nome = empresarioModel.Nome;
+			empresarioPorNome.Nome = empresarioModel.Nome;
 
-			_dbContext.Empresario.Update(empresarioPorId);
+			_dbContext.Empresario.Update(empresarioPorNome);
 			await _dbContext.SaveChangesAsync();
 
-			return empresarioPorId;
+			return empresarioPorNome;
 		}
 
-		public async Task<bool> Apagar(int id)
+		public async Task<bool> Apagar(string nome)
 		{
-			EmpresarioModel empresarioPorId = await BuscarPorId(id);
+			EmpresarioModel empresarioPorNome = await BuscarPorNome(nome);
 
-			if (empresarioPorId == null)
+			if (empresarioPorNome == null)
 			{
-				throw new Exception($"Empresário{id} não foi encontrado");
+				throw new Exception($"Empresário {nome} não foi encontrado");
 			}
 
-			_dbContext.Empresario.Remove(empresarioPorId);
+			_dbContext.Empresario.Remove(empresarioPorNome);
 			await _dbContext.SaveChangesAsync();
 
 			return true;

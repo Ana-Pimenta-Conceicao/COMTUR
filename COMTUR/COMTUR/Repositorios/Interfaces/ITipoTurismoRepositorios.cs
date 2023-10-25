@@ -5,9 +5,9 @@ namespace COMTUR.Repositorios.Interfaces
 	public interface ITipoTurismoRepositorio
 	{
 		Task<List<TipoTurismoModel>> BuscarTodosTipoTurismo();
-		Task<TipoTurismoModel> BuscarPorId(int id);
+		Task<TipoTurismoModel> BuscarPorNome(string nome);
 		Task<TipoTurismoModel> Adicionar(TipoTurismoModel tipo);
-		Task<TipoTurismoModel> Atualizar(TipoTurismoModel tipo, int id);
-		Task<bool> Apagar(int id);
+		Task<TipoTurismoModel> Atualizar(TipoTurismoModel tipo, string nome);
+		Task<bool> Apagar(string nome);
 	}
 }

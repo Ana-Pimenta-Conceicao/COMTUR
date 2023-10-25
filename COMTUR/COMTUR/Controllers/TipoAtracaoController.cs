@@ -24,10 +24,10 @@ namespace COMTUR.Controllers
             return Ok(tipoAtracao);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TipoAtracaoModel>> BuscarPorId(int id)
+        [HttpGet("{nome}")]
+        public async Task<ActionResult<TipoAtracaoModel>> BuscarPorNome(string nome)
         {
-            TipoAtracaoModel tipoAtracao = await _TipoAtracaoRepositorio.BuscarPorId(id);
+            TipoAtracaoModel tipoAtracao = await _TipoAtracaoRepositorio.BuscarPorNome(nome);
             return Ok(tipoAtracao);
         }
 
@@ -40,18 +40,18 @@ namespace COMTUR.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<TipoAtracaoModel>> Atualizar([FromBody] TipoAtracaoModel tipoAtracaoModel, int id)
+        public async Task<ActionResult<TipoAtracaoModel>> Atualizar([FromBody] TipoAtracaoModel tipoAtracaoModel, string nome)
         {
-            tipoAtracaoModel.Id = id;
-            TipoAtracaoModel tipoAtracao = await _TipoAtracaoRepositorio.Atualizar(tipoAtracaoModel, id);
+            tipoAtracaoModel.Nome = nome;
+            TipoAtracaoModel tipoAtracao = await _TipoAtracaoRepositorio.Atualizar(tipoAtracaoModel, nome);
 
             return Ok(tipoAtracao);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<TipoAtracaoModel>> Apagar(int id)
+        [HttpDelete("{nome}")]
+        public async Task<ActionResult<TipoAtracaoModel>> Apagar(string nome)
         {
-            bool apagado = await _TipoAtracaoRepositorio.Apagar(id);
+            bool apagado = await _TipoAtracaoRepositorio.Apagar(nome);
             return Ok(apagado);
         }
     }

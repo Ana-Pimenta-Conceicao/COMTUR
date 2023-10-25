@@ -2,6 +2,7 @@
 using COMTUR.Models;
 using COMTUR.Repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization.Metadata;
 
 namespace COMTUR.Repositorios
 {
@@ -15,7 +16,7 @@ namespace COMTUR.Repositorios
 		}
 		public async Task<EmpresarioModel> BuscarPorNome(string nome)
 		{
-			return await _dbContext.Empresario.FirstOrDefaultAsync(x => x.Nome == nome);
+			return await _dbContext.Empresario.Where(x => x.Nome == nome).FirstOrDefaultAsync();
 		}
 
 		public async Task<List<EmpresarioModel>> BuscarEmpresario()

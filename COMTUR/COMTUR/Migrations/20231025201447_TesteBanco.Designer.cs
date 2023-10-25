@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20231018140325_a")]
-    partial class a
+    [Migration("20231025201447_TesteBanco")]
+    partial class TesteBanco
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,7 @@ namespace COMTUR.Migrations
                 .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "citext");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("COMTUR.Models.EmpresarioModel", b =>
@@ -42,8 +43,7 @@ namespace COMTUR.Migrations
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("nome");
+                        .HasColumnType("citext");
 
                     b.Property<string>("SenhaEmpresario")
                         .IsRequired()
@@ -86,32 +86,11 @@ namespace COMTUR.Migrations
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("titulo");
+                        .HasColumnType("citext");
 
                     b.HasKey("Id");
 
                     b.ToTable("noticia");
-                });
-
-            modelBuilder.Entity("COMTUR.Models.RamoEmpresaModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("ramoempresaid");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("nome");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ramoempresa");
                 });
 
             modelBuilder.Entity("COMTUR.Models.TipoAtracaoModel", b =>
@@ -126,8 +105,7 @@ namespace COMTUR.Migrations
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("nome");
+                        .HasColumnType("citext");
 
                     b.HasKey("Id");
 
@@ -146,8 +124,7 @@ namespace COMTUR.Migrations
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("nome");
+                        .HasColumnType("citext");
 
                     b.HasKey("Id");
 

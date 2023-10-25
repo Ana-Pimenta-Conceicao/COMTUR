@@ -11,6 +11,9 @@ export default function Home(){
           <li>
             <Link to="/noticia">Noticia</Link>
           </li>
+          <li>
+            <Link to="/tipoturismo">Tipo Turismo</Link>
+          </li>
         </ul>
       </nav>
     </div>

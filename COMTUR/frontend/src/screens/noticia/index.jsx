@@ -24,7 +24,11 @@ function Noticia() {
   })
 
   return (
+
+
+    
     <div className='App'>
+
       <br />
       <h3 className='ListNot'>Lista de Noticia</h3>
       <header>

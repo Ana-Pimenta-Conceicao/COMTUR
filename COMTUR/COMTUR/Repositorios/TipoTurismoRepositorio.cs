@@ -15,9 +15,9 @@ namespace COMTUR.Repositorios
 			_dBContext = dBContext;
 		}
 
-		public async Task<TipoTurismoModel> BuscarPorId(int id)
+		public async Task<TipoTurismoModel> BuscarPorNome(string nome)
 		{
-			return await _dBContext.TipoTurismo.FirstOrDefaultAsync(t => t.Id == id);
+			return await _dBContext.TipoTurismo.FirstOrDefaultAsync(t => t.Nome == nome);
 		}
 
 		public async Task<List<TipoTurismoModel>> BuscarTodosTipoTurismo()
@@ -31,34 +31,32 @@ namespace COMTUR.Repositorios
 
 			return tipo;
 		}
-		public async Task<TipoTurismoModel> Atualizar(TipoTurismoModel tipo, int id)
+		public async Task<TipoTurismoModel> Atualizar(TipoTurismoModel tipo, string nome)
 		{
-			TipoTurismoModel tipoTurismoPorId = await BuscarPorId(id);
+			TipoTurismoModel tipoTurismoPorNome = await BuscarPorNome(nome);
 
-			if (tipoTurismoPorId == null)
+			if (tipoTurismoPorNome == null)
 			{
-				throw new Exception($"Tipo de Turismo {id} não foi encontrado");
+				throw new Exception($"Tipo de Turismo {nome} não foi encontrado");
 			}
+			tipoTurismoPorNome.Nome = tipo.Nome;
 
-			tipoTurismoPorId.Id = tipo.Id;
-			tipoTurismoPorId.Nome = tipo.Nome;
-
-			_dBContext.TipoTurismo.Update(tipoTurismoPorId);
+			_dBContext.TipoTurismo.Update(tipoTurismoPorNome);
 			await _dBContext.SaveChangesAsync();
 
-			return tipoTurismoPorId;
+			return tipoTurismoPorNome;
 		}
 
-		public async Task<bool> Apagar(int id)
+		public async Task<bool> Apagar(string nome)
 		{
-			TipoTurismoModel tipoTurismoPorId = await BuscarPorId(id);
+			TipoTurismoModel tipoTurismoPorNome = await BuscarPorNome(nome);
 
-			if (tipoTurismoPorId == null)
+			if (tipoTurismoPorNome == null)
 			{
-				throw new Exception($"Tipo de Turismo {id} não foi encontrado");
+				throw new Exception($"Tipo de Turismo {nome} não foi encontrado");
 			}
 
-			_dBContext.TipoTurismo.Remove(tipoTurismoPorId);
+			_dBContext.TipoTurismo.Remove(tipoTurismoPorNome);
 			await _dBContext.SaveChangesAsync();
 
 			return true;

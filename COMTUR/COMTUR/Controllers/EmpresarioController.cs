@@ -23,10 +23,10 @@ namespace COMTUR.Controllers
 			return Ok(empresario);
 		}
 
-		[HttpGet("{id}")]
-		public async Task<ActionResult<EmpresarioModel>> BuscarPorId(int id)
+		[HttpGet("{nome}")]
+		public async Task<ActionResult<EmpresarioModel>> BuscarPorNome(string nome)
 		{
-			EmpresarioModel empresario = await _empresarioRepositorio.BuscarPorId(id);
+			EmpresarioModel empresario = await _empresarioRepositorio.BuscarPorNome(nome);
 			return Ok(empresario);
 		}
 
@@ -39,18 +39,18 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult<EmpresarioModel>> Atualizar([FromBody] EmpresarioModel empresarioModel, int id)
+		public async Task<ActionResult<EmpresarioModel>> Atualizar([FromBody] EmpresarioModel empresarioModel, string nome)
 		{
-			empresarioModel.Id = id;
-			EmpresarioModel empresario = await _empresarioRepositorio.Atualizar(empresarioModel, id);
+			empresarioModel.Nome = nome;
+			EmpresarioModel empresario = await _empresarioRepositorio.Atualizar(empresarioModel, nome);
 
 			return Ok(empresario);
 		}
 
-		[HttpDelete("{id}")]
-		public async Task<ActionResult<EmpresarioModel>> Apagar(int id)
+		[HttpDelete("{nome}")]
+		public async Task<ActionResult<EmpresarioModel>> Apagar(string nome)
 		{
-			bool apagado = await _empresarioRepositorio.Apagar(id);
+			bool apagado = await _empresarioRepositorio.Apagar(nome);
 			return Ok(apagado);
 		}
 	}

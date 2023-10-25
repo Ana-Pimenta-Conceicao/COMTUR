@@ -13,9 +13,9 @@ namespace COMTUR.Repositorios
         {
             _dbContext = dbContext;
         }
-        public async Task<NoticiaModel> BuscarPorId(int id)
+        public async Task<NoticiaModel> BuscarPorNome(string titulo)
         {
-            return await _dbContext.Noticia.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Noticia.FirstOrDefaultAsync(x => x.Titulo == titulo);
         }
 
         public async Task<List<NoticiaModel>> BuscarNoticia()
@@ -31,25 +31,25 @@ namespace COMTUR.Repositorios
             return noticiaModel;
         }
 
-        public async Task<NoticiaModel> Atualizar(NoticiaModel noticiaModel, int id)
+        public async Task<NoticiaModel> Atualizar(NoticiaModel noticiaModel, string titulo)
         {
-            NoticiaModel noticiaPorId = await BuscarPorId(id);
-            if (noticiaPorId == null)
+            NoticiaModel noticiaPorNome = await BuscarPorNome(titulo);
+            if (noticiaPorNome == null)
             {
-                throw new Exception($"Noticia para o ID: {id} nao foi encontrado no banco de dados. ");
+                throw new Exception($"Noticia {titulo} nao foi encontrado no banco de dados. ");
             }
 
-            noticiaPorId.Titulo = noticiaModel.Titulo;
+            noticiaPorNome.Titulo = noticiaModel.Titulo;
 
-            _dbContext.Noticia.Update(noticiaPorId);
+            _dbContext.Noticia.Update(noticiaPorNome);
             await _dbContext.SaveChangesAsync();
 
-            return noticiaPorId;
+            return noticiaPorNome;
         }
 
-        public async Task<bool> Apagar(int id)
+        public async Task<bool> Apagar(string titulo)
         {
-            var noticiaParaExcluir = await BuscarPorId(id);
+            var noticiaParaExcluir = await BuscarPorNome(titulo);
 
             if (noticiaParaExcluir == null)
             {

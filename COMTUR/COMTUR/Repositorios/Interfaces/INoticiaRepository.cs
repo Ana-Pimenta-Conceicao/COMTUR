@@ -5,9 +5,9 @@ namespace COMTUR.Repositorios.Interfaces
     public interface INoticiaRepository
     {
         Task<List<NoticiaModel>> BuscarNoticia();
-        Task<NoticiaModel> BuscarPorId(int id);
+        Task<NoticiaModel> BuscarPorNome(string titulo);
         Task<NoticiaModel> Adicionar(NoticiaModel noticiaModel);
-        Task<NoticiaModel> Atualizar(NoticiaModel noticiaModel, int id);
-        Task<bool> Apagar(int id);
+        Task<NoticiaModel> Atualizar(NoticiaModel noticiaModel, string titulo);
+        Task<bool> Apagar(string titulo);
     }
 }

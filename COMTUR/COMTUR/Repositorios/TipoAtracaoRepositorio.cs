@@ -13,9 +13,9 @@ namespace COMTUR.Repositorios
             _dbContext = TipoAtracaoDBContext;
         }
 
-        public async Task<TipoAtracaoModel> BuscarPorId(int id)
+        public async Task<TipoAtracaoModel> BuscarPorNome(string nome)
         {
-            return await _dbContext.TipoAtracao.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.TipoAtracao.FirstOrDefaultAsync(x => x.Nome == nome);
         }
 
         public async Task<List<TipoAtracaoModel>> BuscarTipoAtracao()
@@ -31,31 +31,31 @@ namespace COMTUR.Repositorios
             return tipoAtracao;
         }
 
-        public async Task<TipoAtracaoModel> Atualizar(TipoAtracaoModel tipoAtracao, int id)
+        public async Task<TipoAtracaoModel> Atualizar(TipoAtracaoModel tipoAtracao, string nome)
         {
-            TipoAtracaoModel TipoAtracaoPorId = await BuscarPorId(id);
-            if (TipoAtracaoPorId == null)
+            TipoAtracaoModel TipoAtracaoPorNome = await BuscarPorNome(nome);
+            if (TipoAtracaoPorNome == null)
             {
-                throw new Exception($"Usuário para o ID: {id} nao foi encontrado no banco de dados. ");
+                throw new Exception($"Usuário para {nome} nao foi encontrado no banco de dados. ");
             }
 
-            TipoAtracaoPorId.Nome = tipoAtracao.Nome;
+            TipoAtracaoPorNome.Nome = tipoAtracao.Nome;
 
-            _dbContext.TipoAtracao.Update(TipoAtracaoPorId);
+            _dbContext.TipoAtracao.Update(TipoAtracaoPorNome);
             await _dbContext.SaveChangesAsync();
 
-            return TipoAtracaoPorId;
+            return TipoAtracaoPorNome;
         }
 
-        public async Task<bool> Apagar(int id)
+        public async Task<bool> Apagar(string nome)
         {
-            TipoAtracaoModel TipoAtracaoPorId = await BuscarPorId(id);
-            if (TipoAtracaoPorId == null)
+            TipoAtracaoModel TipoAtracaoPorNome = await BuscarPorNome(nome);
+            if (TipoAtracaoPorNome == null)
             {
-                throw new Exception($"Usuário para o ID: {id} nao foi encontrado no banco de dados. ");
+                throw new Exception($"Usuário {nome} nao foi encontrado no banco de dados.");
             }
 
-            _dbContext.TipoAtracao.Remove(TipoAtracaoPorId);
+            _dbContext.TipoAtracao.Remove(TipoAtracaoPorNome);
             await _dbContext.SaveChangesAsync();
             return true;
         }

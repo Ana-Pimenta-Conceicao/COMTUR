@@ -14,9 +14,9 @@ namespace COMTUR.Repositorios
 		{
 			_dbContext = dbContext;
 		}
-		public async Task<EmpresarioModel> BuscarPorNome(string nome)
+		public async Task<EmpresarioModel> BuscarPorId(int id)
 		{
-			return await _dbContext.Empresario.Where(x => x.Nome == nome).FirstOrDefaultAsync();
+			return await _dbContext.Empresario.Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
 
 		public async Task<List<EmpresarioModel>> BuscarEmpresario()
@@ -32,32 +32,36 @@ namespace COMTUR.Repositorios
 			return empresarioModel;
 		}
 
-		public async Task<EmpresarioModel> Atualizar(EmpresarioModel empresarioModel, string nome)
+		public async Task<EmpresarioModel> Atualizar(EmpresarioModel empresarioModel, int id)
 		{
-			EmpresarioModel empresarioPorNome = await BuscarPorNome(nome);
-			if (empresarioPorNome == null)
+			EmpresarioModel empresarioPorId = await BuscarPorId(id);
+			if (empresarioPorId == null)
 			{
-				throw new Exception($"Empresário {nome} nao foi encontrado no banco de dados. ");
+				throw new Exception($"Empresário {id} nao foi encontrado no banco de dados. ");
 			}
 
-			empresarioPorNome.Nome = empresarioModel.Nome;
+			empresarioPorId.Id = empresarioModel.Id;
+			empresarioPorId.Nome = empresarioModel.Nome;
+			empresarioPorId.EmailEmpresario = empresarioModel.EmailEmpresario;
+			empresarioPorId.SenhaEmpresario = empresarioModel.SenhaEmpresario;
+			empresarioPorId.TelefoneEmpresario = empresarioModel.TelefoneEmpresario;
 
-			_dbContext.Empresario.Update(empresarioPorNome);
+			_dbContext.Empresario.Update(empresarioPorId);
 			await _dbContext.SaveChangesAsync();
 
-			return empresarioPorNome;
+			return empresarioPorId;
 		}
 
-		public async Task<bool> Apagar(string nome)
+		public async Task<bool> Apagar(int id)
 		{
-			EmpresarioModel empresarioPorNome = await BuscarPorNome(nome);
+			EmpresarioModel empresarioPorId = await BuscarPorId(id);
 
-			if (empresarioPorNome == null)
+			if (empresarioPorId == null)
 			{
-				throw new Exception($"Empresário {nome} não foi encontrado");
+				throw new Exception($"Empresário {id} não foi encontrado");
 			}
 
-			_dbContext.Empresario.Remove(empresarioPorNome);
+			_dbContext.Empresario.Remove(empresarioPorId);
 			await _dbContext.SaveChangesAsync();
 
 			return true;

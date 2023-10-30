@@ -3,8 +3,9 @@
     "",
     "\\COMTUR",
     "\\COMTUR\\COMTUR",
+    "\\COMTUR\\COMTUR\\Controllers",
     "\\COMTUR\\COMTUR\\Repositorios"
   ],
-  "SelectedNode": "\\COMTUR\\COMTUR\\COMTUR.sln",
+  "SelectedNode": "\\COMTUR\\COMTUR\\Controllers\\TipoTurismoController.cs",
   "PreviewInSolutionExplorer": false
 }

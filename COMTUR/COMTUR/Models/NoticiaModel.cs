@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace COMTUR.Models
 {
 	[Table("noticia")]
-    [Keyless]
     public class NoticiaModel
     {
 		[Key]

@@ -20,7 +20,6 @@ namespace COMTUR.Migrations
                 .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "citext");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("COMTUR.Models.EmpresarioModel", b =>
@@ -40,7 +39,8 @@ namespace COMTUR.Migrations
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("citext");
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("nome");
 
                     b.Property<string>("SenhaEmpresario")
                         .IsRequired()
@@ -103,7 +103,8 @@ namespace COMTUR.Migrations
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("citext");
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("nome");
 
                     b.HasKey("Id");
 
@@ -122,7 +123,8 @@ namespace COMTUR.Migrations
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("citext");
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("nome");
 
                     b.HasKey("Id");
 

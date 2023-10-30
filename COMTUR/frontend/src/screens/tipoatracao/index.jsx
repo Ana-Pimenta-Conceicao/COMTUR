@@ -31,7 +31,8 @@ function TipoAtracao() {
   const TipoAtracaoSet = (tipoatracao, opcao) => {
     setTipoAtracaoNome(tipoatracao.nome)
     setTipoAtracaoId(tipoatracao.id)
-
+    setTipoAtracaoSelecionado(tipoatracao.id)
+    
     if (opcao === "Editar") {
       abrirFecharModalEditar();
     }
@@ -73,7 +74,7 @@ function TipoAtracao() {
   }
 
   async function pedidoAtualizar() {
-    delete tipoatracaoSelecionado.id
+    // delete tipoatracaoSelecionado.id
     await axios.put(baseUrl, { id: tipoatracaoId, nome: tipoatracaoNome })
 
       .then(response => {
@@ -89,6 +90,7 @@ function TipoAtracao() {
         console.log(error)
       })
   }
+
 
 
   const pedidoDeletar = async () => {
@@ -204,10 +206,7 @@ function TipoAtracao() {
                     </div>
                   </nav>
 
-                  <img
-                    style={{ width: 168.78, height: 33, left: 1271, top: 39 }}
-                    src="logoComtur.png"
-                  />
+                  <img class=" d-flex logocomtur" src="../assets/Comtur.svg" alt='não tem imagem' />
                 </div>
                 <br /><br />
 
@@ -256,9 +255,12 @@ function TipoAtracao() {
                               <button className='btn btnadicionar' onClick={() => abrirFecharModalInserir()}>+</button>
                             </div>
 
+                            
+
                           </form>
                         </div>
                       </div>
+                      
                     </div>
                     </div>
 

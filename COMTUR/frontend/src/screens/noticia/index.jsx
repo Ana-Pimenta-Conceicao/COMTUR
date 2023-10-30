@@ -7,12 +7,12 @@ const Noticia = () => {
   const [open, setOpen] = useState(true);
 
   const Menus = [
-    { title: "Usuário", src: "User" },
-    { title: "Ponto Turístico", src: "Chat" },
-    { title: "Eventos", src: "User", gap: true },
-    { title: "Atrações ", src: "Calendar" },
-    { title: "Notícia", src: "Search" },
-    { title: "Dashboard", src: "Chart_fill" },
+    { title: "Usuário", src: "iconeUser" },
+    { title: "Ponto Turístico", src: "iconePontoTuristico" },
+    { title: "Eventos", src: "iconeEventos", gap: true },
+    { title: "Atrações ", src: "iconeAtracao" },
+    { title: "Notícia", src: "iconeNoticia" },
+    { title: "Dashboard", src: "iconeDashboard" },
   ];
 
   return (
@@ -29,7 +29,7 @@ const Noticia = () => {
         />
         <div className="flex gap-x-4 items-center">
           <img
-            src="./src/assets/logo.png"
+            src="./src/assets/logoComtur.png"
             className={`cursor-pointer duration-500 ${open && "rotate-[360deg]"
               }`}
           />

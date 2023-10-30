@@ -71,9 +71,9 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("conteudo");
 
-                    b.Property<DateTime>("Data")
+                    b.Property<DateTime>("DataHora")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("data");
+                        .HasColumnName("dataHora");
 
                     b.Property<string>("Subtitulo")
                         .IsRequired()
@@ -83,7 +83,8 @@ namespace COMTUR.Migrations
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("citext");
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("titulo");
 
                     b.HasKey("Id");
 

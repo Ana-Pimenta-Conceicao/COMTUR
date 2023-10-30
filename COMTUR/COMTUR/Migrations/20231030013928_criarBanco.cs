@@ -37,10 +37,10 @@ namespace COMTUR.Migrations
                 {
                     noticiaid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Titulo = table.Column<string>(type: "citext", maxLength: 50, nullable: false),
+                    titulo = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     subtitulo = table.Column<string>(type: "text", nullable: false),
                     conteudo = table.Column<string>(type: "text", nullable: false),
-                    data = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    dataHora = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

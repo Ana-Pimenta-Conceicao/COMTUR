@@ -25,11 +25,11 @@ namespace COMTUR.Controllers
 			}
 		}
 
-		[HttpGet("{nome}")]
-		public async Task<ActionResult<TipoTurismoModel>> BuscarPorNome(string nome)
+		[HttpGet("{id}")]
+		public async Task<ActionResult<TipoTurismoModel>> BuscarPorId(int id)
 		{
 			{
-				TipoTurismoModel tipo = await _tipoTurismoRepositorio.BuscarPorNome(nome);
+				TipoTurismoModel tipo = await _tipoTurismoRepositorio.BuscarPorId(id);
 				return Ok(tipo);
 			}
 		}
@@ -43,24 +43,23 @@ namespace COMTUR.Controllers
 			}
 		}
 
-		[HttpPut("{nome}")]
-		public async Task<ActionResult<TipoTurismoModel>> Atualizar([FromBody] TipoTurismoModel tipoTurismoModel, string nome)
+		[HttpPut("{id}")]
+		public async Task<ActionResult<TipoTurismoModel>> Atualizar([FromBody] TipoTurismoModel tipoTurismoModel, int id)
 		{
 			{
-				tipoTurismoModel.Nome = nome;
-				TipoTurismoModel tipo = await _tipoTurismoRepositorio.Atualizar(tipoTurismoModel, nome);
+				tipoTurismoModel.Id = id;
+				TipoTurismoModel tipo = await _tipoTurismoRepositorio.Atualizar(tipoTurismoModel, id);
 				return Ok(tipo);
 			}
 		}
 
-		[HttpDelete("{nome}")]
-		public async Task<ActionResult<TipoTurismoModel>> Apagar(string nome)
+		[HttpDelete("{id}")]
+		public async Task<ActionResult<TipoTurismoModel>> Apagar(int id)
 		{
 			{
-				bool apagado = await _tipoTurismoRepositorio.Apagar(nome);
+				bool apagado = await _tipoTurismoRepositorio.Apagar(id);
 				return Ok(apagado);
 			}
 		}
 	}
 }
-

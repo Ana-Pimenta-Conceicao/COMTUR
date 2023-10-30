@@ -41,6 +41,10 @@ namespace COMTUR.Repositorios
             }
 
             noticiaPorId.Id = noticiaModel.Id;
+            noticiaPorId.Titulo = noticiaModel.Titulo;
+            noticiaPorId.Subtitulo = noticiaModel.Subtitulo;
+            noticiaPorId.Conteudo = noticiaModel.Conteudo;
+            noticiaPorId.DataHora = noticiaModel.DataHora;
 
             _dbContext.Noticia.Update(noticiaPorId);
             await _dbContext.SaveChangesAsync();

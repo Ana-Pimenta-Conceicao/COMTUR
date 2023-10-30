@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace COMTUR.Models;
 
 [Table("tipoturismo")]
-[Keyless]
 
 public class TipoTurismoModel
 {
@@ -14,6 +13,6 @@ public class TipoTurismoModel
 	[Key]
 	[Column("tipoturismoid")]
 	public int Id { get; set; }
-    [Column(TypeName = "citext")]
+    [Column("nome")]
     public string Nome { get; set; }
 }

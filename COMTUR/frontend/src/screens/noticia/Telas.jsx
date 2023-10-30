@@ -33,7 +33,7 @@ const Telas = () => {
         titulo: "",
         subtitulo: "",
         conteudo: "",
-        data: ""
+        dataHora: ""
     })
 
     const NoticiaSet = (noticia, opcao) => {
@@ -41,7 +41,7 @@ const Telas = () => {
         setNoticiaTitulo(noticia.titulo)
         setNoticiaSubtitulo(noticia.subtitulo)
         setNoticiaConteudo(noticia.conteudo)
-        setNoticiaDataHora(noticia.data)
+        setNoticiaDataHora(noticia.dataHora)
 
         if (opcao === "Editar") {
             abrirFecharModalEditar();
@@ -74,7 +74,7 @@ const Telas = () => {
 
     const pedidoPost = async () => {
         delete selecionarNoticia.id
-        await axios.post(baseUrl, { titulo: noticiaTitulo, subtitulo: noticiaSubtitulo, conteudo: noticiaConteudo, data: noticiaDataHora })
+        await axios.post(baseUrl, { titulo: noticiaTitulo, subtitulo: noticiaSubtitulo, conteudo: noticiaConteudo, dataHora: noticiaDataHora })
             .then(response => {
                 setData(data.concat(response.data));
                 abrirFecharModalInserir();
@@ -84,48 +84,29 @@ const Telas = () => {
     }
 
     async function pedidoAtualizar() {
-        delete selecionarNoticia.id
-
-        const dadosAtualizados = {
-            id: noticiaId,
-            titulo: noticiaTitulo,
-            subtitulo: noticiaSubtitulo,
-            conteudo: noticiaConteudo,
-            data: noticiaDataHora,
-        };
-
-        try {
-            const response = await axios.put(baseUrl, dadosAtualizados)
-
-            const dadosResposta = response.data;
-
-            const index = data.findIndex(noticia => noticia.id === noticiaId);
-
-            if (index !== -1) {
-                data[index] = dadosResposta;
-            }
-
-            abrirFecharModalEditar();
-            // .then(response => {
-            // var answer = response.data
-            // var aux = data
-            // aux.map(noticia => {
-            //   if (noticia.id === selecionarNoticia.id) {
-            //     noticia.titulo = answer.noticiaTitulo
-            //     noticia.subtitulo = answer.noticiaSubtitulo
-            //     noticia.conteudo = answer.noticiaConteudo
-            //     noticia.data = answer.noticiaDataHora
-            //   }
-            // })
-        } catch (error) {
-            console.log(error)
-        }
+      delete selecionarNoticia.id
+      await axios.put(baseUrl, { id: noticiaId, titulo: noticiaTitulo, subtitulo: noticiaSubtitulo, conteudo: noticiaConteudo, dataHora: noticiaDataHora })
+          .then(response => {
+              var answer = response.data
+              var aux = data
+              aux.map(noticia => {
+                  if (noticia.id === selecionarNoticia.id) {
+                      noticia.titulo = answer.titulo
+                      noticia.subtitulo = answer.subtitulo
+                      noticia.conteudo = answer.conteudo
+                      noticia.dataHora = answer.dataHora
+                  }
+              })
+              abrirFecharModalEditar();
+          }).catch(error => {
+              console.log(error)
+          })
     }
 
     const pedidoDeletar = async () => {
         await axios.delete(baseUrl + "/" + selecionarNoticia.id)
             .then(response => {
-                setData(data.filter(state => state.id !== response.data));
+                setData(data.filter(noticia => noticia.id !== response.data));
                 abrirFecharModalDeletar();
             }).catch(error => {
                 console.log(error);

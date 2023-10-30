@@ -13,7 +13,7 @@ namespace COMTUR.Models
 		[Column("noticiaid")]
 		public int Id { get; set; }
 
-        [Column(TypeName = "citext")]
+        [Column("titulo")]
         public string Titulo { get; set; }
 
 		[Column("subtitulo")]
@@ -22,7 +22,7 @@ namespace COMTUR.Models
 		[Column("conteudo")]
 		public string Conteudo { get; set; }
 
-		[Column("data")]
-		public DateTime Data { get; set; }
+		[Column("dataHora")]
+		public DateTime DataHora { get; set; }
     }
 }

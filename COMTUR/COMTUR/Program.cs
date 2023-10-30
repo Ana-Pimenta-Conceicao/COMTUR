@@ -55,6 +55,7 @@ namespace COMTUR
 			app.UseCors("MyPolicy");
 
 			app.UseRouting();
+
 			app.Run();
 		}
 	}

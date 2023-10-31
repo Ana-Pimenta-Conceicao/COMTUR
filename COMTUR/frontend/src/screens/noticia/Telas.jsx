@@ -4,7 +4,7 @@ import './index.css';
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import "bootstrap/dist/css/bootstrap.min.css"
 
-const Telas = () => {
+export default function Telas() {
 
     const baseUrl = "https://localhost:7256/api/Noticia";
 
@@ -36,20 +36,21 @@ const Telas = () => {
         dataHora: ""
     })
 
-    const NoticiaSet = (noticia, opcao) => {
-        setNoticiaId(noticia.id)
-        setNoticiaTitulo(noticia.titulo)
-        setNoticiaSubtitulo(noticia.subtitulo)
-        setNoticiaConteudo(noticia.conteudo)
-        setNoticiaDataHora(noticia.dataHora)
+      const NoticiaSet = (noticia, opcao) => {
+          console.log("Noticia que foi passada: ", noticia);
+          setNoticiaId(noticia.id)
+          setNoticiaTitulo(noticia.titulo)
+          setNoticiaSubtitulo(noticia.subtitulo)
+          setNoticiaConteudo(noticia.conteudo)
+          setNoticiaDataHora(noticia.dataHora)
 
-        if (opcao === "Editar") {
-            abrirFecharModalEditar();
-        }
-        else {
-            abrirFecharModalDeletar();
-        }
-    }
+          if (opcao === "Editar") {
+              abrirFecharModalEditar();
+          }
+          else {
+              abrirFecharModalDeletar();
+          }
+      }
 
     const abrirFecharModalInserir = () => {
         setModalInserir(!modalInserir)
@@ -84,27 +85,34 @@ const Telas = () => {
     }
 
     async function pedidoAtualizar() {
-      delete selecionarNoticia.id
-      await axios.put(baseUrl, { id: noticiaId, titulo: noticiaTitulo, subtitulo: noticiaSubtitulo, conteudo: noticiaConteudo, dataHora: noticiaDataHora })
-          .then(response => {
-              var answer = response.data
-              var aux = data
-              aux.map(noticia => {
-                  if (noticia.id === selecionarNoticia.id) {
-                      noticia.titulo = answer.titulo
-                      noticia.subtitulo = answer.subtitulo
-                      noticia.conteudo = answer.conteudo
-                      noticia.dataHora = answer.dataHora
-                  }
-              })
-              abrirFecharModalEditar();
-          }).catch(error => {
-              console.log(error)
-          })
+      console.log("Id que chegou: ", noticiaId);
+      try {
+        const response = await axios.put(`${baseUrl}/${noticiaId}`, {
+          titulo: noticiaTitulo,
+          subtitulo: noticiaSubtitulo,
+          conteudo: noticiaConteudo,
+          dataHora: noticiaDataHora
+        });
+    
+        const updatedNoticia = response.data;
+    
+        setData((prevData) => {
+          return prevData.map((noticia) => {
+            if (noticia.id === noticiaId) {
+              return updatedNoticia;
+            }
+            return noticia;
+          });
+        });
+    
+        abrirFecharModalEditar();
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     const pedidoDeletar = async () => {
-        await axios.delete(baseUrl + "/" + selecionarNoticia.id)
+        await axios.delete(baseUrl + "/" + noticiaId)
             .then(response => {
                 setData(data.filter(noticia => noticia.id !== response.data));
                 abrirFecharModalDeletar();
@@ -239,5 +247,3 @@ const Telas = () => {
       </div>
     )
 }
-
-export default Telas;

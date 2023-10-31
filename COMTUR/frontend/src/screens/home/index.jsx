@@ -14,6 +14,9 @@ export default function Home(){
           <li>
             <Link to="/tipoturismo">Tipo Turismo</Link>
           </li>
+          <li>
+            <Link to="/tipoatracao">Tipo Atração</Link>
+          </li>
         </ul>
       </nav>
     </div>

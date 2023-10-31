@@ -184,16 +184,16 @@ function TipoAtracao() {
 
                   <ul class="nav nav-pills">
                     <li class="nav-item">
-                      <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img className="Image57" style={{ width: 29.50, height: 29.50 }} src="imgTema.png" /></a>
+                      <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img className="Image57" style={{ width: 29.50, height: 29.50 }} src="./src/assets/iconeTema.svg" /></a>
                     </li>
                     <li class="nav-item">
-                      <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img className="Image57" style={{ width: 29.50, height: 29.50 }} src="imgDaltonico.png" /></a>
+                      <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img className="Image57" style={{ width: 29.50, height: 29.50 }} src="./src/assets/iconeDaltonico.svg" /></a>
                     </li>
                     <li class="nav-item">
-                      <a style={{ width: 61.5, height: 45.5 }} class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img src="imgAumLetra.png" style={{ fontSize: 40, paddingBlockEnd: 100, paddingright: 20 }} /></a>
+                      <a style={{ width: 54, height: 45, justifyContent: 'center', alignItems: 'center', fontSize: 21, color: 'black' }} class="itemacessibi nav-link active m-1" aria-current="page" href="#">A+</a>
                     </li>
                     <li class="nav-item">
-                      <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img src="imgDimLetra.png" /></a>
+                      <a style={{width: 54, height: 45, justifyContent: 'center', alignItems: 'center', fontSize: 21, color: 'black'}} class="itemacessibi nav-link active m-1" aria-current="page" href="#">A-</a>
                     </li>
                   </ul>
 
@@ -201,12 +201,12 @@ function TipoAtracao() {
                     <div class="container-fluid">
                       <form class="d-flex" role="search">
                         <input class="campopesquisa form-control me-2" type="search" placeholder="pesquisar" aria-label="Search"></input>
-                        <button class="btn btn-outline-light" type="submit"><img class="" src="lupa.png" /> </button>
+                        <button class="btn btn-outline-light" type="submit"><img class="" src="./src/assets/iconePesquisa.svg" /> </button>
                       </form>
                     </div>
                   </nav>
 
-                  <img class=" d-flex logocomtur" src="../assets/Comtur.svg" alt='não tem imagem' />
+                  <img class=" d-flex logocomtur" src="./src/assets/iconeComtur.svg" alt='não tem imagem' />
                 </div>
                 <br /><br />
 

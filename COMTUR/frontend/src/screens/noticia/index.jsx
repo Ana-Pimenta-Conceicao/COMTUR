@@ -29,7 +29,7 @@ const Noticia = () => {
         />
         <div className="flex gap-x-4 items-center">
           <img
-            src="./src/assets/logoComtur.png"
+            src="./src/assets/logoComturSF.png"
             className={`cursor-pointer duration-500 ${open && "rotate-[360deg]"
               }`}
           />

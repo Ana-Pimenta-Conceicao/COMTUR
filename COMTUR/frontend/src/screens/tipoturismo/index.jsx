@@ -127,10 +127,6 @@ function TipoTurismo() {
                         <div class="row flex-nowrap">
 
                         /* menu */
-
-
-
-
                             <div class="col py-3">
 
                                 <div class="nav">

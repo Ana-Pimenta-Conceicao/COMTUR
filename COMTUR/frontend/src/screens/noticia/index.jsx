@@ -1,17 +1,19 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import '../../index.css';
-import Telas from './Telas'
+import Noticia from './noticia'
 
-const Noticia = () => {
+const Menu = () => {
   
   const [open, setOpen] = useState(true);
 
   const Menus = [
+    { title: "Início", src: "Home" },
     { title: "Usuário", src: "iconeUser" },
     { title: "Ponto Turístico", src: "iconePontoTuristico" },
-    { title: "Eventos", src: "iconeEventos", gap: true },
+    { title: "Eventos", src: "iconeEventos" },
     { title: "Atrações ", src: "iconeAtracao" },
-    { title: "Notícia", src: "iconeNoticia" },
+    { title: "Notícia", src: "Noticia" },
     { title: "Dashboard", src: "iconeDashboard" },
   ];
 
@@ -48,16 +50,20 @@ const Noticia = () => {
               ${Menu.gap ? "mt-9" : "mt-2"} ${index === 0 && "bg-light-white"
                 } `}
             >
-              <img src={`./src/assets/${Menu.src}.png`} />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
-                {Menu.title}
-              </span>
+              <Link to={`/${Menu.src.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit'}}>
+                <div className="flex items-center">
+                  <img src={`./src/assets/${Menu.src}.png`}/>
+                  <span className={`${!open && "hidden"} origin-left duration-200 pl-2`}>
+                    {Menu.title}
+                  </span>
+                </div>
+              </Link>
             </li>
           ))}
         </ul>
       </div>
-      <Telas />
+      <Noticia />
     </div>
   );
 };
-export default Noticia;
+export default Menu;

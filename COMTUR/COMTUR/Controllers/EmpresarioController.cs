@@ -38,7 +38,7 @@ namespace COMTUR.Controllers
 			return Ok(empresario);
 		}
 
-		[HttpPut]
+		[HttpPut("{id}")]
 		public async Task<ActionResult<EmpresarioModel>> Atualizar([FromBody] EmpresarioModel empresarioModel, int id)
 		{
 			empresarioModel.Id = id;

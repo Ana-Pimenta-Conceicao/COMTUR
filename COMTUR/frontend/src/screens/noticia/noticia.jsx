@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import './index.css';
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import "bootstrap/dist/css/bootstrap.min.css"
+import Sidebar from '../../components/sidebar';
+import NavBar  from '../../components/navbar';
 
 export default function Noticia() {
 
@@ -129,41 +130,10 @@ export default function Noticia() {
   }, [atualizarData])
 
   return (
-    <div className="h-screen flex-1 p-7">
-      <div className="flex" style={{ alignItems:"center", justifyContent: 'space-between', paddingBottom: 50, display: "flex" }}>
-        <div>
-          <ul class="nav nav-pills">
-            <li class="nav-item">
-              <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img className="AcessibilidadeLuz" style={{ width: 20, height: 22 }} src="./src/assets/Iconeluz.svg" /></a>
-            </li>
-            <li class="nav-item">
-              <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img className="Acessibilidadedaltonico" style={{ width: 20, height: 22 }} src="./src/assets/iconeDaltonico.svg" /></a>
-            </li>
-            <li class="nav-item">
-              <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img className="Acessibilidadefontemais" style={{ width: 20, height: 22 }} src="./src/assets/A+.svg" /></a>
-            </li>
-            <li class="nav-item">
-              <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img className="Acessibilidadefonte" style={{ width: 20, height: 22 }} src="./src/assets/A-.svg" /></a>
-            </li>
-          </ul>
-        </div>
-        <form className="d-flex" role="search" style={{ display:'flex', border: '1px solid #ccc', borderRadius: '10px', padding: '5px', alignItems: "center", width:380, height:40, justifyContent: 'space-between'  }}>
-          <input
-            type="text"
-            style={{ paddingRight: 30, border: 'none', outline: 'none', borderRadius: '10px', width:340 }} // Adicionei o border-radius ao input
-            placeholder="Pesquisar"
-          />
-          <img
-            src="./src/assets/iconePesquisa.svg"
-            alt="Ícone"
-            style={{ width: 30, height: 30, paddingRight:10 }} // Ajuste o tamanho da imagem conforme necessário
-          />
-        </form>
-
-
-        <img className="LocomarcaComtur" style={{ width: 150, height: 50, padding: 5 }} src="./src/assets/iconeComtur.svg" />
-      </div>
-
+    <div className="h-screen flex">
+       <Sidebar />   
+       <div className="flex-2 container-fluid">
+      <NavBar />
       <h1 className="text-2xl pb-10 font-semibold">Lista de Notícias</h1>
       <div className="flex relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -206,6 +176,7 @@ export default function Noticia() {
         <button className="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900"
           onClick={() => abrirFecharModalInserir()}
         >Cadastrar</button>
+        </div>
       </div>
       <Modal isOpen={modalInserir}>
         <ModalHeader>Cadastrar Noticia</ModalHeader>

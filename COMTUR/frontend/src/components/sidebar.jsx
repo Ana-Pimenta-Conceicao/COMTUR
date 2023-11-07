@@ -1,14 +1,12 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import '../../index.css';
-import Noticia from './noticia'
+import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 
-const Menu = () => {
-  
+const Sidebar = () => {
+
   const [open, setOpen] = useState(true);
 
   const Menus = [
-    { title: "Início", src: "Home" },
+    { title: "Início", src: "Home" , gap:true},
     { title: "Usuário", src: "iconeUser" },
     { title: "Ponto Turístico", src: "iconePontoTuristico" },
     { title: "Eventos", src: "iconeEventos" },
@@ -18,9 +16,9 @@ const Menu = () => {
   ];
 
   return (
-    <div className="flex">
+    <div className="sidebar" style={{ height: '100vh' }}>
       <div
-        className={` ${open ? "w-30" : "w-20"
+        className={` ${open ? "w-52" : "w-20"
           } bg-black h-screen pl-5 pr-5  pt-8 relative duration-300`}
       >
         <img
@@ -46,7 +44,7 @@ const Menu = () => {
           {Menus.map((Menu, index) => (
             <li
               key={index}
-              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
               ${Menu.gap ? "mt-9" : "mt-2"} ${index === 0 && "bg-light-white"
                 } `}
             >
@@ -62,8 +60,8 @@ const Menu = () => {
           ))}
         </ul>
       </div>
-      <Noticia />
-    </div>
+    </div >
   );
-};
-export default Menu;
+}
+
+export default Sidebar;

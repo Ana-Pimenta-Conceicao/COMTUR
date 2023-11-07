@@ -8,9 +8,9 @@ const Sidebar = () => {
   const Menus = [
     { title: "Início", src: "Home" , gap:true},
     { title: "Usuário", src: "iconeUser" },
-    { title: "Ponto Turístico", src: "iconePontoTuristico" },
+    { title: "Ponto Turístico", src: "tipoTurismo" },
     { title: "Eventos", src: "iconeEventos" },
-    { title: "Atrações ", src: "iconeAtracao" },
+    { title: "Atrações ", src: "tipoAtracao" },
     { title: "Notícia", src: "Noticia" },
     { title: "Dashboard", src: "iconeDashboard" },
   ];

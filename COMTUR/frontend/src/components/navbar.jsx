@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const Navbar = () => {
     return (
     
-        <div className="flex" style={{ padding: 30, alignItems:"top", justifyContent: 'space-between', paddingBottom: 50, display: "flex" }}>
+        <div className="flex" style={{ padding: 30, alignItems:"top", justifyContent: 'space-between', paddingBottom: 50, display: "flex", paddingBottom:100 }}>
           <div>
             <ul class="nav nav-pills">
               <li class="nav-item">

@@ -18,78 +18,23 @@ const Home = () => {
             </h1>
 
             <div
-              className="flex flex-wrap"
-              style={{ justifyContent: "space-between" }}
+              className="flex flex-wrap pl-16"
+              style={{  }}
             >
-              <div className="w-1/3 p-4">
-                <div class="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-                  style={{  background: "#FFD121", justifyContent: "center", alignItems: "center", width: 295, height: 215 }}>
-                  <a href="../noticia">
-                    <img class="rounded-t-lg" src="./src/assets/menuUsuarios.png" alt="" />
-                  </a>
-                  <div class="p-2 rounded-lg"
-                       style={{ background: "#FFD121", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                   <a href="../noticia">
-                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        Usuários
-                      </h5>
-                   </a>
-                   </div>
-                </div>
-              </div>
-
-              <div className="w-1/3 p-4">
+                <div className="w-1/3 p-4">
                 <div
                   class="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                   style={{
                     background: "#FFD121",
                     justifyContent: "center",
                     alignItems: "center",
-                    width: 295,
-                    height: 215,
-                  }}
-                >
-                  <a href="#">
-                    <img
-                      class="rounded-t-lg" 
-                      src="./src/assets/empresa.png"
-                      alt=""
-                    />
-                  </a>
-                  <div
-                    class="p-2 rounded-lg"
-                    style={{
-                      background: "#FFD121",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <a href="#">
-                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                       Empresas
-                      </h5>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-1/3 p-4 ">
-                <div
-                  class="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-                  style={{
-                    background: "#FFD121",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: 295,
-                    height: 215,
+                    width: 360, height: 240,
                   }}
                 >
                   <a href="#">
                     <img
                       class="rounded-t-lg"
-                      src="./src/assets/menuUsuarios.png"
+                      src="./src/assets/homeUsuario.png"
                       alt=""
                     />
                   </a>
@@ -101,6 +46,7 @@ const Home = () => {
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
+                      height: 60
                     }}
                   >
                     <a href="#">
@@ -111,6 +57,81 @@ const Home = () => {
                   </div>
                 </div>
               </div>
+
+              <div className="w-1/3 p-4">
+                <div
+                  class="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                  style={{
+                    background: "#FFD121",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 360, height: 240,
+                  }}
+                >
+                  <a href="#">
+                    <img
+                      class="rounded-t-lg"
+                      src="./src/assets/homeEmpresa.png"
+                      alt=""
+                    />
+                  </a>
+                  <div
+                    class="p-2 rounded-lg"
+                    style={{
+                      background: "#FFD121",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: 60
+                    }}
+                  >
+                    <a href="#">
+                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        Empresas
+                      </h5>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-1/3 p-4">
+                <div
+                  class="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                  style={{
+                    background: "#FFD121",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 360, height: 240,
+                  }}
+                >
+                  <a href="./noticia">
+                    <img
+                      class="rounded-t-lg"
+                      src="./src/assets/homeNoticia.png"
+                      alt=""
+                    />
+                  </a>
+                  <div
+                    class="p-2 rounded-lg"
+                    style={{
+                      background: "#FFD121",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: 60
+                    }}
+                  >
+                    <a href="./noticia">
+                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        Notícias
+                      </h5>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
               <div style={{ width: "100%", height: 20 }}></div>
               <div className="w-1/3 p-4">
                 <div
@@ -119,14 +140,13 @@ const Home = () => {
                     background: "#FFD121",
                     justifyContent: "center",
                     alignItems: "center",
-                    width: 295,
-                    height: 215,
+                    width: 360, height: 240,
                   }}
                 >
                   <a href="#">
                     <img
                       class="rounded-t-lg"
-                      src="./src/assets/menuUsuarios.png"
+                      src="./src/assets/homeEvento.png"
                       alt=""
                     />
                   </a>
@@ -142,7 +162,7 @@ const Home = () => {
                   >
                     <a href="#">
                       <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        Usuários
+                        Eventos
                       </h5>
                     </a>
                   </div>
@@ -155,14 +175,13 @@ const Home = () => {
                     background: "#FFD121",
                     justifyContent: "center",
                     alignItems: "center",
-                    width: 295,
-                    height: 215,
+                    width: 360, height: 240,
                   }}
                 >
-                  <a href="#">
+                  <a href="./tipoatracao">
                     <img
                       class="rounded-t-lg"
-                      src="./src/assets/menuUsuarios.png"
+                      src="./src/assets/homeAtracao.png"
                       alt=""
                     />
                   </a>
@@ -176,9 +195,9 @@ const Home = () => {
                       justifyContent: "center",
                     }}
                   >
-                    <a href="#">
+                    <a href="./tipoatracao">
                       <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        Usuários
+                        Atrações
                       </h5>
                     </a>
                   </div>
@@ -191,14 +210,13 @@ const Home = () => {
                     background: "#FFD121",
                     justifyContent: "center",
                     alignItems: "center",
-                    width: 295,
-                    height: 215,
+                    width: 360, height: 240,
                   }}
                 >
-                  <a href="#">
+                  <a href="./tipoturismo">
                     <img
                       class="rounded-t-lg"
-                      src="./src/assets/menuUsuarios.png"
+                      src="./src/assets/homePontoTuristico.png"
                       alt=""
                     />
                   </a>
@@ -210,11 +228,12 @@ const Home = () => {
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
+                      height: 60
                     }}
                   >
-                    <a href="#">
+                    <a href="./tipoturismo">
                       <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        Usuários
+                        Pontos Turísticos
                       </h5>
                     </a>
                   </div>

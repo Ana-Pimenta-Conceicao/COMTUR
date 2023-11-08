@@ -6,7 +6,6 @@ export default function Inicio(){
         <div className="Inicio" style={{justifyContent:"center", alignItems:"center", display:'flex'}}>
             <Link to={`/home`} style={{ textDecoration: 'none', color: 'inherit'}}>
                 <button>HOME</button></Link>
-
         </div>
     )
 }

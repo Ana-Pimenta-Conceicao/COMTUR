@@ -6,6 +6,7 @@ using System;
 
 namespace COMTUR
 {
+
 	public class Program
 	{
 		public static void Main(string[] args)
@@ -34,29 +35,30 @@ namespace COMTUR
 
 			builder.Services.AddTransient<ITipoTurismoRepositorio, TipoTurismoRepositorio>();
             builder.Services.AddTransient<ITipoAtracaoRepositorio, TipoAtracaoRepositorio>();
-			builder.Services.AddTransient<INoticiaRepository, NoticiaRepository>();
-			builder.Services.AddTransient<IEmpresarioRepositorio, EmpresarioRepositorio>();
+            builder.Services.AddTransient<INoticiaRepository, NoticiaRepository>();
+            builder.Services.AddTransient<IEmpresarioRepositorio, EmpresarioRepositorio>();
+            builder.Services.AddTransient<IAdministradorRepositorio, AdministradorRepositorio>();
 
-			var app = builder.Build();
+            var app = builder.Build();
 
-			// Configure the HTTP request pipeline.
-			if (app.Environment.IsDevelopment())
-			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
-			}
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
 
-			app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
-			app.UseAuthorization();
+            app.UseAuthorization();
 
-			app.MapControllers();
+            app.MapControllers();
 
-			app.UseCors("MyPolicy");
+            app.UseCors("MyPolicy");
 
-			app.UseRouting();
+            app.UseRouting();
 
-			app.Run();
-		}
-	}
+            app.Run();
+        }
+    }
 }

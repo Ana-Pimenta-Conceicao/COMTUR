@@ -5,6 +5,7 @@ import Home from "./screens/home";
 import TipoTurismo from "./screens/tipoturismo";
 import TipoAtracao from "./screens/tipoatracao";
 import Inicio from "./screens/inicio/inicio";
+import Empresario from "./screens/empresario/empresario";
 
 const AppRoutes = () => {
     return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
                 <Route path="/noticia" element={ <Noticia /> } />
                 <Route path="/tipoturismo" element={ <TipoTurismo/> }/>
                 <Route path="/tipoatracao" element={ <TipoAtracao/> }/>
+                <Route path="/empresario" element={ <Empresario/>} />
             </Routes>
         </Router>
     );

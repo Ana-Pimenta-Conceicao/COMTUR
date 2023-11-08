@@ -22,6 +22,51 @@ namespace COMTUR.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("COMTUR.Models.AdministradorModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("administradorid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CargoAdministrador")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("cargoadministrador");
+
+                    b.Property<string>("CpfAdministrador")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("cpfadministrador");
+
+                    b.Property<string>("EmailAdministrador")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("emailadministrador");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("nome");
+
+                    b.Property<string>("SenhaAdministrador")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("senhaadministrador");
+
+                    b.Property<string>("TelefoneAdministrador")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("telefoneadministrador");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("administrador");
+                });
+
             modelBuilder.Entity("COMTUR.Models.EmpresarioModel", b =>
                 {
                     b.Property<int>("Id")

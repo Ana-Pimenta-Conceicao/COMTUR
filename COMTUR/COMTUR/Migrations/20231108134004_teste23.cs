@@ -7,11 +7,29 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class criarBanco : Migration
+    public partial class teste23 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "administrador",
+                columns: table => new
+                {
+                    administradorid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    cargoadministrador = table.Column<string>(type: "text", nullable: false),
+                    cpfadministrador = table.Column<string>(type: "text", nullable: false),
+                    telefoneadministrador = table.Column<string>(type: "text", nullable: false),
+                    emailadministrador = table.Column<string>(type: "text", nullable: false),
+                    senhaadministrador = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_administrador", x => x.administradorid);
+                });
+
             migrationBuilder.CreateTable(
                 name: "empresario",
                 columns: table => new
@@ -74,6 +92,9 @@ namespace COMTUR.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "administrador");
+
             migrationBuilder.DropTable(
                 name: "empresario");
 

@@ -6,57 +6,58 @@ using System;
 
 namespace COMTUR
 {
-	public class Program
-	{
-		public static void Main(string[] args)
-		{
-			var builder = WebApplication.CreateBuilder(args);
-			// Add services to the container.
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+            // Add services to the container.
 
-			builder.Services.AddControllers();
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
+            builder.Services.AddControllers();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
-			var connectionString = builder.Configuration.GetConnectionString("DataBase");
+            var connectionString = builder.Configuration.GetConnectionString("DataBase");
 
-			builder.Services.AddCors(o => o.AddPolicy("MyPolicy",
-					builder =>
-					{
-						builder.WithOrigins("http://localhost:3000")
-						.AllowAnyMethod()
-						.AllowAnyHeader()
-						.AllowCredentials();
-					}));
+            builder.Services.AddCors(o => o.AddPolicy("MyPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                    }));
 
-			builder.Services.AddDbContext<ComturDBContext>(options =>
-						  options.UseNpgsql(connectionString));
+            builder.Services.AddDbContext<ComturDBContext>(options =>
+                          options.UseNpgsql(connectionString));
 
-			builder.Services.AddTransient<ITipoTurismoRepositorio, TipoTurismoRepositorio>();
+            builder.Services.AddTransient<ITipoTurismoRepositorio, TipoTurismoRepositorio>();
             builder.Services.AddTransient<ITipoAtracaoRepositorio, TipoAtracaoRepositorio>();
-			builder.Services.AddTransient<INoticiaRepository, NoticiaRepository>();
-			builder.Services.AddTransient<IEmpresarioRepositorio, EmpresarioRepositorio>();
+            builder.Services.AddTransient<INoticiaRepository, NoticiaRepository>();
+            builder.Services.AddTransient<IEmpresarioRepositorio, EmpresarioRepositorio>();
+            builder.Services.AddTransient<IAdministradorRepositorio, AdministradorRepositorio>();
 
-			var app = builder.Build();
+            var app = builder.Build();
 
-			// Configure the HTTP request pipeline.
-			if (app.Environment.IsDevelopment())
-			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
-			}
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
 
-			app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
-			app.UseAuthorization();
+            app.UseAuthorization();
 
-			app.MapControllers();
+            app.MapControllers();
 
-			app.UseCors("MyPolicy");
+            app.UseCors("MyPolicy");
 
-			app.UseRouting();
+            app.UseRouting();
 
-			app.Run();
-		}
-	}
+            app.Run();
+        }
+    }
 }

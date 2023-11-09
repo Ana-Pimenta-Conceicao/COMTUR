@@ -2,11 +2,10 @@ import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 
 const Sidebar = () => {
-
   const [open, setOpen] = useState(true);
 
   const Menus = [
-    { title: "Início", src: "Home" , gap:true},
+    { title: "Início", src: "Home", gap: true },
     { title: "Usuário", src: "iconeUser" },
     { title: "Ponto Turístico", src: "tipoTurismo" },
     { title: "Eventos", src: "iconeEventos" },
@@ -16,10 +15,11 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="sidebar" style={{ height: '100vh' }}>
+    <div className="sidebar h-screen">
       <div
         className={` ${open ? "w-52" : "w-20"
-          } bg-black h-screen pl-5 pr-5  pt-8 relative duration-300`}
+          } bg-black h-full pl-5 pr-5 pt-8 relative duration-300`}
+        style={{ height: '100%' }}
       >
         <img
           src="./src/assets/control.png"
@@ -48,9 +48,9 @@ const Sidebar = () => {
               ${Menu.gap ? "mt-9" : "mt-2"} ${Menu.src === 1 && "bg-light-white"
                 } `}
             >
-              <Link to={`/${Menu.src.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit'}}>
+              <Link to={`/${Menu.src.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className="flex items-center">
-                  <img src={`./src/assets/${Menu.src}.png`}/>
+                  <img src={`./src/assets/${Menu.src}.png`} />
                   <span className={`${!open && "hidden"} origin-left duration-200 pl-2`}>
                     {Menu.title}
                   </span>
@@ -60,7 +60,7 @@ const Sidebar = () => {
           ))}
         </ul>
       </div>
-    </div >
+    </div>
   );
 }
 

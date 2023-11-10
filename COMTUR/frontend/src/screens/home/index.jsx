@@ -47,7 +47,7 @@ const Home = () => {
                     <img
                       className="card-img-top rounded-t-lg"
                       src="./src/assets/homeEmpresa.png"
-                      alt=""
+                      alt="Empresas"
                     />
                   </a>
                   <div className="card-body">

@@ -4,6 +4,8 @@ import Sidebar from '../../components/sidebar';
 import NavBar from '../../components/navbar';
 import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
+import React from 'react';
+import InputMask from 'react-input-mask';
 
 export default function Empresario() {
 
@@ -25,7 +27,9 @@ export default function Empresario() {
 
     const [empresarioSenha, setEmpresarioSenha] = useState("")
 
-    const [empresarioTelefone, setEmpresarioTelefone] = useState("")
+    // const [empresarioTelefone, setEmpresarioTelefone] = useState("")
+
+    const [empresarioTelefone, setEmpresarioTelefone] = useState("");
 
     const [empresarioId, setEmpresarioId] = useState("")
 
@@ -193,17 +197,23 @@ export default function Empresario() {
                         <br />
                         <label>Senha:</label>
                         <br />
-                        <input type="text" className="form-control" onChange={(e) => setEmpresarioSenha(e.target.value)} />
+                        <input type="password" className="form-control" onChange={(e) => setEmpresarioSenha(e.target.value)} />
                         <br />
                         <label>Telefone:</label>
                         <br />
-                        <input type="text" className="form-control" onChange={(e) => setEmpresarioTelefone(e.target.value)} />
-                        <br />
+                        <InputMask
+                            mask="(99) 99999-9999"
+                            placeholder="Digite o telefone"
+                            value={empresarioTelefone}
+                            onChange={(e) => setEmpresarioTelefone(e.target.value)}
+                            className="form-control" // Adiciona a classe para estilizar o campo
+                            style={{ border: '1px solid #ccc' }} // Adiciona uma borda ao campo
+                        />
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <button className="btn bg-lime-400 hover:bg-lime-500" onClick={() => pedidoPost()}>Cadastrar</button>{"  "}
-                    <button className="btn bg-yellow-400 hover:bg-yellow-500" onClick={() => abrirFecharModalInserir()}>Cancelar</button>
+                    <button className="btn bg-yellow-400 text-white hover:bg-yellow-500" onClick={() => pedidoPost()}>Cadastrar</button>{"  "}
+                    <button className="btn bg-gray-400 hover:bg-gray-600 text-white" onClick={() => abrirFecharModalInserir()}>Cancelar</button>
                 </ModalFooter>
             </Modal>
             <Modal isOpen={modalEditar}>
@@ -225,20 +235,26 @@ export default function Empresario() {
                         <br />
                         <label>Senha:</label>
                         <br />
-                        <input type="text" className="form-control" name="empresarioSenha" onChange={(e) => setEmpresarioSenha(e.target.value)}
+                        <input type="password" className="form-control" name="empresarioSenha" onChange={(e) => setEmpresarioSenha(e.target.value)}
                             value={empresarioSenha} />
                         <br />
                         <br />
                         <label>Telefone:</label>
                         <br />
-                        <input type="text" className="form-control" name="empresarioTelefone" onChange={(e) => setEmpresarioTelefone(e.target.value)}
-                            value={empresarioTelefone} />
-                        <br />
+                        <InputMask
+                            mask="(99) 99999-9999"
+                            placeholder="Digite o telefone"
+                            value={empresarioTelefone}
+                            onChange={(e) => setEmpresarioTelefone(e.target.value)}
+                            className="form-control"
+                            style={{ border: '1px solid #ccc' }}
+                        />
+                        <br/>
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <button className="btn btn-primary" onClick={() => pedidoAtualizar()}>Alterar</button>{"  "}
-                    <button className="btn btn-danger" onClick={() => abrirFecharModalEditar()}>Cancelar</button>
+                    <button className="btn bg-teal-700 hover:bg-teal-900 text-white" onClick={() => pedidoAtualizar()}>Editar</button>{"  "}
+                    <button className="btn bg-gray-400 hover:bg-gray-600 text-white" onClick={() => abrirFecharModalEditar()}>Cancelar</button>
                 </ModalFooter>
             </Modal>
             <Modal isOpen={modalDeletar}>
@@ -246,8 +262,8 @@ export default function Empresario() {
                     Confirma a exclusão do empresário: {selecionarEmpresario && selecionarEmpresario.nome} ?
                 </ModalBody>
                 <ModalFooter>
-                    <button className='btn btn-primary' onClick={() => pedidoDeletar()}>Sim</button>
-                    <button className='btn btn-danger' onClick={() => abrirFecharModalDeletar()}>Não</button>
+                    <button className='btn bg-red-800 hover:bg-red-900 text-white' onClick={() => pedidoDeletar()}>Sim</button>
+                    <button className='btn bg-gray-400 hover:bg-gray-600 text-white' onClick={() => abrirFecharModalDeletar()}>Não</button>
                 </ModalFooter>
             </Modal>
         </div>

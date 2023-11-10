@@ -72,7 +72,7 @@ const Home = () => {
                     <img
                       class="rounded-t-lg"
                       src="./src/assets/homeEmpresa.png"
-                      alt=""
+                      alt="Empresas"
                     />
                   </a>
                   <div

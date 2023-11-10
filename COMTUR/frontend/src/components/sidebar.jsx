@@ -6,8 +6,13 @@ const Sidebar = () => {
   const [open, setOpen] = useState(true);
 
   const Menus = [
-    { title: "Início", src: "Home" , gap:true},
-    { title: "Usuário", src: "iconeUser" },
+// <<<<<<< frontEmpresario
+//     { title: "Início", src: "Home", gap: true },
+//     { title: "Usuário", src: "iconeUser", role: 'admin' },
+// =======
+//     { title: "Início", src: "Home" , gap:true},
+//     { title: "Usuário", src: "iconeUser" },
+// >>>>>>> dev
     { title: "Ponto Turístico", src: "tipoTurismo" },
     { title: "Eventos", src: "iconeEventos" },
     { title: "Atrações ", src: "tipoAtracao" },

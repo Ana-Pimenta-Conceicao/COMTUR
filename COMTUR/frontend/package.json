@@ -14,11 +14,14 @@
     "react": "^17.0.2",
     "react-awesome-button": "^6.5.1",
     "react-dom": "^17.0.2",
+    "react-input-mask": "^2.0.4",
     "react-loader-spinner": "^5.1.2",
+    "react-pro-sidebar": "^1.1.0-alpha.1",
     "react-responsive": "^9.0.0-beta.6",
     "react-router-dom": "^6.17.0",
     "react-tabs": "^3.2.3",
-    "reactstrap": "^9.2.0"
+    "reactstrap": "^9.2.0",
+    "sidebar": "^1.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",

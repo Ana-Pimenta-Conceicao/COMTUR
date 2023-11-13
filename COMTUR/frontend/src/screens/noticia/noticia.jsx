@@ -59,6 +59,12 @@ export default function Noticia() {
     }
   }
 
+  function formatarDataParaExibicao(data) {
+    const dataFormatada = new Date(data);
+    return dataFormatada.toLocaleDateString('pt-BR');
+  }
+
+
   const abrirFecharModalInserir = () => {
     setModalInserir(!modalInserir)
   }
@@ -95,6 +101,7 @@ export default function Noticia() {
 
   async function pedidoAtualizar() {
     console.log("Id que chegou: ", noticiaId);
+    formatarDataParaExibicao(noticia.dataPublicacao)
     try {
       const response = await axios.put(`${baseUrl}/${noticiaId}`, {
         titulo: noticiaTitulo,

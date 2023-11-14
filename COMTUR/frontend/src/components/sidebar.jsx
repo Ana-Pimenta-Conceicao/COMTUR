@@ -40,7 +40,7 @@ const Sidebar = () => {
             Rodrigo Faro
           </h1>
         </div>
-        <ul className="pt-6">
+        <ul className="pt-6" style={{padding: 0}}>
           {Menus.map((Menu, index) => (
             <li
               key={index}

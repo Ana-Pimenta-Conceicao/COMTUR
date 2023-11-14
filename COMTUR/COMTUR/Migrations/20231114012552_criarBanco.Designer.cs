@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20231108134004_teste23")]
-    partial class teste23
+    [Migration("20231114012552_criarBanco")]
+    partial class criarBanco
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -119,9 +119,14 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("conteudo");
 
-                    b.Property<DateTime>("DataHora")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("dataHora");
+                    b.Property<DateOnly>("DataPublicacao")
+                        .HasColumnType("date")
+                        .HasColumnName("datapublicacao");
+
+                    b.Property<string>("HoraPublicacao")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("horaPublicacao");
 
                     b.Property<string>("Subtitulo")
                         .IsRequired()

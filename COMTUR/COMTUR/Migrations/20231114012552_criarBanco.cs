@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class teste23 : Migration
+    public partial class criarBanco : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,7 +55,8 @@ namespace COMTUR.Migrations
                     titulo = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     subtitulo = table.Column<string>(type: "text", nullable: false),
                     conteudo = table.Column<string>(type: "text", nullable: false),
-                    dataHora = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    datapublicacao = table.Column<DateOnly>(type: "date", nullable: false),
+                    horaPublicacao = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

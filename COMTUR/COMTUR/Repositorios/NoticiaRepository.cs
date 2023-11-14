@@ -44,7 +44,8 @@ namespace COMTUR.Repositorios
             noticiaPorId.Titulo = noticiaModel.Titulo;
             noticiaPorId.Subtitulo = noticiaModel.Subtitulo;
             noticiaPorId.Conteudo = noticiaModel.Conteudo;
-            noticiaPorId.DataHora = noticiaModel.DataHora;
+            noticiaPorId.DataPublicacao = noticiaModel.DataPublicacao;
+            noticiaPorId.HoraPublicacao = noticiaModel.HoraPublicacao;
 
             _dbContext.Noticia.Update(noticiaPorId);
             await _dbContext.SaveChangesAsync();
@@ -58,11 +59,11 @@ namespace COMTUR.Repositorios
 
             if (noticiaParaExcluir == null)
             {
-                return false; 
+                return false;
             }
 
-            _dbContext.Noticia.Remove(noticiaParaExcluir); 
-            await _dbContext.SaveChangesAsync(); 
+            _dbContext.Noticia.Remove(noticiaParaExcluir);
+            await _dbContext.SaveChangesAsync();
 
             return true;
         }

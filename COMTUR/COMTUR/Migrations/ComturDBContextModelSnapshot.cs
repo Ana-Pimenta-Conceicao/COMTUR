@@ -116,9 +116,14 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("conteudo");
 
-                    b.Property<DateTime>("DataHora")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("dataHora");
+                    b.Property<DateOnly>("DataPublicacao")
+                        .HasColumnType("date")
+                        .HasColumnName("datapublicacao");
+
+                    b.Property<string>("HoraPublicacao")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("horaPublicacao");
 
                     b.Property<string>("Subtitulo")
                         .IsRequired()

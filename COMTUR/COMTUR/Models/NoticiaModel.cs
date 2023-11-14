@@ -5,23 +5,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace COMTUR.Models
 {
-	[Table("noticia")]
+    [Table("noticia")]
     public class NoticiaModel
     {
-		[Key]
-		[Column("noticiaid")]
-		public int Id { get; set; }
+        [Key]
+        [Column("noticiaid")]
+        public int Id { get; set; }
 
         [Column("titulo")]
         public string Titulo { get; set; }
 
-		[Column("subtitulo")]
-		public string Subtitulo { get; set; }
+        [Column("subtitulo")]
+        public string Subtitulo { get; set; }
 
-		[Column("conteudo")]
-		public string Conteudo { get; set; }
+        [Column("conteudo")]
+        public string Conteudo { get; set; }
 
-		[Column("dataHora")]
-		public DateTime DataHora { get; set; }
+        [Column("datapublicacao")]
+        public DateOnly DataPublicacao { get; set; }
+
+        [Column("horaPublicacao")]
+        public string HoraPublicacao { get; set; }
     }
 }

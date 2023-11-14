@@ -28,7 +28,6 @@ export default function Noticia() {
 
   const [noticiaDataPublicacao, setNoticiaDataPublicacao] = useState("")
 
-
   const [noticiaHoraPublicacao, setNoticiaHoraPublicacao] = useState("")
 
   const [noticiaId, setNoticiaId] = useState("")
@@ -48,7 +47,7 @@ export default function Noticia() {
     setNoticiaTitulo(noticia.titulo)
     setNoticiaSubtitulo(noticia.subtitulo)
     setNoticiaConteudo(noticia.conteudo)
-    setNoticiaDataPublicacao(noticia.dataPublicacao)
+    setNoticiaDataPublicacao(formatarDataParaExibicao(noticia.dataPublicacao))
     setNoticiaHoraPublicacao(noticia.horaPublicacao)
 
     if (opcao === "Editar") {
@@ -58,12 +57,6 @@ export default function Noticia() {
       abrirFecharModalDeletar();
     }
   }
-
-  function formatarDataParaExibicao(data) {
-    const dataFormatada = new Date(data);
-    return dataFormatada.toLocaleDateString('pt-BR');
-  }
-
 
   const abrirFecharModalInserir = () => {
     setModalInserir(!modalInserir)
@@ -77,7 +70,23 @@ export default function Noticia() {
     setModalDeletar(!modalDeletar)
   }
 
+  function inverterDataParaFormatoBanco(data) {
+    const partes = data.split('/');
+    if (partes.length === 3) {
+      const [dia, mes, ano] = partes;
+      return `${ano}-${mes}-${dia}`;
+    }
+    return data; 
+  }
 
+  function formatarDataParaExibicao(data) {
+    const partes = data.split('-');
+    if (partes.length === 3) {
+      const [ano, mes, dia] = partes;
+      return `${dia}/${mes}/${ano}`;
+    }
+    return data; // Retorna a data original se não estiver no formato esperado
+  }
   const pedidoGet = async () => {
     await axios.get(baseUrl)
       .then(response => {
@@ -86,10 +95,18 @@ export default function Noticia() {
         console.log(error);
       })
   }
+  
+  const dataFormatoBanco = inverterDataParaFormatoBanco(noticiaDataPublicacao);
 
   const pedidoPost = async () => {
     delete selecionarNoticia.id
-    await axios.post(baseUrl, { titulo: noticiaTitulo, subtitulo: noticiaSubtitulo, conteudo: noticiaConteudo, dataPublicacao: noticiaDataPublicacao, horaPublicacao: noticiaHoraPublicacao })
+    await axios.post(baseUrl, { 
+      titulo: noticiaTitulo, 
+      subtitulo: noticiaSubtitulo, 
+      conteudo: noticiaConteudo, 
+      dataPublicacao: dataFormatoBanco, 
+      horaPublicacao: noticiaHoraPublicacao 
+    })
       .then(response => {
         setData(data.concat(response.data));
         abrirFecharModalInserir();
@@ -98,16 +115,14 @@ export default function Noticia() {
       })
   }
 
-
   async function pedidoAtualizar() {
     console.log("Id que chegou: ", noticiaId);
-    formatarDataParaExibicao(noticia.dataPublicacao)
     try {
       const response = await axios.put(`${baseUrl}/${noticiaId}`, {
         titulo: noticiaTitulo,
         subtitulo: noticiaSubtitulo,
         conteudo: noticiaConteudo,
-        dataPublicacao: noticiaDataPublicacao,
+        dataPublicacao: dataFormatoBanco,
         horaPublicacao: noticiaHoraPublicacao
       });
 
@@ -148,7 +163,6 @@ export default function Noticia() {
         console.log(error);
       })
   }
-
 
   useEffect(() => {
     if (atualizarData) {

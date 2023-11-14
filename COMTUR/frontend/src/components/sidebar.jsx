@@ -40,9 +40,9 @@ const Sidebar = () => {
             Rodrigo Faro
           </h1>
         </div>
-        <ul className="pt-6" style={{padding: 0}}>
+        <ul className="pt-6" style={{ padding: 0}} >
           {Menus.map((Menu, index) => (
-            <li
+            <li 
               key={index}
               className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
               ${Menu.gap ? "mt-9" : "mt-2"} ${Menu.src === 1 && "bg-light-white"

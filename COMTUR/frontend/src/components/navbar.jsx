@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex" style={{ padding: 30, alignItems: "top", justifyContent: 'space-between', display: "flex", paddingBottom: 100 }}>
+    <div className="flex" style={{ padding: 30, alignItems: "top", justifyContent: 'space-between', display: "flex", paddingBottom: 20 }}>
       <div>
         <ul className="nav nav-pills">
           <li className="nav-item">

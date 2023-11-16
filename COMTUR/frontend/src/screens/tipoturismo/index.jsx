@@ -3,6 +3,9 @@ import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import axios from 'axios'
 import "../tipoturismo/index.css"
 import "bootstrap/dist/css/bootstrap.min.css"
+import Sidebar from '../../components/sidebar';
+import Navbar from '../../components/navbar';
+
 
 function TipoTurismo() {
 
@@ -115,213 +118,180 @@ function TipoTurismo() {
     }, [atualizarData])
 
     return (
-        <div className="App">
-            <header className="App-header ">
-
+            <div className='h-screen flex'>
+            <Sidebar />
+            <div className='flex-2 container-fluid'>
+            <Navbar/>
+            
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" />
                 <link rel="stylesheet" href="bootstrap-4.0.0-dist/css/bootstrap-grid.css"></link>
                 <link href="https://fonts.googleapis.com/css?family=Bungee+Inline" rel="stylesheet"></link>
+            
+                        
+                        
+                        <div class="col py-3">
 
-                <body class="col-12">
-                    <div class="container-fluid">
-                        <div class="row flex-nowrap">
+                            <div className="Cadastro" style={{ width: 242, height: 37, color: 'black', fontSize: 40, fontFamily: 'Mulish', fontWeight: '500', wordWrap: 'break-word' }}>Cadastro</div>
 
-                        /* menu */
-                            <div class="col py-3">
+                            <br />
+                            <hr class="linhaseparacao"></hr>
+                            <div class="Turismo" style={{ width: 219, height: 37, color: 'black', fontSize: 32, fontFamily: 'Mulish', fontWeight: '600', wordWrap: 'break-word' }}>Turismo</div>
 
-                                <div class="nav">
 
-                                    <ul class="nav nav-pills">
-                                        <li class="nav-item">
-                                            <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img className="AcessibilidadeLuz" style={{ width: 25, height: 25 }} src="./src/assets/Iconeluz.svg" /></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img className="Acessibilidadedaltonico" style={{ width: 25, height: 25 }} src="./src/assets/Iconedaltonico.svg" /></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img className="Acessibilidadefontemais" style={{ width: 25, height: 25 }} src="./src/assets/A+.svg" /></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="itemacessibi nav-link active m-1" aria-current="page" href="#"><img className="Acessibilidadefonte" style={{ width: 25, height: 25 }} src="./src/assets/A-.svg" /></a>
-                                        </li>
-                                    </ul>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <div class="card cardcadastros">
+                                            <form class="row g-2">
 
-                                    <nav className="pesquisar navbar ">
-                                        <div class="container-fluid">
-                                            <form class="d-flex" role="search">
-                                                <input class="campopesquisa form-control me-2" type="search" placeholder="pesquisar" aria-label="Search"></input>
-                                                <button class="btn btn-outline-light" type="submit"><img class="" src="./src/assets/search.svg" /> </button>
+                                                <div class="col-md-7">
+                                                    <label for="inputName" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>*Nome:</label>
+                                                    <input type="name" class="form-control" id="inputName" />
+                                                </div>
+                                                <div class="col-7">
+                                                    <label for="inputDescricao" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>*Descrição:</label>
+                                                    <input type="text" class="form-control" id="inputDescricao" placeholder="Breve descrição" />
+                                                </div>
+                                                <div class="col-7">
+                                                    <label for="inputLocal" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>*Local:</label>
+                                                    <input type="text" class="form-control" id="inputLocal" />
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <label for="inputDias" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>Dias de Funcionamento:</label>
+                                                    <select id="inputDias" class="form-select">
+                                                        <option selected>selecione</option>
+                                                        <option selected>de segunda a sexta</option>
+                                                        <option>terça a domingo</option>
+                                                        <option>sexta- sabádo- domingo</option>
+                                                        <option>quinta a domingo</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <label for="inputDias" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>Horários:</label>
+                                                    <div class="row mb-3 ">
+                                                        <label for="colFormLabelSm" class="labelformulario col-sm-2 col-form-label col-form-label-sm" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>Das</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="name" class="form-control form-control" id="colFormLabelSm" placeholder="   :   " />
+                                                        </div>
+                                                        <label for="colFormLabelSm" class="labelformulario col-sm-2 col-form-label col-form-label-sm" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>às</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="name" class="form-control form-control" id="colFormLabelSm" placeholder="   :   " />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </form>
                                         </div>
-                                    </nav>
+                                    </div>
 
+                                    <div class="col-5">
+                                        <div class="card cardtipo">
+                                            <div class="row row-cols-lg-auto g-3 align-items-center">
+                                                <form >
 
-                                    <img class=" d-flex logocomtur" src="./src/assets/Comtur.svg" alt='não tem imagem' />
+                                                    <div class="col-12">
 
-                                </div>
-
-                                <br /><br />
-
-                                <div className="Cadastro" style={{ width: 242, height: 37, color: 'black', fontSize: 40, fontFamily: 'Mulish', fontWeight: '500', wordWrap: 'break-word' }}>Cadastro</div>
-
-                                <br />
-                                <hr class="linhaseparacao"></hr>
-                                <div class="Turismo" style={{ width: 219, height: 37, color: 'black', fontSize: 32, fontFamily: 'Mulish', fontWeight: '600', wordWrap: 'break-word' }}>Turismo</div>
-
-
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-7">
-                                            <div class="card cardcadastros">
-                                                <form class="row g-2">
-
-                                                    <div class="col-md-7">
-                                                        <label for="inputName" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>*Nome:</label>
-                                                        <input type="name" class="form-control" id="inputName" />
-                                                    </div>
-                                                    <div class="col-7">
-                                                        <label for="inputDescricao" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>*Descrição:</label>
-                                                        <input type="text" class="form-control" id="inputDescricao" placeholder="Breve descrição" />
-                                                    </div>
-                                                    <div class="col-7">
-                                                        <label for="inputLocal" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>*Local:</label>
-                                                        <input type="text" class="form-control" id="inputLocal" />
-                                                    </div>
-                                                    <div class="col-md-7">
-                                                        <label for="inputDias" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>Dias de Funcionamento:</label>
-                                                        <select id="inputDias" class="form-select">
-                                                            <option selected>selecione</option>
-                                                            <option selected>de segunda a sexta</option>
-                                                            <option>terça a domingo</option>
-                                                            <option>sexta- sabádo- domingo</option>
-                                                            <option>quinta a domingo</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-7">
-                                                        <label for="inputDias" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>Horários:</label>
-                                                        <div class="row mb-3 ">
-                                                            <label for="colFormLabelSm" class="labelformulario col-sm-2 col-form-label col-form-label-sm" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>Das</label>
-                                                            <div class="col-sm-3">
-                                                                <input type="name" class="form-control form-control" id="colFormLabelSm" placeholder="   :   " />
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-auto">
+                                                                <label for="inputPassword6" class="col-form-label">*Tipo</label>
                                                             </div>
-                                                            <label for="colFormLabelSm" class="labelformulario col-sm-2 col-form-label col-form-label-sm" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>às</label>
-                                                            <div class="col-sm-3">
-                                                                <input type="name" class="form-control form-control" id="colFormLabelSm" placeholder="   :   " />
+                                                            <div class="col-auto">
+                                                                <select class="form-select" aria-label="Default select example">
+                                                                    <option selected>Selecione tipo de turismo</option>
+                                                                    <option value="1">        </option>
+                                                                    <option value="2">        </option>
+                                                                    <option value="3">        </option>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </form>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-5">
-                                            <div class="card cardtipo">
-                                                <div class="row row-cols-lg-auto g-3 align-items-center">
-                                                    <form >
-
-                                                        <div class="col-12">
-
-                                                            <div class="row g-3 align-items-center">
-                                                                <div class="col-auto">
-                                                                    <label for="inputPassword6" class="col-form-label">*Tipo</label>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <select class="form-select" aria-label="Default select example">
-                                                                        <option selected>Selecione tipo de turismo</option>
-                                                                        <option value="1">        </option>
-                                                                        <option value="2">        </option>
-                                                                        <option value="3">        </option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                    <div class="col-10">
-                                                        <button class="btn btnpesquisar p-2" type="submit"><img class="" src="./src/assets/search.svg" /> </button>
-                                                        <button className='btn btnadicionar p-2 m-1' onClick={() => abrirFecharModalInserir()}><img class="" src="./src/assets/edit.svg" /></button>
-                                                    </div>
-
+                                                <div class="col-10">
+                                                    <button class="btn btnpesquisar p-2" type="submit"><img class="" src="./src/assets/search.svg" /> </button>
+                                                    <button className='btn btnadicionar p-2 m-1' onClick={() => abrirFecharModalInserir()}><img class="" src="./src/assets/edit.svg" /></button>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                        <button class="btn btncancelar  me-md-2" type="button">Cancelar</button>
-                                        <button class="btn btnsalvar " type="button">Salvar</button>
-                                    </div>
-
                                 </div>
-                                <table className='table table-bordered'>
-                                    <thead>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Nome</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {data.map(tipoturismo => (
-                                            <tr key={tipoturismo.id}>
-                                                <td>{tipoturismo.id}</td>
-                                                <td>{tipoturismo.nome}</td>
-                                                <td>
-                                                    <button className="btn btn-primary" onClick={() => TipoTurismoSet(tipoturismo, "Editar")}>Editar</button> {"  "}
-                                                    <button className="btn btn-danger" onClick={() => TipoTurismoSet(tipoturismo, "Excluir")}>Excluir</button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                                <Modal isOpen={modalInserir}>
-                                    <ModalHeader>Incluir Tipo Turismo</ModalHeader>
-                                    <ModalBody>
-                                        <div className="form-group">
-                                            <label>Nome: </label>
-                                            <br />
-                                            <input type="text" className="form-control" onChange={(e) => setTipoTurismoNome(e.target.value)} />
-                                            <br />
-                                        </div>
-                                    </ModalBody>
-                                    <ModalFooter>
-                                        <button className="btn btn-primary" onClick={() => pedidoPost()}>Cadastrar</button>{"  "}
-                                        <button className="btn btn-danger" onClick={() => abrirFecharModalInserir()}>Cancelar</button>
-                                    </ModalFooter>
-                                </Modal>
-                                <Modal isOpen={modalEditar}>
-                                    <ModalHeader>Editar Tipo Turismo</ModalHeader>
-                                    <ModalBody>
-                                        <div className="form-group">
-                                            <label>ID: </label><br />
-                                            <input type="text" className="form-control" readOnly value={tipoturismoId} /> <br />
 
-                                            <label>Nome:</label>
-                                            <input type="text" className="form-control" name="tipoturismoNome" onChange={(e) => setTipoTurismoNome(e.target.value)}
-                                                value={tipoturismoNome} />
-                                            <br />
-                                        </div>
-                                    </ModalBody>
-                                    <ModalFooter>
-                                        <button className="btn btn-primary" onClick={() => pedidoAtualizar()}>Alterar</button>{"  "}
-                                        <button className="btn btn-danger" onClick={() => abrirFecharModalEditar()}>Cancelar</button>
-                                    </ModalFooter>
-                                </Modal>
-                                <Modal isOpen={modalDeletar}>
-                                    <ModalBody>
-                                        <label> Confirma a exclusão deste tipo Turismo : {tipoturismoNome} ?</label>
-                                    </ModalBody>
-                                    <ModalFooter>
-                                        <button className='btn btn-primary' onClick={() => pedidoDeletar()}>Sim</button>
-                                        <button className='btn btn-danger' onClick={() => abrirFecharModalDeletar()}>Não</button>
-                                    </ModalFooter>
-                                </Modal>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button class="btn btncancelar  me-md-2" type="button">Cancelar</button>
+                                    <button class="btn btnsalvar " type="button">Salvar</button>
+                                </div>
 
                             </div>
+                            
+                            <table className='table table-bordered'>
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Nome</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {data.map(tipoturismo => (
+                                        <tr key={tipoturismo.id}>
+                                            <td>{tipoturismo.id}</td>
+                                            <td>{tipoturismo.nome}</td>
+                                            <td>
+                                                <button className="btn btneditar" onClick={() => TipoTurismoSet(tipoturismo, "Editar")}>Editar</button> {"  "}
+                                                <button className="btn btnexcluir" onClick={() => TipoTurismoSet(tipoturismo, "Excluir")}>Excluir</button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
-                </body>
-            </header>
-        </div>
+            </div>
+                        <Modal isOpen={modalInserir}>
+                            <ModalHeader>Incluir Tipo Turismo</ModalHeader>
+                            <ModalBody>
+                                <div className="form-group">
+                                    <label>Nome: </label>
+                                    <br />
+                                    <input type="text" className="form-control" onChange={(e) => setTipoTurismoNome(e.target.value)} />
+                                    <br />
+                                </div>
+                            </ModalBody>
+                            <ModalFooter>
+                                <button className="btn btncadastrarmodal" onClick={() => pedidoPost()}>Cadastrar</button>{"  "}
+                                <button className="btn btncancelarmodal" onClick={() => abrirFecharModalInserir()}>Cancelar</button>
+                            </ModalFooter>
+                        </Modal>
+                        <Modal isOpen={modalEditar}>
+                            <ModalHeader>Editar Tipo Turismo</ModalHeader>
+                            <ModalBody>
+                                <div className="form-group">
+                                    <label>ID: </label><br />
+                                    <input type="text" className="form-control" readOnly value={tipoturismoId} /> <br />
+
+                                    <label>Nome:</label>
+                                    <input type="text" className="form-control" name="tipoturismoNome" onChange={(e) => setTipoTurismoNome(e.target.value)}
+                                        value={tipoturismoNome} />
+                                    <br />
+                                </div>
+                            </ModalBody>
+                            <ModalFooter>
+                                <button className="btn btn-primary" onClick={() => pedidoAtualizar()}>Alterar</button>{"  "}
+                                <button className="btn btn-danger" onClick={() => abrirFecharModalEditar()}>Cancelar</button>
+                            </ModalFooter>
+                        </Modal>
+                        <Modal isOpen={modalDeletar}>
+                            <ModalBody>
+                                <label> Confirma a exclusão deste tipo Turismo : {tipoturismoNome} ?</label>
+                            </ModalBody>
+                            <ModalFooter>
+                                <button className='btn btn-primary' onClick={() => pedidoDeletar()}>Sim</button>
+                                <button className='btn btn-danger' onClick={() => abrirFecharModalDeletar()}>Não</button>
+                            </ModalFooter>
+                        </Modal>
+
+                    
+
+
+    </div>
 
 
 

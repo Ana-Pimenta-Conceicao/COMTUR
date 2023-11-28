@@ -13,44 +13,41 @@ const Home = () => {
           <Navbar />
 
           <div className="cont-home" style={{ paddingLeft: 50 }}>
-            <h1 className="text-2xl pb-10 font-semibold">
+            <h1 className="text-2xl font-semibold">
               Bem Vindo, Rodrigo Faro!
             </h1>
 
-            <div
-              className="flex flex-wrap pl-16"
-              style={{  }}
-            >
-                <div className="w-1/3 p-4">
+            <div className="flex flex-wrap">
+              <div className="w-full md:w-1/2 lg:w-1/3 p-4">
                 <div
-                  class="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                  className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                   style={{
                     background: "#FFD121",
                     justifyContent: "center",
                     alignItems: "center",
-                    width: 360, height: 240,
+                    height: 200,
                   }}
                 >
                   <a href="#">
                     <img
-                      class="rounded-t-lg"
+                      className="rounded-t-lg w-full"
                       src="./src/assets/homeUsuario.png"
                       alt=""
                     />
                   </a>
                   <div
-                    class="p-2 rounded-lg"
+                    className="p-2 rounded-lg h-10"
                     style={{
                       background: "#FFD121",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
-                      height: 60
+                    
                     }}
                   >
                     <a href="#">
-                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         Usuários
                       </h5>
                     </a>
@@ -58,36 +55,37 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="w-1/3 p-4">
+              <div className="w-1/2 lg:w-1/3 p-4">
                 <div
-                  class="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                  className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                   style={{
                     background: "#FFD121",
                     justifyContent: "center",
                     alignItems: "center",
-                    width: 360, height: 240,
+                    height: 200,
                   }}
                 >
                   <a href="#">
                     <img
-                      class="rounded-t-lg"
+                      className="rounded-t-lg w-full"
                       src="./src/assets/homeEmpresa.png"
                       alt="Empresas"
+
                     />
                   </a>
                   <div
-                    class="p-2 rounded-lg"
+                    className="p-2 rounded-lg"
                     style={{
                       background: "#FFD121",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
-                      height: 60
+                      height: 40,
                     }}
                   >
                     <a href="#">
-                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         Empresas
                       </h5>
                     </a>
@@ -95,36 +93,36 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="w-1/3 p-4">
+              <div className="w-1/2 lg:w-1/3 p-4">
                 <div
-                  class="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                  className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                   style={{
                     background: "#FFD121",
                     justifyContent: "center",
                     alignItems: "center",
-                    width: 360, height: 240,
+                    height: 200,
                   }}
                 >
                   <a href="./noticia">
                     <img
-                      class="rounded-t-lg"
+                      className="rounded-t-lg w-full"
                       src="./src/assets/homeNoticia.png"
                       alt=""
                     />
                   </a>
                   <div
-                    class="p-2 rounded-lg"
+                    className="p-2 rounded-lg"
                     style={{
                       background: "#FFD121",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
-                      height: 60
+                      height: 40,
                     }}
                   >
                     <a href="./noticia">
-                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         Notícias
                       </h5>
                     </a>
@@ -132,107 +130,110 @@ const Home = () => {
                 </div>
               </div>
 
-              <div style={{ width: "100%", height: 20 }}></div>
-              <div className="w-1/3 p-4">
+              <div style={{ width: "100%", height: 5 }}></div>
+
+              <div className="w-1/2 lg:w-1/3 p-4">
                 <div
-                  class="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                  className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                   style={{
                     background: "#FFD121",
                     justifyContent: "center",
                     alignItems: "center",
-                    width: 360, height: 240,
+                    height: 200,
                   }}
                 >
                   <a href="#">
                     <img
-                      class="rounded-t-lg"
+                      className="w-full rounded-t-lg"
                       src="./src/assets/homeEvento.png"
                       alt=""
                     />
                   </a>
                   <div
-                    class="p-2 rounded-lg"
+                    className="p-2 rounded-lg"
                     style={{
                       background: "#FFD121",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
+                      height: 40
                     }}
                   >
                     <a href="#">
-                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         Eventos
                       </h5>
                     </a>
                   </div>
                 </div>
               </div>
-              <div className="w-1/3 p-4">
+              <div className="w-1/2 lg:w-1/3 p-4">
                 <div
-                  class="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                  className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                   style={{
                     background: "#FFD121",
                     justifyContent: "center",
                     alignItems: "center",
-                    width: 360, height: 240,
+                    height: 200,
                   }}
                 >
                   <a href="./tipoatracao">
                     <img
-                      class="rounded-t-lg"
+                      className=" w-full rounded-t-lg"
                       src="./src/assets/homeAtracao.png"
                       alt=""
                     />
                   </a>
                   <div
-                    class="p-2 rounded-lg"
+                    className="p-2 rounded-lg"
                     style={{
                       background: "#FFD121",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
+                      height: 40
                     }}
                   >
                     <a href="./tipoatracao">
-                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         Atrações
                       </h5>
                     </a>
                   </div>
                 </div>
               </div>
-              <div className="w-1/3 p-4">
+              <div className="w-1/2 lg:w-1/3 p-4">
                 <div
-                  class="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                  className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                   style={{
                     background: "#FFD121",
                     justifyContent: "center",
                     alignItems: "center",
-                    width: 360, height: 240,
+                    height: 200,
                   }}
                 >
                   <a href="./tipoturismo">
                     <img
-                      class="rounded-t-lg"
+                      className=" w-full rounded-t-lg"
                       src="./src/assets/homePontoTuristico.png"
                       alt=""
                     />
                   </a>
                   <div
-                    class="p-2 rounded-lg"
+                    className="p-2 rounded-lg"
                     style={{
                       background: "#FFD121",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
-                      height: 60
+                      height: 40
                     }}
                   >
                     <a href="./tipoturismo">
-                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         Pontos Turísticos
                       </h5>
                     </a>

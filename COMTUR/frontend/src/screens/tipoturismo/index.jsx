@@ -236,8 +236,8 @@ function TipoTurismo() {
                                             <td>{tipoturismo.id}</td>
                                             <td>{tipoturismo.nome}</td>
                                             <td>
-                                                <button className="btn btneditar" onClick={() => TipoTurismoSet(tipoturismo, "Editar")}>Editar</button> {"  "}
-                                                <button className="btn btnexcluir" onClick={() => TipoTurismoSet(tipoturismo, "Excluir")}>Excluir</button>
+                                                <button className="btn btnalterar text-white" onClick={() => TipoTurismoSet(tipoturismo, "Editar")}>Editar</button> {"  "}
+                                                <button className="btn btnexcluir text-white" onClick={() => TipoTurismoSet(tipoturismo, "Excluir")}>Excluir</button>
                                             </td>
                                         </tr>
                                     ))}
@@ -274,8 +274,8 @@ function TipoTurismo() {
                                 </div>
                             </ModalBody>
                             <ModalFooter>
-                                <button className="btn btn-primary" onClick={() => pedidoAtualizar()}>Alterar</button>{"  "}
-                                <button className="btn btn-danger" onClick={() => abrirFecharModalEditar()}>Cancelar</button>
+                                <button className="btn btnmodalverde  text-white" onClick={() => pedidoAtualizar()}>Alterar</button>{"  "}
+                                <button className="btn btnmodalcinza  text-white" onClick={() => abrirFecharModalEditar()}>Cancelar</button>
                             </ModalFooter>
                         </Modal>
                         <Modal isOpen={modalDeletar}>
@@ -283,8 +283,8 @@ function TipoTurismo() {
                                 <label> Confirma a exclusão deste tipo Turismo : {tipoturismoNome} ?</label>
                             </ModalBody>
                             <ModalFooter>
-                                <button className='btn btn-primary' onClick={() => pedidoDeletar()}>Sim</button>
-                                <button className='btn btn-danger' onClick={() => abrirFecharModalDeletar()}>Não</button>
+                                <button className='btn btnmodalverde  text-white' onClick={() => pedidoDeletar()}>Sim</button>
+                                <button className='btn btnmodalcinza  text-white' onClick={() => abrirFecharModalDeletar()}>Não</button>
                             </ModalFooter>
                         </Modal>
 

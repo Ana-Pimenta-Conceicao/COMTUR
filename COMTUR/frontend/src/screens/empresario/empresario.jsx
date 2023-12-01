@@ -79,6 +79,15 @@ export default function Empresario() {
             })
     }
 
+    const atualizarListaEmpresarios = async () => {
+        await axios.get(baseUrl)
+          .then(response => {
+            setData(response.data);
+          }).catch(error => {
+            console.log(error);
+          })
+      }
+
     const pedidoPost = async () => {
         delete selecionarEmpresario.id
         await axios.post(baseUrl, { nome: empresarioNome, emailEmpresario: empresarioEmail, senhaEmpresario: empresarioSenha, telefoneEmpresario: empresarioTelefone })
@@ -120,7 +129,9 @@ export default function Empresario() {
     const pedidoDeletar = async () => {
         await axios.delete(baseUrl + "/" + empresarioId)
             .then(response => {
-                setData(data.filter(empresario => empresario.id !== response.data));
+                const newEmpresarios = data.filter(empresario => empresario.id !== response.data);
+                setData(newEmpresarios);
+                atualizarListaEmpresarios();
                 abrirFecharModalDeletar();
             }).catch(error => {
                 console.log(error);
@@ -259,7 +270,7 @@ export default function Empresario() {
             </Modal>
             <Modal isOpen={modalDeletar}>
                 <ModalBody>
-                    Confirma a exclusão do empresário: {selecionarEmpresario && selecionarEmpresario.nome} ?
+                    Confirma a exclusão do empresário: {empresarioNome} ?
                 </ModalBody>
                 <ModalFooter>
                     <button className='btn bg-red-800 hover:bg-red-900 text-white' onClick={() => pedidoDeletar()}>Sim</button>

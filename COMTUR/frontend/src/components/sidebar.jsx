@@ -7,7 +7,6 @@ const Sidebar = () => {
 
   const Menus = [
     { title: "Início", src: "Home" , gap:true},
-    { title: "Usuário", src: "empresario" },
     { title: "Empresário", src: "empresario" },
     { title: "Ponto Turístico", src: "tipoTurismo" },
     { title: "Eventos", src: "iconeEventos" },

@@ -55,18 +55,6 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
 
 </br>
 
-## 🚀 Telas do Comtur - (INCOMPLETO)
-
-Essas telas são referentes as telas do nosso Software:
-
-</br>
-
-
-
-</br>
-</br>
-
-
 ## Diagrama de Classe - (INCOMPLETO PASSAR POR MODELAGEM)
 
 

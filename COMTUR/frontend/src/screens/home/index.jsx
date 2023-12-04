@@ -47,7 +47,7 @@ const Home = () => {
                     }}
                   >
                     <a href="./empresario">
-                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
                         Empresários
                       </h5>
                     </a>
@@ -85,7 +85,7 @@ const Home = () => {
                     }}
                   >
                     <a href="#">
-                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
                         Empresas
                       </h5>
                     </a>
@@ -122,7 +122,7 @@ const Home = () => {
                     }}
                   >
                     <a href="./noticia">
-                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
                         Notícias
                       </h5>
                     </a>
@@ -161,7 +161,7 @@ const Home = () => {
                     }}
                   >
                     <a href="#">
-                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
                         Eventos
                       </h5>
                     </a>
@@ -197,7 +197,7 @@ const Home = () => {
                     }}
                   >
                     <a href="./tipoatracao">
-                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
                         Atrações
                       </h5>
                     </a>
@@ -233,7 +233,7 @@ const Home = () => {
                     }}
                   >
                     <a href="./tipoturismo">
-                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
                         Pontos Turísticos
                       </h5>
                     </a>

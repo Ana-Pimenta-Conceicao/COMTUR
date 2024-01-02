@@ -164,12 +164,51 @@ export default function Noticia() {
       })
   }
 
+  const [renderizarNoticia, setRenderizarNoticia] = useState([]);
+  const [termoPesquisa, setTermoPesquisa] = useState('');
+  const [pesquisaPor, setPesquisaPor] = useState('titulo')
+
+  const obterData = async () => {
+    try {
+      setRenderizarNoticia(data);
+    } catch(error) {
+      console.error(error);
+    }
+  };
+
+  const termoPesquisado = (termoPesquisa) => {
+    setTermoPesquisa(termoPesquisa);
+  };
+
+  const termoPesquisadoPor =(pesquisaPor) => {
+    setPesquisaPor(pesquisaPor);
+  };
+
+  const filtrarNoticia = () => {
+    const termoPesquisaNormalizado = termoPesquisa.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+    if (termoPesquisa === ''){
+      setRenderizarNoticia(data);
+    } else {
+      const filtrado = data.filter((noticia) => {
+        const tituloNormalizado = noticia[pesquisaPor].normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        return tituloNormalizado.toLowerCase().includes(termoPesquisaNormalizado.toLowerCase());
+      });
+      setRenderizarNoticia(filtrado);
+    }
+  };
+
   useEffect(() => {
     if (atualizarData) {
       pedidoGet();
       setAtualizarData(false);
+      obterData();
     }
-  }, [atualizarData])
+  }, [atualizarData]);
+
+  useEffect(() => {
+    filtrarNoticia();
+  }, [termoPesquisa, data]);
 
   return (
     <div className="h-screen flex">
@@ -187,7 +226,7 @@ export default function Noticia() {
               </tr>
             </thead>
             <tbody>
-              {data.map(noticia => (
+              {renderizarNoticia.map(noticia => (
                 <tr className="bg-white border-b dark:bg-slate-100" key={noticia.id}>
                   <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-800">{noticia.id}</td>
                   <td class="px-6 py-4">{noticia.titulo}</td>

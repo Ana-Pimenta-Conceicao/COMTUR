@@ -9,7 +9,7 @@ namespace COMTUR.Repositorios.Interfaces
         Task<NoticiaModel> Adicionar(NoticiaModel noticiaModel);
         Task<NoticiaModel> Atualizar(NoticiaModel noticiaModel, int id);
         Task<bool> Apagar(int id);
-        Task<bool> SalvarImagem(IFormFile imagem);
+        Task<bool> SalvarImagem(IFormFile imagem, string caminhoImagem);
         Task<bool> ExcluirImagem(string nomeImagem);
     }
 }

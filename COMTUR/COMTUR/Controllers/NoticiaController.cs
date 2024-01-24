@@ -37,7 +37,7 @@ namespace COMTUR.Controllers
         {
             if (noticiaModel.ArquivoImagem != null)
             {
-                await _noticiaRepository.SalvarImagem(noticiaModel.ArquivoImagem);
+                await _noticiaRepository.SalvarImagem(noticiaModel.ArquivoImagem, noticiaModel.CaminhoImagem);
             }
 
             NoticiaModel noticia = await _noticiaRepository.Adicionar(noticiaModel);
@@ -54,7 +54,7 @@ namespace COMTUR.Controllers
             {
                 await _noticiaRepository.ExcluirImagem(noticiaModel.ArquivoImagem.FileName);
 
-                await _noticiaRepository.SalvarImagem(noticiaModel.ArquivoImagem);
+                await _noticiaRepository.SalvarImagem(noticiaModel.ArquivoImagem, noticiaModel.CaminhoImagem);
             }
 
             NoticiaModel noticia = await _noticiaRepository.Atualizar(noticiaModel, id);

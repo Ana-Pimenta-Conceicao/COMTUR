@@ -27,6 +27,9 @@ namespace COMTUR.Models
         [Column("horaPublicacao")]
         public string HoraPublicacao { get; set; }
 
+        [Column("caminhoImagem")]
+        public string CaminhoImagem { get; set; }
+
         [NotMapped]
         public IFormFile ArquivoImagem { get; set; }
     }

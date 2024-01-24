@@ -82,17 +82,22 @@ namespace COMTUR.Repositorios
             return true;
         }
 
-        public async Task<bool> SalvarImagem(IFormFile imagem)
+        public async Task<bool> SalvarImagem(IFormFile imagem, string caminhoImagem)
         {
             bool exists = System.IO.Directory.Exists("Imagens");
+
             if (!exists)
                 System.IO.Directory.CreateDirectory("Imagens");
+
+            string caminho = Path.Combine(_caminhoImagens, imagem.FileName);
 
             using (var fileStream = new FileStream("Imagens\\" + imagem.FileName, FileMode.Create))
             {
                 await imagem.CopyToAsync(fileStream);
-                return true;
             }
+
+            caminhoImagem = caminho;
+
             return false;
         }
 

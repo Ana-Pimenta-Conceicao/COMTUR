@@ -25,7 +25,6 @@ namespace COMTUR.Data
             modelBuilder.ApplyConfiguration(new AdministradorMap());
 
             base.OnModelCreating(modelBuilder);
-
         }
     }
 }

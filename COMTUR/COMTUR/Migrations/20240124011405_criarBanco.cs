@@ -56,7 +56,8 @@ namespace COMTUR.Migrations
                     subtitulo = table.Column<string>(type: "text", nullable: false),
                     conteudo = table.Column<string>(type: "text", nullable: false),
                     datapublicacao = table.Column<DateOnly>(type: "date", nullable: false),
-                    horaPublicacao = table.Column<string>(type: "text", nullable: false)
+                    horaPublicacao = table.Column<string>(type: "text", nullable: false),
+                    caminhoImagem = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

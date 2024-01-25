@@ -1,10 +1,14 @@
 import axios from "axios";
+import React from "react";
 import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
+//import { useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import InputMask from 'react-input-mask';
 import Sidebar from '../../components/sidebar';
 import NavBar from '../../components/navbar';
+//import visualizarNoticia from "./visualizarNoticia";
+import { useNavigate } from 'react-router-dom';
 
 export default function Noticia() {
 
@@ -32,6 +36,10 @@ export default function Noticia() {
 
   const [noticiaId, setNoticiaId] = useState("")
 
+  //const { id } = useParams();
+
+  const navigate = useNavigate();
+
   const [selecionarNoticia, setSelecionarNoticia] = useState({
     id: "",
     titulo: "",
@@ -53,8 +61,11 @@ export default function Noticia() {
     if (opcao === "Editar") {
       abrirFecharModalEditar();
     }
-    else {
+    else if (opcao === "Excluir") {
       abrirFecharModalDeletar();
+    }
+    else {
+      navigate(`/visualizarNoticia/${noticia.id }`)
     }
   }
 
@@ -76,7 +87,7 @@ export default function Noticia() {
       const [dia, mes, ano] = partes;
       return `${ano}-${mes}-${dia}`;
     }
-    return data; 
+    return data;
   }
 
   function formatarDataParaExibicao(data) {
@@ -95,17 +106,17 @@ export default function Noticia() {
         console.log(error);
       })
   }
-  
+
   const dataFormatoBanco = inverterDataParaFormatoBanco(noticiaDataPublicacao);
 
   const pedidoPost = async () => {
     delete selecionarNoticia.id
-    await axios.post(baseUrl, { 
-      titulo: noticiaTitulo, 
-      subtitulo: noticiaSubtitulo, 
-      conteudo: noticiaConteudo, 
-      dataPublicacao: dataFormatoBanco, 
-      horaPublicacao: noticiaHoraPublicacao 
+    await axios.post(baseUrl, {
+      titulo: noticiaTitulo,
+      subtitulo: noticiaSubtitulo,
+      conteudo: noticiaConteudo,
+      dataPublicacao: dataFormatoBanco,
+      horaPublicacao: noticiaHoraPublicacao
     })
       .then(response => {
         setData(data.concat(response.data));
@@ -250,10 +261,11 @@ export default function Noticia() {
                   </td>
                 </tr>
               ))}
+
             </tbody>
           </table>
         </div>
-        <div className="float-right flex-auto py-32">
+        <div className="float-right flex-auto py-14">
           <button className="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900"
             onClick={() => abrirFecharModalInserir()}
           >Cadastrar</button>

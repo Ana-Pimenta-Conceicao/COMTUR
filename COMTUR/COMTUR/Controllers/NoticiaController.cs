@@ -1,7 +1,9 @@
 ﻿using COMTUR.Models;
 using COMTUR.Repositorios.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace COMTUR.Controllers
 {
@@ -11,9 +13,9 @@ namespace COMTUR.Controllers
     {
         private readonly INoticiaRepository _noticiaRepository;
 
-        public NoticiaController(INoticiaRepository _noticiaRepository)
+        public NoticiaController(INoticiaRepository noticiaRepository)
         {
-            this._noticiaRepository = _noticiaRepository;
+            _noticiaRepository = noticiaRepository;
         }
 
         [HttpGet]
@@ -31,17 +33,30 @@ namespace COMTUR.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<NoticiaModel>> Cadastrar([FromBody] NoticiaModel noticiaModel)
+        public async Task<ActionResult<NoticiaModel>> Cadastrar([FromForm] NoticiaModel noticiaModel)
         {
+            if (noticiaModel.ArquivoImagem != null)
+            {
+                await _noticiaRepository.SalvarImagem(noticiaModel.ArquivoImagem, noticiaModel.CaminhoImagem);
+            }
+
             NoticiaModel noticia = await _noticiaRepository.Adicionar(noticiaModel);
 
             return Ok(noticia);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<NoticiaModel>> Atualizar([FromBody] NoticiaModel noticiaModel, int id)
+        public async Task<ActionResult<NoticiaModel>> Atualizar([FromForm] NoticiaModel noticiaModel, int id)
         {
             noticiaModel.Id = id;
+
+            if (noticiaModel.ArquivoImagem != null)
+            {
+                await _noticiaRepository.ExcluirImagem(noticiaModel.ArquivoImagem.FileName);
+
+                await _noticiaRepository.SalvarImagem(noticiaModel.ArquivoImagem, noticiaModel.CaminhoImagem);
+            }
+
             NoticiaModel noticia = await _noticiaRepository.Atualizar(noticiaModel, id);
 
             return Ok(noticia);

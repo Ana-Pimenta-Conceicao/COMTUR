@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240124011405_criarBanco")]
-    partial class criarBanco
+    [Migration("20240131125009_teste1N")]
+    partial class teste1N
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,6 +68,48 @@ namespace COMTUR.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("administrador");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("atracaoid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descrição")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("descricao");
+
+                    b.Property<int>("IdTipoAtracao")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("nome");
+
+                    b.Property<string>("QRCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("qrcode");
+
+                    b.Property<int?>("TipoAtracaoModelId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdTipoAtracao");
+
+                    b.HasIndex("TipoAtracaoModelId");
+
+                    b.ToTable("atracao");
                 });
 
             modelBuilder.Entity("COMTUR.Models.EmpresarioModel", b =>
@@ -187,6 +229,26 @@ namespace COMTUR.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("tipoturismo");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.TipoAtracaoModel", "TipoAtracaoModel")
+                        .WithMany()
+                        .HasForeignKey("IdTipoAtracao")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("COMTUR.Models.TipoAtracaoModel", null)
+                        .WithMany("Atracao")
+                        .HasForeignKey("TipoAtracaoModelId");
+
+                    b.Navigation("TipoAtracaoModel");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.TipoAtracaoModel", b =>
+                {
+                    b.Navigation("Atracao");
                 });
 #pragma warning restore 612, 618
         }

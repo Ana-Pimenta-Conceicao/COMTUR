@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class criarBanco : Migration
+    public partial class teste1N : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,6 +89,44 @@ namespace COMTUR.Migrations
                 {
                     table.PrimaryKey("PK_tipoturismo", x => x.tipoturismoid);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "atracao",
+                columns: table => new
+                {
+                    atracaoid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    descricao = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    qrcode = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    IdTipoAtracao = table.Column<int>(type: "integer", nullable: false),
+                    TipoAtracaoModelId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_atracao", x => x.atracaoid);
+                    table.ForeignKey(
+                        name: "FK_atracao_tipoatracao_IdTipoAtracao",
+                        column: x => x.IdTipoAtracao,
+                        principalTable: "tipoatracao",
+                        principalColumn: "tipoatracaoid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_atracao_tipoatracao_TipoAtracaoModelId",
+                        column: x => x.TipoAtracaoModelId,
+                        principalTable: "tipoatracao",
+                        principalColumn: "tipoatracaoid");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_atracao_IdTipoAtracao",
+                table: "atracao",
+                column: "IdTipoAtracao");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_atracao_TipoAtracaoModelId",
+                table: "atracao",
+                column: "TipoAtracaoModelId");
         }
 
         /// <inheritdoc />
@@ -98,16 +136,19 @@ namespace COMTUR.Migrations
                 name: "administrador");
 
             migrationBuilder.DropTable(
+                name: "atracao");
+
+            migrationBuilder.DropTable(
                 name: "empresario");
 
             migrationBuilder.DropTable(
                 name: "noticia");
 
             migrationBuilder.DropTable(
-                name: "tipoatracao");
+                name: "tipoturismo");
 
             migrationBuilder.DropTable(
-                name: "tipoturismo");
+                name: "tipoatracao");
         }
     }
 }

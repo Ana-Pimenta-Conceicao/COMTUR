@@ -6,17 +6,28 @@ using System.Text.Json.Serialization;
 
 namespace COMTUR.Models;
 
-[Table("tipoatracao")]
+[Table("atracao")]
 
-public class TipoAtracaoModel
+public class AtracaoModel
 {
-
 	[Key]
-	[Column("tipoatracaoid")]
+	[Column("atracaoid")]
 	public int Id { get; set; }
+
 	[Column("nome")]
 	public string Nome { get; set; }
 
+	[Column("descricao")]
+	public string Descrição { get; set; }
+
+	[Column("qrcode")]
+	public string QRCode { get; set; }
+
 	[JsonIgnore]
-	public ICollection<AtracaoModel>? Atracao { get; set; }
+	public TipoAtracaoModel? TipoAtracaoModel { get; set; }
+
+	[ForeignKey("idtipoatracao")]
+	public int IdTipoAtracao { get; set; }
+
 }
+

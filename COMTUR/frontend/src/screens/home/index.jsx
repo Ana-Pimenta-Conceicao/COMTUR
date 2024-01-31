@@ -1,16 +1,16 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Sidebar from "../../components/sidebar";
-import Navbar from "../../components/navbar";
+import SidebarAdm from "../../components/sidebarAdm";
+import NavbarAdm from "../../components/navbarAdm";
 import { Card } from "reactstrap";
 
 const Home = () => {
   return (
     <div className="home">
       <div className="h-screen flex">
-        <Sidebar />
+        <SidebarAdm />
         <div className="flex-2 container-fluid">
-          <Navbar />
+          <NavbarAdm />
 
           <div className="cont-home" style={{ paddingLeft: 50 }}>
             <h1 className="text-2xl font-semibold">

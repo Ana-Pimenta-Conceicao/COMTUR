@@ -3,8 +3,8 @@ import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import axios from 'axios'
 import "../tipoturismo/index.css"
 import "bootstrap/dist/css/bootstrap.min.css"
-import Sidebar from '../../components/sidebar';
-import Navbar from '../../components/navbar';
+import SidebarAdm from '../../components/sidebarAdm';
+import NavbarAdm from '../../components/navbarAdm';
 
 
 function TipoTurismo() {
@@ -119,9 +119,9 @@ function TipoTurismo() {
 
     return (
             <div className='h-screen flex'>
-            <Sidebar />
+            <SidebarAdm />
             <div className='flex-2 container-fluid'>
-            <Navbar/>
+            <NavbarAdm/>
             
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" />
                 <link rel="stylesheet" href="bootstrap-4.0.0-dist/css/bootstrap-grid.css"></link>

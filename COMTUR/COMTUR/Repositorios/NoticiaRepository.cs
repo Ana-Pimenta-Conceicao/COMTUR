@@ -14,14 +14,15 @@ namespace COMTUR.Repositorios
     public class NoticiaRepository : INoticiaRepository
     {
         private readonly ComturDBContext _dbContext;
-        private readonly IHostEnvironment _hostEnvironment;
 
-        private string _caminhoImagens = AppContext.BaseDirectory;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public NoticiaRepository(ComturDBContext dbContext, IHostEnvironment hostEnvironment)
+        //private string _caminhoImagens = AppContext.BaseDirectory;
+
+        public NoticiaRepository(ComturDBContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
             _dbContext = dbContext;
-            _hostEnvironment = hostEnvironment;
+            _hostingEnvironment = webHostEnvironment;
         }
 
         public async Task<NoticiaModel> BuscarPorId(int id)
@@ -64,7 +65,7 @@ namespace COMTUR.Repositorios
             return noticiaPorId;
         }
 
-        public async Task<bool> Apagar(int id)
+        public async Task<bool> Apagar(int id, IWebHostEnvironment hostingEnvironment)
         {
             var noticiaParaExcluir = await BuscarPorId(id);
 
@@ -74,7 +75,8 @@ namespace COMTUR.Repositorios
             }
 
             // Excluir a imagem associada
-            await ExcluirImagem(noticiaParaExcluir.ArquivoImagem.FileName);
+            string imagePath = Path.Combine("Imagens", noticiaParaExcluir.CaminhoImagem);
+            await ExcluirImagem(imagePath, hostingEnvironment);
 
             _dbContext.Noticia.Remove(noticiaParaExcluir);
             await _dbContext.SaveChangesAsync();
@@ -82,36 +84,44 @@ namespace COMTUR.Repositorios
             return true;
         }
 
-        public async Task<bool> SalvarImagem(IFormFile imagem, string caminhoImagem)
+        public async Task<string> SalvarImagem(IFormFile imagem, IWebHostEnvironment hostingEnvironment)
         {
-            bool exists = System.IO.Directory.Exists("Imagens");
+            if (imagem == null || imagem.Length == 0)
+                return null;
 
-            if (!exists)
-                System.IO.Directory.CreateDirectory("Imagens");
+            var path = Path.Combine(hostingEnvironment.WebRootPath, "imagens", imagem.FileName);
 
-            string caminho = Path.Combine(_caminhoImagens, imagem.FileName);
-
-            using (var fileStream = new FileStream("Imagens\\" + imagem.FileName, FileMode.Create))
+            using (var stream = new FileStream(path, FileMode.Create))
             {
-                await imagem.CopyToAsync(fileStream);
+                await imagem.CopyToAsync(stream);
             }
 
-            caminhoImagem = caminho;
-
-            return false;
+            return path;
         }
 
-        public async Task<bool> ExcluirImagem(string nomeImagem)
+        public async Task<string> ExcluirImagem(string imagePath, IWebHostEnvironment hostingEnvironment)
         {
-            string caminhoImagem = Path.Combine(_caminhoImagens, nomeImagem);
+            string caminhoImagem = Path.Combine(hostingEnvironment.WebRootPath, imagePath);
 
             if (System.IO.File.Exists(caminhoImagem))
             {
                 System.IO.File.Delete(caminhoImagem);
-                return true;
+                return Path.Combine("imagens", imagePath);
             }
 
-            return false;
+            return null;
+        }
+
+        public async Task<byte[]> ObterImagem(string imagePath)
+        {
+            var path = Path.Combine(_hostingEnvironment.WebRootPath, "imagens", imagePath);
+
+            if (System.IO.File.Exists(path))
+            {
+                return System.IO.File.ReadAllBytes(path);
+            }
+
+            return null;
         }
     }
 }

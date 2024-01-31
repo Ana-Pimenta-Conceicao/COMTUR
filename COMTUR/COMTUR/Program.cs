@@ -55,6 +55,8 @@ namespace COMTUR
 
 			app.MapControllers();
 
+			app.UseStaticFiles();
+
 			app.UseCors("MyPolicy");
 
 			app.UseRouting();

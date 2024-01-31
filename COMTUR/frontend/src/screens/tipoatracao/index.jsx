@@ -3,8 +3,8 @@ import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import axios from 'axios'
 import "../tipoatracao/index.css"
 import "bootstrap/dist/css/bootstrap.min.css"
-import Sidebar from '../../components/sidebar';
-import Navbar from '../../components/navbar';
+import SidebarAdm from '../../components/sidebarAdm';
+import NavbarAdm from '../../components/navbarAdm';
 
 function TipoAtracao() {
 
@@ -131,9 +131,9 @@ function TipoAtracao() {
 
         <div >
               <div className="h-screen flex">
-                  <Sidebar />
+                  <SidebarAdm />
                   <div className="flex-2 container-fluid">
-                    <Navbar />
+                    <NavbarAdm />
 
 
 

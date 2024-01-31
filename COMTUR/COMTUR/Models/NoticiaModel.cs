@@ -2,12 +2,16 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace COMTUR.Models
 {
     [Table("noticia")]
     public class NoticiaModel
     {
+        private string _caminhoImagem;
+        private IFormFile _criarArquivoImagem;
+
         [Key]
         [Column("noticiaid")]
         public int Id { get; set; }
@@ -28,9 +32,31 @@ namespace COMTUR.Models
         public string HoraPublicacao { get; set; }
 
         [Column("caminhoImagem")]
-        public string CaminhoImagem { get; set; }
+        public string? CaminhoImagem
+        {
+            get
+            {
+                return _caminhoImagem;
+            }
+            set
+            {
+                _caminhoImagem = value;
+            }
+        }
 
+        [JsonIgnore]
         [NotMapped]
-        public IFormFile ArquivoImagem { get; set; }
+        public IFormFile ArquivoImagem
+        {
+            get
+            {
+                return _criarArquivoImagem;
+            }
+            set
+            {
+                _criarArquivoImagem = value;
+                _caminhoImagem = value.FileName;
+            }
+        }
     }
 }

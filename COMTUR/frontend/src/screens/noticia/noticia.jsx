@@ -249,11 +249,11 @@ export default function Noticia() {
       <SidebarAdm />
       <div className="flex-2 container-fluid">
         <NavBarAdm />
-        <div className="pl-8 pr-8 pt-[30px]">
-          <h1 className="text-3xl font-semibold pb-3">Lista de Notícias</h1>
-          <hr className="pb-10 border-[2.5px] border-[#DBDBDB]" />
-          <div className="w-full rounded-[6px] border-1 border-[#DBDBDB] ">
-            <div className="grid grid-cols-4 w-full bg-[#DBDBDB] rounded-t-[5px] h-10 items-center text-base font-semibold text-black">
+        <div className="pl-8 pr-8 pt-[20px]">
+          <h1 className="text-3xl font-semibold pb-2">Lista de Notícias</h1>
+          <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
+          <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
+            <div className="grid grid-cols-4 w-full bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
               <span className="flex ml-5 items-center">ID</span>
               <span className="flex justify-center items-center">Titulo</span>
               <span className="flex justify-center items-center">Data</span>
@@ -294,7 +294,7 @@ export default function Noticia() {
                 <CaretLeft size={22} className="text-[#DBDBDB]" />
               </button>
               <select
-                className="border-[1px] border-[#DBDBDB] rounded-sm hover:border-[#DBDBDB] select-none"
+                className="rounded-sm hover:border-[#DBDBDB] select-none"
                 value={currentPage}
                 onChange={(e) => goToPage(Number(e.target.value))}
               >
@@ -312,7 +312,7 @@ export default function Noticia() {
               </button>
             </div>
           </div>
-          <div className="float-right flex-auto py-14">
+          <div className="float-right flex-auto py-6">
             <button className="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-md text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900"
               onClick={() => abrirFecharModalInserir()}
             >Cadastrar</button>
@@ -329,11 +329,11 @@ export default function Noticia() {
             <br />
             <label>Subtitulo:</label>
             <br />
-            <input type="text" className="form-control" onChange={(e) => setNoticiaSubtitulo(e.target.value)} />
+            <textarea className="form-control" onChange={(e) => setNoticiaSubtitulo(e.target.value)} />
             <br />
             <label>Conteúdo:</label>
             <br />
-            <input type="text" className="form-control" onChange={(e) => setNoticiaConteudo(e.target.value)} />
+            <textarea className="form-control" onChange={(e) => setNoticiaConteudo(e.target.value)} />
             <br />
             <label>Data:</label>
             <br />
@@ -373,15 +373,13 @@ export default function Noticia() {
             <br />
             <label>Subtitulo:</label>
             <br />
-            <input type="text" className="form-control" name="noticiaSubtitulo" onChange={(e) => setNoticiaSubtitulo(e.target.value)}
+            <textarea className="form-control" name="noticiaSubtitulo" onChange={(e) => setNoticiaSubtitulo(e.target.value)}
               value={noticiaSubtitulo} />
-            <br />
             <br />
             <label>Conteúdo:</label>
             <br />
-            <input type="text" className="form-control" name="noticiaConteudo" onChange={(e) => setNoticiaConteudo(e.target.value)}
+            <textarea className="form-control" name="noticiaConteudo" onChange={(e) => setNoticiaConteudo(e.target.value)}
               value={noticiaConteudo} />
-            <br />
             <br />
             <label>Data:</label>
             <br />

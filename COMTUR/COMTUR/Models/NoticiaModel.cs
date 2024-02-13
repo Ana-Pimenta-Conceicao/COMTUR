@@ -32,21 +32,11 @@ namespace COMTUR.Models
         public string HoraPublicacao { get; set; }
 
         [Column("caminhoImagem")]
-        public string? CaminhoImagem
-        {
-            get
-            {
-                return _caminhoImagem;
-            }
-            set
-            {
-                _caminhoImagem = value;
-            }
-        }
+        public string? CaminhoImagem { get; set; }
 
         [JsonIgnore]
         [NotMapped]
-        public IFormFile ArquivoImagem
+        public IFormFile? ArquivoImagem // Permitindo que o usuário não informe uma imagem
         {
             get
             {

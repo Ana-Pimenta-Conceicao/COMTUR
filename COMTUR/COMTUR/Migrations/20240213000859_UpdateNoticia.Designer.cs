@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240131191001_AdicionandoNoticia")]
-    partial class AdicionandoNoticia
+    [Migration("20240213000859_UpdateNoticia")]
+    partial class UpdateNoticia
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

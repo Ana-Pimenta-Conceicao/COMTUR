@@ -52,6 +52,16 @@ export default function Noticia() {
     arquivoImagem: ""
   })
 
+  const limparDados = () => {
+    setNoticiaTitulo("");
+    setNoticiaSubtitulo("");
+    setNoticiaConteudo("");
+    setNoticiaArquivoImagem("");
+    setNoticiaDataPublicacao("");
+    setNoticiaHoraPublicacao("");
+    setNoticiaId("");
+  }
+
   const NoticiaSet = (noticia, opcao) => {
     console.log("Noticia que foi passada: ", noticia);
     setNoticiaId(noticia.id)
@@ -60,7 +70,7 @@ export default function Noticia() {
     setNoticiaConteudo(noticia.conteudo)
     setNoticiaDataPublicacao(formatarDataParaExibicao(noticia.dataPublicacao))
     setNoticiaHoraPublicacao(noticia.horaPublicacao)
-    setNoticiaArquivoImagem(noticia.arquivoImagem)
+    setNoticiaArquivoImagem(noticia.caminhoImagem)
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
@@ -69,19 +79,22 @@ export default function Noticia() {
       abrirFecharModalDeletar();
     }
     else {
-      navigate(`/visualizarNoticia/${noticia.id }`)
+      navigate(`/visualizarNoticia/${noticia.id}`)
     }
   }
 
   const abrirFecharModalInserir = () => {
+    modalInserir ? limparDados() : null;
     setModalInserir(!modalInserir)
   }
 
   const abrirFecharModalEditar = () => {
+    modalEditar ? limparDados() : null;
     setModalEditar(!modalEditar)
   }
 
   const abrirFecharModalDeletar = () => {
+    modalDeletar ? limparDados() : null;
     setModalDeletar(!modalDeletar)
   }
 
@@ -102,6 +115,7 @@ export default function Noticia() {
     }
     return data; // Retorna a data original se não estiver no formato esperado
   }
+
   const pedidoGet = async () => {
     await axios.get(baseUrl)
       .then(response => {
@@ -121,7 +135,7 @@ export default function Noticia() {
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
     formData.append("arquivoImagem", noticiaArquivoImagem);
-  
+
     await axios.post(baseUrl, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -130,6 +144,7 @@ export default function Noticia() {
       .then(response => {
         setData(data.concat(response.data));
         abrirFecharModalInserir();
+        limparDados();
       }).catch(error => {
         console.log(error);
       })
@@ -171,16 +186,21 @@ export default function Noticia() {
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
     formData.append("arquivoImagem", noticiaArquivoImagem);
-  
+
+    // Verificando se o dado dentro de noticiaArquivoImagem não é uma url, se for, então passamos ela para caminhoImagem, para que não haja atualização na imagem no back-end
+    if (noticiaArquivoImagem && typeof noticiaArquivoImagem === 'string') {
+      formData.append("caminhoImagem", noticiaArquivoImagem);
+    }
+
     try {
       const response = await axios.put(`${baseUrl}/${noticiaId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-  
+
       const updatedNoticia = response.data;
-  
+
       setData((prevData) => {
         return prevData.map((noticia) => {
           if (noticia.id === noticiaId) {
@@ -189,8 +209,9 @@ export default function Noticia() {
           return noticia;
         });
       });
-  
+
       abrirFecharModalEditar();
+      limparDados();
     } catch (error) {
       console.log(error);
     }
@@ -205,23 +226,19 @@ export default function Noticia() {
       })
   }
 
-  const pedidoExcluirImagem = async () => {
-    await axios.delete(`${baseUrl}/${noticiaId}/arquivoImagem`)
-      .then(response => {
-        console.log(response);
-      }).catch(error => {
-        console.log(error);
-      })
+  const pedidoRemoverImagem = () => {
+    // Método para limpar a constante (não limpa o campo)
+    setNoticiaArquivoImagem("");
   }
 
   const pedidoDeletar = async () => {
-    await pedidoExcluirImagem();
     await axios.delete(baseUrl + "/" + noticiaId)
       .then(response => {
         const newNoticias = data.filter(noticia => noticia.id !== response.data);
         setData(newNoticias);
         atualizarListaNoticias();
         abrirFecharModalDeletar();
+        limparDados();
       }).catch(error => {
         console.log(error);
       })
@@ -309,7 +326,14 @@ export default function Noticia() {
             <InputMask mask="99:99" maskPlaceholder="hh:mm" type="text" className="form-control" onChange={(e) => setNoticiaHoraPublicacao(e.target.value)} value={noticiaHoraPublicacao} />
             <br />
             <label>Imagem:</label>
-            <input type="file" className="form-control" onChange={(e) => setNoticiaArquivoImagem(e.target.files[0])} />
+            {noticiaArquivoImagem && modalInserir && ( // Verificando se existe algum dado dentro da variável, se houver, criamos uma url com esse arquivo
+              <div style={{ position: 'relative', display: 'inline-block' }}>
+                <img src={URL.createObjectURL(noticiaArquivoImagem)} alt="Preview" style={{ maxWidth: '100%', marginTop: '10px' }} />
+                <button style={{ position: 'absolute', top: '15px', right: '5px', width: '30px', height: '30px', backgroundColor: 'rgba(255, 255, 255, 0.5)', borderRadius: '50%', border: 'none', padding: '0', cursor: 'pointer' }} onClick={() => pedidoRemoverImagem()}>X</button>
+                <br />
+              </div>
+            )} {/* Tudo o que está dentro desse comando somente será criado se noticiaArquivoImagem tiver um dado e modalInserir for true */}
+            <input type="file" className="form-control" onChange={(e) => setNoticiaArquivoImagem(e.target.files[0])} value={noticiaArquivoImagem === "" ? '' : undefined} /> {/* Caso noticiaArquivoImagem esteja vazio, limpamos o campo, se não estiver, nenhuma ação é efetuada */} {/* Informamos '' (ou "") para limpar o campo, e undefined para não efetuar nenhuma ação */}
             <br />
           </div>
         </ModalBody>
@@ -350,7 +374,18 @@ export default function Noticia() {
             <InputMask mask="99:99" maskPlaceholder="hh:mm" type="text" className="form-control" onChange={(e) => setNoticiaHoraPublicacao(e.target.value)} value={noticiaHoraPublicacao} />
             <br />
             <label>Imagem:</label>
-            <input type="file" className="form-control" onChange={(e) => setNoticiaArquivoImagem(e.target.files[0])} />
+            {noticiaArquivoImagem && modalEditar && (  // Verificando se existe algum dado dentro da variável, se for uma url, apenas passamos para campo, se for um arquivo, criamos uma url com ele
+              <div style={{ position: 'relative', display: 'inline-block' }}>
+                {typeof noticiaArquivoImagem === 'string' ? (
+                  <img src={noticiaArquivoImagem} alt="Preview" style={{ maxWidth: '100%', marginTop: '10px' }} />
+                ) : (
+                  <img src={URL.createObjectURL(noticiaArquivoImagem)} alt="Preview" style={{ maxWidth: '100%', marginTop: '10px' }} />
+                )}
+                <button style={{ position: 'absolute', top: '15px', right: '5px', width: '30px', height: '30px', backgroundColor: 'rgba(255, 255, 255, 0.5)', borderRadius: '50%', border: 'none', padding: '0', cursor: 'pointer' }} onClick={() => pedidoRemoverImagem()}>X</button>
+                <br />
+              </div>
+            )} {/* Tudo o que está dentro desse comando somente será criado se o noticiaArquivoImagem tiver um dado e modalEditar for true */}
+            <input type="file" className="form-control" onChange={(e) => setNoticiaArquivoImagem(e.target.files[0])} value={noticiaArquivoImagem === "" ? '' : undefined} /> {/* Caso noticiaArquivoImagem esteja vazio, limpamos o campo, se não estiver, nenhuma ação é efetuada */} {/* Informamos '' (ou "") para limpar o campo, e undefined para não efetuar nenhuma ação */}
           </div>
         </ModalBody>
         <ModalFooter>

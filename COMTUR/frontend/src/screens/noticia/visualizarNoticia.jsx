@@ -32,8 +32,11 @@ const VisualizarNoticia = () => {
 
     return (
         <div>
-            <NavbarUsr/>
+            <NavbarUsr />
             <h1>{noticia.titulo}</h1>
+            {noticia.caminhoImagem && ( // Caso uma url tenha sido obtida, passamos ela para o componente img
+                <img src={noticia.caminhoImagem} alt="Preview" style={{ maxWidth: '100%', marginTop: '10px' }} />
+            )}
             <h2>{noticia.subtitulo}</h2>
             <p>{noticia.conteudo}</p>
             <p>Data de Publicação: {noticia.dataPublicacao}</p>

@@ -58,6 +58,10 @@ namespace COMTUR.Repositorios
             noticiaPorId.Conteudo = noticiaModel.Conteudo;
             noticiaPorId.DataPublicacao = noticiaModel.DataPublicacao;
             noticiaPorId.HoraPublicacao = noticiaModel.HoraPublicacao;
+            if (noticiaModel.CaminhoImagem != noticiaPorId.CaminhoImagem) // Verificando se o dado (seja cheio ou vazio) vindo do objeto é diferente do que está no banco de dados
+            {
+                noticiaPorId.CaminhoImagem = noticiaModel.CaminhoImagem;
+            }
 
             _dbContext.Noticia.Update(noticiaPorId);
             await _dbContext.SaveChangesAsync();
@@ -73,10 +77,6 @@ namespace COMTUR.Repositorios
             {
                 return false;
             }
-
-            // Excluir a imagem associada
-            string imagePath = Path.Combine("Imagens", noticiaParaExcluir.CaminhoImagem);
-            await ExcluirImagem(imagePath, hostingEnvironment);
 
             _dbContext.Noticia.Remove(noticiaParaExcluir);
             await _dbContext.SaveChangesAsync();
@@ -101,7 +101,7 @@ namespace COMTUR.Repositorios
 
         public async Task<string> ExcluirImagem(string imagePath, IWebHostEnvironment hostingEnvironment)
         {
-            string caminhoImagem = Path.Combine(hostingEnvironment.WebRootPath, imagePath);
+            string caminhoImagem = Path.Combine(hostingEnvironment.WebRootPath, "imagens", imagePath); // Fazendo com que o método construa a url, sem precisar sempre ficar criando em outras situações
 
             if (System.IO.File.Exists(caminhoImagem))
             {
@@ -112,9 +112,21 @@ namespace COMTUR.Repositorios
             return null;
         }
 
-        public async Task<byte[]> ObterImagem(string imagePath)
+        public async Task<string> AtualizarImagem(int id, IFormFile imagem, IWebHostEnvironment hostingEnvironment)
         {
-            var path = Path.Combine(_hostingEnvironment.WebRootPath, "imagens", imagePath);
+            NoticiaModel noticia = await BuscarPorId(id);
+
+            if (noticia != null && noticia.CaminhoImagem != null) // Verificando se há um objeto com esse id e se o mesmo tem uma imagem dentro de si
+            {
+                await ExcluirImagem(noticia.CaminhoImagem, hostingEnvironment);
+            }
+
+            return await SalvarImagem(imagem, hostingEnvironment); // Retornando o resultado do método salvarImagem
+        }
+
+        public async Task<byte[]> ObterImagem(string imagePath, IWebHostEnvironment hostingEnvironment)
+        {
+            var path = Path.Combine(hostingEnvironment.WebRootPath, "imagens", imagePath);
 
             if (System.IO.File.Exists(path))
             {

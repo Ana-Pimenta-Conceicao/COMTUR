@@ -25,8 +25,18 @@ namespace COMTUR.Controllers
         [HttpGet]
         public async Task<ActionResult<List<NoticiaModel>>> BuscarNoticia()
         {
-            List<NoticiaModel> noticia = await _noticiaRepository.BuscarNoticia();
-            return Ok(noticia);
+            List<NoticiaModel> noticias = await _noticiaRepository.BuscarNoticia();
+
+            foreach (var noticia in noticias)
+            {
+                if (noticia.CaminhoImagem != null)
+                {
+                    // Criando a url em cada objeto que tiver uma imagem
+                    noticia.CaminhoImagem = $"{Request.Scheme}://{Request.Host}/imagens/{noticia.CaminhoImagem}";
+                }
+            }
+
+            return Ok(noticias);
         }
 
         [HttpGet("{id}")]
@@ -36,7 +46,7 @@ namespace COMTUR.Controllers
 
             if (noticia != null && noticia.CaminhoImagem != null)
             {
-                noticia.CaminhoImagem = $"{Request.Scheme}://{Request.Host}/{noticia.CaminhoImagem}";
+                noticia.CaminhoImagem = $"{Request.Scheme}://{Request.Host}/imagens/{noticia.CaminhoImagem}";
             }
 
             return Ok(noticia);
@@ -45,12 +55,18 @@ namespace COMTUR.Controllers
         [HttpPost]
         public async Task<ActionResult<NoticiaModel>> Cadastrar([FromForm] NoticiaModel noticiaModel)
         {
-            if (noticiaModel.ArquivoImagem != null)
+            if (noticiaModel.ArquivoImagem != null) // Verificando se algum arquivo foi passado
             {
-                await _noticiaRepository.SalvarImagem(noticiaModel.ArquivoImagem, _hostingEnvironment);
+                String path = await _noticiaRepository.SalvarImagem(noticiaModel.ArquivoImagem, _hostingEnvironment); // Salvando o resultado em uma string
+                if (path != null) { noticiaModel.CaminhoImagem = noticiaModel.ArquivoImagem.FileName; } // Se uma imagem foi salva (path não é nulo), passa o nome da mesma para caminhoImagem
             }
 
             NoticiaModel noticia = await _noticiaRepository.Adicionar(noticiaModel);
+            if (noticia.CaminhoImagem != null)
+            {
+                // Cria a url para a imagem, caso alguma imagem tenha sido salva
+                noticia.CaminhoImagem = $"{Request.Scheme}://{Request.Host}/imagens/{noticia.CaminhoImagem}";
+            }
 
             return Ok(noticia);
         }
@@ -60,14 +76,18 @@ namespace COMTUR.Controllers
         {
             noticiaModel.Id = id;
 
-            if (noticiaModel.ArquivoImagem != null)
+            if (noticiaModel.CaminhoImagem == null) // Verificando se veio alguma url no json (a url criada para o arquivo), caso não tenha, atualizamos a imagem
             {
-                await _noticiaRepository.ExcluirImagem(noticiaModel.ArquivoImagem.FileName, _hostingEnvironment);
-
-                await _noticiaRepository.SalvarImagem(noticiaModel.ArquivoImagem, _hostingEnvironment);
+                String path = await _noticiaRepository.AtualizarImagem(id, noticiaModel.ArquivoImagem, _hostingEnvironment); // Salvando o resultado em uma string
+                if (path != null) { noticiaModel.CaminhoImagem = noticiaModel.ArquivoImagem.FileName; } // Se uma imagem foi salva (path não é nulo), passa o nome da mesma para caminhoImagem
             }
 
             NoticiaModel noticia = await _noticiaRepository.Atualizar(noticiaModel, id);
+            if (noticia.CaminhoImagem != null)
+            {
+                // Cria a url para a imagem, caso alguma imagem tenha sido salva
+                noticia.CaminhoImagem = $"{Request.Scheme}://{Request.Host}/imagens/{noticia.CaminhoImagem}";
+            }
 
             return Ok(noticia);
         }
@@ -80,24 +100,11 @@ namespace COMTUR.Controllers
             if (noticia == null)
                 return NotFound();
 
-            bool apagado = await _noticiaRepository.Apagar(id, _hostingEnvironment);
-
-            if (apagado)
+            if (noticia.CaminhoImagem != null) // Verificando se o objeto obtido possue uma imagem
             {
-                // Delete the image file if it exists
-                if (!string.IsNullOrEmpty(noticia.CaminhoImagem) && System.IO.File.Exists(noticia.CaminhoImagem))
-                {
-                    try
-                    {
-                        System.IO.File.Delete(noticia.CaminhoImagem);
-                    }
-                    catch (Exception ex)
-                    {
-                        // Log the exception or handle it in some other way
-                        Console.WriteLine($"Erro ao excluir a imagem: {ex.Message}");
-                    }
-                }
+                await _noticiaRepository.ExcluirImagem(noticia.CaminhoImagem, _hostingEnvironment);
             }
+            bool apagado = await _noticiaRepository.Apagar(id, _hostingEnvironment);
 
             return Ok(apagado);
         }

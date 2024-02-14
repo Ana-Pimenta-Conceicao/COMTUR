@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240213000859_UpdateNoticia")]
-    partial class UpdateNoticia
+    [Migration("20240214171026_inserindoatributolegenda")]
+    partial class inserindoatributolegenda
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -174,6 +174,11 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("horaPublicacao");
 
+                    b.Property<string>("LegendaImagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("legendaImagem");
+
                     b.Property<string>("Subtitulo")
                         .IsRequired()
                         .HasColumnType("text")
@@ -181,8 +186,7 @@ namespace COMTUR.Migrations
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("text")
                         .HasColumnName("titulo");
 
                     b.HasKey("Id");

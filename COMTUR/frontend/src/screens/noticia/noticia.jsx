@@ -35,6 +35,8 @@ export default function Noticia() {
 
   const [noticiaHoraPublicacao, setNoticiaHoraPublicacao] = useState("")
 
+  const [noticiaLegendaImagem, setNoticiaLegendaImagem] = useState("")
+
   const [noticiaId, setNoticiaId] = useState("")
 
   //const { id } = useParams();
@@ -48,6 +50,7 @@ export default function Noticia() {
     conteudo: "",
     dataPublicacao: "",
     horaPublicacao: "",
+    legendaImagem: "",
     arquivoImagem: ""
   })
 
@@ -58,6 +61,7 @@ export default function Noticia() {
     setNoticiaArquivoImagem("");
     setNoticiaDataPublicacao("");
     setNoticiaHoraPublicacao("");
+    setNoticiaLegendaImagem("");
     setNoticiaId("");
   }
 
@@ -69,6 +73,7 @@ export default function Noticia() {
     setNoticiaConteudo(noticia.conteudo)
     setNoticiaDataPublicacao(formatarDataParaExibicao(noticia.dataPublicacao))
     setNoticiaHoraPublicacao(noticia.horaPublicacao)
+    setNoticiaLegendaImagem(noticia.legendaImagem)
     setNoticiaArquivoImagem(noticia.caminhoImagem)
 
     if (opcao === "Editar") {
@@ -133,6 +138,7 @@ export default function Noticia() {
     formData.append("conteudo", noticiaConteudo);
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
+    formData.append("legendaImagem", noticiaLegendaImagem);
     formData.append("arquivoImagem", noticiaArquivoImagem);
 
     await axios.post(baseUrl, formData, {
@@ -156,6 +162,7 @@ export default function Noticia() {
     formData.append("conteudo", noticiaConteudo);
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
+    formData.append("legendaImagem", noticiaLegendaImagem);
     formData.append("arquivoImagem", noticiaArquivoImagem);
 
     // Verificando se o dado dentro de noticiaArquivoImagem não é uma url, se for, então passamos ela para caminhoImagem, para que não haja atualização na imagem no back-end
@@ -264,7 +271,7 @@ export default function Noticia() {
                 <React.Fragment key={noticia.id}>
                   <li className="grid grid-cols-4 w-full bg-[#F5F5F5]">
                     <span scope="row" className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700">{noticia.id}</span>
-                    <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">{noticia.titulo}</span>
+                    <span className="flex justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">{noticia.titulo.length > 25 ? noticia.titulo.substring(0, 25) + '...' : noticia.titulo}</span>
                     <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">{formatarDataParaExibicao(noticia.dataPublicacao)}</span>
                     <span className="flex items-center justify-center border-t-[1px] gap-2 border-[#DBDBDB]">
                       <button className="text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
@@ -343,6 +350,10 @@ export default function Noticia() {
             <br />
             <InputMask mask="99:99" maskPlaceholder="hh:mm" type="text" className="form-control" onChange={(e) => setNoticiaHoraPublicacao(e.target.value)} value={noticiaHoraPublicacao} />
             <br />
+            <label>Legenda:</label>
+            <br/>
+            <input type="text" className="form-control" onChange={(e) => setNoticiaLegendaImagem(e.target.value)}/>
+            <br/>
             <label>Imagem:</label>
             {noticiaArquivoImagem && modalInserir && ( // Verificando se existe algum dado dentro da variável, se houver, criamos uma url com esse arquivo
               <div style={{ position: 'relative', display: 'inline-block' }}>
@@ -389,6 +400,11 @@ export default function Noticia() {
             <br />
             <InputMask mask="99:99" maskPlaceholder="hh:mm" type="text" className="form-control" onChange={(e) => setNoticiaHoraPublicacao(e.target.value)} value={noticiaHoraPublicacao} />
             <br />
+            <label>Legenda:</label>
+            <br/>
+            <input type="text" className="form-control" onChange={(e) => setNoticiaLegendaImagem(e.target.value)}
+              value={noticiaLegendaImagem}/>
+            <br/>
             <label>Imagem:</label>
             {noticiaArquivoImagem && modalEditar && (  // Verificando se existe algum dado dentro da variável, se for uma url, apenas passamos para campo, se for um arquivo, criamos uma url com ele
               <div style={{ position: 'relative', display: 'inline-block' }}>

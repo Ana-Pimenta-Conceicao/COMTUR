@@ -58,6 +58,7 @@ namespace COMTUR.Repositorios
             noticiaPorId.Conteudo = noticiaModel.Conteudo;
             noticiaPorId.DataPublicacao = noticiaModel.DataPublicacao;
             noticiaPorId.HoraPublicacao = noticiaModel.HoraPublicacao;
+            noticiaPorId.LegendaImagem = noticiaModel.LegendaImagem;
             if (noticiaModel.CaminhoImagem != noticiaPorId.CaminhoImagem) // Verificando se o dado (seja cheio ou vazio) vindo do objeto é diferente do que está no banco de dados
             {
                 noticiaPorId.CaminhoImagem = noticiaModel.CaminhoImagem;

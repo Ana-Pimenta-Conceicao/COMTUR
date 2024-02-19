@@ -9,7 +9,7 @@ namespace COMTUR.Data.Map
         public void Configure(EntityTypeBuilder<NoticiaModel> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Titulo).IsRequired().HasMaxLength(50);
+            builder.Property(x => x.Titulo).IsRequired();
         }
     }
 }

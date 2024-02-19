@@ -28,8 +28,13 @@ namespace COMTUR.Models
         [Column("datapublicacao")]
         public DateOnly DataPublicacao { get; set; }
 
+
         [Column("horaPublicacao")]
         public string HoraPublicacao { get; set; }
+
+
+        [Column("legendaImagem")]
+        public string LegendaImagem { get; set; }
 
         [Column("caminhoImagem")]
         public string? CaminhoImagem { get; set; }

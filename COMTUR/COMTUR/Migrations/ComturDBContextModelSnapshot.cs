@@ -153,9 +153,10 @@ namespace COMTUR.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CaminhoImagem")
+                    b.Property<string>("ArquivoImagem")
+                        .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("caminhoImagem");
+                        .HasColumnName("arquivoImagem");
 
                     b.Property<string>("Conteudo")
                         .IsRequired()

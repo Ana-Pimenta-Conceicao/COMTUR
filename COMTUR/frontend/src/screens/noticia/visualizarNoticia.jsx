@@ -8,7 +8,6 @@ const VisualizarNoticia = () => {
     const { id } = useParams(); // UseParams para obter parâmetros da URL
     const [noticia, setNoticia] = useState(null);
     const [outrasNoticias, setOutrasNoticias] = useState([]);
-    const [imagem, setImagem] = useState(null);
 
     const baseUrl = "https://localhost:7256/api/Noticia";
 
@@ -17,8 +16,6 @@ const VisualizarNoticia = () => {
             try {
                 const response = await axios.get(`${baseUrl}/${id}`);
                 setNoticia(response.data);
-                const imageResponse = await axios.get(`${baseUrl}/imagens/${response.data.caminhoImagem}`, { responseType: 'arraybuffer' });
-                setImagem(imageResponse.data);
             } catch (error) {
                 console.error('Erro ao obter detalhes da notícia:', error);
             }
@@ -60,8 +57,8 @@ const VisualizarNoticia = () => {
                 <p className='text-[#373636] text-l font-normal pt-1'>{formatarDataParaExibicao(noticia.dataPublicacao)} às {noticia.horaPublicacao}</p>
             </div>
             <div className='flex flex-col pl-24 pr-24 items-center'>
-                {noticia.caminhoImagem && (
-                    <img className="flex pt-4 w-2/3" src={noticia.caminhoImagem} alt="Preview" />
+                {noticia.arquivoImagem && (
+                    <img className="flex pt-4 w-2/3" src={noticia.arquivoImagem} alt="Preview" />
                 )}
                 <h3 className='text-base font-medium italic'>{noticia.legendaImagem}</h3>
             </div>
@@ -73,12 +70,6 @@ const VisualizarNoticia = () => {
                     </React.Fragment>
                 ))}
             </div>
-
-            
-
-            {imagem && (
-                <img src={`data:image/jpeg;base64,${btoa(String.fromCharCode.apply(null, new Uint8Array(imagem)))}`} alt="" />
-            )}
 
             <div className="inline-flex items-center justify-center w-full">
                 <hr className="w-full h-1 my-8 opacity-100 bg-[#FFD121] border-0 rounded" />
@@ -93,8 +84,8 @@ const VisualizarNoticia = () => {
                 {outrasNoticias.map((noticia) => (
                     <div key={noticia.id} className="p-4">
                         <div className='grid grid-cols-2 border-2 border-[#DBDBDB]'>
-                            {noticia.caminhoImagem && (
-                                <img src={noticia.caminhoImagem} alt="Preview" className="flex w-full h-64 border-r-2" />
+                            {noticia.arquivoImagem && (
+                                <img src={noticia.arquivoImagem} alt="Preview" className="flex w-full h-64 border-r-2" />
                             )}
                             <div className='pl-6 pt-3'>
                                 <h2 className='pr-6 text-[#373636] font-semibold text-base uppercase'>{noticia.titulo}</h2>

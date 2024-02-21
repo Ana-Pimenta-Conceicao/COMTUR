@@ -9,9 +9,6 @@ namespace COMTUR.Models
     [Table("noticia")]
     public class NoticiaModel
     {
-        private string _caminhoImagem;
-        private IFormFile _criarArquivoImagem;
-
         [Key]
         [Column("noticiaid")]
         public int Id { get; set; }
@@ -36,22 +33,10 @@ namespace COMTUR.Models
         [Column("legendaImagem")]
         public string LegendaImagem { get; set; }
 
-        [Column("caminhoImagem")]
-        public string? CaminhoImagem { get; set; }
 
-        [JsonIgnore]
-        [NotMapped]
-        public IFormFile? ArquivoImagem // Permitindo que o usuário não informe uma imagem
-        {
-            get
-            {
-                return _criarArquivoImagem;
-            }
-            set
-            {
-                _criarArquivoImagem = value;
-                _caminhoImagem = value.FileName;
-            }
-        }
+        [Column("arquivoImagem")]
+        public string ArquivoImagem { get; set; }
+
+  
     }
 }

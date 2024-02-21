@@ -74,7 +74,7 @@ export default function Noticia() {
     setNoticiaDataPublicacao(formatarDataParaExibicao(noticia.dataPublicacao))
     setNoticiaHoraPublicacao(noticia.horaPublicacao)
     setNoticiaLegendaImagem(noticia.legendaImagem)
-    setNoticiaArquivoImagem(noticia.caminhoImagem)
+    setNoticiaArquivoImagem(noticia.arquivoImagem)
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
@@ -139,7 +139,9 @@ export default function Noticia() {
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
     formData.append("legendaImagem", noticiaLegendaImagem);
-    formData.append("arquivoImagem", noticiaArquivoImagem);
+
+    const base64Image = await convertImageToBase64(noticiaArquivoImagem);
+    formData.append("arquivoImagem", base64Image);
 
     await axios.post(baseUrl, formData, {
       headers: {
@@ -155,6 +157,19 @@ export default function Noticia() {
       })
   }
 
+  function base64ToImage(base64String) {
+    return `data:image/jpeg;base64,${base64String}`;
+  }
+
+  function convertImageToBase64(imageFile) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(imageFile);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
   async function pedidoAtualizar() {
     const formData = new FormData();
     formData.append("titulo", noticiaTitulo);
@@ -163,11 +178,14 @@ export default function Noticia() {
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
     formData.append("legendaImagem", noticiaLegendaImagem);
-    formData.append("arquivoImagem", noticiaArquivoImagem);
 
-    // Verificando se o dado dentro de noticiaArquivoImagem não é uma url, se for, então passamos ela para caminhoImagem, para que não haja atualização na imagem no back-end
-    if (noticiaArquivoImagem && typeof noticiaArquivoImagem === 'string') {
-      formData.append("caminhoImagem", noticiaArquivoImagem);
+    // Verificando se noticiaArquivoImagem é um arquivo para converter em base64
+    if (noticiaArquivoImagem instanceof File) {
+      // Converter a imagem para base64 antes de enviar
+      const base64Image = await convertImageToBase64(noticiaArquivoImagem);
+      formData.append("arquivoImagem", base64Image);
+    } else {
+      formData.append("arquivoImagem", noticiaArquivoImagem);
     }
 
     try {
@@ -351,17 +369,21 @@ export default function Noticia() {
             <InputMask mask="99:99" maskPlaceholder="hh:mm" type="text" className="form-control" onChange={(e) => setNoticiaHoraPublicacao(e.target.value)} value={noticiaHoraPublicacao} />
             <br />
             <label>Legenda:</label>
-            <br/>
-            <input type="text" className="form-control" onChange={(e) => setNoticiaLegendaImagem(e.target.value)}/>
-            <br/>
+            <br />
+            <input type="text" className="form-control" onChange={(e) => setNoticiaLegendaImagem(e.target.value)} />
+            <br />
             <label>Imagem:</label>
-            {noticiaArquivoImagem && modalInserir && ( // Verificando se existe algum dado dentro da variável, se houver, criamos uma url com esse arquivo
+            {noticiaArquivoImagem && modalEditar && (
               <div style={{ position: 'relative', display: 'inline-block' }}>
-                <img src={URL.createObjectURL(noticiaArquivoImagem)} alt="Preview" style={{ maxWidth: '100%', marginTop: '10px' }} />
+                {typeof noticiaArquivoImagem === 'string' ? (
+                  <img src={base64ToImage(noticiaArquivoImagem)} alt="Preview" style={{ maxWidth: '100%', marginTop: '10px' }} />
+                ) : (
+                  <img src={URL.createObjectURL(noticiaArquivoImagem)} alt="Preview" style={{ maxWidth: '100%', marginTop: '10px' }} />
+                )}
                 <button style={{ position: 'absolute', top: '15px', right: '5px', width: '30px', height: '30px', backgroundColor: 'rgba(255, 255, 255, 0.5)', borderRadius: '50%', border: 'none', padding: '0', cursor: 'pointer' }} onClick={() => pedidoRemoverImagem()}>X</button>
                 <br />
               </div>
-            )} {/* Tudo o que está dentro desse comando somente será criado se noticiaArquivoImagem tiver um dado e modalInserir for true */}
+            )}{/* Tudo o que está dentro desse comando somente será criado se noticiaArquivoImagem tiver um dado e modalInserir for true */}
             <input type="file" className="form-control" onChange={(e) => setNoticiaArquivoImagem(e.target.files[0])} value={noticiaArquivoImagem === "" ? '' : undefined} /> {/* Caso noticiaArquivoImagem esteja vazio, limpamos o campo, se não estiver, nenhuma ação é efetuada */} {/* Informamos '' (ou "") para limpar o campo, e undefined para não efetuar nenhuma ação */}
             <br />
           </div>
@@ -401,23 +423,22 @@ export default function Noticia() {
             <InputMask mask="99:99" maskPlaceholder="hh:mm" type="text" className="form-control" onChange={(e) => setNoticiaHoraPublicacao(e.target.value)} value={noticiaHoraPublicacao} />
             <br />
             <label>Legenda:</label>
-            <br/>
+            <br />
             <input type="text" className="form-control" onChange={(e) => setNoticiaLegendaImagem(e.target.value)}
-              value={noticiaLegendaImagem}/>
-            <br/>
+              value={noticiaLegendaImagem} />
+            <br />
             <label>Imagem:</label>
-            {noticiaArquivoImagem && modalEditar && (  // Verificando se existe algum dado dentro da variável, se for uma url, apenas passamos para campo, se for um arquivo, criamos uma url com ele
+            <label>Imagem:</label>
+            {noticiaArquivoImagem && modalEditar && (
               <div style={{ position: 'relative', display: 'inline-block' }}>
                 {typeof noticiaArquivoImagem === 'string' ? (
                   <img src={noticiaArquivoImagem} alt="Preview" style={{ maxWidth: '100%', marginTop: '10px' }} />
                 ) : (
                   <img src={URL.createObjectURL(noticiaArquivoImagem)} alt="Preview" style={{ maxWidth: '100%', marginTop: '10px' }} />
                 )}
-                <button style={{ position: 'absolute', top: '15px', right: '5px', width: '30px', height: '30px', backgroundColor: 'rgba(255, 255, 255, 0.5)', borderRadius: '50%', border: 'none', padding: '0', cursor: 'pointer' }} onClick={() => pedidoRemoverImagem()}>X</button>
-                <br />
               </div>
-            )} {/* Tudo o que está dentro desse comando somente será criado se o noticiaArquivoImagem tiver um dado e modalEditar for true */}
-            <input type="file" className="form-control" onChange={(e) => setNoticiaArquivoImagem(e.target.files[0])} value={noticiaArquivoImagem === "" ? '' : undefined} /> {/* Caso noticiaArquivoImagem esteja vazio, limpamos o campo, se não estiver, nenhuma ação é efetuada */} {/* Informamos '' (ou "") para limpar o campo, e undefined para não efetuar nenhuma ação */}
+            )}
+            <input type="file" className="form-control" onChange={(e) => setNoticiaArquivoImagem(e.target.files[0])} value={noticiaArquivoImagem === "" ? '' : undefined} />
           </div>
         </ModalBody>
         <ModalFooter>

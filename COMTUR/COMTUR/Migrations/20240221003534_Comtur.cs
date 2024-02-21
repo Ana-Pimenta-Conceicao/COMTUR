@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class inserindoatributolegenda : Migration
+    public partial class Comtur : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,7 +58,7 @@ namespace COMTUR.Migrations
                     datapublicacao = table.Column<DateOnly>(type: "date", nullable: false),
                     horaPublicacao = table.Column<string>(type: "text", nullable: false),
                     legendaImagem = table.Column<string>(type: "text", nullable: false),
-                    caminhoImagem = table.Column<string>(type: "text", nullable: true)
+                    arquivoImagem = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

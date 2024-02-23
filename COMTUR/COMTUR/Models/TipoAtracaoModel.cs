@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace COMTUR.Models;
 
@@ -13,6 +14,9 @@ public class TipoAtracaoModel
 	[Key]
 	[Column("tipoatracaoid")]
 	public int Id { get; set; }
-    [Column("nome")]
-    public string Nome { get; set; }
+	[Column("nome")]
+	public string Nome { get; set; }
+
+	[JsonIgnore]
+	public ICollection<AtracaoModel>? Atracao { get; set; }
 }

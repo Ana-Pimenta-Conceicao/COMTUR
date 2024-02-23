@@ -18,9 +18,7 @@ export default function Noticia() {
   const [atualizarData, setAtualizarData] = useState(true)
 
   const [modalInserir, setModalInserir] = useState(false)
-
   const [modalEditar, setModalEditar] = useState(false)
-
   const [modalDeletar, setModalDeletar] = useState(false)
 
   const [noticiaTitulo, setNoticiaTitulo] = useState("")
@@ -39,20 +37,10 @@ export default function Noticia() {
 
   const [noticiaId, setNoticiaId] = useState("")
 
-  //const { id } = useParams();
+
 
   const navigate = useNavigate();
 
-  const [selecionarNoticia, setSelecionarNoticia] = useState({
-    id: "",
-    titulo: "",
-    subtitulo: "",
-    conteudo: "",
-    dataPublicacao: "",
-    horaPublicacao: "",
-    legendaImagem: "",
-    arquivoImagem: ""
-  })
 
   const limparDados = () => {
     setNoticiaTitulo("");
@@ -344,6 +332,7 @@ export default function Noticia() {
           </div>
         </div>
       </div>
+
       <Modal isOpen={modalInserir}>
         <ModalHeader>Cadastrar Noticia</ModalHeader>
         <ModalBody>
@@ -427,7 +416,6 @@ export default function Noticia() {
             <input type="text" className="form-control" onChange={(e) => setNoticiaLegendaImagem(e.target.value)}
               value={noticiaLegendaImagem} />
             <br />
-            <label>Imagem:</label>
             <label>Imagem:</label>
             {noticiaArquivoImagem && modalEditar && (
               <div style={{ position: 'relative', display: 'inline-block' }}>

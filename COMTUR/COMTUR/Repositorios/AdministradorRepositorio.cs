@@ -41,12 +41,13 @@ namespace COMTUR.Repositorios
             }
 
             administradorPorId.Id = administradorModel.Id;
-            administradorPorId.Nome = administradorModel.Nome;
+            administradorPorId.NomeAdministrador = administradorModel.NomeAdministrador;
             administradorPorId.CpfAdministrador = administradorModel.CpfAdministrador;
             administradorPorId.CargoAdministrador = administradorModel.CargoAdministrador;
             administradorPorId.TelefoneAdministrador = administradorModel.TelefoneAdministrador;
             administradorPorId.EmailAdministrador = administradorModel.EmailAdministrador;
             administradorPorId.SenhaAdministrador = administradorModel.SenhaAdministrador;
+            administradorPorId.ImagemPerfilAdministrador = administradorModel.ImagemPerfilAdministrador;
 
             _dbContext.Administrador.Update(administradorPorId);
             await _dbContext.SaveChangesAsync();

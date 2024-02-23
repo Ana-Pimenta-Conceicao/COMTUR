@@ -9,7 +9,7 @@ namespace COMTUR.Data.Map
         public void Configure(EntityTypeBuilder<AdministradorModel> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Nome).IsRequired().HasMaxLength(50);
+            builder.Property(x => x.NomeAdministrador).IsRequired().HasMaxLength(50);
         }
     }
 }

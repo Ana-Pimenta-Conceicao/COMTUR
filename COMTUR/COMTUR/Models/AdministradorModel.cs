@@ -12,8 +12,8 @@ namespace COMTUR.Models
         [Column("administradorid")]
         public int Id { get; set; }
 
-        [Column("nome")]
-        public string Nome { get; set; }
+        [Column("nomeadministrador")]
+        public string NomeAdministrador { get; set; }
 
         [Column("cargoadministrador")]
         public string CargoAdministrador { get; set; }
@@ -29,5 +29,8 @@ namespace COMTUR.Models
 
         [Column("senhaadministrador")]
         public string SenhaAdministrador { get; set; }
+
+        [Column("imagemperfiladministrador")]
+        public string ImagemPerfilAdministrador { get; set; }
     }
 }

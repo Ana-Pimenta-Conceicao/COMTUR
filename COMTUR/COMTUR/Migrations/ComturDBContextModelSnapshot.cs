@@ -46,11 +46,16 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("emailadministrador");
 
-                    b.Property<string>("Nome")
+                    b.Property<string>("ImagemPerfilAdministrador")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagemperfiladministrador");
+
+                    b.Property<string>("NomeAdministrador")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
-                        .HasColumnName("nome");
+                        .HasColumnName("nomeadministrador");
 
                     b.Property<string>("SenhaAdministrador")
                         .IsRequired()

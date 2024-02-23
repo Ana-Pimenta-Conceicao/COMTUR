@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace COMTUR.Models
 {
@@ -23,5 +24,8 @@ namespace COMTUR.Models
 
 		[Column("telefoneempresario")]
 		public string TelefoneEmpresario { get; set; }
+
+		[JsonIgnore]
+		public ICollection<EmpresaModel>? Empresa { get; set; }
 	}
 }

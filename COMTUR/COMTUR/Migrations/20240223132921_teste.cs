@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class comtur : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -93,6 +93,37 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "empresa",
+                columns: table => new
+                {
+                    empresaid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    cnpj = table.Column<int>(type: "integer", nullable: false),
+                    endereco = table.Column<string>(type: "text", nullable: false),
+                    imagem = table.Column<string>(type: "text", nullable: true),
+                    legendaImagem = table.Column<string>(type: "text", nullable: false),
+                    descricao = table.Column<string>(type: "text", nullable: false),
+                    IdEmpresario = table.Column<int>(type: "integer", nullable: false),
+                    EmpresarioModelId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_empresa", x => x.empresaid);
+                    table.ForeignKey(
+                        name: "FK_empresa_empresario_EmpresarioModelId",
+                        column: x => x.EmpresarioModelId,
+                        principalTable: "empresario",
+                        principalColumn: "empresarioid");
+                    table.ForeignKey(
+                        name: "FK_empresa_empresario_IdEmpresario",
+                        column: x => x.IdEmpresario,
+                        principalTable: "empresario",
+                        principalColumn: "empresarioid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "atracao",
                 columns: table => new
                 {
@@ -129,6 +160,16 @@ namespace COMTUR.Migrations
                 name: "IX_atracao_TipoAtracaoModelId",
                 table: "atracao",
                 column: "TipoAtracaoModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_empresa_EmpresarioModelId",
+                table: "empresa",
+                column: "EmpresarioModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_empresa_IdEmpresario",
+                table: "empresa",
+                column: "IdEmpresario");
         }
 
         /// <inheritdoc />
@@ -141,7 +182,7 @@ namespace COMTUR.Migrations
                 name: "atracao");
 
             migrationBuilder.DropTable(
-                name: "empresario");
+                name: "empresa");
 
             migrationBuilder.DropTable(
                 name: "noticia");
@@ -151,6 +192,9 @@ namespace COMTUR.Migrations
 
             migrationBuilder.DropTable(
                 name: "tipoatracao");
+
+            migrationBuilder.DropTable(
+                name: "empresario");
         }
     }
 }

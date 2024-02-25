@@ -7,7 +7,7 @@ const SidebarAdm = () => {
 
   const Menus = [
     { title: "Início", src: "Home" , gap:true},
-    { title: "Empresário", src: "empresario" },
+    { title: "Usuários", src: "tipousuario" },
     { title: "Ponto Turístico", src: "tipoTurismo" },
     { title: "Eventos", src: "iconeEventos" },
     { title: "Atrações ", src: "tipoAtracao" },

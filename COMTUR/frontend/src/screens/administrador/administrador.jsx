@@ -7,7 +7,7 @@ import InputMask from "react-input-mask";
 import SidebarAdm from "../../components/sidebarAdm";
 import NavBarAdm from "../../components/navbarAdm";
 import { useNavigate } from "react-router-dom";
-import { CaretLeft, CaretRight, Eye, EyeSlash, Trash, FilePlus } from "@phosphor-icons/react";
+import { CaretLeft, CaretRight, Eye, EyeSlash, Trash, FilePlus, Pencil } from "@phosphor-icons/react";
 
 export default function Administrador() {
   const baseUrl = "https://localhost:7256/api/Administrador";
@@ -296,7 +296,7 @@ export default function Administrador() {
                     <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
                       {admin.imagemPerfilAdministrador ? (
                         <img
-                          className="flex w-12 h-8 rounded "
+                          className="flex w-10 h-10 rounded "
                           src={admin.imagemPerfilAdministrador}
                           alt="Preview"
                         />
@@ -373,8 +373,8 @@ export default function Administrador() {
             <label>Nome: </label>
             <br />
             <input
-              type="text"
-              className="form-control"
+              type="text "
+              className="form-control text-sm"
               onChange={(e) => setNomeAdmin(e.target.value)}
               placeholder="Digite o nome "
             />
@@ -382,8 +382,8 @@ export default function Administrador() {
             <label>Cargo:</label>
             <br />
             <input
-              type="text"
-              className="form-control"
+              type="text "
+              className="form-control text-sm"
               onChange={(e) => setCargoAdmin(e.target.value)}
               placeholder="Digite o cargo"
             />
@@ -394,8 +394,8 @@ export default function Administrador() {
             <InputMask
               mask="999.999.999-99"
               maskPlaceholder="999.999.999-99"
-              type="text"
-              className="form-control"
+              type="text "
+              className="form-control text-sm"
               onChange={(e) => setCpfAdmin(e.target.value)}
               placeholder="Digite apenas números"
             />
@@ -405,8 +405,8 @@ export default function Administrador() {
             <InputMask
               mask="(99) 99999-9999"
               maskPlaceholder="(99) 99999-9999"
-              type="text"
-              className="form-control"
+              type="text "
+              className="form-control text-sm"
               onChange={(e) => setTelefoneAdmin(e.target.value)}
               placeholder="Digite apenas números"
             />
@@ -414,8 +414,8 @@ export default function Administrador() {
             <label>Email:</label>
             <br />
             <input
-              type="text"
-              className="form-control"
+              type="text "
+              className="form-control text-sm"
               onChange={(e) => setEmailAdmin(e.target.value)}
               onBlur={(e) => validateEmail(e.target.value)}
               placeholder="Exemplo: email@gmail.com"
@@ -426,7 +426,7 @@ export default function Administrador() {
             <div className="input-group">
               <input
                 type={showPassword ? "text" : "password"}
-                className="form-control"
+                className="form-control text-sm"
                 onChange={(e) => setSenhaAdmin(e.target.value)}
                 placeholder="Digite a senha"
               />
@@ -443,7 +443,7 @@ export default function Administrador() {
             <label>Imagem:</label>
             {imagemAdmin && modalEditar && (
               <div
-                className="bg-[#DBDBDB]  border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
+                className="bg-[#DBDBDB]   border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
                 style={{ position: "relative", display: "inline-block" }}
               >
                 {typeof imagemAdmin === "string" ? (
@@ -512,7 +512,7 @@ export default function Administrador() {
             <br />
             <input
               type="text"
-              className="form-control"
+              className="form-control  text-sm"
               readOnly
               value={idAdmin}
             />
@@ -521,7 +521,7 @@ export default function Administrador() {
             <br />
             <input
               type="text"
-              className="form-control"
+              className="form-control  text-sm"
               onChange={(e) => setNomeAdmin(e.target.value)}
               value={nomeAdmin}
             />
@@ -530,7 +530,7 @@ export default function Administrador() {
             <br />
             <input
               type="text"
-              className="form-control"
+              className="form-control  text-sm"
               onChange={(e) => setCargoAdmin(e.target.value)}
               value={cargoAdmin}
             />
@@ -540,8 +540,8 @@ export default function Administrador() {
             <InputMask
               mask="999.999.999-99"
               maskPlaceholder="999.999.999-99"
-              type="text"
-              className="form-control"
+              type="text "
+              className="form-control  text-sm"
               onChange={(e) => setCpfAdmin(e.target.value)}
               value={cpfAdmin}
             />
@@ -552,8 +552,8 @@ export default function Administrador() {
             <InputMask
               mask="(99) 99999-9999"
               maskPlaceholder="(99) 99999-9999"
-              type="text"
-              className="form-control"
+              type="text "
+              className="form-control  text-sm"
               onChange={(e) => setTelefoneAdmin(e.target.value)}
               value={telefoneAdmin}
             />
@@ -562,8 +562,8 @@ export default function Administrador() {
             <label>Email:</label>
             <br />
             <input
-              type="text"
-              className="form-control"
+              type="text "
+              className="form-control  text-sm"
               onChange={(e) => setEmailAdmin(e.target.value)}
               value={emailAdmin}
             />
@@ -573,7 +573,7 @@ export default function Administrador() {
             <div className="input-group">
               <input
                 type={showPassword ? "text" : "password"}
-                className="form-control"
+                className="form-control text-sm"
                 onChange={(e) => setSenhaAdmin(e.target.value)}
                 value={senhaAdmin}
               />

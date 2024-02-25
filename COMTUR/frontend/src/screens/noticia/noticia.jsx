@@ -298,8 +298,8 @@ export default function Noticia() {
                       {noticia.id}
                     </span>
                     <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
-                      {noticia.titulo.length > 25
-                        ? noticia.titulo.substring(0, 25) + "..."
+                      {noticia.titulo.length > 50
+                        ? noticia.titulo.substring(0, 55) + "..."
                         : noticia.titulo}
                     </span>
                     <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
@@ -377,7 +377,7 @@ export default function Noticia() {
             <br />
             <input
               type="text"
-              className="form-control"
+              className="form-control text-sm"
               onChange={(e) => setNoticiaTitulo(e.target.value)}
               placeholder="Digite o Titulo"
             />
@@ -385,7 +385,7 @@ export default function Noticia() {
             <label>Subtitulo:</label>
             <br />
             <textarea
-              className="form-control"
+              className="form-control text-sm" 
               onChange={(e) => setNoticiaSubtitulo(e.target.value)}
               placeholder="Digite o Subtitulo"
             />
@@ -393,7 +393,7 @@ export default function Noticia() {
             <label>Conteúdo:</label>
             <br />
             <textarea
-              className="form-control"
+              className="form-control text-sm"
               onChange={(e) => setNoticiaConteudo(e.target.value)}
               placeholder="Digite o Conteúdo"
             />
@@ -404,7 +404,7 @@ export default function Noticia() {
               mask="99/99/9999"
               maskPlaceholder="dd/mm/yyyy"
               type="text"
-              className="form-control"
+              className="form-control text-sm"
               onChange={(e) => setNoticiaDataPublicacao(e.target.value)}
               placeholder="Digite apenas números"
               value={noticiaDataPublicacao}
@@ -416,7 +416,7 @@ export default function Noticia() {
               mask="99:99"
               maskPlaceholder="hh:mm"
               type="text"
-              className="form-control"
+              className="form-control text-sm"
               onChange={(e) => setNoticiaHoraPublicacao(e.target.value)}
               placeholder="Digite apenas números"
               value={noticiaHoraPublicacao}
@@ -426,9 +426,9 @@ export default function Noticia() {
             <br />
             <input
               type="text"
-              className="form-control"
+              className="form-control text-sm"
               onChange={(e) => setNoticiaLegendaImagem(e.target.value)}
-              placeholder="Digite a Legenda"
+              placeholder="Digite a legenda"
             />
             <br />
             <label>Imagem:</label>
@@ -503,7 +503,7 @@ export default function Noticia() {
             <br />
             <input
               type="text"
-              className="form-control"
+              className="form-control  text-sm"
               readOnly
               value={noticiaId}
             />{" "}
@@ -511,7 +511,7 @@ export default function Noticia() {
             <label>Titulo:</label>
             <input
               type="text"
-              className="form-control"
+              className="form-control  text-sm"
               name="noticiaTitulo"
               onChange={(e) => setNoticiaTitulo(e.target.value)}
               value={noticiaTitulo}
@@ -520,7 +520,7 @@ export default function Noticia() {
             <label>Subtitulo:</label>
             <br />
             <textarea
-              className="form-control"
+              className="form-control  text-sm"
               name="noticiaSubtitulo"
               onChange={(e) => setNoticiaSubtitulo(e.target.value)}
               value={noticiaSubtitulo}
@@ -529,7 +529,7 @@ export default function Noticia() {
             <label>Conteúdo:</label>
             <br />
             <textarea
-              className="form-control"
+              className="form-control  text-sm"
               name="noticiaConteudo"
               onChange={(e) => setNoticiaConteudo(e.target.value)}
               value={noticiaConteudo}
@@ -541,7 +541,7 @@ export default function Noticia() {
               mask="99/99/9999"
               maskPlaceholder="dd/mm/yyyy"
               type="text"
-              className="form-control"
+              className="form-control  text-sm"
               onChange={(e) => setNoticiaDataPublicacao(e.target.value)}
               value={noticiaDataPublicacao}
             />
@@ -552,7 +552,7 @@ export default function Noticia() {
               mask="99:99"
               maskPlaceholder="hh:mm"
               type="text"
-              className="form-control"
+              className="form-control  text-sm"
               onChange={(e) => setNoticiaHoraPublicacao(e.target.value)}
               value={noticiaHoraPublicacao}
             />
@@ -561,7 +561,7 @@ export default function Noticia() {
             <br />
             <input
               type="text"
-              className="form-control"
+              className="form-control  text-sm"
               onChange={(e) => setNoticiaLegendaImagem(e.target.value)}
               value={noticiaLegendaImagem}
             />

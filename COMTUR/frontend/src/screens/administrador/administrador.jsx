@@ -331,7 +331,7 @@ export default function Administrador() {
                 </React.Fragment>
               ))}
             </ul>
-            <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px] border-[#DBDBDB]">
+            <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px] border-[#140f0f]">
               <button className="" onClick={() => goToPage(currentPage - 1)}>
                 <CaretLeft size={22} className="text-[#DBDBDB]" />
               </button>

@@ -16,6 +16,7 @@ namespace COMTUR.Data
 		public DbSet<AdministradorModel> Administrador { get; set; }
 		public DbSet<AtracaoModel> Atracao { get; set; }
 		public DbSet<EmpresaModel> Empresa { get; set; }
+		public DbSet<UsuarioModel> Usuario { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -26,6 +27,7 @@ namespace COMTUR.Data
 			modelBuilder.ApplyConfiguration(new AdministradorMap());
 			modelBuilder.ApplyConfiguration(new AtracaoMap());
 			modelBuilder.ApplyConfiguration(new EmpresaMap());
+			modelBuilder.ApplyConfiguration(new UsuarioMap());
 
 			base.OnModelCreating(modelBuilder);
 

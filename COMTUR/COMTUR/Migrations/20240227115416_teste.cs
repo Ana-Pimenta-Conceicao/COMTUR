@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class comtur : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -90,6 +90,21 @@ namespace COMTUR.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tipoturismo", x => x.tipoturismoid);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Usuario",
+                columns: table => new
+                {
+                    Usuarioid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    emailUsuario = table.Column<string>(type: "text", nullable: false),
+                    senhaUsuario = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuario", x => x.Usuarioid);
                 });
 
             migrationBuilder.CreateTable(
@@ -189,6 +204,9 @@ namespace COMTUR.Migrations
 
             migrationBuilder.DropTable(
                 name: "tipoturismo");
+
+            migrationBuilder.DropTable(
+                name: "Usuario");
 
             migrationBuilder.DropTable(
                 name: "tipoatracao");

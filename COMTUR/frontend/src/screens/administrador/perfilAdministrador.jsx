@@ -26,10 +26,10 @@ export default function PerfilAdministrador() {
                     <h1 className="text-3xl font-semibold pb-2">Bem vindo, Rodrigo Faro!</h1>
                     <hr className="pb-[30px] border-[2.5px] border-[#DBDBDB]" />
                 </div>
-                <div className="grid grid-cols-4">
-                    <div className="pl-28 col-span-1 ">
+                <div className="grid grid-cols-4 justify-center">
+                    <div className="pl-28 col-span-1 justify-center ">
                         <img className="flex w-40 h-40 rounded-full" src="./src/assets/PU.jpg" alt="Imagem" />
-                        <h2 className="pt-2 pl-5 text-lg font-bold justify-end pb-2">Rodrigo Faro</h2>
+                        <h2 className="pt-2 justify-center text-lg font-bold pb-2">Rodrigo Faro</h2>
                         <button className="bg-[#f5f5f5] hover:bg-[#FFD121] text-base font-semibold rounded-md w-[192px] ">Editar Perfil</button>
                     </div>
 

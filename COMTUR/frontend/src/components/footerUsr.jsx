@@ -4,8 +4,8 @@ import { Clock, Envelope, FacebookLogo, InstagramLogo, MapPinLine, Phone, Youtub
 
 const FooterUsr = () => {
     return (
-        <footer className="bg-black">
-            <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+        <footer className=" bg-black">
+            <div className=" mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
                 <div className="md:flex ">
                     <div className="pb-6 pl-24 pt-5 pr-28">
                         <a href="https://www.jales.sp.gov.br" className="flex items-center">

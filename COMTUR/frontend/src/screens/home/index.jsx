@@ -28,7 +28,7 @@ const Home = () => {
                     height: 200,
                   }}
                 >
-                  <a href="./empresario">
+                  <a href="./tipousuario">
                     <img
                       className="rounded-t-lg w-full"
                       src="./src/assets/homeUsuario.png"
@@ -46,9 +46,9 @@ const Home = () => {
                     
                     }}
                   >
-                    <a href="./empresario">
+                    <a href="./tipousuario">
                       <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
-                        Empresários
+                        Usuários
                       </h5>
                     </a>
                   </div>

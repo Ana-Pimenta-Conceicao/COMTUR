@@ -18,7 +18,7 @@ public class AtracaoModel
 	public string Nome { get; set; }
 
 	[Column("descricao")]
-	public string Descrição { get; set; }
+	public string Descricao { get; set; }
 
 	[Column("qrcode")]
 	public string QRCode { get; set; }

@@ -10,6 +10,9 @@ namespace COMTUR.Data.Map
 		{
 			builder.HasKey(x => x.Id);
 			builder.Property(x => x.Nome).IsRequired().HasMaxLength(50);
+
+			// Relacionamento Empresario com Empresa
+			builder.HasMany(x => x.Empresa).WithOne(x => x.EmpresarioModel).IsRequired().OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

@@ -93,6 +93,21 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Usuario",
+                columns: table => new
+                {
+                    Usuarioid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    emailUsuario = table.Column<string>(type: "text", nullable: false),
+                    senhaUsuario = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuario", x => x.Usuarioid);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "empresa",
                 columns: table => new
                 {
@@ -189,6 +204,9 @@ namespace COMTUR.Migrations
 
             migrationBuilder.DropTable(
                 name: "tipoturismo");
+
+            migrationBuilder.DropTable(
+                name: "Usuario");
 
             migrationBuilder.DropTable(
                 name: "tipoatracao");

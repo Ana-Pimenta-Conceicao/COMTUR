@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240226154932_comtur")]
+    [Migration("20240227173021_comtur")]
     partial class comtur
     {
         /// <inheritdoc />
@@ -291,6 +291,36 @@ namespace COMTUR.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("tipoturismo");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.UsuarioModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("Usuarioid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmailUsuario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("emailUsuario");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("nome");
+
+                    b.Property<string>("SenhaUsuario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("senhaUsuario");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Usuario");
                 });
 
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>

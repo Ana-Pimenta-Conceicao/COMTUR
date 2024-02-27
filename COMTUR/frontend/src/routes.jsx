@@ -9,6 +9,7 @@ import Inicio from "./screens/inicio/inicio";
 import Empresario from "./screens/empresario/empresario";
 import Administrador from "./screens/administrador/administrador";
 import TipoUsuario from "./screens/tipousuario/tipousuario";
+import PerfilAdministrador from "./screens/administrador/perfilAdministrador";
 
 const AppRoutes = () => {
     return (
@@ -23,6 +24,8 @@ const AppRoutes = () => {
                 <Route path="/visualizarNoticia/:id" element={ <VisualizarNoticia/>} />
                 <Route path="/administrador" element={<Administrador/>} />
                 <Route path="/tipousuario" element={<TipoUsuario/>} />
+                <Route path="/perfiladministrador" element={<PerfilAdministrador/> } />
+
             </Routes>
         </Router>
     );

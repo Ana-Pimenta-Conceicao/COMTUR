@@ -7,7 +7,15 @@ import InputMask from "react-input-mask";
 import SidebarAdm from "../../components/sidebarAdm";
 import NavBarAdm from "../../components/navbarAdm";
 import { useNavigate } from "react-router-dom";
-import { CaretLeft, CaretRight, Eye, EyeSlash, Trash, FilePlus, Pencil } from "@phosphor-icons/react";
+import {
+  CaretLeft,
+  CaretRight,
+  Eye,
+  EyeSlash,
+  Trash,
+  FilePlus,
+  Pencil,
+} from "@phosphor-icons/react";
 
 export default function Administrador() {
   const baseUrl = "https://localhost:7256/api/Administrador";
@@ -48,19 +56,17 @@ export default function Administrador() {
     setShowPassword(!showPassword);
   };
 
-
   const validateEmail = (email) => {
     // Expressão regular para validar e-mails
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValidEmail = regex.test(email);
     if (!isValidEmail) {
-
       alert("Por favor, insira um e-mail válido.");
       // Você também pode definir uma mensagem de erro no estado, se preferir
       // setErrorMessage("Por favor, insira um e-mail válido.");
     }
   };
-  
+
   const AdminSet = (admin, opcao) => {
     console.log("Admin que foi passado: ", admin);
     setIdAdmin(admin.id);
@@ -74,8 +80,10 @@ export default function Administrador() {
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
-    } else {
+    } else if (opcao === "Excluir") {
       abrirFecharModalDeletar();
+    } else {
+      navigate(`/perfilAdministrador/${admin.id}`);
     }
   };
 
@@ -267,10 +275,12 @@ export default function Administrador() {
       <div className="flex-2 container-fluid">
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[20px]">
-          <h1 className="text-3xl font-semibold pb-2">Lista de Administradores</h1>
+          <h1 className="text-3xl font-semibold pb-2">
+            Lista de Administradores
+          </h1>
           <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
           <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
-            <div className="grid grid-cols-11 w-full bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
+            <div className="grid grid-cols-11 w-full border-0 bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
               <span className="flex ml-5 items-center">ID</span>
               <span className="flex justify-center items-center">Imagem</span>
               <span className="flex col-span-3 justify-center items-center">
@@ -314,7 +324,9 @@ export default function Administrador() {
                       <button
                         className="text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
                         onClick={() => AdminSet(admin, "Editar")}
-                      >      <Pencil className="mr-1" size={16}  />
+                      >
+                        {" "}
+                        <Pencil className="mr-1" size={16} />
                         Editar
                       </button>
 
@@ -323,15 +335,25 @@ export default function Administrador() {
                         focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
                         inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                         onClick={() => AdminSet(admin, "Excluir")}
-                      > <Trash className="mr-1" size={16} />
+                      >
+                        {" "}
+                        <Trash className="mr-1" size={16} />
                         Excluir
+                      </button>
+
+                      <button
+                        className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        onClick={() => AdminSet(admin, "Visualizar")}
+                      >
+                        <Eye className="mr-1" size={16} />
+                        Visualizar
                       </button>
                     </span>
                   </li>
                 </React.Fragment>
               ))}
             </ul>
-            <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px] border-[#140f0f]">
+            <div className="pt-4 pb-4 flex justify-center gap-2">
               <button className="" onClick={() => goToPage(currentPage - 1)}>
                 <CaretLeft size={22} className="text-[#DBDBDB]" />
               </button>
@@ -567,7 +589,7 @@ export default function Administrador() {
               onChange={(e) => setEmailAdmin(e.target.value)}
               value={emailAdmin}
             />
-            <br/>
+            <br />
             <label>Senha:</label>
             <br />
             <div className="input-group">

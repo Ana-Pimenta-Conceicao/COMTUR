@@ -7,6 +7,7 @@ const SidebarAdm = () => {
 
   const Menus = [
     { title: "Início", src: "Home" , gap:true},
+    { title: "Perfil", src:"perfilAdministrador"},
     { title: "Usuários", src: "tipousuario" },
     { title: "Ponto Turístico", src: "tipoTurismo" },
     { title: "Eventos", src: "iconeEventos" },
@@ -22,14 +23,14 @@ const SidebarAdm = () => {
           } bg-black h-screen pl-5 pr-5  pt-8 relative duration-300`}
       >
         <img
-          src="./src/assets/control.png"
+          src=" ../src/assets/control.png"
           className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
            border-2 rounded-full  ${!open && "rotate-180"}`}
           onClick={() => setOpen(!open)}
         />
         <div className="flex gap-x-4 items-center">
           <img
-            src="./src/assets/logoComturSF.png"
+            src="../src/assets/logoComturSF.png"
             className={`cursor-pointer duration-500 ${open && "rotate-[360deg]"
               }`}
           />
@@ -50,7 +51,7 @@ const SidebarAdm = () => {
             >
               <Link to={`/${Menu.src.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit'}}>
                 <div className="flex items-center">
-                  <img src={`./src/assets/${Menu.src}.png`}/>
+                  <img src={`../src/assets/${Menu.src}.png`}/>
                   <span className={`${!open && "hidden"} origin-left duration-200 pl-2`}>
                     {Menu.title}
                   </span>

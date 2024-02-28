@@ -24,7 +24,7 @@ const AppRoutes = () => {
                 <Route path="/visualizarNoticia/:id" element={ <VisualizarNoticia/>} />
                 <Route path="/administrador" element={<Administrador/>} />
                 <Route path="/tipousuario" element={<TipoUsuario/>} />
-                <Route path="/perfiladministrador" element={<PerfilAdministrador/> } />
+                <Route path="/perfiladministrador/:id" element={<PerfilAdministrador/> } />
 
             </Routes>
         </Router>

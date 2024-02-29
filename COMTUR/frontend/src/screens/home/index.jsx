@@ -22,7 +22,7 @@ const Home = () => {
                 <div
                   className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                   style={{
-                    background: "#FFD121",
+                    background: "#FDE964",
                     justifyContent: "center",
                     alignItems: "center",
                     height: 200,

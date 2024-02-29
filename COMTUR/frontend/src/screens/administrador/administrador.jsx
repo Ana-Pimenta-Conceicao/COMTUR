@@ -320,20 +320,23 @@ export default function Administrador() {
                     <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
                       {admin.cargoAdministrador}
                     </span>
-                    <span className="flex col-span-3 justify-center items-center border-t-[1px] gap-2 border-[#DBDBDB]">
+                    <span className="flex col-span-3 justify-center items-center border-t-[1px] gap-[3px] 
+                    border-[#DBDBDB]">
                       <button
-                        className="text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+                        className="inline-flex text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 
+                        focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
+                         items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
                         onClick={() => AdminSet(admin, "Editar")}
                       >
                         {" "}
-                        <Pencil className="mr-1" size={16} />
+                        <Pencil className="flex mr-1" size={16} />
                         Editar
                       </button>
 
                       <button
-                        className="text-white bg-red-800 hover:bg-red-900 focus:ring-4 
+                        className="inline-flex text-white bg-red-800 hover:bg-red-900 focus:ring-4 
                         focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
-                        inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                         items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                         onClick={() => AdminSet(admin, "Excluir")}
                       >
                         {" "}
@@ -342,7 +345,8 @@ export default function Administrador() {
                       </button>
 
                       <button
-                        className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none
+                         font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         onClick={() => AdminSet(admin, "Visualizar")}
                       >
                         <Eye className="mr-1" size={16} />

@@ -24,22 +24,22 @@ const NavbarAdm = () => {
       <div>
         <ul className="nav nav-pills ">
           <li className="nav-item" >
-            <a className="nav-link active m-1 " aria-current="page" href="#" style={{backgroundColor: "#FFD121"}}>
+            <a className="nav-link active m-1 " aria-current="page" href="#" style={{backgroundColor: "#FDE964"}}>
               <img className="AcessibilidadeLuz w-[20px] h-[22px] "
              src="../src/assets/Iconeluz.svg" /></a>
           </li>
           <li className="nav-item">
-            <a className=" bg-[#FFD121] nav-link active m-1" aria-current="page" href="#" style={{backgroundColor: "#FFD121"}}>
+            <a className="nav-link active m-1" aria-current="page" href="#" style={{backgroundColor: "#FDE964"}}>
               <img className="Acessibilidadedaltonico  w-[20px] h-[22px]" 
               src="../src/assets/iconeDaltonico.svg" /></a>
           </li>
           <li className="nav-item">
-            <a className="bg-[#FFD121] nav-link active m-1" aria-current="page" href="#" style={{backgroundColor: "#FFD121"}} onClick={aumentarFonte}>
+            <a className="nav-link active m-1" aria-current="page" href="#" style={{backgroundColor: "#FDE964"}} onClick={aumentarFonte}>
               <img className="Acessibilidadefontemais w-[20px] h-[22px]" src="../src/assets/A+.svg" />
             </a>
           </li>
           <li className="nav-item">
-            <a className="bg-[#FFD121] nav-link active m-1" aria-current="page" href="#" style={{backgroundColor: "#FFD121"}} onClick={resetarFonte}>
+            <a className=" nav-link active m-1" aria-current="page" href="#" style={{backgroundColor: "#FDE964"}} onClick={resetarFonte}>
               <img className="Acessibilidadefonte w-[20px] h-[22px]" src="../src/assets/A-.svg" />
             </a>
           </li>

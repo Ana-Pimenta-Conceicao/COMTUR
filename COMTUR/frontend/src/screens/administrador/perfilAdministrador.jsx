@@ -106,9 +106,9 @@ export default function PerfilAdministrador() {
       <SidebarAdm />
       <div className="flex-2 container-fluid">
         <NavBarAdm />
-        <div className="pl-8 pr-8 pt-[20px]">
-          <h1 className="text-3xl font-semibold pb-2">
-            Bem vindo, {nomeAdmin}
+        <div className="pl-8 pr-8 pt-[16px]">
+          <h1 className="text-2xl font-semibold pb-2">
+            Bem vindo(a), {nomeAdmin}!
           </h1>
           <hr className="pb-[30px] border-[2.5px] border-[#DBDBDB]" />
         </div>
@@ -122,35 +122,37 @@ export default function PerfilAdministrador() {
                 onChange={(e) => setImagemPerfilAdmin(e.target.files[0])}
               />
             </div>
-            <div className="flex relative w-40 h-40 rounded-full justify-center">
+            <div className="relative rounded-full">
               <img
                 className="flex w-40 h-40 rounded-full cursor-pointer"
                 src={imagemPerfilAdmin instanceof File ? URL.createObjectURL(imagemPerfilAdmin) : imagemPerfilAdmin}
                 alt="Imagem"
                 onClick={handleImageClick} // Manipulador de clique na imagem
               />
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              
                 <button
-                  className="w-10 h-10 right-6 bottom-0 bg-[#FFD121] border-2 border-white dark:border-gray-800 rounded-full flex justify-center items-center"
+                  className="flex w-10 h-10 bottom-[-4px] left-28 absolute bg-[#FDE964] border-2
+                   border-white dark:border-gray-800 rounded-full  justify-center items-center"
                   onClick={handleImageClick}
                 >
-                  <Camera size={20} />
+                  <Camera className="text-gray-700" size={20} />
                 </button>
-              </div>
+             
+              
             </div>
-            <h2 className="pt-2 justify-center text-lg font-bold pb-2">
+            <h2 className="flex pt-2 justify-left text-lg font-bold pb-2">
               {administrador.nomeAdministrador}
             </h2>
             {!editing ? (
               <button
-                className="bg-[#f5f5f5] hover:bg-[#FFD121] text-base font-semibold rounded-md w-[192px] "
+                className="flex bg-[#f5f5f5] justify-center hover:bg-black hover:text-white  text-base font-semibold rounded-md w-[192px] "
                 onClick={handleEditarPerfil}
               >
                 Editar Perfil
               </button>
             ) : (
               <button
-                className="bg-[#f5f5f5] hover:bg-[#FFD121] text-base font-semibold rounded-md w-[192px] "
+                className="flex bg-[#f5f5f5] justify-center hover:bg-[#FDE964] text-base font-semibold rounded-md w-[192px] "
                 onClick={handleSalvarPerfil}
               >
                 Salvar
@@ -162,14 +164,14 @@ export default function PerfilAdministrador() {
             <label className="text-sm font-semibold">ID: </label>
             <input
               type="text"
-              className="form-control text-sm mb-2 w-[300px]"
+              className="form-control text-sm mb-2 w-[300px] pointer-events-none"
               readOnly
               value={administrador.id}
             />
             <label className="text-sm font-semibold">Nome: </label>
             <input
               type="text"
-              className="form-control text-sm mb-2  w-[300px]"
+              className="form-control text-sm mb-2  w-[300px] pointer-events-none"
               readOnly={!editing}
               onChange={(e) => setNomeAdmin(e.target.value)}
               value={nomeAdmin}

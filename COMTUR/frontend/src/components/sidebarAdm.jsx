@@ -41,7 +41,7 @@ const SidebarAdm = () => {
             Rodrigo Faro
           </h1>
         </div>
-        <ul className="pt-6" style={{ padding: 0}} >
+        <ul className="pt-6" style={{ padding: 0, position: 'relative' }} >
           {Menus.map((Menu, index) => (
             <li 
               key={index}
@@ -59,6 +59,7 @@ const SidebarAdm = () => {
               </Link>
             </li>
           ))}
+          
         </ul>
       </div>
     </div >

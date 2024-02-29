@@ -131,11 +131,11 @@ export default function PerfilAdministrador() {
               />
               
                 <button
-                  className="flex w-10 h-10 bottom-[-4px] left-28 absolute bg-[#FDE964] border-2
+                  className="flex w-10 h-10 bottom-[-4px] left-28 absolute bg-[#FDE964] hover:bg-black hover:text-white border-2
                    border-white dark:border-gray-800 rounded-full  justify-center items-center"
                   onClick={handleImageClick}
                 >
-                  <Camera className="text-gray-700" size={20} />
+                  <Camera className="text-gray-700 hover:text-white" size={20} />
                 </button>
              
               

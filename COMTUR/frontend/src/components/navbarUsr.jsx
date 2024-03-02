@@ -26,7 +26,7 @@ const NavbarUsr = () => {
   };
 
   return (
-    <div class="container-fluid" style={{margin: 0, width: "100%", padding: 0}}>
+    <div class="container-fluid" style={{ margin: 0, width: "100%", padding: 0 }}>
       <nav class="navbar navbar-expand-lg bg-black p-0 teste" data-bs-theme="dark">
 
         <nav class="navbar bg-black ml-5">
@@ -67,9 +67,9 @@ const NavbarUsr = () => {
                 <input type="radio" class={`btn-check ${botaoSelecionado === 5 ? 'amarelocheck' : ''}`} name="btnradio" id="btnradio5" autocomplete="off" checked={botaoSelecionado === 5} onChange={() => handleBotaoSelecionado(5)} />
                 <label class={`btn btnmenunav mr-1 ${botaoSelecionado === 5 ? 'btn-outline-warning' : 'btn-outline-black'}`} for="btnradio5">Notícias</label>
 
-                
-                  
-              
+
+
+
 
               </div>
 

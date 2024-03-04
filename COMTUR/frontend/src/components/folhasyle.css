@@ -1,0 +1,25 @@
+/* .amarelocheck{
+  background-color: #FFD121;
+} */
+
+/* css reset */
+* {
+  margin: 0;
+  padding:0;
+  box-sizing: border-box;
+}
+
+.btnmenunav{
+  border-radius: 0;
+  padding: 20px !important;
+  margin: 0;
+}
+.ajustelocal{
+  margin-bottom: 23px;
+}
+.btnmenulogin{
+  border-radius: 0;
+  padding: 20px !important;
+  margin: 0;
+}
+

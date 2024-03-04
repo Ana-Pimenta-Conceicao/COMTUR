@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import NavbarUsr from "../../components/navbarUsr";
 
 export default function Inicio() {
     return (
@@ -9,6 +10,7 @@ export default function Inicio() {
                 <Link to={`/home`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <button>HOME</button></Link>
             </div>
+            <NavbarUsr/>
 
 
             <div className="flex flex-wrap  ">

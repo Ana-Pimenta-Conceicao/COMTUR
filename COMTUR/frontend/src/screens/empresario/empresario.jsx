@@ -1,7 +1,7 @@
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SidebarAdm from '../../components/sidebarAdm';
-import NavBarAdm from '../../components/navbarAdm';
+import SidebarAdm from "../../components/admin/sidebarAdm";
+import NavbarAdm from "../../components/admin/navbarAdm";
 import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import React from 'react';
@@ -149,7 +149,7 @@ export default function Empresario() {
         <div className="h-screen flex">
             <SidebarAdm />
             <div className="flex-2 container-fluid">
-                <NavBarAdm />
+                <NavbarAdm />
                 <h1 className="text-2xl pb-10 font-semibold">Lista de Empresários</h1>
                 <div className="flex relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

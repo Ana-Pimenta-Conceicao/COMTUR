@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NavbarUsr from "../../components/navbarUsr";
-import FooterUsr from "../../components/footerUsr";
+import NavbarUsr from "../../components/user/navbarUsr";
+import FooterUsr from "../../components/user/footerUsr";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function VisualizarNoticia() {

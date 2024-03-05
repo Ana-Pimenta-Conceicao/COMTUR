@@ -1,8 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SidebarAdm from "../../components/sidebarAdm";
-import NavbarAdm from "../../components/navbarAdm";
-import { Card } from "reactstrap";
+import SidebarAdm from "../../components/admin/sidebarAdm";
+import NavbarAdm from "../../components/admin/navbarAdm";
 
 const Home = () => {
   return (
@@ -11,231 +10,96 @@ const Home = () => {
         <SidebarAdm />
         <div className="flex-2 container-fluid">
           <NavbarAdm />
-
-          <div className="cont-home" style={{ paddingLeft: 50 }}>
-            <h1 className="text-2xl font-semibold">
+          <div className="cont-home pl-[50px]">
+            <div className="text-2xl font-semibold">
               Bem Vindo, Rodrigo Faro!
-            </h1>
+            </div>
 
             <div className="flex flex-wrap">
               <div className="w-full md:w-1/2 lg:w-1/3 p-4">
-                <div
-                  className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-                  style={{
-                    background: "#FDE964",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 200,
-                  }}
-                >
-                  <a href="./tipousuario">
-                    <img
-                      className="rounded-t-lg w-full"
-                      src="./src/assets/homeUsuario.png"
-                      alt=""
-                    />
+                <div className="max-w-sm flex-row justify-center items-center h-[200px] rounded-lg shadow bg-[#FFD121]">
+                  <a href="./empresario">
+                    <img className="rounded-t-lg w-full" src="./src/assets/homeUsuario.png" alt="Tela principal do empresário" />
                   </a>
-                  <div
-                    className="p-2 rounded-lg h-10"
-                    style={{
-                      background: "#FFD121",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    
-                    }}
-                  >
-                    <a href="./tipousuario">
-                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
-                        Usuários
-                      </h5>
+                  <div className="flex flex-col justify-center items-center bg-[#FFD121] rounded-b-lg h-10">
+                    <a href="./empresario">
+                      <div className="text-2xl font-bold tracking-tight">
+                        Empresários
+                      </div>
                     </a>
                   </div>
                 </div>
               </div>
-
               <div className="w-1/2 lg:w-1/3 p-4">
-                <div
-                  className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-                  style={{
-                    background: "#FFD121",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 200,
-                  }}
-                >
+                <div className="max-w-sm flex-row justify-center items-center h-[200px] rounded-lg shadow bg-[#FFD121]">
                   <a href="#">
-                    <img
-                      className="rounded-t-lg w-full"
-                      src="./src/assets/homeEmpresa.png"
-                      alt="Empresas"
-
-                    />
+                    <img className="rounded-t-lg w-full" src="./src/assets/homeEmpresa.png" alt="Teça Principal de Empresas" />
                   </a>
-                  <div
-                    className="p-2 rounded-lg"
-                    style={{
-                      background: "#FFD121",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: 40,
-                    }}
-                  >
+                  <div className="flex flex-col justify-center items-center bg-[#FFD121] rounded-b-lg h-10">
                     <a href="#">
-                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
+                      <div className="text-2xl font-bold tracking-tight">
                         Empresas
-                      </h5>
+                      </div>
                     </a>
                   </div>
                 </div>
               </div>
 
               <div className="w-1/2 lg:w-1/3 p-4">
-                <div
-                  className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-                  style={{
-                    background: "#FFD121",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 200,
-                  }}
-                >
+                <div className="max-w-sm flex-row justify-center items-center h-[200px] rounded-lg shadow bg-[#FFD121]">
                   <a href="./noticia">
-                    <img
-                      className="rounded-t-lg w-full"
-                      src="./src/assets/homeNoticia.png"
-                      alt=""
-                    />
+                    <img className="rounded-t-lg w-full" src="./src/assets/homeNoticia.png" alt="Tela Principal de Noticias" />
                   </a>
-                  <div
-                    className="p-2 rounded-lg"
-                    style={{
-                      background: "#FFD121",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: 40,
-                    }}
-                  >
+                  <div className="flex flex-col justify-center items-center bg-[#FFD121] rounded-b-lg h-10">
                     <a href="./noticia">
-                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
+                      <div className="text-2xl font-bold tracking-tight ">
                         Notícias
-                      </h5>
+                      </div>
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div style={{ width: "100%", height: 5 }}></div>
+              <div className="w-full h-[5px]"></div>
 
               <div className="w-1/2 lg:w-1/3 p-4">
-                <div
-                  className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-                  style={{
-                    background: "#FFD121",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 200,
-                  }}
-                >
+                <div className="max-w-sm flex-row justify-center items-center h-[200px] rounded-lg shadow bg-[#FFD121]">
                   <a href="#">
-                    <img
-                      className="w-full rounded-t-lg"
-                      src="./src/assets/homeEvento.png"
-                      alt=""
-                    />
+                    <img className="w-full rounded-t-lg" src="./src/assets/homeEvento.png" alt="Tela Principal de Eventos"/>
                   </a>
-                  <div
-                    className="p-2 rounded-lg"
-                    style={{
-                      background: "#FFD121",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: 40
-                    }}
-                  >
+                  <div className="flex flex-col justify-center items-center bg-[#FFD121] rounded-b-lg h-10">
                     <a href="#">
-                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
+                      <div className="text-2xl font-bold tracking-tight">
                         Eventos
-                      </h5>
+                      </div>
                     </a>
                   </div>
                 </div>
               </div>
               <div className="w-1/2 lg:w-1/3 p-4">
-                <div
-                  className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-                  style={{
-                    background: "#FFD121",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 200,
-                  }}
-                >
+                <div className="max-w-sm flex-row justify-center items-center h-[200px] rounded-lg shadow bg-[#FFD121]">
                   <a href="./tipoatracao">
-                    <img
-                      className=" w-full rounded-t-lg"
-                      src="./src/assets/homeAtracao.png"
-                      alt=""
-                    />
+                    <img className=" w-full rounded-t-lg" src="./src/assets/homeAtracao.png" alt="Tela Principal de Atrações" />
                   </a>
-                  <div
-                    className="p-2 rounded-lg"
-                    style={{
-                      background: "#FFD121",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: 40
-                    }}
-                  >
+                  <div className="flex flex-col justify-center items-center bg-[#FFD121] rounded-b-lg h-10">
                     <a href="./tipoatracao">
-                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
+                      <div className="text-2xl font-bold tracking-tight">
                         Atrações
-                      </h5>
+                      </div>
                     </a>
                   </div>
                 </div>
               </div>
               <div className="w-1/2 lg:w-1/3 p-4">
-                <div
-                  className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-                  style={{
-                    background: "#FFD121",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 200,
-                  }}
-                >
+                <div className="max-w-sm flex-row justify-center items-center h-[200px] rounded-lg shadow bg-[#FFD121]">
                   <a href="./tipoturismo">
-                    <img
-                      className=" w-full rounded-t-lg"
-                      src="./src/assets/homePontoTuristico.png"
-                      alt=""
-                    />
+                    <img className=" w-full rounded-t-lg" src="./src/assets/homePontoTuristico.png" alt="Tela Principal de Pontos Turísticos"/>
                   </a>
-                  <div
-                    className="p-2 rounded-lg"
-                    style={{
-                      background: "#FFD121",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: 40
-                    }}
-                  >
+                  <div className="flex flex-col justify-center items-center bg-[#FFD121] rounded-b-lg h-10">
                     <a href="./tipoturismo">
-                      <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
+                      <div className="text-2xl font-bold tracking-tight">
                         Pontos Turísticos
-                      </h5>
+                      </div>
                     </a>
                   </div>
                 </div>

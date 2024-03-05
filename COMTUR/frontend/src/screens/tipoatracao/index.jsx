@@ -1,6 +1,6 @@
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
-import SidebarAdm from '../../components/sidebarAdm';
-import NavBarAdm from '../../components/navbarAdm';
+import SidebarAdm from "../../components/admin/sidebarAdm";
+import NavbarAdm from "../../components/admin/navbarAdm";
 import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
@@ -217,7 +217,7 @@ function Atracao() {
     <div className="h-screen flex">
       <SidebarAdm />
       <div className="flex-2 container-fluid">
-        <NavBarAdm />
+        <NavbarAdm />
         <div className="pl-8 pr-8 pt-[20px]">
           <h1 className="text-3xl font-semibold pb-2">Lista de Atração</h1>
           <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />

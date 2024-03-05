@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import "../components/folhasyle.css"
+import "../user/folhasyle.css";
+import iconePesquisa from "../../assets/iconePesquisa.svg";
+import logoNavUsr from "../../assets/logoNavUser.png"
 
 const NavbarUsr = () => {
   const tamanhoFonteInicial = 16;
@@ -32,7 +34,7 @@ const NavbarUsr = () => {
         <nav class="navbar bg-black ml-5">
           <div class="container">
             <a class="navbar-brand ml-2" href="#">
-              <img src="./src/assets/logonavuser.png" alt="lovo" width="47" height="46" />
+              <img src={logoNavUsr} alt="lovo" width="47" height="46" />
             </a>
           </div>
         </nav>
@@ -46,7 +48,7 @@ const NavbarUsr = () => {
             <div class="collapse navbar-collapse mt-1" id="navbarSupportedContent">
               <form class="d-flex bg-white ml-5" role="search" style={{ display: 'flex', border: '1px solid #ccc', borderRadius: '10px', padding: '5px', alignItems: "center", width: 380, height: 40, justifyContent: 'space-between' }}>
                 <input class="bg-white" type="text" style={{ paddingRight: 30, border: 'none', outline: 'none', borderRadius: '10px', width: 340 }} placeholder="Pesquisar" />
-                <img src="./src/assets/iconePesquisa.svg" alt="ÍconePesquisa" style={{ width: 30, height: 30, paddingRight: 10 }} />
+                <img src={iconePesquisa} alt="ÍconePesquisa" style={{ width: 30, height: 30, paddingRight: 10 }} />
               </form>
 
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import NavbarUsr from "../../components/navbarUsr";
+import NavbarUsr from "../../components/user/navbarUsr"
 
 export default function Inicio() {
     return (

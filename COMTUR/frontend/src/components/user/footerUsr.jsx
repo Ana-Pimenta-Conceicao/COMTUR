@@ -1,5 +1,5 @@
 import React from 'react';
-import logoJales from '../assets/logoJales.svg'
+import logoJales from '../../assets/logoJales.svg'
 import { Clock, Envelope, FacebookLogo, InstagramLogo, MapPinLine, Phone, YoutubeLogo } from '@phosphor-icons/react';
 
 const FooterUsr = () => {

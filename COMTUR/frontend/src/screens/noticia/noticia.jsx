@@ -4,17 +4,12 @@ import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import InputMask from "react-input-mask";
-import SidebarAdm from "../../components/sidebarAdm";
-import NavBarAdm from "../../components/navbarAdm";
+import SidebarAdm from "../../components/admin/sidebarAdm";
+import NavBarAdm from "../../components/admin/navbarAdm";
+import BtnAcao from "../../components/botoes/btnAcao";
+import BtnModais from "../../components/botoes/btnModais";
 import { useNavigate } from "react-router-dom";
-import {
-  CaretLeft,
-  CaretRight,
-  Pencil,
-  Trash,
-  Eye,
-  FilePlus,
-} from "@phosphor-icons/react";
+import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 
 export default function Noticia() {
   const baseUrl = "https://localhost:7256/api/Noticia";
@@ -305,35 +300,19 @@ export default function Noticia() {
                     <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
                       {formatarDataParaExibicao(noticia.dataPublicacao)}
                     </span>
-                    <span className="flex col-span-2 items-center justify-center border-t-[1px] gap-2 border-[#DBDBDB]">
-                      <button
-                        className="text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                        onClick={() => NoticiaSet(noticia, "Editar")}
-                      >
-                        <Pencil className="mr-1" size={16} />
-                        Editar
-                      </button>
+                    <span className="flex col-span-2 items-center justify-center border-t-[1px] border-[#DBDBDB]">
 
-                      <button
-                        className="text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                        onClick={() => NoticiaSet(noticia, "Excluir")}
-                      >
-                        <Trash className="mr-1" size={16} />
-                        Excluir
-                      </button>
+                      <BtnAcao funcao={() => NoticiaSet(noticia, "Editar")} acao="Editar" />
+                      <BtnAcao funcao={() => NoticiaSet(noticia, "Excluir")} acao="Excluir" />
+                      <BtnAcao funcao={() => NoticiaSet(noticia, "Visualizar")} acao="Visualizar" />
 
-                      <button
-                        className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        onClick={() => NoticiaSet(noticia, "Visualizar")}
-                      >
-                        <Eye className="mr-1" size={16} />
-                        Visualizar
-                      </button>
                     </span>
                   </li>
                 </React.Fragment>
               ))}
             </ul>
+
+
             <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px] border-[#DBDBDB]">
               <button className="" onClick={() => goToPage(currentPage - 1)}>
                 <CaretLeft size={22} className="text-[#DBDBDB]" />
@@ -354,18 +333,15 @@ export default function Noticia() {
               </button>
             </div>
           </div>
-          <div className="float-right flex-auto py-6">
-            <button
-              className="text-white bg-yellow-400 hover:bg-yellow-500 
-               rounded-xl text-lg px-3 font-semibold py-1.5 text-center"
-              onClick={() => abrirFecharModalInserir()}
-            >
-              <span className="inline-flex items-center">
-                <FilePlus className="mr-1" size={24} />
-                Cadastrar
-              </span>
-            </button>
-          </div>
+
+
+
+         <div className="float-right flex-auto py-6">
+         <BtnAcao funcao={() => abrirFecharModalInserir("Cadastrar")} acao="Cadastrar" />
+           
+          </div> 
+
+
         </div>
       </div>
 
@@ -385,7 +361,7 @@ export default function Noticia() {
             <label>Subtitulo:</label>
             <br />
             <textarea
-              className="form-control text-sm" 
+              className="form-control text-sm"
               onChange={(e) => setNoticiaSubtitulo(e.target.value)}
               placeholder="Digite o Subtitulo"
             />
@@ -433,7 +409,7 @@ export default function Noticia() {
             <br />
             <label>Imagem:</label>
             {noticiaArquivoImagem && modalEditar && (
-              <div style={{ position: "relative", display: "inline-block" }}>
+              <div className="" style={{ position: "relative", display: "inline-block" }}>
                 {typeof noticiaArquivoImagem === "string" ? (
                   <img
                     src={base64ToImage(noticiaArquivoImagem)}
@@ -480,19 +456,10 @@ export default function Noticia() {
           </div>
         </ModalBody>
         <ModalFooter>
-          <button
-            className="btn bg-yellow-400 text-white hover:bg-yellow-500"
-            onClick={() => pedidoPost()}
-          >
-            Cadastrar
-          </button>
-          {"  "}
-          <button
-            className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalInserir()}
-          >
-            Cancelar
-          </button>
+        <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
+        <BtnModais funcao={() => abrirFecharModalInserir()} acao="Cancelar" />
+                  
+          
         </ModalFooter>
       </Modal>
       <Modal isOpen={modalEditar}>
@@ -593,19 +560,8 @@ export default function Noticia() {
           </div>
         </ModalBody>
         <ModalFooter>
-          <button
-            className="btn bg-teal-700 hover:bg-teal-900 text-white"
-            onClick={() => pedidoAtualizar()}
-          >
-            Editar
-          </button>
-          {"  "}
-          <button
-            className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalEditar()}
-          >
-            Cancelar
-          </button>
+        <BtnModais funcao={() => pedidoAtualizar()} acao="Editar" />
+        <BtnModais funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
         </ModalFooter>
       </Modal>
       <Modal isOpen={modalDeletar}>
@@ -613,18 +569,8 @@ export default function Noticia() {
           Confirma a exclusão da notícia "{noticiaTitulo}" ?
         </ModalBody>
         <ModalFooter>
-          <button
-            className="btn bg-red-800 hover:bg-red-900 text-white"
-            onClick={() => pedidoDeletar()}
-          >
-            Sim
-          </button>
-          <button
-            className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalDeletar()}
-          >
-            Não
-          </button>
+        <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+        <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
         </ModalFooter>
       </Modal>
     </div>

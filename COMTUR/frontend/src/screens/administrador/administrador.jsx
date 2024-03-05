@@ -4,18 +4,12 @@ import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import InputMask from "react-input-mask";
-import SidebarAdm from "../../components/sidebarAdm";
-import NavBarAdm from "../../components/navbarAdm";
+import SidebarAdm from "../../components/admin/sidebarAdm";
+import NavBarAdm from "../../components/admin/navbarAdm";
+import BtnAcao from "../../components/botoes/btnAcao";
+import BtnModais from "../../components/botoes/btnModais";
 import { useNavigate } from "react-router-dom";
-import {
-  CaretLeft,
-  CaretRight,
-  Eye,
-  EyeSlash,
-  Trash,
-  FilePlus,
-  Pencil,
-} from "@phosphor-icons/react";
+import { CaretLeft, CaretRight, EyeSlash, Eye } from "@phosphor-icons/react";
 
 export default function Administrador() {
   const baseUrl = "https://localhost:7256/api/Administrador";
@@ -322,36 +316,9 @@ export default function Administrador() {
                     </span>
                     <span className="flex col-span-3 justify-center items-center border-t-[1px] gap-[3px] 
                     border-[#DBDBDB]">
-                      <button
-                        className="inline-flex text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 
-                        focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
-                         items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                        onClick={() => AdminSet(admin, "Editar")}
-                      >
-                        {" "}
-                        <Pencil className="flex mr-1" size={16} />
-                        Editar
-                      </button>
-
-                      <button
-                        className="inline-flex text-white bg-red-800 hover:bg-red-900 focus:ring-4 
-                        focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
-                         items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                        onClick={() => AdminSet(admin, "Excluir")}
-                      >
-                        {" "}
-                        <Trash className="mr-1" size={16} />
-                        Excluir
-                      </button>
-
-                      <button
-                        className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none
-                         font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        onClick={() => AdminSet(admin, "Visualizar")}
-                      >
-                        <Eye className="mr-1" size={16} />
-                        Visualizar
-                      </button>
+                      <BtnAcao funcao={() => AdminSet(admin, "Editar")} acao="Editar" />
+                      <BtnAcao funcao={() => AdminSet(admin, "Excluir")} acao="Excluir" />
+                      <BtnAcao funcao={() => AdminSet(admin, "Visualizar")} acao="Visualizar" />
                     </span>
                   </li>
                 </React.Fragment>
@@ -378,16 +345,7 @@ export default function Administrador() {
             </div>
           </div>
           <div className="float-right flex-auto py-6">
-            <button
-              className="text-white bg-yellow-400 hover:bg-yellow-500 
-               rounded-xl text-lg px-3 font-semibold py-1.5 text-center"
-              onClick={() => abrirFecharModalInserir()}
-            >
-              <span className="inline-flex items-center">
-                <FilePlus className="mr-1" size={24} />
-                Cadastrar
-              </span>
-            </button>
+          <BtnAcao funcao={() => abrirFecharModalInserir("Cadastrar")} acao="Cadastrar" />
           </div>
         </div>
       </div>
@@ -515,19 +473,9 @@ export default function Administrador() {
           </div>
         </ModalBody>
         <ModalFooter>
-          <button
-            className="btn bg-yellow-400 text-white hover:bg-yellow-500"
-            onClick={() => pedidoPost()}
-          >
-            Cadastrar
-          </button>
-          {"  "}
-          <button
-            className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalInserir()}
-          >
-            Cancelar
-          </button>
+        <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
+        <BtnModais funcao={() => abrirFecharModalInserir()} acao="Cancelar" />
+                  
         </ModalFooter>
       </Modal>
       <Modal isOpen={modalEditar}>
@@ -659,19 +607,9 @@ export default function Administrador() {
           </div>
         </ModalBody>
         <ModalFooter>
-          <button
-            className="btn bg-yellow-400 text-white hover:bg-yellow-500"
-            onClick={() => pedidoAtualizar()}
-          >
-            Editar
-          </button>
-          {"  "}
-          <button
-            className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalEditar()}
-          >
-            Cancelar
-          </button>
+        <BtnModais funcao={() => pedidoAtualizar()} acao="Editar" />
+        <BtnModais funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
+                  
         </ModalFooter>
       </Modal>
 
@@ -680,18 +618,9 @@ export default function Administrador() {
           Confirma a exclusão do administrador: "{nomeAdmin}" ?
         </ModalBody>
         <ModalFooter>
-          <button
-            className="btn bg-red-800 hover:bg-red-900 text-white"
-            onClick={() => pedidoDeletar()}
-          >
-            Sim
-          </button>
-          <button
-            className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalDeletar()}
-          >
-            Não
-          </button>
+        <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+        <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
+                  
         </ModalFooter>
       </Modal>
     </div>

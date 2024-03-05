@@ -3,8 +3,8 @@ import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import axios from 'axios'
 import "../tipoturismo/index.css"
 import "bootstrap/dist/css/bootstrap.min.css"
-import SidebarAdm from '../../components/sidebarAdm';
-import NavBarAdm from '../../components/navbarAdm';
+import SidebarAdm from "../../components/admin/sidebarAdm";
+import NavbarAdm from "../../components/admin/navbarAdm";
 import {
     CaretLeft,
     CaretRight,
@@ -161,7 +161,7 @@ function TipoTurismo() {
         <div className="h-screen flex">
             <SidebarAdm />
             <div className="flex-2 container-fluid">
-                <NavBarAdm />
+                <NavbarAdm />
                 <div className="pl-8 pr-8 pt-[20px]">
                     <h1 className="text-3xl font-semibold pb-2">Lista de Tipo Turismo</h1>
                     <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />

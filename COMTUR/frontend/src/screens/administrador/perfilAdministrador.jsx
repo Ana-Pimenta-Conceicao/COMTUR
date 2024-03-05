@@ -1,5 +1,5 @@
-import SidebarAdm from "../../components/sidebarAdm";
-import NavBarAdm from "../../components/navbarAdm";
+import NavbarAdm from "../../components/admin/navbarAdm";
+import SidebarAdm from "../../components/admin/sidebarAdm";
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -105,7 +105,7 @@ export default function PerfilAdministrador() {
     <div className="h-screen flex">
       <SidebarAdm />
       <div className="flex-2 container-fluid">
-        <NavBarAdm />
+        <NavbarAdm />
         <div className="pl-8 pr-8 pt-[16px]">
           <h1 className="text-2xl font-semibold pb-2">
             Bem vindo(a), {nomeAdmin}!

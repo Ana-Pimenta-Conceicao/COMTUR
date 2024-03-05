@@ -10,6 +10,9 @@ namespace COMTUR.Data.Map
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Titulo).IsRequired();
-        }
+
+			// Relacionamento Noticia com ImagemNoticia
+			builder.HasMany(x => x.ImagemNoticia).WithOne(x => x.NoticiaModel).IsRequired().OnDelete(DeleteBehavior.Cascade);
+		}
     }
 }

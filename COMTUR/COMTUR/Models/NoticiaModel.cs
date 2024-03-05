@@ -37,6 +37,8 @@ namespace COMTUR.Models
         [Column("arquivoImagem")]
         public string ArquivoImagem { get; set; }
 
-  
-    }
+		[JsonIgnore]
+		public ICollection<ImagemNoticiaModel>? ImagemNoticia { get; set; }
+
+	}
 }

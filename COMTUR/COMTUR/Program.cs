@@ -41,6 +41,7 @@ namespace COMTUR
 			builder.Services.AddTransient<IAtracaoRepositorio, AtracaoRepositorio>();
 			builder.Services.AddTransient<IEmpresaRepositorio, EmpresaRepositorio>();
 			builder.Services.AddTransient<IUsuarioRepositorio, UsuarioRepositorio>();
+			builder.Services.AddTransient<IImagemNoticiaRepositorio, ImagemNoticiaRepositorio>();
 
 			var app = builder.Build();
 

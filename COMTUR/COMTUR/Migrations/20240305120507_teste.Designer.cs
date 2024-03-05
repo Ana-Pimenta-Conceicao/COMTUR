@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240227173021_comtur")]
-    partial class comtur
+    [Migration("20240305120507_teste")]
+    partial class teste
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,8 +101,7 @@ namespace COMTUR.Migrations
 
                     b.Property<string>("QRCode")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("text")
                         .HasColumnName("qrcode");
 
                     b.Property<int?>("TipoAtracaoModelId")
@@ -203,6 +202,35 @@ namespace COMTUR.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("empresario");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.ImagemNoticiaModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("imagemnoticiaid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IdNoticia")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Imagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagem");
+
+                    b.Property<int?>("NoticiaModelId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdNoticia");
+
+                    b.HasIndex("NoticiaModelId");
+
+                    b.ToTable("imagemnoticia");
                 });
 
             modelBuilder.Entity("COMTUR.Models.NoticiaModel", b =>
@@ -353,9 +381,29 @@ namespace COMTUR.Migrations
                     b.Navigation("EmpresarioModel");
                 });
 
+            modelBuilder.Entity("COMTUR.Models.ImagemNoticiaModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.NoticiaModel", "NoticiaModel")
+                        .WithMany()
+                        .HasForeignKey("IdNoticia")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("COMTUR.Models.NoticiaModel", null)
+                        .WithMany("ImagemNoticia")
+                        .HasForeignKey("NoticiaModelId");
+
+                    b.Navigation("NoticiaModel");
+                });
+
             modelBuilder.Entity("COMTUR.Models.EmpresarioModel", b =>
                 {
                     b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.NoticiaModel", b =>
+                {
+                    b.Navigation("ImagemNoticia");
                 });
 
             modelBuilder.Entity("COMTUR.Models.TipoAtracaoModel", b =>

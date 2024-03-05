@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class comtur : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -139,6 +139,32 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "imagemnoticia",
+                columns: table => new
+                {
+                    imagemnoticiaid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    imagem = table.Column<string>(type: "text", nullable: false),
+                    IdNoticia = table.Column<int>(type: "integer", nullable: false),
+                    NoticiaModelId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_imagemnoticia", x => x.imagemnoticiaid);
+                    table.ForeignKey(
+                        name: "FK_imagemnoticia_noticia_IdNoticia",
+                        column: x => x.IdNoticia,
+                        principalTable: "noticia",
+                        principalColumn: "noticiaid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_imagemnoticia_noticia_NoticiaModelId",
+                        column: x => x.NoticiaModelId,
+                        principalTable: "noticia",
+                        principalColumn: "noticiaid");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "atracao",
                 columns: table => new
                 {
@@ -146,7 +172,7 @@ namespace COMTUR.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     descricao = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    qrcode = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    qrcode = table.Column<string>(type: "text", nullable: false),
                     IdTipoAtracao = table.Column<int>(type: "integer", nullable: false),
                     TipoAtracaoModelId = table.Column<int>(type: "integer", nullable: true)
                 },
@@ -185,6 +211,16 @@ namespace COMTUR.Migrations
                 name: "IX_empresa_IdEmpresario",
                 table: "empresa",
                 column: "IdEmpresario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_imagemnoticia_IdNoticia",
+                table: "imagemnoticia",
+                column: "IdNoticia");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_imagemnoticia_NoticiaModelId",
+                table: "imagemnoticia",
+                column: "NoticiaModelId");
         }
 
         /// <inheritdoc />
@@ -200,7 +236,7 @@ namespace COMTUR.Migrations
                 name: "empresa");
 
             migrationBuilder.DropTable(
-                name: "noticia");
+                name: "imagemnoticia");
 
             migrationBuilder.DropTable(
                 name: "tipoturismo");
@@ -213,6 +249,9 @@ namespace COMTUR.Migrations
 
             migrationBuilder.DropTable(
                 name: "empresario");
+
+            migrationBuilder.DropTable(
+                name: "noticia");
         }
     }
 }

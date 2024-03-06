@@ -116,7 +116,7 @@ namespace COMTUR.Migrations
                     empresaid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    cnpj = table.Column<int>(type: "integer", nullable: false),
+                    cnpj = table.Column<long>(type: "bigint", nullable: false),
                     endereco = table.Column<string>(type: "text", nullable: false),
                     imagem = table.Column<string>(type: "text", nullable: true),
                     legendaImagem = table.Column<string>(type: "text", nullable: false),

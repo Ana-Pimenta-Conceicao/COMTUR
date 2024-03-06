@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240306120112_teste")]
+    [Migration("20240306164907_teste")]
     partial class teste
     {
         /// <inheritdoc />
@@ -125,8 +125,8 @@ namespace COMTUR.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CNPJ")
-                        .HasColumnType("integer")
+                    b.Property<long>("CNPJ")
+                        .HasColumnType("bigint")
                         .HasColumnName("cnpj");
 
                     b.Property<string>("Descricao")

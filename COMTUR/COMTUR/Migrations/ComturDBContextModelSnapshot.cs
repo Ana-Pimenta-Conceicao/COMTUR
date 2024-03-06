@@ -122,8 +122,8 @@ namespace COMTUR.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CNPJ")
-                        .HasColumnType("integer")
+                    b.Property<long>("CNPJ")
+                        .HasColumnType("bigint")
                         .HasColumnName("cnpj");
 
                     b.Property<string>("Descricao")

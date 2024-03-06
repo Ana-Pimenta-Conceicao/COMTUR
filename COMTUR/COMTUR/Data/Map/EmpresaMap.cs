@@ -10,6 +10,8 @@ namespace COMTUR.Data.Map
 		{
 			builder.HasKey(x => x.Id);
 			builder.Property(x => x.Nome).IsRequired().HasMaxLength(50);
+
+			// Relacionamento da Empresa com Empresario
 			builder.HasOne(x => x.EmpresarioModel).WithMany().HasForeignKey(x => x.IdEmpresario);
 		}
 	}

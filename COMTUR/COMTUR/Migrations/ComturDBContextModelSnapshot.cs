@@ -122,8 +122,8 @@ namespace COMTUR.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CNPJ")
-                        .HasColumnType("integer")
+                    b.Property<long>("CNPJ")
+                        .HasColumnType("bigint")
                         .HasColumnName("cnpj");
 
                     b.Property<string>("Descricao")
@@ -179,6 +179,11 @@ namespace COMTUR.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("emailempresario");
+
+                    b.Property<string>("ImagemPerfilEmpresario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagemperfilempresario");
 
                     b.Property<string>("Nome")
                         .IsRequired()

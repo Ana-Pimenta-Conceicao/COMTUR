@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class comtur : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,7 +40,8 @@ namespace COMTUR.Migrations
                     nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     emailempresario = table.Column<string>(type: "text", nullable: false),
                     senhaempresario = table.Column<string>(type: "text", nullable: false),
-                    telefoneempresario = table.Column<string>(type: "text", nullable: false)
+                    telefoneempresario = table.Column<string>(type: "text", nullable: false),
+                    imagemperfilempresario = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -115,7 +116,7 @@ namespace COMTUR.Migrations
                     empresaid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    cnpj = table.Column<int>(type: "integer", nullable: false),
+                    cnpj = table.Column<long>(type: "bigint", nullable: false),
                     endereco = table.Column<string>(type: "text", nullable: false),
                     imagem = table.Column<string>(type: "text", nullable: true),
                     legendaImagem = table.Column<string>(type: "text", nullable: false),

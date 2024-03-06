@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,7 +26,11 @@ namespace COMTUR.Models
 		[Column("telefoneempresario")]
 		public string TelefoneEmpresario { get; set; }
 
+		[Column("imagemperfilempresario")]
+		public string ImagemPerfilEmpresario { get; set; }
+
 		[JsonIgnore]
-		public ICollection<EmpresaModel>? Empresa { get; set; }
+        [BindNever]
+        public ICollection<EmpresaModel>? Empresa { get; set; }
 	}
 }

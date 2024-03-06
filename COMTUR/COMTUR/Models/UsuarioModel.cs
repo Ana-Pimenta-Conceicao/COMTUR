@@ -20,5 +20,8 @@ namespace COMTUR.Models
 
 		[Column("senhaUsuario")]
 		public string SenhaUsuario { get; set; }
+
+		[Column ("imagemPerfilUsuario")]
+		public string ImagemPerfilUsuario { get; set; }
 	}
 }

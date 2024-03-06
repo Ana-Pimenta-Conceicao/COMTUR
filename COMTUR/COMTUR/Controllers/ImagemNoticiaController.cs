@@ -32,7 +32,7 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<ImagemNoticiaModel>> Cadastrar([FromBody] ImagemNoticiaModel ImagemNoticiaModel)
+		public async Task<ActionResult<ImagemNoticiaModel>> Cadastrar([FromForm] ImagemNoticiaModel ImagemNoticiaModel)
 		{
 			ImagemNoticiaModel imagemNoticia = await _ImagemNoticiaRepositorio.Adicionar(ImagemNoticiaModel);
 
@@ -40,7 +40,7 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpPut("{id}")]
-		public async Task<ActionResult<ImagemNoticiaModel>> Atualizar([FromBody] ImagemNoticiaModel ImagemNoticiaModel, int id)
+		public async Task<ActionResult<ImagemNoticiaModel>> Atualizar([FromForm] ImagemNoticiaModel ImagemNoticiaModel, int id)
 		{
 			ImagemNoticiaModel.Id = id;
 			ImagemNoticiaModel imagemNoticia = await _ImagemNoticiaRepositorio.Atualizar(ImagemNoticiaModel, id);

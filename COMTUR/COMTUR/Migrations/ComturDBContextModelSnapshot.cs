@@ -332,6 +332,11 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("emailUsuario");
 
+                    b.Property<string>("ImagemPerfilUsuario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagemPerfilUsuario");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)

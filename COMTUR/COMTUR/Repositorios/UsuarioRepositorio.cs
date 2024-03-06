@@ -44,6 +44,7 @@ namespace COMTUR.Repositorios
 			UsuarioPorId.Nome = UsuarioModel.Nome;
 			UsuarioPorId.EmailUsuario = UsuarioModel.EmailUsuario;
 			UsuarioPorId.SenhaUsuario = UsuarioModel.SenhaUsuario;
+			UsuarioPorId.ImagemPerfilUsuario = UsuarioModel.ImagemPerfilUsuario;
 
 			_dbContext.Usuario.Update(UsuarioPorId);
 			await _dbContext.SaveChangesAsync();

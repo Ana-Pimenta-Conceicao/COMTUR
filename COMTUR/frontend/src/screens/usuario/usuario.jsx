@@ -4,50 +4,39 @@ import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import InputMask from "react-input-mask";
-import SidebarAdm from "../../components/sidebarAdm";
+import SidebarAdm from "../../components/sidebarAdm"
 import NavBarAdm from "../../components/navbarAdm";
 import { useNavigate } from "react-router-dom";
-import {
-  CaretLeft,
-  CaretRight,
-  Eye,
-  EyeSlash,
-  Trash,
-  FilePlus,
-  Pencil,
-} from "@phosphor-icons/react";
+import { CaretLeft, CaretRight, EyeSlash, Eye, FilePlus, Pencil, Trash } from "@phosphor-icons/react"
 
-export default function Administrador() {
-  const baseUrl = "https://localhost:7256/api/Administrador";
+
+export default function Usuario() {
+  const baseUrl = "https://localhost:7256/api/Usuario";
 
   const [data, setData] = useState([]);
-
   const [atualizarData, setAtualizarData] = useState(true);
 
   const [modalInserir, setModalInserir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
 
-  const [nomeAdmin, setNomeAdmin] = useState("");
-  const [cargoAdmin, setCargoAdmin] = useState("");
-  const [cpfAdmin, setCpfAdmin] = useState("");
-  const [telefoneAdmin, setTelefoneAdmin] = useState("");
-  const [emailAdmin, setEmailAdmin] = useState("");
-  const [senhaAdmin, setSenhaAdmin] = useState("");
-  const [imagemAdmin, setImagemAdmin] = useState("");
-  const [idAdmin, setIdAdmin] = useState("");
+  // IdleDeadline, nome, emailUsuario, senhaUsuario
+
+  const [nomeUsr, setNomeUsr] = useState("");
+  const [emailUsr, setEmailUsr] = useState("");
+  const [senhaUsr, setSenhaUsr] = useState("");
+  const [imagemUsr, setImagemUsr] = useState("");
+  const [idUsr, setIdUsr] = useState("");
+
 
   const navigate = useNavigate();
 
   const limparDados = () => {
-    setNomeAdmin("");
-    setCargoAdmin("");
-    setCpfAdmin("");
-    setTelefoneAdmin("");
-    setEmailAdmin("");
-    setSenhaAdmin("");
-    setImagemAdmin("");
-    setIdAdmin("");
+    setNomeUsr("");
+    setEmailUsr("");
+    setSenhaUsr("");
+    setImagemUsr("");
+    setIdUsr("");
   };
 
   const [showPassword, setShowPassword] = useState(false);
@@ -66,23 +55,21 @@ export default function Administrador() {
     }
   };
 
-  const AdminSet = (admin, opcao) => {
-    console.log("Admin que foi passado: ", admin);
-    setIdAdmin(admin.id);
-    setNomeAdmin(admin.nomeAdministrador);
-    setCargoAdmin(admin.cargoAdministrador);
-    setCpfAdmin(admin.cpfAdministrador);
-    setTelefoneAdmin(admin.telefoneAdministrador);
-    setEmailAdmin(admin.emailAdministrador);
-    setSenhaAdmin(admin.senhaAdministrador);
-    setImagemAdmin(admin.imagemPerfilAdministrador);
+
+  const UsrSet = (usr, opcao) => {
+    console.log("Usuário que foi passado: ", usr);
+    setIdUsr(usr.id);
+    setNomeUsr(usr.nome);
+    setEmailUsr(usr.emailUsuario);
+    setSenhaUsr(usr.senhaUsuario);
+    setImagemUsr(usr.imagemPerfilUsuario);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
     } else if (opcao === "Excluir") {
       abrirFecharModalDeletar();
     } else {
-      navigate(`/perfilAdministrador/${admin.id}`);
+      navigate(`/perfilUsuario/${usr.id}`);
     }
   };
 
@@ -112,17 +99,16 @@ export default function Administrador() {
       });
   };
 
+
+  // IdleDeadline, nome, emailUsuario, senhaUsuario
   const pedidoPost = async () => {
     const formData = new FormData();
-    formData.append("nomeAdministrador", nomeAdmin);
-    formData.append("cpfAdministrador", cpfAdmin);
-    formData.append("cargoAdministrador", cargoAdmin);
-    formData.append("telefoneAdministrador", telefoneAdmin);
-    formData.append("emailAdministrador", emailAdmin);
-    formData.append("senhaAdministrador", senhaAdmin);
+    formData.append("nome", nomeUsr);
+    formData.append("emailUsuario", emailUsr);
+    formData.append("senhaUsuario", senhaUsr)
 
-    const base64Image = await convertImageToBase64(imagemAdmin);
-    formData.append("imagemPerfilAdministrador", base64Image);
+    const base64Image = await convertImageToBase64(imagemUsr);
+    formData.append("imagemPerfilUsuario", base64Image);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -130,9 +116,8 @@ export default function Administrador() {
           "Content-Type": "multipart/form-data",
         },
       });
-
-      const newAdmin = response.data; // Ensure the response contains the newly registered admin data
-      setData([...data, newAdmin]); // Add the new admin to the existing data
+      const newUsr = response.data;
+      setData([...data, newUsr]);
 
       abrirFecharModalInserir();
       limparDados();
@@ -154,39 +139,38 @@ export default function Administrador() {
     });
   }
 
+
   async function pedidoAtualizar() {
     const formData = new FormData();
 
-    formData.append("nomeAdministrador", nomeAdmin);
-    formData.append("cpfAdministrador", cpfAdmin);
-    formData.append("cargoAdministrador", cargoAdmin);
-    formData.append("telefoneAdministrador", telefoneAdmin);
-    formData.append("emailAdministrador", emailAdmin);
-    formData.append("senhaAdministrador", senhaAdmin);
+    formData.append("nome", nomeUsr);
+    formData.append("emailUsuario", emailUsr);
+    formData.append("senhaUsuario", senhaUsr);
+    formData.append("imagemPerfilUsuario", imagemUsr);
 
-    if (imagemAdmin instanceof File) {
+    if (imagemUsr instanceof File) {
       // Converter a imagem para base64 antes de enviar
-      const base64Image = await convertImageToBase64(imagemAdmin);
-      formData.append("imagemPerfilAdministrador", base64Image);
+      const base64Image = await convertImageToBase64(imagemUsr);
+      formData.append("imagemPerfilUsuario", base64Image);
     } else {
-      formData.append("imagemPerfilAdministrador", imagemAdmin);
+      formData.append("imagemPerfilUsuario", imagemUsr);
     }
 
     try {
-      const response = await axios.put(`${baseUrl}/${idAdmin}`, formData, {
+      const response = await axios.put(`${baseUrl}/${idUsr}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      const updateAdmin = response.data;
+      const updateUsr = response.data;
 
       setData((prevData) => {
-        return prevData.map((admin) => {
-          if (admin.id === idAdmin) {
-            return updateAdmin;
+        return prevData.map((usr) => {
+          if (usr.id === idUsr) {
+            return updateUsr;
           }
-          return admin;
+          return usr;
         });
       });
 
@@ -195,9 +179,10 @@ export default function Administrador() {
     } catch (error) {
       console.log(error);
     }
+
   }
 
-  const atualizarListaAdmin = async () => {
+  const atualizarListaUsr = async () => {
     await axios
       .get(baseUrl)
       .then((response) => {
@@ -208,18 +193,19 @@ export default function Administrador() {
       });
   };
 
+
   const pedidoRemoverImagem = () => {
     // Método para limpar a constante (não limpa o campo)
-    setImagemAdmin("");
+    setImagemUsr("");
   };
 
   const pedidoDeletar = async () => {
     await axios
-      .delete(baseUrl + "/" + idAdmin)
+      .delete(baseUrl + "/" + idUsr)
       .then((response) => {
-        const newAdmin = data.filter((admin) => admin.id !== response.data);
-        setData(newAdmin);
-        atualizarListaAdmin();
+        const newUsr = data.filter((usr) => usr.id !== response.data);
+        setData(newUsr);
+        atualizarListaUsr();
         abrirFecharModalDeletar();
         limparDados();
       })
@@ -244,18 +230,20 @@ export default function Administrador() {
   const getCurrentPageItems = (page) => {
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return data.slice(startIndex, endIndex).map((admin) => {
-      if (admin.imagemPerfilAdministrador instanceof File) {
+    return data.slice(startIndex, endIndex).map((usr) => {
+      if (usr.imagemPerfilUsuario instanceof File) {
         return {
-          ...admin,
-          imagemPerfilAdministrador: URL.createObjectURL(
-            admin.imagemPerfilAdministrador
+          ...usr,
+          imagemPerfilUsuario: URL.createObjectURL(
+            usr.imagemPerfilUsuario
           ),
         };
       }
-      return admin;
+      return usr;
     });
   };
+
+
 
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
@@ -267,6 +255,7 @@ export default function Administrador() {
     }
   };
 
+
   return (
     <div className="h-screen flex">
       <SidebarAdm />
@@ -274,7 +263,7 @@ export default function Administrador() {
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[20px]">
           <h1 className="text-3xl font-semibold pb-2">
-            Lista de Administradores
+            Lista de Usuários
           </h1>
           <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
           <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
@@ -285,27 +274,27 @@ export default function Administrador() {
                 Nome
               </span>
               <span className="flex col-span-3 justify-center items-center">
-                Cargo
+                Email
               </span>
               <span className="flex col-span-3 justify-center items-center">
                 Ações
               </span>
             </div>
             <ul className="w-full">
-              {currentItems.map((admin) => (
-                <React.Fragment key={admin.id}>
+              {currentItems.map((usr) => (
+                <React.Fragment key={usr.id}>
                   <li className="grid grid-cols-11 w-full bg-[#F5F5F5]">
                     <span
                       scope="row"
                       className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700"
                     >
-                      {admin.id}
+                      {usr.id}
                     </span>
                     <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
-                      {admin.imagemPerfilAdministrador ? (
+                      {usr.imagemPerfilUsuario ? (
                         <img
                           className="flex w-10 h-10 rounded "
-                          src={admin.imagemPerfilAdministrador}
+                          src={usr.imagemPerfilUsuario}
                           alt="Preview"
                         />
                       ) : (
@@ -313,18 +302,18 @@ export default function Administrador() {
                       )}
                     </span>
                     <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
-                      {admin.nomeAdministrador}
+                      {usr.nome}
                     </span>
                     <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
-                      {admin.cargoAdministrador}
+                      {usr.emailUsuario}
                     </span>
                     <span className="flex col-span-3 justify-center items-center border-t-[1px] gap-[3px] 
-                    border-[#DBDBDB]">
+                        border-[#DBDBDB]">
                       <button
                         className="inline-flex text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 
-                        focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
-                         items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                        onClick={() => AdminSet(admin, "Editar")}
+                            focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
+                             items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+                        onClick={() => UsrSet(usr, "Editar")}
                       >
                         {" "}
                         <Pencil className="flex mr-1" size={16} />
@@ -333,9 +322,9 @@ export default function Administrador() {
 
                       <button
                         className="inline-flex text-white bg-red-800 hover:bg-red-900 focus:ring-4 
-                        focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
-                         items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                        onClick={() => AdminSet(admin, "Excluir")}
+                            focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
+                             items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                        onClick={() => UsrSet(usr, "Excluir")}
                       >
                         {" "}
                         <Trash className="mr-1" size={16} />
@@ -344,8 +333,8 @@ export default function Administrador() {
 
                       <button
                         className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none
-                         font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        onClick={() => AdminSet(admin, "Visualizar")}
+                             font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        onClick={() => UsrSet(usr, "Visualizar")}
                       >
                         <Eye className="mr-1" size={16} />
                         Visualizar
@@ -378,7 +367,7 @@ export default function Administrador() {
           <div className="float-right flex-auto py-6">
             <button
               className="text-white bg-yellow-400 hover:bg-yellow-500 
-               rounded-xl text-lg px-3 font-semibold py-1.5 text-center"
+                   rounded-xl text-lg px-3 font-semibold py-1.5 text-center"
               onClick={() => abrirFecharModalInserir()}
             >
               <span className="inline-flex items-center">
@@ -390,57 +379,23 @@ export default function Administrador() {
         </div>
       </div>
 
+
       <Modal isOpen={modalInserir}>
-        <ModalHeader>Cadastrar Administrador</ModalHeader>
+        <ModalHeader>Cadastrar Usuário</ModalHeader>
         <ModalBody>
           <div className="form-group">
             <label>Nome: </label>
             <br />
-            <input
-              type="text "
-              className="form-control text-sm"
-              onChange={(e) => setNomeAdmin(e.target.value)}
-              placeholder="Digite o nome "
-            />
-            <br />
-            <label>Cargo:</label>
-            <br />
-            <input
-              type="text "
-              className="form-control text-sm"
-              onChange={(e) => setCargoAdmin(e.target.value)}
-              placeholder="Digite o cargo"
-            />
-            <br />
-
-            <label>CPF:</label>
-            <br />
-            <InputMask
-              mask="999.999.999-99"
-              maskPlaceholder="999.999.999-99"
-              type="text "
-              className="form-control text-sm"
-              onChange={(e) => setCpfAdmin(e.target.value)}
-              placeholder="Digite apenas números"
-            />
-            <br />
-            <label>Telefone:</label>
-            <br />
-            <InputMask
-              mask="(99) 99999-9999"
-              maskPlaceholder="(99) 99999-9999"
-              type="text "
-              className="form-control text-sm"
-              onChange={(e) => setTelefoneAdmin(e.target.value)}
-              placeholder="Digite apenas números"
-            />
+            <input type="text " className="form-control text-sm"
+              onChange={(e) => setNomeUsr(e.target.value)}
+              placeholder="Digite o nome " />
             <br />
             <label>Email:</label>
             <br />
             <input
               type="text "
               className="form-control text-sm"
-              onChange={(e) => setEmailAdmin(e.target.value)}
+              onChange={(e) => setEmailUsr(e.target.value)}
               onBlur={(e) => validateEmail(e.target.value)}
               placeholder="Exemplo: email@gmail.com"
             />
@@ -451,7 +406,7 @@ export default function Administrador() {
               <input
                 type={showPassword ? "text" : "password"}
                 className="form-control text-sm"
-                onChange={(e) => setSenhaAdmin(e.target.value)}
+                onChange={(e) => setSenhaUsr(e.target.value)}
                 placeholder="Digite a senha"
               />
               <button
@@ -465,20 +420,20 @@ export default function Administrador() {
 
             <br />
             <label>Imagem:</label>
-            {imagemAdmin && modalEditar && (
+            {imagemUsr && modalEditar && (
               <div
                 className="bg-[#DBDBDB]   border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
                 style={{ position: "relative", display: "inline-block" }}
               >
-                {typeof imagemAdmin === "string" ? (
+                {typeof imagemUsr === "string" ? (
                   <img
-                    src={base64ToImage(imagemAdmin)}
+                    src={base64ToImage(imagemUsr)}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
                 ) : (
                   <img
-                    src={URL.createObjectURL(imagemAdmin)}
+                    src={URL.createObjectURL(imagemUsr)}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
@@ -506,8 +461,8 @@ export default function Administrador() {
             <input
               type="file"
               className="form-control"
-              onChange={(e) => setImagemAdmin(e.target.files[0])}
-              value={imagemAdmin === "" ? "" : undefined}
+              onChange={(e) => setImagemUsr(e.target.files[0])}
+              value={imagemUsr === "" ? "" : undefined}
             />
             <br />
           </div>
@@ -528,8 +483,9 @@ export default function Administrador() {
           </button>
         </ModalFooter>
       </Modal>
+
       <Modal isOpen={modalEditar}>
-        <ModalHeader>Alterar Administrador</ModalHeader>
+        <ModalHeader>Alterar Usuário</ModalHeader>
         <ModalBody>
           <div className="form-group">
             <label>ID: </label>
@@ -538,7 +494,7 @@ export default function Administrador() {
               type="text"
               className="form-control  text-sm"
               readOnly
-              value={idAdmin}
+              value={idUsr}
             />
             <br />
             <label>Nome: </label>
@@ -546,50 +502,17 @@ export default function Administrador() {
             <input
               type="text"
               className="form-control  text-sm"
-              onChange={(e) => setNomeAdmin(e.target.value)}
-              value={nomeAdmin}
+              onChange={(e) => setNomeUsr(e.target.value)}
+              value={nomeUsr}
             />
-            <br />
-            <label>Cargo:</label>
-            <br />
-            <input
-              type="text"
-              className="form-control  text-sm"
-              onChange={(e) => setCargoAdmin(e.target.value)}
-              value={cargoAdmin}
-            />
-            <br />
-            <label>CPF:</label>
-            <br />
-            <InputMask
-              mask="999.999.999-99"
-              maskPlaceholder="999.999.999-99"
-              type="text "
-              className="form-control  text-sm"
-              onChange={(e) => setCpfAdmin(e.target.value)}
-              value={cpfAdmin}
-            />
-
-            <br />
-            <label>Telefone:</label>
-            <br />
-            <InputMask
-              mask="(99) 99999-9999"
-              maskPlaceholder="(99) 99999-9999"
-              type="text "
-              className="form-control  text-sm"
-              onChange={(e) => setTelefoneAdmin(e.target.value)}
-              value={telefoneAdmin}
-            />
-
             <br />
             <label>Email:</label>
             <br />
             <input
               type="text "
               className="form-control  text-sm"
-              onChange={(e) => setEmailAdmin(e.target.value)}
-              value={emailAdmin}
+              onChange={(e) => setEmailUsr(e.target.value)}
+              value={emailUsr}
             />
             <br />
             <label>Senha:</label>
@@ -598,8 +521,8 @@ export default function Administrador() {
               <input
                 type={showPassword ? "text" : "password"}
                 className="form-control text-sm"
-                onChange={(e) => setSenhaAdmin(e.target.value)}
-                value={senhaAdmin}
+                onChange={(e) => setSenhaUsr(e.target.value)}
+                value={senhaUsr}
               />
               <button
                 className="btn btn-outline-secondary bg-[#DBDBDB]  border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
@@ -612,17 +535,17 @@ export default function Administrador() {
 
             <br />
             <label>Imagem:</label>
-            {imagemAdmin && modalEditar && (
+            {imagemUsr && modalEditar && (
               <div style={{ position: "relative", display: "inline-block" }}>
-                {typeof imagemAdmin === "string" ? (
+                {typeof imagemUsr === "string" ? (
                   <img
-                    src={imagemAdmin}
+                    src={imagemUsr}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
                 ) : (
                   <img
-                    src={URL.createObjectURL(imagemAdmin)}
+                    src={URL.createObjectURL(imagemUsr)}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
@@ -650,8 +573,8 @@ export default function Administrador() {
             <input
               type="file"
               className="form-control"
-              onChange={(e) => setImagemAdmin(e.target.files[0])}
-              value={imagemAdmin === "" ? "" : undefined}
+              onChange={(e) => setImagemUsr(e.target.files[0])}
+              value={imagemUsr === "" ? "" : undefined}
             />
             <br />
           </div>
@@ -672,10 +595,9 @@ export default function Administrador() {
           </button>
         </ModalFooter>
       </Modal>
-
       <Modal isOpen={modalDeletar}>
         <ModalBody>
-          Confirma a exclusão do administrador: "{nomeAdmin}" ?
+          Confirma a exclusão do usuário: "{nomeUsr}" ?
         </ModalBody>
         <ModalFooter>
           <button
@@ -692,6 +614,17 @@ export default function Administrador() {
           </button>
         </ModalFooter>
       </Modal>
+
     </div>
+
   );
+
+
+
+
+
+
+
+
+
 }

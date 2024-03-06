@@ -180,6 +180,11 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("emailempresario");
 
+                    b.Property<string>("ImagemPerfilEmpresario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagemperfilempresario");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)

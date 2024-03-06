@@ -25,6 +25,9 @@ namespace COMTUR.Models
 		[Column("telefoneempresario")]
 		public string TelefoneEmpresario { get; set; }
 
+		[Column("imagemperfilempresario")]
+		public string ImagemPerfilEmpresario { get; set; }
+
 		[JsonIgnore]
 		public ICollection<EmpresaModel>? Empresa { get; set; }
 	}

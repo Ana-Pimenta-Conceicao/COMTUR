@@ -10,9 +10,12 @@ namespace COMTUR.Repositorios
 	{
 		private readonly ComturDBContext _dbContext;
 
-		public EmpresarioRepositorio(ComturDBContext dbContext)
+		private readonly IWebHostEnvironment _hostingEnvironment;
+
+		public EmpresarioRepositorio(ComturDBContext dbContext, IWebHostEnvironment hostingEnvironment)
 		{
 			_dbContext = dbContext;
+			_hostingEnvironment = hostingEnvironment;
 		}
 		public async Task<EmpresarioModel> BuscarPorId(int id)
 		{
@@ -45,6 +48,7 @@ namespace COMTUR.Repositorios
 			empresarioPorId.EmailEmpresario = empresarioModel.EmailEmpresario;
 			empresarioPorId.SenhaEmpresario = empresarioModel.SenhaEmpresario;
 			empresarioPorId.TelefoneEmpresario = empresarioModel.TelefoneEmpresario;
+			empresarioPorId.ImagemPerfilEmpresario = empresarioModel.ImagemPerfilEmpresario;
 
 			_dbContext.Empresario.Update(empresarioPorId);
 			await _dbContext.SaveChangesAsync();

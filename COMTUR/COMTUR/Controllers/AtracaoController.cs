@@ -32,7 +32,7 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<AtracaoModel>> Cadastrar([FromBody] AtracaoModel atracaoModel)
+		public async Task<ActionResult<AtracaoModel>> Cadastrar([FromForm] AtracaoModel atracaoModel)
 		{
 			AtracaoModel atracao = await _AtracaoRepositorio.Adicionar(atracaoModel);
 
@@ -40,7 +40,7 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpPut("{id}")]
-		public async Task<ActionResult<AtracaoModel>> Atualizar([FromBody] AtracaoModel atracaoModel, int id)
+		public async Task<ActionResult<AtracaoModel>> Atualizar([FromForm] AtracaoModel atracaoModel, int id)
 		{
 			atracaoModel.Id = id;
 			AtracaoModel atracao = await _AtracaoRepositorio.Atualizar(atracaoModel, id);

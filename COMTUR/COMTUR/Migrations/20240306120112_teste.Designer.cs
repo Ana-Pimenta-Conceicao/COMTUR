@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240305195939_comtur")]
-    partial class comtur
+    [Migration("20240306120112_teste")]
+    partial class teste
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,6 +182,11 @@ namespace COMTUR.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("emailempresario");
+
+                    b.Property<string>("ImagemPerfilEmpresario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagemperfilempresario");
 
                     b.Property<string>("Nome")
                         .IsRequired()

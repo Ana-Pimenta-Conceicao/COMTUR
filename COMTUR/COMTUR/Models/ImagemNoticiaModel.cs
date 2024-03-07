@@ -14,7 +14,7 @@ namespace COMTUR.Models
 		public string Imagem { get; set; }
 
 		[JsonIgnore]
-		public NoticiaModel? NoticiaModel { get; set; }
+		public NoticiaModel NoticiaModel { get; set; }
 
 		[ForeignKey("idnoticia")]
 		public int IdNoticia { get; set; }

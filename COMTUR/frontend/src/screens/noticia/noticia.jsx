@@ -30,8 +30,6 @@ export default function Noticia() {
 
   const [noticiaArquivoImagens, setNoticiaArquivoImagens] = useState([]);
 
-  const [noticiaImagensBase64, setNoticiaImagensBase64] = useState("");
-
   const [noticiaDataPublicacao, setNoticiaDataPublicacao] = useState("");
 
   const [noticiaHoraPublicacao, setNoticiaHoraPublicacao] = useState("");
@@ -51,6 +49,7 @@ export default function Noticia() {
     setNoticiaDataPublicacao("");
     setNoticiaHoraPublicacao("");
     setNoticiaLegendaImagem("");
+    setNoticiaArquivoImagens("");
     setNoticiaId("");
   };
 
@@ -119,6 +118,7 @@ export default function Noticia() {
 
   const dataFormatoBanco = inverterDataParaFormatoBanco(noticiaDataPublicacao);
 
+
   const pedidoPost = async () => {
     const formData = new FormData();
     formData.append("titulo", noticiaTitulo);
@@ -128,33 +128,21 @@ export default function Noticia() {
     formData.append("horaPublicacao", noticiaHoraPublicacao);
     formData.append("legendaImagem", noticiaLegendaImagem);
   
+
+    const base64Image = await convertImageToBase64(noticiaArquivoImagens);
+    
+    if (base64Image) {
+      formData.append("arquivoImagem", base64Image);
+    }
+
+    console.log(formData)
+
     try {
       const response = await axios.post(baseUrl, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      
-      console.log(noticiaArquivoImagens)
-      // Verifica se há imagens para enviar
-      if (noticiaArquivoImagens.length > 0) {
-        await Promise.all(
-          noticiaArquivoImagens.map(async (image) => {
-            const imageFormData = new FormData();
-            imageFormData.append("imagem", image);
-  
-            // Adiciona o ID da notícia à imagem
-            imageFormData.append("idNoticia", response.data.id);
-  
-            // Envia a imagem para o endpoint responsável por adicionar imagens
-            await axios.post(`${baseUrl}/${response.data.id}/imagens`, imageFormData, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            });
-          })
-        );
-      }
   
       setData(data.concat(response.data));
       abrirFecharModalInserir();

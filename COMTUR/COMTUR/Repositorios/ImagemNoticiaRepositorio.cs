@@ -39,24 +39,32 @@ namespace COMTUR.Repositorios
 			return imagemNoticia;
 		}
 
-		public async Task<ImagemNoticiaModel> Atualizar(ImagemNoticiaModel imagemNoticia, int id)
-		{
-			ImagemNoticiaModel ImagemNoticiaPorId = await BuscarPorId(id);
-			if (ImagemNoticiaPorId == null)
-			{
-				throw new Exception($"ImagemNoticia para o ID: {id} nao foi encontrado no banco de dados. ");
-			}
+        public async Task<ImagemNoticiaModel> Atualizar(ImagemNoticiaModel imagemNoticia, int id)
+        {
+            ImagemNoticiaModel imagemNoticiaPorId = await BuscarPorId(id);
+            if (imagemNoticiaPorId == null)
+            {
+                throw new Exception($"ImagemNoticia para o ID: {id} nao foi encontrado no banco de dados. ");
+            }
 
-			ImagemNoticiaPorId.Id = imagemNoticia.Id;
-			ImagemNoticiaPorId.Imagem = imagemNoticia.Imagem;
+            // Atualiza a propriedade Imagem
+            imagemNoticiaPorId.Imagem = imagemNoticia.Imagem;
 
-			_dbContext.ImagemNoticia.Update(ImagemNoticiaPorId);
-			await _dbContext.SaveChangesAsync();
+            // Verifica se o ID da notícia associada foi alterado
+            if (imagemNoticiaPorId.IdNoticia != imagemNoticia.IdNoticia)
+            {
+                // Atualiza o ID da notícia associada
+                imagemNoticiaPorId.IdNoticia = imagemNoticia.IdNoticia;
+            }
 
-			return ImagemNoticiaPorId;
-		}
+            _dbContext.ImagemNoticia.Update(imagemNoticiaPorId);
+            await _dbContext.SaveChangesAsync();
 
-		public async Task<bool> Apagar(int id)
+            return imagemNoticiaPorId;
+        }
+
+
+        public async Task<bool> Apagar(int id)
 		{
 			ImagemNoticiaModel ImagemNoticiaPorId = await BuscarPorId(id);
 			if (ImagemNoticiaPorId == null)

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace COMTUR.Models
@@ -33,7 +34,10 @@ namespace COMTUR.Models
         [Column("legendaImagem")]
         public string LegendaImagem { get; set; }
 
-		[JsonIgnore]
+        [Column("arquivoImagem")]
+        public string ArquivoImagem { get; set; }
+
+        [JsonIgnore]
 		public ICollection<ImagemNoticiaModel>? ImagemNoticia { get; set; }
 
 	}

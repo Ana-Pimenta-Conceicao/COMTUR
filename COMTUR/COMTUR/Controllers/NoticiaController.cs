@@ -32,6 +32,10 @@ namespace COMTUR.Controllers
         public async Task<ActionResult<NoticiaModel>> BuscarPorId(int id)
         {
             NoticiaModel noticia = await _noticiaRepository.BuscarPorId(id);
+            if (noticia == null)
+            {
+                return NotFound($"Notícia com ID {id} não encontrada.");
+            }
             return Ok(noticia);
         }
 
@@ -39,14 +43,13 @@ namespace COMTUR.Controllers
         public async Task<ActionResult<NoticiaModel>> Cadastrar([FromForm] NoticiaModel noticiaModel)
         {
             NoticiaModel noticia = await _noticiaRepository.Adicionar(noticiaModel);
-           
+
             return Ok(noticia);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<NoticiaModel>> Atualizar([FromForm] NoticiaModel noticiaModel, int id)
         {
-            noticiaModel.Id = id;
 
             NoticiaModel noticia = await _noticiaRepository.Atualizar(noticiaModel, id);
 

@@ -7,17 +7,12 @@ import InputMask from "react-input-mask";
 import SidebarAdm from "../../components/sidebarAdm";
 import NavBarAdm from "../../components/navbarAdm";
 import { useNavigate } from "react-router-dom";
-import {
-  CaretLeft,
-  CaretRight,
-  Pencil,
-  Trash,
-  Eye,
-  FilePlus,
-} from "@phosphor-icons/react";
+import { CaretLeft, CaretRight, Pencil, Trash, Eye, FilePlus } from "@phosphor-icons/react";
 
 export default function Noticia() {
   const baseUrl = "https://localhost:7256/api/Noticia";
+
+  const baseUrlImagem = "https://localhost:7256/api/ImagemNoticia";
 
   const [data, setData] = useState([]);
 
@@ -33,13 +28,17 @@ export default function Noticia() {
 
   const [noticiaConteudo, setNoticiaConteudo] = useState("");
 
-  const [noticiaArquivoImagem, setNoticiaArquivoImagem] = useState("");
+  const [noticiaArquivoImagens, setNoticiaArquivoImagens] = useState([]);
+
+  const [noticiaImagensBase64, setNoticiaImagensBase64] = useState("");
 
   const [noticiaDataPublicacao, setNoticiaDataPublicacao] = useState("");
 
   const [noticiaHoraPublicacao, setNoticiaHoraPublicacao] = useState("");
 
   const [noticiaLegendaImagem, setNoticiaLegendaImagem] = useState("");
+
+
 
   const [noticiaId, setNoticiaId] = useState("");
 
@@ -49,7 +48,6 @@ export default function Noticia() {
     setNoticiaTitulo("");
     setNoticiaSubtitulo("");
     setNoticiaConteudo("");
-    setNoticiaArquivoImagem("");
     setNoticiaDataPublicacao("");
     setNoticiaHoraPublicacao("");
     setNoticiaLegendaImagem("");
@@ -65,7 +63,6 @@ export default function Noticia() {
     setNoticiaDataPublicacao(formatarDataParaExibicao(noticia.dataPublicacao));
     setNoticiaHoraPublicacao(noticia.horaPublicacao);
     setNoticiaLegendaImagem(noticia.legendaImagem);
-    setNoticiaArquivoImagem(noticia.arquivoImagem);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
@@ -130,25 +127,43 @@ export default function Noticia() {
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
     formData.append("legendaImagem", noticiaLegendaImagem);
-
-    const base64Image = await convertImageToBase64(noticiaArquivoImagem);
-    formData.append("arquivoImagem", base64Image);
-
-    await axios
-      .post(baseUrl, formData, {
+  
+    try {
+      const response = await axios.post(baseUrl, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      })
-      .then((response) => {
-        setData(data.concat(response.data));
-        abrirFecharModalInserir();
-        limparDados();
-      })
-      .catch((error) => {
-        console.log(error);
       });
+      
+      console.log(noticiaArquivoImagens)
+      // Verifica se há imagens para enviar
+      if (noticiaArquivoImagens.length > 0) {
+        await Promise.all(
+          noticiaArquivoImagens.map(async (image) => {
+            const imageFormData = new FormData();
+            imageFormData.append("imagem", image);
+  
+            // Adiciona o ID da notícia à imagem
+            imageFormData.append("idNoticia", response.data.id);
+  
+            // Envia a imagem para o endpoint responsável por adicionar imagens
+            await axios.post(`${baseUrl}/${response.data.id}/imagens`, imageFormData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            });
+          })
+        );
+      }
+  
+      setData(data.concat(response.data));
+      abrirFecharModalInserir();
+      limparDados();
+    } catch (error) {
+      console.log(error);
+    }
   };
+  
 
   function base64ToImage(base64String) {
     return `data:image/jpeg;base64,${base64String}`;
@@ -173,12 +188,12 @@ export default function Noticia() {
     formData.append("legendaImagem", noticiaLegendaImagem);
 
     // Verificando se noticiaArquivoImagem é um arquivo para converter em base64
-    if (noticiaArquivoImagem instanceof File) {
+    if (noticiaArquivoImagens instanceof File) {
       // Converter a imagem para base64 antes de enviar
-      const base64Image = await convertImageToBase64(noticiaArquivoImagem);
+      const base64Image = await convertImageToBase64(noticiaArquivoImagens);
       formData.append("arquivoImagem", base64Image);
     } else {
-      formData.append("arquivoImagem", noticiaArquivoImagem);
+      formData.append("arquivoImagem", noticiaArquivoImagens);
     }
 
     try {
@@ -219,7 +234,7 @@ export default function Noticia() {
 
   const pedidoRemoverImagem = () => {
     // Método para limpar a constante (não limpa o campo)
-    setNoticiaArquivoImagem("");
+    setNoticiaArquivoImagens("");
   };
 
   const pedidoDeletar = async () => {
@@ -385,7 +400,7 @@ export default function Noticia() {
             <label>Subtitulo:</label>
             <br />
             <textarea
-              className="form-control text-sm" 
+              className="form-control text-sm"
               onChange={(e) => setNoticiaSubtitulo(e.target.value)}
               placeholder="Digite o Subtitulo"
             />
@@ -432,17 +447,17 @@ export default function Noticia() {
             />
             <br />
             <label>Imagem:</label>
-            {noticiaArquivoImagem && modalEditar && (
+            {noticiaArquivoImagens && modalEditar && (
               <div style={{ position: "relative", display: "inline-block" }}>
-                {typeof noticiaArquivoImagem === "string" ? (
+                {typeof noticiaArquivoImagens === "string" ? (
                   <img
-                    src={base64ToImage(noticiaArquivoImagem)}
+                    src={base64ToImage(noticiaArquivoImagens)}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
                 ) : (
                   <img
-                    src={URL.createObjectURL(noticiaArquivoImagem)}
+                    src={URL.createObjectURL(noticiaArquivoImagens)}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
@@ -471,8 +486,8 @@ export default function Noticia() {
             <input
               type="file"
               className="form-control"
-              onChange={(e) => setNoticiaArquivoImagem(e.target.files[0])}
-              value={noticiaArquivoImagem === "" ? "" : undefined}
+              onChange={(e) => setNoticiaArquivoImagens(e.target.files[0])}
+              multiple
             />{" "}
             {/* Caso noticiaArquivoImagem esteja vazio, limpamos o campo, se não estiver, nenhuma ação é efetuada */}{" "}
             {/* Informamos '' (ou "") para limpar o campo, e undefined para não efetuar nenhuma ação */}
@@ -567,17 +582,17 @@ export default function Noticia() {
             />
             <br />
             <label>Imagem:</label>
-            {noticiaArquivoImagem && modalEditar && (
+            {noticiaArquivoImagens && modalEditar && (
               <div style={{ position: "relative", display: "inline-block" }}>
-                {typeof noticiaArquivoImagem === "string" ? (
+                {typeof noticiaArquivoImagens === "string" ? (
                   <img
-                    src={noticiaArquivoImagem}
+                    src={noticiaArquivoImagens}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
                 ) : (
                   <img
-                    src={URL.createObjectURL(noticiaArquivoImagem)}
+                    src={URL.createObjectURL(noticiaArquivoImagens)}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
@@ -587,8 +602,8 @@ export default function Noticia() {
             <input
               type="file"
               className="form-control"
-              onChange={(e) => setNoticiaArquivoImagem(e.target.files[0])}
-              value={noticiaArquivoImagem === "" ? "" : undefined}
+              onChange={(e) => setNoticiaArquivoImagens(e.target.files[0])}
+              value={noticiaArquivoImagens === "" ? "" : undefined}
             />
           </div>
         </ModalBody>

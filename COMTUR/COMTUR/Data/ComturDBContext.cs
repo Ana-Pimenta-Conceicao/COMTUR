@@ -12,8 +12,7 @@ namespace COMTUR.Data
 		public DbSet<TipoTurismoModel> TipoTurismo { get; set; }
 		public DbSet<TipoAtracaoModel> TipoAtracao { get; set; }
 		public DbSet<NoticiaModel> Noticia { get; set; }
-		public DbSet<EmpresarioModel> Empresario { get; set; }
-		public DbSet<AdministradorModel> Administrador { get; set; }
+
 		public DbSet<AtracaoModel> Atracao { get; set; }
 		public DbSet<EmpresaModel> Empresa { get; set; }
 		public DbSet<UsuarioModel> Usuario { get; set; }
@@ -24,8 +23,6 @@ namespace COMTUR.Data
 			modelBuilder.ApplyConfiguration(new TipoTurismoMap());
 			modelBuilder.ApplyConfiguration(new TipoAtracaoMap());
 			modelBuilder.ApplyConfiguration(new NoticiaMap());
-			modelBuilder.ApplyConfiguration(new EmpresarioMap());
-			modelBuilder.ApplyConfiguration(new AdministradorMap());
 			modelBuilder.ApplyConfiguration(new AtracaoMap());
 			modelBuilder.ApplyConfiguration(new EmpresaMap());
 			modelBuilder.ApplyConfiguration(new UsuarioMap());

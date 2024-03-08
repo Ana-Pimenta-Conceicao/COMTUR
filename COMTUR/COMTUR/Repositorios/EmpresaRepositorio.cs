@@ -1,5 +1,6 @@
 ﻿using COMTUR.Data;
 using COMTUR.Models;
+using COMTUR.Models.Enum;
 using COMTUR.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,7 @@ namespace COMTUR.Repositorios
 
 		public async Task<EmpresaModel> GetById(int id)
 		{
-			return await _dbContext.Empresa.Include(objeto => objeto.EmpresarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+			return await _dbContext.Empresa.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
 
 		public async Task<List<EmpresaModel>> BuscarEmpresa()

@@ -24,7 +24,14 @@ namespace COMTUR.Repositorios
 			return await _dbContext.Usuario.ToListAsync();
 		}
 
-		public async Task<UsuarioModel> Adicionar(UsuarioModel UsuarioModel)
+        public async Task<List<UsuarioModel>> ListarPorTipoUsuario(int tipoUsuario)
+        {
+            return await _dbContext.Usuario
+                .Where(x => (int)x.TipoUsuario == tipoUsuario)
+                .ToListAsync();
+        }
+
+        public async Task<UsuarioModel> Adicionar(UsuarioModel UsuarioModel)
 		{
 			await _dbContext.Usuario.AddAsync(UsuarioModel);
 			await _dbContext.SaveChangesAsync();
@@ -37,11 +44,12 @@ namespace COMTUR.Repositorios
 			UsuarioModel UsuarioPorId = await BuscarPorId(id);
 			if (UsuarioPorId == null)
 			{
-				throw new Exception($"Empresário {id} nao foi encontrado no banco de dados. ");
+				throw new Exception($"Usuário {id} nao foi encontrado no banco de dados. ");
 			}
 
 			UsuarioPorId.Id = UsuarioModel.Id;
 			UsuarioPorId.Nome = UsuarioModel.Nome;
+			UsuarioPorId.Telefone = UsuarioModel.Telefone;
 			UsuarioPorId.EmailUsuario = UsuarioModel.EmailUsuario;
 			UsuarioPorId.SenhaUsuario = UsuarioModel.SenhaUsuario;
 			UsuarioPorId.ImagemPerfilUsuario = UsuarioModel.ImagemPerfilUsuario;
@@ -58,7 +66,7 @@ namespace COMTUR.Repositorios
 
 			if (UsuarioPorId == null)
 			{
-				throw new Exception($"Empresário {id} não foi encontrado");
+				throw new Exception($"Usuário {id} não foi encontrado");
 			}
 
 			_dbContext.Usuario.Remove(UsuarioPorId);

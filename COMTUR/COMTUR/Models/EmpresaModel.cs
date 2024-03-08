@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -31,11 +32,20 @@ namespace COMTUR.Models
 		[Column("descricao")]
 		public string Descricao { get; set; }
 
-		[JsonIgnore]
-		public EmpresarioModel? EmpresarioModel { get; set; }
+        [BindNever]
+        [NotMapped]
+        public UsuarioModel? UsuarioModel { get; set; }
 
-		[ForeignKey("idempresario")]
-		public int IdEmpresario { get; set; }
+		[Column("usuarioid")]
+		[ForeignKey("usuarioid")]
+		public int IdUsuario { get; set; }
 
 	}
 }
+
+
+
+
+
+
+

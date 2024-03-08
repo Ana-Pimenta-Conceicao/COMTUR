@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using COMTUR.Models.Enum;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Text.Json.Serialization;
 
 namespace COMTUR.Models
 {
@@ -34,7 +35,8 @@ namespace COMTUR.Models
 		[Column("imagemPerfilUsuario")]
 		public string? ImagemPerfilUsuario { get; set; }
 
-        [BindNever]
+
+        [JsonIgnore]
         public ICollection<EmpresaModel>? Empresas { get; set; }
     }
 }

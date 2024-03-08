@@ -32,8 +32,8 @@ namespace COMTUR.Models
 		[Column("descricao")]
 		public string Descricao { get; set; }
 
-        [BindNever]
-        [NotMapped]
+
+        [JsonIgnore]
         public UsuarioModel? UsuarioModel { get; set; }
 
 		[Column("usuarioid")]

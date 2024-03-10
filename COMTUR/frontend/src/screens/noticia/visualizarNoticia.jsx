@@ -66,17 +66,20 @@ export default function VisualizarNoticia() {
         </p>
       </div>
       <div className="flex flex-col px-2 sm:pl-24 sm:pr-24 items-center">
-        {noticia.arquivoImagem && (
+        {noticia.imagem && noticia.imagem.map((imagem, index) => (
           <img
-            className="flex pt-4 w-2/3"
-            src={noticia.arquivoImagem}
-            alt="Preview"
+            key={index}
+            src={imagem}
+            alt={`Imagem ${index}`}
+            style={{ maxWidth: "100%", marginBottom: "10px" }}
           />
-        )}
+        ))}
+
         <h3 className="text-xs sm:text-lg font-medium italic px-8 sm:pl-24 sm:pr-24">
           {noticia.legendaImagem}
         </h3>
       </div>
+
 
 
       <div className="px-5 sm:px-36 pb-10 text-[#373636] text-sm sm:text-lg font-base pt-4">

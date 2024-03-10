@@ -36,9 +36,10 @@ export default function Noticia() {
 
   const [noticiaLegendaImagem, setNoticiaLegendaImagem] = useState("");
 
-
+  const [imagensNoticia, setImagensNoticia] = useState([]);
 
   const [noticiaId, setNoticiaId] = useState("");
+
 
   const navigate = useNavigate();
 
@@ -77,7 +78,14 @@ export default function Noticia() {
     setModalInserir(!modalInserir);
   };
 
-  const abrirFecharModalEditar = () => {
+
+  const abrirFecharModalEditar = async (noticiaId) => {
+    // Antes de abrir a modal de edição, faça a chamada à API para buscar as imagens associadas à notícia
+    const imagem = await carregarImagensNoticia(noticiaId); // Suponha que buscarImagensDaNoticia é uma função que retorna as imagens associadas à notícia
+
+    // Defina o estado imagensNoticia com as imagens recuperadas
+    setImagensNoticia(imagem);
+
     modalEditar ? limparDados() : null;
     setModalEditar(!modalEditar);
   };
@@ -119,40 +127,6 @@ export default function Noticia() {
   const dataFormatoBanco = inverterDataParaFormatoBanco(noticiaDataPublicacao);
 
 
-  const pedidoPost = async () => {
-    const formData = new FormData();
-    formData.append("titulo", noticiaTitulo);
-    formData.append("subtitulo", noticiaSubtitulo);
-    formData.append("conteudo", noticiaConteudo);
-    formData.append("dataPublicacao", dataFormatoBanco);
-    formData.append("horaPublicacao", noticiaHoraPublicacao);
-    formData.append("legendaImagem", noticiaLegendaImagem);
-  
-
-    const base64Image = await convertImageToBase64(noticiaArquivoImagens);
-    
-    if (base64Image) {
-      formData.append("arquivoImagem", base64Image);
-    }
-
-    console.log(formData)
-
-    try {
-      const response = await axios.post(baseUrl, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-  
-      setData(data.concat(response.data));
-      abrirFecharModalInserir();
-      limparDados();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
-
   function base64ToImage(base64String) {
     return `data:image/jpeg;base64,${base64String}`;
   }
@@ -166,6 +140,55 @@ export default function Noticia() {
     });
   }
 
+  // Adicione isso à sua função pedidoPost para converter as imagens para base64
+  const pedidoPost = async () => {
+    const formData = new FormData();
+    formData.append("titulo", noticiaTitulo);
+    formData.append("subtitulo", noticiaSubtitulo);
+    formData.append("conteudo", noticiaConteudo);
+    formData.append("dataPublicacao", dataFormatoBanco);
+    formData.append("horaPublicacao", noticiaHoraPublicacao);
+    formData.append("legendaImagem", noticiaLegendaImagem);
+
+    const base64Images = [];
+
+    // Verifique se noticiaArquivoImagens é um array
+    if (Array.isArray(noticiaArquivoImagens)) {
+      for (const imagem of noticiaArquivoImagens) {
+        // Verifique se cada item do array é uma instância válida de File
+        if (imagem instanceof File) {
+          // Chame convertImageToBase64 apenas para os itens que são instâncias válidas de File
+          const base64Image = await convertImageToBase64(imagem);
+          base64Images.push(base64Image);
+        }
+      }
+    }
+
+    // Adicione as imagens convertidas em base64 ao formulário
+    for (const base64Image of base64Images) {
+      formData.append("arquivoImagem", base64Image);
+    }
+
+    // Adicione as imagens ao formulário como arquivos
+    for (const imagem of noticiaArquivoImagens) {
+      formData.append("arquivoImagem", imagem);
+    }
+
+    try {
+      const response = await axios.post(baseUrl, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setData(data.concat(response.data));
+      abrirFecharModalInserir();
+      limparDados();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   async function pedidoAtualizar() {
     const formData = new FormData();
     formData.append("titulo", noticiaTitulo);
@@ -175,11 +198,14 @@ export default function Noticia() {
     formData.append("horaPublicacao", noticiaHoraPublicacao);
     formData.append("legendaImagem", noticiaLegendaImagem);
 
-    // Verificando se noticiaArquivoImagem é um arquivo para converter em base64
     if (noticiaArquivoImagens instanceof File) {
-      // Converter a imagem para base64 antes de enviar
       const base64Image = await convertImageToBase64(noticiaArquivoImagens);
       formData.append("arquivoImagem", base64Image);
+    } else if (Array.isArray(noticiaArquivoImagens)) {
+      // Adicione as imagens convertidas em base64 ao formulário
+      for (let i = 0; i < noticiaArquivoImagens.length; i++) {
+        formData.append(`arquivoImagem[${i}]`, noticiaArquivoImagens[i]);
+      }
     } else {
       formData.append("arquivoImagem", noticiaArquivoImagens);
     }
@@ -208,7 +234,6 @@ export default function Noticia() {
       console.log(error);
     }
   }
-
   const atualizarListaNoticias = async () => {
     await axios
       .get(baseUrl)
@@ -264,6 +289,17 @@ export default function Noticia() {
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
 
+  function createImageUrl(image) {
+    /* Verificar se é uma instância de Blob ou File */
+    if (image instanceof Blob || image instanceof File) {
+      /* Criar URL apenas se for um objeto válido */
+      return URL.createObjectURL(image);
+    } else {
+      console.error('noticiaArquivoImagens não é um Blob ou File válido.');
+      return ''; /* Retornar uma string vazia em caso de erro */
+    }
+  }
+
   // Funções para navegar entre as páginas
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -271,6 +307,17 @@ export default function Noticia() {
     }
   };
 
+  //Carregar imagens da Classe imagemNoticia para a preview dentro da modalEditar
+  async function carregarImagensNoticia(noticiaId) {
+    try {
+      const response = await axios.get(`${baseUrl}/${noticiaId}/imagens`);
+      const imagens = response.data;
+      // Atualize o estado para incluir as imagens recuperadas
+      setImagensNoticia(imagens);
+    } catch (error) {
+      console.error('Erro ao carregar imagens da notícia:', error);
+    }
+  }
   return (
     <div className="h-screen flex">
       <SidebarAdm />
@@ -401,25 +448,27 @@ export default function Noticia() {
               placeholder="Digite o Conteúdo"
             />
             <br />
-            <label>Data:</label>
+            <label htmlFor="noticiaDataPublicacao">Data:</label>
             <br />
             <InputMask
               mask="99/99/9999"
               maskPlaceholder="dd/mm/yyyy"
               type="text"
               className="form-control text-sm"
+              id="noticiaDataPublicacao"
               onChange={(e) => setNoticiaDataPublicacao(e.target.value)}
               placeholder="Digite apenas números"
               value={noticiaDataPublicacao}
             />
             <br />
-            <label>Hora:</label>
+            <label htmlFor="noticiaHoraPublicacao">Hora:</label>
             <br />
             <InputMask
               mask="99:99"
               maskPlaceholder="hh:mm"
               type="text"
               className="form-control text-sm"
+              id="noticiaHoraPublicacao"
               onChange={(e) => setNoticiaHoraPublicacao(e.target.value)}
               placeholder="Digite apenas números"
               value={noticiaHoraPublicacao}
@@ -434,52 +483,34 @@ export default function Noticia() {
               placeholder="Digite a legenda"
             />
             <br />
+
             <label>Imagem:</label>
-            {noticiaArquivoImagens && modalEditar && (
-              <div style={{ position: "relative", display: "inline-block" }}>
-                {typeof noticiaArquivoImagens === "string" ? (
+            <div>
+              {(Array.isArray(noticiaArquivoImagens) ? noticiaArquivoImagens : []).map((imagem, index) => (
+                <div key={index} className="flex flex-col items-center justify-center">
                   <img
-                    src={base64ToImage(noticiaArquivoImagens)}
-                    alt="Preview"
-                    style={{ maxWidth: "100%", marginTop: "10px" }}
+                    src={URL.createObjectURL(imagem)}
+                    alt={`Imagem ${index}`}
+                    style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "10px" }}
                   />
-                ) : (
-                  <img
-                    src={URL.createObjectURL(noticiaArquivoImagens)}
-                    alt="Preview"
-                    style={{ maxWidth: "100%", marginTop: "10px" }}
-                  />
-                )}
-                <button
-                  style={{
-                    position: "absolute",
-                    top: "15px",
-                    right: "5px",
-                    width: "30px",
-                    height: "30px",
-                    backgroundColor: "rgba(255, 255, 255, 0.5)",
-                    borderRadius: "50%",
-                    border: "none",
-                    padding: "0",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => pedidoRemoverImagem()}
-                >
-                  X
-                </button>
-                <br />
-              </div>
-            )}
-            {/* Tudo o que está dentro desse comando somente será criado se noticiaArquivoImagem tiver um dado e modalInserir for true */}
-            <input
-              type="file"
-              className="form-control"
-              onChange={(e) => setNoticiaArquivoImagens(e.target.files[0])}
-              multiple
-            />{" "}
-            {/* Caso noticiaArquivoImagem esteja vazio, limpamos o campo, se não estiver, nenhuma ação é efetuada */}{" "}
-            {/* Informamos '' (ou "") para limpar o campo, e undefined para não efetuar nenhuma ação */}
-            <br />
+                  <button
+                    className="text-white bg-red-500 hover:bg-red-600 rounded-full p-1"
+                    onClick={() => pedidoRemoverImagem(index)}
+                  >
+                    Remover
+                  </button>
+                </div>
+              ))}
+
+              {/* Campo para seleção de imagem */}
+              <input
+                type="file"
+                className="form-control"
+                onChange={(e) => setNoticiaArquivoImagens([...noticiaArquivoImagens, e.target.files[0]])}
+                multiple
+              />
+            </div>
+
           </div>
         </ModalBody>
         <ModalFooter>
@@ -498,6 +529,8 @@ export default function Noticia() {
           </button>
         </ModalFooter>
       </Modal>
+
+
       <Modal isOpen={modalEditar}>
         <ModalHeader>Editar Noticia</ModalHeader>
         <ModalBody>
@@ -545,6 +578,7 @@ export default function Noticia() {
               maskPlaceholder="dd/mm/yyyy"
               type="text"
               className="form-control  text-sm"
+              id="noticiaDataPublicacao"
               onChange={(e) => setNoticiaDataPublicacao(e.target.value)}
               value={noticiaDataPublicacao}
             />
@@ -570,35 +604,62 @@ export default function Noticia() {
             />
             <br />
             <label>Imagem:</label>
-            {noticiaArquivoImagens && modalEditar && (
-              <div style={{ position: "relative", display: "inline-block" }}>
-                {typeof noticiaArquivoImagens === "string" ? (
-                  <img
-                    src={noticiaArquivoImagens}
-                    alt="Preview"
-                    style={{ maxWidth: "100%", marginTop: "10px" }}
+            {imagensNoticia && imagensNoticia.length > 0 && modalEditar && (
+              <div>
+                <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+                  {imagensNoticia.map((imagem, index) => (
+                    <div key={index} style={{ marginRight: 10, marginBottom: 10 }}>
+                      <img
+                        src={imagem}
+                        alt={`Preview ${index}`}
+                        style={{ maxWidth: "100px", maxHeight: "100px", marginTop: "10px" }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  {noticiaArquivoImagens && (
+                    <div style={{ position: "relative", display: "inline-block" }}>
+                      {typeof noticiaArquivoImagens === "string" ? (
+                        <img
+                          src={noticiaArquivoImagens}
+                          alt="Nova Imagem"
+                          style={{ maxWidth: "100%", marginTop: "10px" }}
+                        />
+                      ) : (
+                        <img
+                          src={URL.createObjectURL(noticiaArquivoImagens)}
+                          alt="Nova Imagem"
+                          style={{ maxWidth: "100%", marginTop: "10px" }}
+                        />
+                      )}
+                    </div>
+                  )}
+                  <label>Adicionar Nova Imagem:</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    onChange={(e) => setNoticiaArquivoImagens(e.target.files[0])}
+                    value={""}
                   />
-                ) : (
-                  <img
-                    src={URL.createObjectURL(noticiaArquivoImagens)}
-                    alt="Preview"
-                    style={{ maxWidth: "100%", marginTop: "10px" }}
-                  />
-                )}
+                </div>
               </div>
             )}
+
             <input
               type="file"
               className="form-control"
               onChange={(e) => setNoticiaArquivoImagens(e.target.files[0])}
-              value={noticiaArquivoImagens === "" ? "" : undefined}
+              value={""}
             />
+
           </div>
+
         </ModalBody>
         <ModalFooter>
           <button
             className="btn bg-teal-700 hover:bg-teal-900 text-white"
-            onClick={() => pedidoAtualizar()}
+            onClick={() => pedidoAtualizar(noticiaId)}
           >
             Editar
           </button>
@@ -630,6 +691,6 @@ export default function Noticia() {
           </button>
         </ModalFooter>
       </Modal>
-    </div>
+    </div >
   );
 }

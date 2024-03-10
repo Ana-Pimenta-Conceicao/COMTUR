@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class teste : Migration
+    public partial class bdAtualizado : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,7 +24,7 @@ namespace COMTUR.Migrations
                     datapublicacao = table.Column<DateOnly>(type: "date", nullable: false),
                     horaPublicacao = table.Column<string>(type: "text", nullable: false),
                     legendaImagem = table.Column<string>(type: "text", nullable: false),
-                    arquivoImagem = table.Column<string>(type: "text", nullable: false)
+                    arquivoImagem = table.Column<string[]>(type: "text[]", nullable: false)
                 },
                 constraints: table =>
                 {

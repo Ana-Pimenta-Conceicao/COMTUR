@@ -10,5 +10,6 @@ namespace COMTUR.Repositorios.Interfaces
 		Task<ImagemNoticiaModel> Adicionar(ImagemNoticiaModel imagemNoticia);
 		Task<ImagemNoticiaModel> Atualizar(ImagemNoticiaModel imagemNoticia, int id);
 		Task<bool> Apagar(int id);
-	}
+
+    }
 }

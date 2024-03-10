@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240308193230_teste")]
-    partial class teste
+    [Migration("20240310182112_bdAtualizado")]
+    partial class bdAtualizado
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,9 +153,9 @@ namespace COMTUR.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ArquivoImagem")
+                    b.Property<string[]>("ArquivoImagem")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("text[]")
                         .HasColumnName("arquivoImagem");
 
                     b.Property<string>("Conteudo")

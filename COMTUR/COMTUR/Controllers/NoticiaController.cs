@@ -14,11 +14,21 @@ namespace COMTUR.Controllers
     public class NoticiaController : ControllerBase
     {
         private readonly INoticiaRepository _noticiaRepository;
+        private readonly IImagemNoticiaRepositorio _imagemNoticiaRepositorio;
 
 
-        public NoticiaController(INoticiaRepository noticiaRepository)
+        public NoticiaController(INoticiaRepository noticiaRepository, IImagemNoticiaRepositorio imagemNoticiaRepositorio)
         {
             _noticiaRepository = noticiaRepository;
+            _imagemNoticiaRepositorio = imagemNoticiaRepositorio;
+        }
+
+        [HttpPost("{noticiaId}/imagens")]
+        public IActionResult AdicionarImagem(int noticiaId, [FromForm] ImagemNoticiaModel imagem)
+        {
+            imagem.IdNoticia = noticiaId;
+            _imagemNoticiaRepositorio.Adicionar(imagem);
+            return Ok();
         }
 
         [HttpGet]
@@ -37,6 +47,13 @@ namespace COMTUR.Controllers
                 return NotFound($"Notícia com ID {id} não encontrada.");
             }
             return Ok(noticia);
+        }
+
+        [HttpGet("{id}/imagens")]
+        public async Task<ActionResult<List<string>>> BuscarImagensPorNoticiaId(int noticiaId)
+        {
+            var imagens = await _noticiaRepository.BuscarImagensPorNoticiaId(noticiaId);
+            return Ok(imagens);
         }
 
         [HttpPost]

@@ -12,7 +12,7 @@ namespace COMTUR.Data.Map
 			builder.Property(x => x.Nome).IsRequired().HasMaxLength(50);
 
 			// Relacionamento da Empresa com Empresario
-			builder.HasOne(x => x.EmpresarioModel).WithMany().HasForeignKey(x => x.IdEmpresario);
+			builder.HasOne(e => e.UsuarioModel).WithMany(u => u.Empresas).HasForeignKey(e => e.IdUsuario);
 		}
 	}
 }

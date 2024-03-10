@@ -1,6 +1,7 @@
 ﻿using COMTUR.Models;
 using COMTUR.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Text;
 
 namespace COMTUR.Controllers
@@ -16,7 +17,21 @@ namespace COMTUR.Controllers
 			_UsuarioRepositorio = UsuarioRepositorio;
 		}
 
-		[HttpGet]
+        // GET: api/Usuarios/porTipoUsuario/5
+        [HttpGet("porTipoUsuario/{tipoUsuario}")]
+        public async Task<ActionResult<IEnumerable<UsuarioModel>>> GetUsuariosPorTipo(int tipoUsuario)
+        {
+            var usuarios = await _UsuarioRepositorio.ListarPorTipoUsuario(tipoUsuario);
+
+            if (usuarios == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(usuarios);
+        }
+
+        [HttpGet]
 		public async Task<ActionResult<List<UsuarioModel>>> BuscarUsuario()
 		{
 			List<UsuarioModel> Usuario = await _UsuarioRepositorio.BuscarUsuario();

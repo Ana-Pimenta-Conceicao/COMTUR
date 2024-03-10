@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NovaPasta\**" />
     <Compile Remove="wwwroot\**" />
+    <Content Remove="NovaPasta\**" />
     <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="NovaPasta\**" />
     <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="NovaPasta\**" />
     <None Remove="wwwroot\**" />
   </ItemGroup>
 

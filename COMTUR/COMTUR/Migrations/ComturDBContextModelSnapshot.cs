@@ -31,6 +31,11 @@ namespace COMTUR.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string[]>("ArquivoImagem")
+                        .IsRequired()
+                        .HasColumnType("text[]")
+                        .HasColumnName("arquivoImagem");
+
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -110,6 +115,35 @@ namespace COMTUR.Migrations
                     b.HasIndex("IdUsuario");
 
                     b.ToTable("empresa");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.ImagemAtracaoModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("imagematracaoid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AtracaoModelId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IdAtracao")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Imagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagem");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AtracaoModelId");
+
+                    b.HasIndex("IdAtracao");
+
+                    b.ToTable("imagematracao");
                 });
 
             modelBuilder.Entity("COMTUR.Models.ImagemNoticiaModel", b =>
@@ -298,6 +332,21 @@ namespace COMTUR.Migrations
                     b.Navigation("UsuarioModel");
                 });
 
+            modelBuilder.Entity("COMTUR.Models.ImagemAtracaoModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.AtracaoModel", null)
+                        .WithMany("ImagemAtracao")
+                        .HasForeignKey("AtracaoModelId");
+
+                    b.HasOne("COMTUR.Models.AtracaoModel", "AtracaoModel")
+                        .WithMany()
+                        .HasForeignKey("IdAtracao")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AtracaoModel");
+                });
+
             modelBuilder.Entity("COMTUR.Models.ImagemNoticiaModel", b =>
                 {
                     b.HasOne("COMTUR.Models.NoticiaModel", "NoticiaModel")
@@ -311,6 +360,11 @@ namespace COMTUR.Migrations
                         .HasForeignKey("NoticiaModelId");
 
                     b.Navigation("NoticiaModel");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
+                {
+                    b.Navigation("ImagemAtracao");
                 });
 
             modelBuilder.Entity("COMTUR.Models.NoticiaModel", b =>

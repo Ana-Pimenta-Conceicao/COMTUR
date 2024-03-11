@@ -48,6 +48,7 @@ namespace COMTUR.Repositorios
 			AtracaoPorId.Nome = atracao.Nome;
 			AtracaoPorId.Descricao = atracao.Descricao;
 			AtracaoPorId.QRCode = atracao.QRCode;
+			AtracaoPorId.ArquivoImagem = atracao.ArquivoImagem;
 
 			_dbContext.Atracao.Update(AtracaoPorId);
 			await _dbContext.SaveChangesAsync();

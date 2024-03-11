@@ -63,6 +63,10 @@ export default function Noticia() {
     setNoticiaDataPublicacao(formatarDataParaExibicao(noticia.dataPublicacao));
     setNoticiaHoraPublicacao(noticia.horaPublicacao);
     setNoticiaLegendaImagem(noticia.legendaImagem);
+    setImagensNoticia(noticia.arquivoImagem);
+
+    console.log(noticia.arquivoImagem);
+    console.log(typeof noticia.arquivoImagem);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
@@ -79,12 +83,16 @@ export default function Noticia() {
   };
 
 
-  const abrirFecharModalEditar = async (noticiaId) => {
+  const abrirFecharModalEditar = async (id) => {
     // Antes de abrir a modal de edição, faça a chamada à API para buscar as imagens associadas à notícia
-    const imagem = await carregarImagensNoticia(noticiaId); // Suponha que buscarImagensDaNoticia é uma função que retorna as imagens associadas à notícia
+    var imagem;
+    if (id) {
+      imagem = await carregarImagensNoticia(id); // Suponha que buscarImagensDaNoticia é uma função que retorna as imagens associadas à notícia
 
-    // Defina o estado imagensNoticia com as imagens recuperadas
-    setImagensNoticia(imagem);
+      // Defina o estado imagensNoticia com as imagens recuperadas
+      console.log(imagem)
+      setImagensNoticia(imagem);
+    }
 
     modalEditar ? limparDados() : null;
     setModalEditar(!modalEditar);
@@ -126,18 +134,24 @@ export default function Noticia() {
 
   const dataFormatoBanco = inverterDataParaFormatoBanco(noticiaDataPublicacao);
 
+  function convertImageToBase64(imageFile, callback) {
+    if (!imageFile) {
+      callback(false);
+      return;
+    }
 
-  function base64ToImage(base64String) {
-    return `data:image/jpeg;base64,${base64String}`;
-  }
+    const reader = new FileReader();
 
-  function convertImageToBase64(imageFile) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(imageFile);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
+    reader.onload = () => {
+      const base64String = reader.result;
+      callback(base64String);
+    };
+
+    reader.onerror = () => {
+      callback(false);
+    };
+
+    reader.readAsDataURL(imageFile);
   }
 
   // Adicione isso à sua função pedidoPost para converter as imagens para base64
@@ -245,9 +259,8 @@ export default function Noticia() {
       });
   };
 
-  const pedidoRemoverImagem = () => {
-    // Método para limpar a constante (não limpa o campo)
-    setNoticiaArquivoImagens("");
+  const removeImagemByIndex = (indexToRemove) => {
+    setImagensNoticia(prevImagens => prevImagens.filter((_, index) => index !== indexToRemove));
   };
 
   const pedidoDeletar = async () => {
@@ -310,14 +323,19 @@ export default function Noticia() {
   //Carregar imagens da Classe imagemNoticia para a preview dentro da modalEditar
   async function carregarImagensNoticia(noticiaId) {
     try {
-      const response = await axios.get(`${baseUrl}/${noticiaId}/imagens`);
+      const response = await axios.get(`${baseUrlImagem}/${noticiaId}`);
       const imagens = response.data;
-      // Atualize o estado para incluir as imagens recuperadas
-      setImagensNoticia(imagens);
+      // Atualize o estado para incluir imagens recuperadas 
+      console.log(imagens);
+      return imagens;
     } catch (error) {
       console.error('Erro ao carregar imagens da notícia:', error);
+      // Em caso de erro, retorne um array vazio ou null
+      return [];
     }
   }
+
+
   return (
     <div className="h-screen flex">
       <SidebarAdm />
@@ -486,27 +504,25 @@ export default function Noticia() {
 
             <label>Imagem:</label>
             <div>
-              {(Array.isArray(noticiaArquivoImagens) ? noticiaArquivoImagens : []).map((imagem, index) => (
+              {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map((imagem, index) => (
                 <div key={index} className="flex flex-col items-center justify-center">
                   <img
-                    src={URL.createObjectURL(imagem)}
-                    alt={`Imagem ${index}`}
+                    src={imagem}
                     style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "10px" }}
                   />
                   <button
                     className="text-white bg-red-500 hover:bg-red-600 rounded-full p-1"
-                    onClick={() => pedidoRemoverImagem(index)}
+                    onClick={() => removeImagemByIndex(index)}
                   >
                     Remover
                   </button>
                 </div>
               ))}
 
-              {/* Campo para seleção de imagem */}
               <input
                 type="file"
                 className="form-control"
-                onChange={(e) => setNoticiaArquivoImagens([...noticiaArquivoImagens, e.target.files[0]])}
+                onChange={(e) => convertImageToBase64(e.target.files[0], (result) => { if (result) { setImagensNoticia(prevImagens => [...prevImagens, result]) }; e.target.value = null; })}
                 multiple
               />
             </div>
@@ -516,7 +532,7 @@ export default function Noticia() {
         <ModalFooter>
           <button
             className="btn bg-yellow-400 text-white hover:bg-yellow-500"
-            onClick={() => pedidoPost()}
+            onClick={() => abrirFecharModalEditar()}
           >
             Cadastrar
           </button>
@@ -575,7 +591,7 @@ export default function Noticia() {
             <br />
             <InputMask
               mask="99/99/9999"
-              maskPlaceholder="dd/mm/yyyy"
+              //maskPlaceholder="dd/mm/yyyy"
               type="text"
               className="form-control  text-sm"
               id="noticiaDataPublicacao"
@@ -587,7 +603,7 @@ export default function Noticia() {
             <br />
             <InputMask
               mask="99:99"
-              maskPlaceholder="hh:mm"
+              //maskPlaceholder="hh:mm"
               type="text"
               className="form-control  text-sm"
               onChange={(e) => setNoticiaHoraPublicacao(e.target.value)}
@@ -604,55 +620,32 @@ export default function Noticia() {
             />
             <br />
             <label>Imagem:</label>
-            {imagensNoticia && imagensNoticia.length > 0 && modalEditar && (
+            {modalEditar && (
               <div>
-                <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
-                  {imagensNoticia.map((imagem, index) => (
-                    <div key={index} style={{ marginRight: 10, marginBottom: 10 }}>
-                      <img
-                        src={imagem}
-                        alt={`Preview ${index}`}
-                        style={{ maxWidth: "100px", maxHeight: "100px", marginTop: "10px" }}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div>
-                  {noticiaArquivoImagens && (
-                    <div style={{ position: "relative", display: "inline-block" }}>
-                      {typeof noticiaArquivoImagens === "string" ? (
-                        <img
-                          src={noticiaArquivoImagens}
-                          alt="Nova Imagem"
-                          style={{ maxWidth: "100%", marginTop: "10px" }}
-                        />
-                      ) : (
-                        <img
-                          src={URL.createObjectURL(noticiaArquivoImagens)}
-                          alt="Nova Imagem"
-                          style={{ maxWidth: "100%", marginTop: "10px" }}
-                        />
-                      )}
-                    </div>
-                  )}
-                  <label>Adicionar Nova Imagem:</label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    onChange={(e) => setNoticiaArquivoImagens(e.target.files[0])}
-                    value={""}
-                  />
-                </div>
+                {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map((imagem, index) => (
+                  <div key={index} className="flex flex-col items-center justify-center">
+                    <img
+                      src={imagem}
+                      style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "10px" }}
+                    />
+                    <button
+                      className="text-white bg-red-500 hover:bg-red-600 rounded-full p-1"
+                      onClick={() => removeImagemByIndex(index)}
+                    >
+                      Remover
+                    </button>
+                  </div>
+                ))}
               </div>
             )}
 
             <input
               type="file"
               className="form-control"
-              onChange={(e) => setNoticiaArquivoImagens(e.target.files[0])}
+              onChange={(e) => convertImageToBase64(e.target.files[0], (result) => { if (result) { setImagensNoticia(prevImagens => [...prevImagens, result]) }; e.target.value = null; })}
+              multiple
               value={""}
             />
-
           </div>
 
         </ModalBody>

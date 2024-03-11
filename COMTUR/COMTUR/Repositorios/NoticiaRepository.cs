@@ -70,11 +70,36 @@ namespace COMTUR.Repositorios
             noticiaPorId.HoraPublicacao = noticiaDto.HoraPublicacao;
             noticiaPorId.LegendaImagem = noticiaDto.LegendaImagem;
 
+            // Buscar imagens existentes para a notícia
+            var imagensAtuais = await BuscarImagensPorNoticiaId(id);
+
+            // Se houver novas imagens fornecidas no DTO, adicioná-las
+            if (noticiaDto.ArquivoImagem != null && noticiaDto.ArquivoImagem.Any())
+            {
+                foreach (var imagemBase64 in noticiaDto.ArquivoImagem)
+                {
+                    var noticiaImagem = new ImagemNoticiaModel { Imagem = imagemBase64, IdNoticia = noticiaPorId.Id };
+                    _dbContext.ImagemNoticia.Add(noticiaImagem);
+                }
+            }
+
+            // Remover imagens que não estão mais presentes
+            var imagensParaRemover = imagensAtuais.Except(noticiaDto.ArquivoImagem).ToList();
+            foreach (var imagem in imagensParaRemover)
+            {
+                var imagemParaRemover = await _dbContext.ImagemNoticia.FirstOrDefaultAsync(im => im.Imagem == imagem && im.IdNoticia == id);
+                if (imagemParaRemover != null)
+                {
+                    _dbContext.ImagemNoticia.Remove(imagemParaRemover);
+                }
+            }
+
             _dbContext.Noticia.Update(noticiaPorId);
             await _dbContext.SaveChangesAsync();
 
             return noticiaPorId;
         }
+
 
         public async Task<bool> Apagar(int id)
         {

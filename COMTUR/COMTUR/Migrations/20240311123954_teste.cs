@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class bdAtualizado : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -110,6 +110,7 @@ namespace COMTUR.Migrations
                     nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     descricao = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     qrcode = table.Column<string>(type: "text", nullable: false),
+                    arquivoImagem = table.Column<string[]>(type: "text[]", nullable: false),
                     IdTipoAtracao = table.Column<int>(type: "integer", nullable: false),
                     TipoAtracaoModelId = table.Column<int>(type: "integer", nullable: true)
                 },
@@ -154,6 +155,32 @@ namespace COMTUR.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "imagematracao",
+                columns: table => new
+                {
+                    imagematracaoid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    imagem = table.Column<string>(type: "text", nullable: false),
+                    IdAtracao = table.Column<int>(type: "integer", nullable: false),
+                    AtracaoModelId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_imagematracao", x => x.imagematracaoid);
+                    table.ForeignKey(
+                        name: "FK_imagematracao_atracao_AtracaoModelId",
+                        column: x => x.AtracaoModelId,
+                        principalTable: "atracao",
+                        principalColumn: "atracaoid");
+                    table.ForeignKey(
+                        name: "FK_imagematracao_atracao_IdAtracao",
+                        column: x => x.IdAtracao,
+                        principalTable: "atracao",
+                        principalColumn: "atracaoid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_atracao_IdTipoAtracao",
                 table: "atracao",
@@ -170,6 +197,16 @@ namespace COMTUR.Migrations
                 column: "usuarioid");
 
             migrationBuilder.CreateIndex(
+                name: "IX_imagematracao_AtracaoModelId",
+                table: "imagematracao",
+                column: "AtracaoModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_imagematracao_IdAtracao",
+                table: "imagematracao",
+                column: "IdAtracao");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_imagemnoticia_IdNoticia",
                 table: "imagemnoticia",
                 column: "IdNoticia");
@@ -184,10 +221,10 @@ namespace COMTUR.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "atracao");
+                name: "empresa");
 
             migrationBuilder.DropTable(
-                name: "empresa");
+                name: "imagematracao");
 
             migrationBuilder.DropTable(
                 name: "imagemnoticia");
@@ -196,13 +233,16 @@ namespace COMTUR.Migrations
                 name: "tipoturismo");
 
             migrationBuilder.DropTable(
-                name: "tipoatracao");
-
-            migrationBuilder.DropTable(
                 name: "usuario");
 
             migrationBuilder.DropTable(
+                name: "atracao");
+
+            migrationBuilder.DropTable(
                 name: "noticia");
+
+            migrationBuilder.DropTable(
+                name: "tipoatracao");
         }
     }
 }

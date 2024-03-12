@@ -63,13 +63,13 @@ export default function Noticia() {
     setNoticiaDataPublicacao(formatarDataParaExibicao(noticia.dataPublicacao));
     setNoticiaHoraPublicacao(noticia.horaPublicacao);
     setNoticiaLegendaImagem(noticia.legendaImagem);
-    setImagensNoticia(noticia.arquivoImagem);
 
+    //
+    setImagensNoticia(noticia.arquivoImagem);
     console.log(noticia.arquivoImagem);
-    console.log(typeof noticia.arquivoImagem);
 
     if (opcao === "Editar") {
-      abrirFecharModalEditar();
+      abrirFecharModalEditar(noticiaId);
     } else if (opcao === "Excluir") {
       abrirFecharModalDeletar();
     } else {
@@ -83,20 +83,17 @@ export default function Noticia() {
   };
 
 
-  const abrirFecharModalEditar = async (id) => {
-    // Antes de abrir a modal de edição, faça a chamada à API para buscar as imagens associadas à notícia
+  const abrirFecharModalEditar = async () => {
     var imagem;
-    if (id) {
-      imagem = await carregarImagensNoticia(id); // Suponha que buscarImagensDaNoticia é uma função que retorna as imagens associadas à notícia
+    if (noticiaId) {
+      imagem = await carregarImagensNoticia(noticiaId); // Suponha que buscarImagensDaNoticia é uma função que retorna as imagens associadas à notícia
 
       // Defina o estado imagensNoticia com as imagens recuperadas
-      console.log(imagem)
+      console.log(imagem);
       setImagensNoticia(imagem);
-    }
-
-    modalEditar ? limparDados() : null;
+    };
     setModalEditar(!modalEditar);
-  };
+  }
 
   const abrirFecharModalDeletar = () => {
     modalDeletar ? limparDados() : null;
@@ -134,24 +131,13 @@ export default function Noticia() {
 
   const dataFormatoBanco = inverterDataParaFormatoBanco(noticiaDataPublicacao);
 
-  function convertImageToBase64(imageFile, callback) {
-    if (!imageFile) {
-      callback(false);
-      return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const base64String = reader.result;
-      callback(base64String);
-    };
-
-    reader.onerror = () => {
-      callback(false);
-    };
-
-    reader.readAsDataURL(imageFile);
+  function convertImageToBase64(imageFile) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(imageFile);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
   }
 
   // Adicione isso à sua função pedidoPost para converter as imagens para base64
@@ -260,8 +246,9 @@ export default function Noticia() {
   };
 
   const removeImagemByIndex = (indexToRemove) => {
-    setImagensNoticia(prevImagens => prevImagens.filter((_, index) => index !== indexToRemove));
+    setImagensNoticia(prevImagens => prevImagens.filter((_, index) => index !== indexToRemove))
   };
+
 
   const pedidoDeletar = async () => {
     await axios
@@ -325,16 +312,13 @@ export default function Noticia() {
     try {
       const response = await axios.get(`${baseUrlImagem}/${noticiaId}`);
       const imagens = response.data;
-      // Atualize o estado para incluir imagens recuperadas 
-      console.log(imagens);
+      // Atualize o estado para incluir as imagens recuperadas
       return imagens;
     } catch (error) {
       console.error('Erro ao carregar imagens da notícia:', error);
-      // Em caso de erro, retorne um array vazio ou null
       return [];
     }
   }
-
 
   return (
     <div className="h-screen flex">
@@ -376,7 +360,7 @@ export default function Noticia() {
                     <span className="flex col-span-2 items-center justify-center border-t-[1px] gap-2 border-[#DBDBDB]">
                       <button
                         className="text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                        onClick={() => NoticiaSet(noticia, "Editar")}
+                        onClick={() => {NoticiaSet(noticia, "Editar"); abrirFecharModalEditar()}}
                       >
                         <Pencil className="mr-1" size={16} />
                         Editar
@@ -504,10 +488,11 @@ export default function Noticia() {
 
             <label>Imagem:</label>
             <div>
-              {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map((imagem, index) => (
+              {(Array.isArray(noticiaArquivoImagens) ? noticiaArquivoImagens : []).map((imagem, index) => (
                 <div key={index} className="flex flex-col items-center justify-center">
                   <img
-                    src={imagem}
+                    src={URL.createObjectURL(imagem)}
+                    alt={`Imagem ${index}`}
                     style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "10px" }}
                   />
                   <button
@@ -519,10 +504,11 @@ export default function Noticia() {
                 </div>
               ))}
 
+              {/* Campo para seleção de imagem */}
               <input
                 type="file"
                 className="form-control"
-                onChange={(e) => convertImageToBase64(e.target.files[0], (result) => { if (result) { setImagensNoticia(prevImagens => [...prevImagens, result]) }; e.target.value = null; })}
+                onChange={(e) => setNoticiaArquivoImagens([...noticiaArquivoImagens, e.target.files[0]])}
                 multiple
               />
             </div>
@@ -532,7 +518,7 @@ export default function Noticia() {
         <ModalFooter>
           <button
             className="btn bg-yellow-400 text-white hover:bg-yellow-500"
-            onClick={() => abrirFecharModalEditar()}
+            onClick={() => pedidoPost()}
           >
             Cadastrar
           </button>
@@ -591,7 +577,7 @@ export default function Noticia() {
             <br />
             <InputMask
               mask="99/99/9999"
-              //maskPlaceholder="dd/mm/yyyy"
+              maskPlaceholder="dd/mm/yyyy"
               type="text"
               className="form-control  text-sm"
               id="noticiaDataPublicacao"
@@ -603,7 +589,7 @@ export default function Noticia() {
             <br />
             <InputMask
               mask="99:99"
-              //maskPlaceholder="hh:mm"
+              maskPlaceholder="hh:mm"
               type="text"
               className="form-control  text-sm"
               onChange={(e) => setNoticiaHoraPublicacao(e.target.value)}
@@ -642,10 +628,10 @@ export default function Noticia() {
             <input
               type="file"
               className="form-control"
-              onChange={(e) => convertImageToBase64(e.target.files[0], (result) => { if (result) { setImagensNoticia(prevImagens => [...prevImagens, result]) }; e.target.value = null; })}
+              onChange={(e) => setNoticiaArquivoImagens([...noticiaArquivoImagens, e.target.files[0]])}
               multiple
-              value={""}
             />
+
           </div>
 
         </ModalBody>
@@ -659,7 +645,7 @@ export default function Noticia() {
           {"  "}
           <button
             className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalEditar()}
+            onClick={() => abrirFecharModalEditar(noticiaId)}
           >
             Cancelar
           </button>

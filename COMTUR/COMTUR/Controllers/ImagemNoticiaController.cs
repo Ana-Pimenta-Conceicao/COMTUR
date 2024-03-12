@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using COMTUR.Repositorios.Interfaces;
+using System.Collections.Generic;
 
 namespace COMTUR.Controllers
 {
@@ -11,10 +12,12 @@ namespace COMTUR.Controllers
     public class ImagemNoticiaController : ControllerBase
     {
         private readonly IImagemNoticiaRepositorio _ImagemNoticiaRepositorio;
+        private readonly INoticiaRepository _NoticiaRepository;
 
-        public ImagemNoticiaController(IImagemNoticiaRepositorio ImagemNoticiaRepositorio)
+        public ImagemNoticiaController(IImagemNoticiaRepositorio ImagemNoticiaRepositorio, INoticiaRepository NoticiaRepository)
         {
             _ImagemNoticiaRepositorio = ImagemNoticiaRepositorio;
+            _NoticiaRepository = NoticiaRepository;
         }
 
         [HttpGet]
@@ -49,6 +52,14 @@ namespace COMTUR.Controllers
         public async Task<ActionResult<ImagemNoticiaModel>> Atualizar([FromForm] ImagemNoticiaModel ImagemNoticiaModel, int id)
         {
             ImagemNoticiaModel imagemNoticia = await _ImagemNoticiaRepositorio.Atualizar(ImagemNoticiaModel, id);
+
+            return Ok(imagemNoticia);
+        }
+
+        [HttpPut()]
+        public async Task<ActionResult<ImagemNoticiaModel>> AtualizarImagensRelacionadaNoticia([FromForm] int id, IEnumerable<string> imagensNoticia)
+        {
+            IEnumerable<ImagemNoticiaModel> imagemNoticia = await _NoticiaRepository.BuscarImagensPorNoticiaId(id);
 
             return Ok(imagemNoticia);
         }

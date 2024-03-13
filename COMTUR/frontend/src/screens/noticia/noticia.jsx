@@ -10,8 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { CaretLeft, CaretRight, Pencil, Trash, Eye, FilePlus } from "@phosphor-icons/react";
 
 export default function Noticia() {
-  const baseUrl = "https://localhost:7256/api/Noticia";
 
+  const baseUrl = "https://localhost:7256/api/Noticia";
   const baseUrlImagem = "https://localhost:7256/api/ImagemNoticia";
 
   const [data, setData] = useState([]);
@@ -23,23 +23,13 @@ export default function Noticia() {
   const [modalDeletar, setModalDeletar] = useState(false);
 
   const [noticiaTitulo, setNoticiaTitulo] = useState("");
-
   const [noticiaSubtitulo, setNoticiaSubtitulo] = useState("");
-
   const [noticiaConteudo, setNoticiaConteudo] = useState("");
-
-  const [noticiaArquivoImagens, setNoticiaArquivoImagens] = useState([]);
-
   const [noticiaDataPublicacao, setNoticiaDataPublicacao] = useState("");
-
   const [noticiaHoraPublicacao, setNoticiaHoraPublicacao] = useState("");
-
   const [noticiaLegendaImagem, setNoticiaLegendaImagem] = useState("");
-
   const [imagensNoticia, setImagensNoticia] = useState([]);
-
   const [noticiaId, setNoticiaId] = useState("");
-
 
   const navigate = useNavigate();
 
@@ -50,7 +40,7 @@ export default function Noticia() {
     setNoticiaDataPublicacao("");
     setNoticiaHoraPublicacao("");
     setNoticiaLegendaImagem("");
-    setNoticiaArquivoImagens("");
+    setImagensNoticia("");
     setNoticiaId("");
   };
 
@@ -65,8 +55,8 @@ export default function Noticia() {
     setNoticiaLegendaImagem(noticia.legendaImagem);
 
     //
-    setImagensNoticia(noticia.arquivoImagem);
-    console.log(noticia.arquivoImagem);
+    setImagensNoticia(noticia.imagemNoticia);
+    console.log(noticia.imagemNoticia);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar(/*noticia.id*/);
@@ -84,14 +74,15 @@ export default function Noticia() {
 
 
   const abrirFecharModalEditar = async (id) => {
-    var imagem;
-    /*if (id) {
+    /*var imagem;
+    if (id) {
       imagem = await carregarImagensNoticia(noticiaId); // Suponha que buscarImagensDaNoticia é uma função que retorna as imagens associadas à notícia
 
       // Defina o estado imagensNoticia com as imagens recuperadas
       console.log(imagem);
       setImagensNoticia(imagem);
     };*/
+    modalEditar ? limparDados() : null;
     setModalEditar(!modalEditar);
   }
 
@@ -136,18 +127,18 @@ export default function Noticia() {
       callback(false);
       return;
     }
-  
+
     const reader = new FileReader();
-  
+
     reader.onload = () => {
       const base64String = reader.result;
       callback(base64String);
     };
-  
+
     reader.onerror = () => {
       callback(false);
     };
-  
+
     reader.readAsDataURL(imageFile);
   }
 
@@ -161,30 +152,6 @@ export default function Noticia() {
     formData.append("horaPublicacao", noticiaHoraPublicacao);
     formData.append("legendaImagem", noticiaLegendaImagem);
 
-    const base64Images = [];
-
-    // Verifique se noticiaArquivoImagens é um array
-    if (Array.isArray(noticiaArquivoImagens)) {
-      for (const imagem of noticiaArquivoImagens) {
-        // Verifique se cada item do array é uma instância válida de File
-        if (imagem instanceof File) {
-          // Chame convertImageToBase64 apenas para os itens que são instâncias válidas de File
-          const base64Image = await convertImageToBase64(imagem);
-          base64Images.push(base64Image);
-        }
-      }
-    }
-
-    // Adicione as imagens convertidas em base64 ao formulário
-    for (const base64Image of base64Images) {
-      formData.append("arquivoImagem", base64Image);
-    }
-
-    // Adicione as imagens ao formulário como arquivos
-    for (const imagem of noticiaArquivoImagens) {
-      formData.append("arquivoImagem", imagem);
-    }
-
     try {
       const response = await axios.post(baseUrl, formData, {
         headers: {
@@ -193,8 +160,29 @@ export default function Noticia() {
       });
 
       setData(data.concat(response.data));
+      await pedidoPostImagens(response.data.id);
       abrirFecharModalInserir();
       limparDados();
+      setAtualizarData(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const pedidoPostImagens = async (idNoticia) => {
+    const formData = new FormData();
+    imagensNoticia.forEach(imagem => {
+      formData.append("imagens", imagem);
+    });
+
+    console.log(formData.getAll("imagens"));
+
+    try {
+      const response = await axios.post(baseUrlImagem + `/${idNoticia}/CadastrarImagensNoticia`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
     } catch (error) {
       console.log(error);
     }
@@ -208,18 +196,6 @@ export default function Noticia() {
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
     formData.append("legendaImagem", noticiaLegendaImagem);
-
-    if (noticiaArquivoImagens instanceof File) {
-      const base64Image = await convertImageToBase64(noticiaArquivoImagens);
-      formData.append("arquivoImagem", base64Image);
-    } else if (Array.isArray(noticiaArquivoImagens)) {
-      // Adicione as imagens convertidas em base64 ao formulário
-      for (let i = 0; i < noticiaArquivoImagens.length; i++) {
-        formData.append(`arquivoImagem[${i}]`, noticiaArquivoImagens[i]);
-      }
-    } else {
-      formData.append("arquivoImagem", noticiaArquivoImagens);
-    }
 
     try {
       const response = await axios.put(`${baseUrl}/${noticiaId}`, formData, {
@@ -240,20 +216,33 @@ export default function Noticia() {
       });
 
       abrirFecharModalEditar();
+      await pedidoPutImagens();
       limparDados();
+      setAtualizarData(true);
     } catch (error) {
       console.log(error);
     }
-  }
-  const atualizarListaNoticias = async () => {
-    await axios
-      .get(baseUrl)
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
+  };
+
+  const pedidoPutImagens = async () => {
+    const formData = new FormData();
+    imagensNoticia.forEach(imagem => {
+      formData.append("imagens", imagem.imagem? imagem.imagem : imagem);
+    });
+
+    console.log(formData.getAll("imagens"));
+
+    try {
+      const response = await axios.put(baseUrlImagem + `/${noticiaId}/AtualizarImagensNoticia`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const removeImagemByIndex = (indexToRemove) => {
@@ -269,9 +258,9 @@ export default function Noticia() {
           (noticia) => noticia.id !== response.data
         );
         setData(newNoticias);
-        atualizarListaNoticias();
         abrirFecharModalDeletar();
         limparDados();
+        setAtualizarData(true);
       })
       .catch((error) => {
         console.log(error);
@@ -371,7 +360,7 @@ export default function Noticia() {
                     <span className="flex col-span-2 items-center justify-center border-t-[1px] gap-2 border-[#DBDBDB]">
                       <button
                         className="text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                        onClick={() => {NoticiaSet(noticia, "Editar"); abrirFecharModalEditar()}}
+                        onClick={() => { NoticiaSet(noticia, "Editar"); abrirFecharModalEditar() }}
                       >
                         <Pencil className="mr-1" size={16} />
                         Editar
@@ -630,7 +619,7 @@ export default function Noticia() {
                 {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map((imagem, index) => (
                   <div key={index} className="flex flex-col items-center justify-center">
                     <img
-                      src={imagem}
+                      src={imagem.imagem? imagem.imagem : imagem}
                       style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "10px" }}
                     />
                     <button

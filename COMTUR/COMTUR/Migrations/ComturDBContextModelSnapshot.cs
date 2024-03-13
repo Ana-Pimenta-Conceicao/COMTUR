@@ -163,14 +163,9 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("imagem");
 
-                    b.Property<int?>("NoticiaModelId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdNoticia");
-
-                    b.HasIndex("NoticiaModelId");
 
                     b.ToTable("imagemnoticia");
                 });
@@ -183,11 +178,6 @@ namespace COMTUR.Migrations
                         .HasColumnName("noticiaid");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string[]>("ArquivoImagem")
-                        .IsRequired()
-                        .HasColumnType("text[]")
-                        .HasColumnName("arquivoImagem");
 
                     b.Property<string>("Conteudo")
                         .IsRequired()
@@ -350,14 +340,10 @@ namespace COMTUR.Migrations
             modelBuilder.Entity("COMTUR.Models.ImagemNoticiaModel", b =>
                 {
                     b.HasOne("COMTUR.Models.NoticiaModel", "NoticiaModel")
-                        .WithMany()
+                        .WithMany("ImagemNoticia")
                         .HasForeignKey("IdNoticia")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("COMTUR.Models.NoticiaModel", null)
-                        .WithMany("ImagemNoticia")
-                        .HasForeignKey("NoticiaModelId");
 
                     b.Navigation("NoticiaModel");
                 });

@@ -11,9 +11,12 @@ namespace COMTUR.Data.Map
 		{
 			builder.HasKey(x => x.Id);
 
-			// Relacionamento da ImagemNoticia com Noticia
-			builder.HasOne(x => x.NoticiaModel).WithMany().HasForeignKey(x => x.IdNoticia);
-		}
+            // Relacionamento da ImagemNoticia com Noticia
+            builder.HasOne(x => x.NoticiaModel)
+                   .WithMany(n => n.ImagemNoticia)
+                   .HasForeignKey(x => x.IdNoticia)
+                   .IsRequired();
+        }
 
 	}
 	

@@ -23,8 +23,7 @@ namespace COMTUR.Migrations
                     conteudo = table.Column<string>(type: "text", nullable: false),
                     datapublicacao = table.Column<DateOnly>(type: "date", nullable: false),
                     horaPublicacao = table.Column<string>(type: "text", nullable: false),
-                    legendaImagem = table.Column<string>(type: "text", nullable: false),
-                    arquivoImagem = table.Column<string[]>(type: "text[]", nullable: false)
+                    legendaImagem = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,8 +81,7 @@ namespace COMTUR.Migrations
                     imagemnoticiaid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     imagem = table.Column<string>(type: "text", nullable: false),
-                    IdNoticia = table.Column<int>(type: "integer", nullable: false),
-                    NoticiaModelId = table.Column<int>(type: "integer", nullable: true)
+                    IdNoticia = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,11 +92,6 @@ namespace COMTUR.Migrations
                         principalTable: "noticia",
                         principalColumn: "noticiaid",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_imagemnoticia_noticia_NoticiaModelId",
-                        column: x => x.NoticiaModelId,
-                        principalTable: "noticia",
-                        principalColumn: "noticiaid");
                 });
 
             migrationBuilder.CreateTable(
@@ -210,11 +203,6 @@ namespace COMTUR.Migrations
                 name: "IX_imagemnoticia_IdNoticia",
                 table: "imagemnoticia",
                 column: "IdNoticia");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_imagemnoticia_NoticiaModelId",
-                table: "imagemnoticia",
-                column: "NoticiaModelId");
         }
 
         /// <inheritdoc />

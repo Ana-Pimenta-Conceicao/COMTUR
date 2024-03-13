@@ -47,6 +47,25 @@ namespace COMTUR.Controllers
             return Ok(imagemNoticia);
         }
 
+        [HttpPost("{id}/CadastrarImagensNoticia")]
+        public async Task<ActionResult<List<ImagemNoticiaModel>>> CadastrarImagensNoticia([FromForm] List<string> imagens, int id)
+        {
+            List<ImagemNoticiaModel> imagensNoticiaModel = new List<ImagemNoticiaModel>();
+            foreach (string imagem in imagens)
+            {
+                ImagemNoticiaModel novaImagem = new ImagemNoticiaModel()
+                {
+                    IdNoticia = id,
+                    Imagem = imagem
+                };
+
+                await _ImagemNoticiaRepositorio.Adicionar(novaImagem);
+                imagensNoticiaModel.Add(novaImagem);
+            }
+
+            return Ok(imagensNoticiaModel);
+        }
+
 
         [HttpPut("{id}")]
         public async Task<ActionResult<ImagemNoticiaModel>> Atualizar([FromForm] ImagemNoticiaModel ImagemNoticiaModel, int id)
@@ -56,12 +75,39 @@ namespace COMTUR.Controllers
             return Ok(imagemNoticia);
         }
 
-        [HttpPut()]
-        public async Task<ActionResult<ImagemNoticiaModel>> AtualizarImagensRelacionadaNoticia([FromForm] int id, IEnumerable<string> imagensNoticia)
+        [HttpPut("{id}/AtualizarImagensNoticia")]
+        public async Task<ActionResult<List<ImagemNoticiaModel>>> AtualizarImagensNoticia([FromForm] List<string> imagens, int id)
         {
-            IEnumerable<ImagemNoticiaModel> imagemNoticia = await _NoticiaRepository.BuscarImagensPorNoticiaId(id);
+            // Busca as imagens relacionadas à notícia no banco de dados
+            List<ImagemNoticiaModel> imagensNoticia = await _NoticiaRepository.BuscarImagensPorNoticiaId(id);
 
-            return Ok(imagemNoticia);
+            // Identifica as imagens que devem ser cadastradas (presentes em imagens, mas não em imagensNoticia)
+            List<string> imagensParaCadastrar = imagens.Except(imagensNoticia.Select(i => i.Imagem)).ToList();
+
+            // Identifica as imagens que devem ser removidas (presentes em imagensNoticia, mas não em imagens)
+            List<ImagemNoticiaModel> imagensParaRemover = imagensNoticia.Where(i => !imagens.Contains(i.Imagem)).ToList();
+
+            // Lógica para cadastrar as novas imagens
+            foreach (string imagem in imagensParaCadastrar)
+            {
+                ImagemNoticiaModel novaImagem = new ImagemNoticiaModel()
+                {
+                    IdNoticia = id,
+                    Imagem = imagem
+                };
+
+                await _ImagemNoticiaRepositorio.Adicionar(novaImagem);
+                imagensNoticia.Add(novaImagem);
+            }
+
+            // Lógica para remover as imagens antigas
+            foreach (ImagemNoticiaModel imagem in imagensParaRemover)
+            {
+                await _ImagemNoticiaRepositorio.Apagar(imagem.Id);
+                imagensNoticia.Remove(imagem);
+            } imagensNoticia.AddRange(imagensNoticia);
+
+            return Ok(imagensNoticia);
         }
 
         [HttpDelete("{id}")]

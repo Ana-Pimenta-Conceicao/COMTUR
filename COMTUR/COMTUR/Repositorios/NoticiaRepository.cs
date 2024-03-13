@@ -29,7 +29,7 @@ namespace COMTUR.Repositorios
 
         public async Task<List<NoticiaModel>> BuscarNoticia()
         {
-            return await _dbContext.Noticia.ToListAsync();
+            return await _dbContext.Noticia.Include(n => n.ImagemNoticia).ToListAsync();
         }
 
         public async Task<NoticiaModel> Adicionar(NoticiaModel noticiaModel)
@@ -37,17 +37,6 @@ namespace COMTUR.Repositorios
             // Adiciona a notícia no banco de dados
             await _dbContext.Noticia.AddAsync(noticiaModel);
             await _dbContext.SaveChangesAsync();
-
-            // Se houver imagens associadas à notícia, crie instâncias de ImagemNoticiaModel para cada uma e associe-as à notícia
-            if (noticiaModel.ArquivoImagem != null && noticiaModel.ArquivoImagem.Any())
-            {
-                foreach (var imagemBase64 in noticiaModel.ArquivoImagem)
-                {
-                    var noticiaImagem = new ImagemNoticiaModel { Imagem = imagemBase64, IdNoticia = noticiaModel.Id };
-                    _dbContext.ImagemNoticia.Add(noticiaImagem);
-                }
-                await _dbContext.SaveChangesAsync();
-            }
 
             return noticiaModel;
         }
@@ -69,30 +58,6 @@ namespace COMTUR.Repositorios
             noticiaPorId.DataPublicacao = noticiaDto.DataPublicacao;
             noticiaPorId.HoraPublicacao = noticiaDto.HoraPublicacao;
             noticiaPorId.LegendaImagem = noticiaDto.LegendaImagem;
-
-            // Buscar imagens existentes para a notícia
-            var imagensAtuais = await BuscarImagensPorNoticiaId(id);
-
-            // Se houver novas imagens fornecidas no DTO, adicioná-las
-            if (noticiaDto.ArquivoImagem != null && noticiaDto.ArquivoImagem.Any())
-            {
-                foreach (var imagemBase64 in noticiaDto.ArquivoImagem)
-                {
-                    var noticiaImagem = new ImagemNoticiaModel { Imagem = imagemBase64, IdNoticia = noticiaPorId.Id };
-                    _dbContext.ImagemNoticia.Add(noticiaImagem);
-                }
-            }
-
-            // Remover imagens que não estão mais presentes
-            var imagensParaRemover = imagensAtuais.Except(noticiaDto.ArquivoImagem).ToList();
-            foreach (var imagem in imagensParaRemover)
-            {
-                var imagemParaRemover = await _dbContext.ImagemNoticia.FirstOrDefaultAsync(im => im.Imagem == imagem && im.IdNoticia == id);
-                if (imagemParaRemover != null)
-                {
-                    _dbContext.ImagemNoticia.Remove(imagemParaRemover);
-                }
-            }
 
             _dbContext.Noticia.Update(noticiaPorId);
             await _dbContext.SaveChangesAsync();
@@ -116,12 +81,11 @@ namespace COMTUR.Repositorios
             return true;
         }
 
-        public async Task<List<string>> BuscarImagensPorNoticiaId(int noticiaId)
+        public async Task<List<ImagemNoticiaModel>> BuscarImagensPorNoticiaId(int noticiaId)
         {
             // Use o Entity Framework para consultar as imagens associadas a uma notícia específica
             var imagens = await _dbContext.ImagemNoticia
                                            .Where(imagem => imagem.IdNoticia == noticiaId)
-                                           .Select(imagem => imagem.Imagem)
                                            .ToListAsync();
 
             return imagens;

@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import InputMask from "react-input-mask";
-import SidebarAdm from "../../components/sidebarAdm";
-import NavBarAdm from "../../components/navbarAdm";
+import SidebarAdm from "../../components/admin/sidebarAdm";
+import NavBarAdm from "../../components/admin/navbarAdm";
 import { useNavigate } from "react-router-dom";
 import {
   CaretLeft,

@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react"
 import "bootstrap/dist/css/bootstrap.min.css";
-import SidebarAdm from "../../components/sidebarAdm";
-import NavBarAdm from "../../components/navbarAdm";
+import SidebarAdm from "../../components/admin/sidebarAdm";
+import NavBarAdm from "../../components/admin/navbarAdm";
 import { CaretLeft, CaretRight, Eye, EyeSlash, Trash, FilePlus, Pencil } from "@phosphor-icons/react";
 
 export default function TipoUsuario() {

@@ -1,6 +1,6 @@
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
-import SidebarAdm from '../../components/sidebarAdm';
-import NavBarAdm from '../../components/navbarAdm';
+import SidebarAdm from '../../components/admin/sidebarAdm';
+import NavBarAdm from '../../components/admin/navbarAdm';
 import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";

@@ -1,16 +1,16 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import NavbarUsr from "../../components/navbarUsr";
+import NavbarUsr from "../../components/user/navbarUsr";
 
 export default function Inicio() {
     return (
-        <div className="bg-black w-full h-full" style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <div className="bg-white-full h-full" style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <NavbarUsr/>
             <div className="Inicio"
                 style={{ justifyContent: "center", alignItems: "center" }}>
                 <Link to={`/home`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <button>HOME</button></Link>
             </div>
-            <NavbarUsr/>
 
 
             <div className="flex flex-wrap  ">

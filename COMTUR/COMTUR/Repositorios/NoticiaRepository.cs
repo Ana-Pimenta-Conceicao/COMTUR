@@ -24,7 +24,7 @@ namespace COMTUR.Repositorios
 
         public async Task<NoticiaModel> BuscarPorId(int id)
         {
-            return await _dbContext.Noticia.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Noticia.Include(n => n.ImagemNoticia).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<NoticiaModel>> BuscarNoticia()

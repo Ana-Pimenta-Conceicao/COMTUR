@@ -1,7 +1,7 @@
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SidebarAdm from '../../components/sidebarAdm';
-import NavBarAdm from '../../components/navbarAdm';
+import SidebarAdm from '../../components/admin/sidebarAdm';
+import NavBarAdm from '../../components/admin/navbarAdm';
 import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import React from 'react';

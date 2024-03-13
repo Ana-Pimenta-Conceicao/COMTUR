@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import InputMask from "react-input-mask";
-import SidebarAdm from "../../components/sidebarAdm";
-import NavBarAdm from "../../components/navbarAdm";
+import BtnAcao from "../../components/botoes/btnAcao";
+import BtnModais from "../../components/botoes/btnModais";
+import SidebarAdm from "../../components/admin/sidebarAdm";
+import NavBarAdm from "../../components/admin/navbarAdm";
 import { useNavigate } from "react-router-dom";
 import { CaretLeft, CaretRight, Pencil, Trash, Eye, FilePlus } from "@phosphor-icons/react";
 
@@ -227,7 +229,7 @@ export default function Noticia() {
   const pedidoPutImagens = async () => {
     const formData = new FormData();
     imagensNoticia.forEach(imagem => {
-      formData.append("imagens", imagem.imagem? imagem.imagem : imagem);
+      formData.append("imagens", imagem.imagem ? imagem.imagem : imagem);
     });
 
     console.log(formData.getAll("imagens"));
@@ -289,16 +291,16 @@ export default function Noticia() {
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
 
-  function createImageUrl(image) {
-    /* Verificar se é uma instância de Blob ou File */
-    if (image instanceof Blob || image instanceof File) {
-      /* Criar URL apenas se for um objeto válido */
-      return URL.createObjectURL(image);
-    } else {
-      console.error('noticiaArquivoImagens não é um Blob ou File válido.');
-      return ''; /* Retornar uma string vazia em caso de erro */
-    }
-  }
+  // function createImageUrl(image) {
+  //   /* Verificar se é uma instância de Blob ou File */
+  //   if (image instanceof Blob || image instanceof File) {
+  //     /* Criar URL apenas se for um objeto válido */
+  //     return URL.createObjectURL(image);
+  //   } else {
+  //     console.error('noticiaArquivoImagens não é um Blob ou File válido.');
+  //     return ''; /* Retornar uma string vazia em caso de erro */
+  //   }
+  // }
 
   // Funções para navegar entre as páginas
   const goToPage = (page) => {
@@ -375,7 +377,7 @@ export default function Noticia() {
                       </button>
 
                       <button
-                        className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        className="text-white bg-[#2F2F2F] hover:bg-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         onClick={() => NoticiaSet(noticia, "Visualizar")}
                       >
                         <Eye className="mr-1" size={16} />
@@ -489,18 +491,26 @@ export default function Noticia() {
             <label>Imagem:</label>
             <div>
               {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map((imagem, index) => (
-                <div key={index} className="flex flex-col items-center justify-center">
-                  <img
-                    src={imagem}
-                    alt={`Imagem ${index}`}
-                    style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "10px" }}
-                  />
-                  <button
-                    className="text-white bg-red-500 hover:bg-red-600 rounded-full p-1"
-                    onClick={() => removeImagemByIndex(index)}
-                  >
-                    Remover
-                  </button>
+                (index % 3 === 0) && 
+                <div className="flex " key={`row-${index}`}>
+                  {Array.from({ length: Math.min(3, imagensNoticia.length - index) }, (_, i) => (
+                    <div key={index} className="flex flex-col items-start pr-5 ">
+                      <img
+                        className="w-[140px] h-[90px] mr-2 rounded-md"
+                        src={imagensNoticia[index + i].imagem ? imagensNoticia[index + i].imagem :
+                          imagensNoticia[index + i]}
+                        alt={`Imagem ${index}`}
+
+                      />
+                      <button
+                        className="w-[140px] rounded-md  mt-[2px] mb-3 text-md text-white p-[0.2px]  bg-red-800 hover:bg-red-900"
+
+                        onClick={() => removeImagemByIndex(index)}
+                      >
+                        Remover
+                      </button>
+                    </div>
+                  ))}
                 </div>
               ))}
 
@@ -613,21 +623,27 @@ export default function Noticia() {
               value={noticiaLegendaImagem}
             />
             <br />
+
             <label>Imagem:</label>
             {modalEditar && (
               <div>
                 {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map((imagem, index) => (
-                  <div key={index} className="flex flex-col items-center justify-center">
-                    <img
-                      src={imagem.imagem? imagem.imagem : imagem}
-                      style={{ maxWidth: "100px", maxHeight: "100px", marginRight: "10px" }}
-                    />
-                    <button
-                      className="text-white bg-red-500 hover:bg-red-600 rounded-full p-1"
-                      onClick={() => removeImagemByIndex(index)}
-                    >
-                      Remover
-                    </button>
+                  (index % 3 === 0) && <div className="flex " key={`row-${index}`}>
+                    {Array.from({ length: Math.min(3, imagensNoticia.length - index) }, (_, i) => (
+                      <div key={index + i} className="flex flex-col items-start pr-5">
+                        <img
+                          className="w-[140px] h-[90px] mr-2 rounded-md"
+                          src={imagensNoticia[index + i].imagem ? imagensNoticia[index + i].imagem :
+                            imagensNoticia[index + i]}
+                        />
+                        <button
+                          className="w-[140px] rounded-md  mt-[2px] mb-3 text-md text-white p-[0.2px]  bg-red-800 hover:bg-red-900"
+                          onClick={() => removeImagemByIndex(index + i)}
+                        >
+                          Remover
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
@@ -637,17 +653,18 @@ export default function Noticia() {
               type="file"
               className="form-control"
               onChange={(e) => {
-                convertImageToBase64(e.target.files[0], (result) => {
-                  if (result) {
-                    setImagensNoticia(prevImagens => [...prevImagens, result]);
-                  }
-                  // Limpa o campo de entrada de arquivo após a seleção
-                  e.target.value = null;
+                Array.from(e.target.files).forEach(file => {
+                  convertImageToBase64(file, (result) => {
+                    if (result) {
+                      setImagensNoticia(prevImagens => [...prevImagens, result]);
+                    }
+                  });
                 });
+                // Limpa o campo de entrada de arquivo após a seleção
+                e.target.value = null;
               }}
               multiple
             />
-
           </div>
 
         </ModalBody>

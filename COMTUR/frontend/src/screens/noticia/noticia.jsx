@@ -9,10 +9,16 @@ import BtnModais from "../../components/botoes/btnModais";
 import SidebarAdm from "../../components/admin/sidebarAdm";
 import NavBarAdm from "../../components/admin/navbarAdm";
 import { useNavigate } from "react-router-dom";
-import { CaretLeft, CaretRight, Pencil, Trash, Eye, FilePlus } from "@phosphor-icons/react";
+import {
+  CaretLeft,
+  CaretRight,
+  Pencil,
+  Trash,
+  Eye,
+  FilePlus,
+} from "@phosphor-icons/react";
 
 export default function Noticia() {
-
   const baseUrl = "https://localhost:7256/api/Noticia";
   const baseUrlImagem = "https://localhost:7256/api/ImagemNoticia";
 
@@ -74,7 +80,6 @@ export default function Noticia() {
     setModalInserir(!modalInserir);
   };
 
-
   const abrirFecharModalEditar = async (id) => {
     /*var imagem;
     if (id) {
@@ -86,7 +91,7 @@ export default function Noticia() {
     };*/
     modalEditar ? limparDados() : null;
     setModalEditar(!modalEditar);
-  }
+  };
 
   const abrirFecharModalDeletar = () => {
     modalDeletar ? limparDados() : null;
@@ -173,18 +178,22 @@ export default function Noticia() {
 
   const pedidoPostImagens = async (idNoticia) => {
     const formData = new FormData();
-    imagensNoticia.forEach(imagem => {
+    imagensNoticia.forEach((imagem) => {
       formData.append("imagens", imagem);
     });
 
     console.log(formData.getAll("imagens"));
 
     try {
-      const response = await axios.post(baseUrlImagem + `/${idNoticia}/CadastrarImagensNoticia`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        baseUrlImagem + `/${idNoticia}/CadastrarImagensNoticia`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
     } catch (error) {
       console.log(error);
     }
@@ -224,22 +233,26 @@ export default function Noticia() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const pedidoPutImagens = async () => {
     const formData = new FormData();
-    imagensNoticia.forEach(imagem => {
+    imagensNoticia.forEach((imagem) => {
       formData.append("imagens", imagem.imagem ? imagem.imagem : imagem);
     });
 
     console.log(formData.getAll("imagens"));
 
     try {
-      const response = await axios.put(baseUrlImagem + `/${noticiaId}/AtualizarImagensNoticia`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.put(
+        baseUrlImagem + `/${noticiaId}/AtualizarImagensNoticia`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       console.log(response);
     } catch (error) {
@@ -248,9 +261,10 @@ export default function Noticia() {
   };
 
   const removeImagemByIndex = (indexToRemove) => {
-    setImagensNoticia(prevImagens => prevImagens.filter((_, index) => index !== indexToRemove))
+    setImagensNoticia((prevImagens) =>
+      prevImagens.filter((_, index) => index !== indexToRemove)
+    );
   };
-
 
   const pedidoDeletar = async () => {
     await axios
@@ -317,7 +331,7 @@ export default function Noticia() {
       // Atualize o estado para incluir as imagens recuperadas
       return imagens;
     } catch (error) {
-      console.error('Erro ao carregar imagens da notícia:', error);
+      console.error("Erro ao carregar imagens da notícia:", error);
       return [];
     }
   }
@@ -331,7 +345,7 @@ export default function Noticia() {
           <h1 className="text-3xl font-semibold pb-2">Lista de Notícias</h1>
           <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
           <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
-            <div className="grid grid-cols-7 w-full bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
+            <div className="grid grid-cols-7 w-full bg-[#DFDFDF] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
               <span className="flex col-span-1 ml-5 items-center">ID</span>
               <span className="flex col-span-3 justify-center items-center">
                 Titulo
@@ -360,29 +374,18 @@ export default function Noticia() {
                       {formatarDataParaExibicao(noticia.dataPublicacao)}
                     </span>
                     <span className="flex col-span-2 items-center justify-center border-t-[1px] gap-2 border-[#DBDBDB]">
-                      <button
-                        className="text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                        onClick={() => { NoticiaSet(noticia, "Editar"); abrirFecharModalEditar() }}
-                      >
-                        <Pencil className="mr-1" size={16} />
-                        Editar
-                      </button>
-
-                      <button
-                        className="text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                        onClick={() => NoticiaSet(noticia, "Excluir")}
-                      >
-                        <Trash className="mr-1" size={16} />
-                        Excluir
-                      </button>
-
-                      <button
-                        className="text-white bg-[#2F2F2F] hover:bg-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        onClick={() => NoticiaSet(noticia, "Visualizar")}
-                      >
-                        <Eye className="mr-1" size={16} />
-                        Visualizar
-                      </button>
+                      <BtnAcao
+                        funcao={() => NoticiaSet(noticia, "Editar")}
+                        acao="Editar"
+                      />
+                      <BtnAcao
+                        funcao={() => NoticiaSet(noticia, "Excluir")}
+                        acao="Excluir"
+                      />
+                      <BtnAcao
+                        funcao={() => NoticiaSet(noticia, "Visualizar")}
+                        acao="Visualizar"
+                      />
                     </span>
                   </li>
                 </React.Fragment>
@@ -409,147 +412,159 @@ export default function Noticia() {
             </div>
           </div>
           <div className="float-right flex-auto py-6">
-            <button
-              className="text-white bg-yellow-400 hover:bg-yellow-500 
-               rounded-xl text-lg px-3 font-semibold py-1.5 text-center"
-              onClick={() => abrirFecharModalInserir()}
-            >
-              <span className="inline-flex items-center">
-                <FilePlus className="mr-1" size={24} />
-                Cadastrar
-              </span>
-            </button>
+            <BtnAcao
+              funcao={() => abrirFecharModalInserir("Cadastrar")}
+              acao="Cadastrar"
+            />
           </div>
         </div>
       </div>
 
-      <Modal isOpen={modalInserir}>
-        <ModalHeader>Cadastrar Noticia</ModalHeader>
-        <ModalBody>
-          <div className="form-group">
-            <label>Titulo: </label>
-            <br />
-            <input
-              type="text"
-              className="form-control text-sm"
-              onChange={(e) => setNoticiaTitulo(e.target.value)}
-              placeholder="Digite o Titulo"
-            />
-            <br />
-            <label>Subtitulo:</label>
-            <br />
-            <textarea
-              className="form-control text-sm"
-              onChange={(e) => setNoticiaSubtitulo(e.target.value)}
-              placeholder="Digite o Subtitulo"
-            />
-            <br />
-            <label>Conteúdo:</label>
-            <br />
-            <textarea
-              className="form-control text-sm"
-              onChange={(e) => setNoticiaConteudo(e.target.value)}
-              placeholder="Digite o Conteúdo"
-            />
-            <br />
-            <label htmlFor="noticiaDataPublicacao">Data:</label>
-            <br />
-            <InputMask
-              mask="99/99/9999"
-              maskPlaceholder="dd/mm/yyyy"
-              type="text"
-              className="form-control text-sm"
-              id="noticiaDataPublicacao"
-              onChange={(e) => setNoticiaDataPublicacao(e.target.value)}
-              placeholder="Digite apenas números"
-              value={noticiaDataPublicacao}
-            />
-            <br />
-            <label htmlFor="noticiaHoraPublicacao">Hora:</label>
-            <br />
-            <InputMask
-              mask="99:99"
-              maskPlaceholder="hh:mm"
-              type="text"
-              className="form-control text-sm"
-              id="noticiaHoraPublicacao"
-              onChange={(e) => setNoticiaHoraPublicacao(e.target.value)}
-              placeholder="Digite apenas números"
-              value={noticiaHoraPublicacao}
-            />
-            <br />
-            <label>Legenda:</label>
-            <br />
-            <input
-              type="text"
-              className="form-control text-sm"
-              onChange={(e) => setNoticiaLegendaImagem(e.target.value)}
-              placeholder="Digite a legenda"
-            />
-            <br />
+      <Modal
+        className="modal-xl-gridxl"
+        isOpen={modalInserir}
+        style={{ maxWidth: "1000px" }}
+      >
+        <ModalHeader className="">Cadastrar Noticia</ModalHeader>
+        <ModalBody className="">
+          <div className="grid grid-cols-2 ">
+            <div className="form-group  ">
+              <div className="flex flex-col col-span-1 pr-6">
+                <label>Titulo: </label>
+                <input
+                  type="text"
+                  className="form-control text-sm"
+                  onChange={(e) => setNoticiaTitulo(e.target.value)}
+                  placeholder="Digite o Titulo"
+                />
+                <br />
 
-            <label>Imagem:</label>
-            <div>
-              {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map((imagem, index) => (
-                (index % 3 === 0) && 
-                <div className="flex " key={`row-${index}`}>
-                  {Array.from({ length: Math.min(3, imagensNoticia.length - index) }, (_, i) => (
-                    <div key={index} className="flex flex-col items-start pr-5 ">
-                      <img
-                        className="w-[140px] h-[90px] mr-2 rounded-md"
-                        src={imagensNoticia[index + i].imagem ? imagensNoticia[index + i].imagem :
-                          imagensNoticia[index + i]}
-                        alt={`Imagem ${index}`}
+                <label>Subtitulo:</label>
+                <textarea
+                  className="form-control text-sm"
+                  onChange={(e) => setNoticiaSubtitulo(e.target.value)}
+                  placeholder="Digite o Subtitulo"
+                />
+                <br />
 
-                      />
-                      <button
-                        className="w-[140px] rounded-md  mt-[2px] mb-3 text-md text-white p-[0.2px]  bg-red-800 hover:bg-red-900"
+                <label>Conteúdo:</label>
+                <textarea
+                  className="form-control text-sm"
+                  onChange={(e) => setNoticiaConteudo(e.target.value)}
+                  placeholder="Digite o Conteúdo"
+                />
+                <br />
 
-                        onClick={() => removeImagemByIndex(index)}
-                      >
-                        Remover
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              ))}
+                <label htmlFor="noticiaDataPublicacao">Data:</label>
+                <InputMask
+                  mask="99/99/9999"
+                  maskPlaceholder="dd/mm/yyyy"
+                  type="text"
+                  className="form-control text-sm"
+                  id="noticiaDataPublicacao"
+                  onChange={(e) => setNoticiaDataPublicacao(e.target.value)}
+                  placeholder="Digite apenas números"
+                  value={noticiaDataPublicacao}
+                />
+                <br />
 
-              {/* Campo para seleção de imagem */}
-              <input
-                type="file"
-                className="form-control"
-                onChange={(e) => {
-                  convertImageToBase64(e.target.files[0], (result) => {
-                    if (result) {
-                      setImagensNoticia(prevImagens => [...prevImagens, result]);
-                    }
-                    // Limpa o campo de entrada de arquivo após a seleção
-                    e.target.value = null;
-                  });
-                }}
-                multiple
-              />
+                <label htmlFor="noticiaHoraPublicacao">Hora:</label>
+                <InputMask
+                  mask="99:99"
+                  maskPlaceholder="hh:mm"
+                  type="text"
+                  className="form-control text-sm"
+                  id="noticiaHoraPublicacao"
+                  onChange={(e) => setNoticiaHoraPublicacao(e.target.value)}
+                  placeholder="Digite apenas números"
+                  value={noticiaHoraPublicacao}
+                />
+                <br />
+              </div>
             </div>
 
+            <div className="flex flex-col col-span-1 pl-4  border-l-[1px]">
+              <label>Imagem:</label>
+              <div>
+                {/* Campo para seleção de imagem */}
+                <input
+                  type="file"
+                  className="form-control "
+                  onChange={(e) => {
+                    convertImageToBase64(e.target.files[0], (result) => {
+                      if (result) {
+                        setImagensNoticia((prevImagens) => [
+                          ...prevImagens,
+                          result,
+                        ]);
+                      }
+                      // Limpa o campo de entrada de arquivo após a seleção
+                      e.target.value = null;
+                    });
+                  }}
+                  multiple
+                />
+
+                {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map(
+                  (imagem, index) =>
+                    index % 1 === 0 && (
+                      <div className="flex pt-3 justify-end " key={`row-${index}`}>
+                        {Array.from(
+                          {
+                            length: Math.min(1, imagensNoticia.length - index),
+                          },
+                          (_, i) => (
+                            <div
+                              key={index}
+                              className="flex flex-col  pr-5 "
+                            >
+                              <div className="flex w-[140px] justify-end">
+                              <img
+                                className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
+                                src={
+                                  imagensNoticia[index + i].imagem
+                                    ? imagensNoticia[index + i].imagem
+                                    : imagensNoticia[index + i]
+                                }
+                                alt={`Imagem ${index}`}
+                              />
+                              <div className="flex flex-col pl-3 justify-end">
+                                <label>Legenda:</label>
+                                <input
+                                  type="text"
+                                  className="form-control text-sm w-[286px] mb-0 "
+                                  onChange={(e) =>
+                                    setNoticiaLegendaImagem(e.target.value)
+                                  }
+                                  placeholder="Digite a legenda"
+                                />
+                                <br />
+                                <button
+                                  className="w-[140px] rounded-md text-md text-white  bg-red-800 hover:bg-red-900"
+                                  onClick={() => removeImagemByIndex(index)}
+                                >
+                                  Remover
+                                </button>
+                              </div>
+                            </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-between items-center px-[405px] pt-5">
+            <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
+            <BtnModais
+              funcao={() => abrirFecharModalInserir()}
+              acao="Cancelar"
+            />
           </div>
         </ModalBody>
-        <ModalFooter>
-          <button
-            className="btn bg-yellow-400 text-white hover:bg-yellow-500"
-            onClick={() => pedidoPost()}
-          >
-            Cadastrar
-          </button>
-          {"  "}
-          <button
-            className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalInserir()}
-          >
-            Cancelar
-          </button>
-        </ModalFooter>
       </Modal>
-
 
       <Modal isOpen={modalEditar}>
         <ModalHeader>Editar Noticia</ModalHeader>
@@ -623,40 +638,55 @@ export default function Noticia() {
               value={noticiaLegendaImagem}
             />
             <br />
-
             <label>Imagem:</label>
             {modalEditar && (
               <div>
-                {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map((imagem, index) => (
-                  (index % 3 === 0) && <div className="flex " key={`row-${index}`}>
-                    {Array.from({ length: Math.min(3, imagensNoticia.length - index) }, (_, i) => (
-                      <div key={index + i} className="flex flex-col items-start pr-5">
-                        <img
-                          className="w-[140px] h-[90px] mr-2 rounded-md"
-                          src={imagensNoticia[index + i].imagem ? imagensNoticia[index + i].imagem :
-                            imagensNoticia[index + i]}
-                        />
-                        <button
-                          className="w-[140px] rounded-md  mt-[2px] mb-3 text-md text-white p-[0.2px]  bg-red-800 hover:bg-red-900"
-                          onClick={() => removeImagemByIndex(index + i)}
-                        >
-                          Remover
-                        </button>
+                {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map(
+                  (imagem, index) =>
+                    index % 3 === 0 && (
+                      <div className="flex " key={`row-${index}`}>
+                        {Array.from(
+                          {
+                            length: Math.min(3, imagensNoticia.length - index),
+                          },
+                          (_, i) => (
+                            <div
+                              key={index + i}
+                              className="flex flex-col items-start pr-5"
+                            >
+                              <img
+                                className="w-[140px] h-[90px] mr-2 rounded-md"
+                                src={
+                                  imagensNoticia[index + i].imagem
+                                    ? imagensNoticia[index + i].imagem
+                                    : imagensNoticia[index + i]
+                                }
+                              />
+                              <button
+                                className="w-[140px] rounded-md  mt-[2px] mb-3 text-md text-white p-[0.2px]  bg-red-800 hover:bg-red-900"
+                                onClick={() => removeImagemByIndex(index + i)}
+                              >
+                                Remover
+                              </button>
+                            </div>
+                          )
+                        )}
                       </div>
-                    ))}
-                  </div>
-                ))}
+                    )
+                )}
               </div>
             )}
-
             <input
               type="file"
               className="form-control"
               onChange={(e) => {
-                Array.from(e.target.files).forEach(file => {
+                Array.from(e.target.files).forEach((file) => {
                   convertImageToBase64(file, (result) => {
                     if (result) {
-                      setImagensNoticia(prevImagens => [...prevImagens, result]);
+                      setImagensNoticia((prevImagens) => [
+                        ...prevImagens,
+                        result,
+                      ]);
                     }
                   });
                 });
@@ -666,22 +696,10 @@ export default function Noticia() {
               multiple
             />
           </div>
-
         </ModalBody>
         <ModalFooter>
-          <button
-            className="btn bg-teal-700 hover:bg-teal-900 text-white"
-            onClick={() => pedidoAtualizar(noticiaId)}
-          >
-            Editar
-          </button>
-          {"  "}
-          <button
-            className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalEditar(noticiaId)}
-          >
-            Cancelar
-          </button>
+          <BtnModais funcao={() => pedidoAtualizar(noticiaId)} acao="Editar" />
+          <BtnModais funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
         </ModalFooter>
       </Modal>
       <Modal isOpen={modalDeletar}>
@@ -689,20 +707,10 @@ export default function Noticia() {
           Confirma a exclusão da notícia "{noticiaTitulo}" ?
         </ModalBody>
         <ModalFooter>
-          <button
-            className="btn bg-red-800 hover:bg-red-900 text-white"
-            onClick={() => pedidoDeletar()}
-          >
-            Sim
-          </button>
-          <button
-            className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalDeletar()}
-          >
-            Não
-          </button>
+          <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+          <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
         </ModalFooter>
       </Modal>
-    </div >
+    </div>
   );
 }

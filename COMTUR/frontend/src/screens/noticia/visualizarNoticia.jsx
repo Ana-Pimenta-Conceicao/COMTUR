@@ -45,7 +45,7 @@ export default function VisualizarNoticia() {
   useEffect(() => {
     if (atualizarOutrasNoticias) {
       const outrasNoticiasOrdenada = [...outrasNoticias].sort((a, b) => b.id - a.id);
-      const outrasNoticiasFiltradas = outrasNoticiasOrdenada.filter(outraNoticia => outraNoticia.id !== noticia.id).slice(0, 3);
+      const outrasNoticiasFiltradas = outrasNoticiasOrdenada.filter(outraNoticia => outraNoticia.id !== noticia?.id).slice(0, 3);
 
       setOutrasNoticias(outrasNoticiasFiltradas);
     }
@@ -120,7 +120,7 @@ export default function VisualizarNoticia() {
               <img
                 src={noticia.imagemNoticia[currentSlide]?.imagem}
                 alt={`Imagem ${currentSlide + 1}`}
-                className="object-cover w-full h-full sm:h-full sm:px-16"
+                className="object-cover w-full h-full sm:h-full sm:px-16 rounded-lg"
               />
             )}
           

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class comtur : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -100,10 +100,9 @@ namespace COMTUR.Migrations
                 {
                     atracaoid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    descricao = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    nome = table.Column<string>(type: "text", nullable: false),
+                    descricao = table.Column<string>(type: "text", nullable: false),
                     qrcode = table.Column<string>(type: "text", nullable: false),
-                    arquivoImagem = table.Column<string[]>(type: "text[]", nullable: false),
                     IdTipoAtracao = table.Column<int>(type: "integer", nullable: false),
                     TipoAtracaoModelId = table.Column<int>(type: "integer", nullable: true)
                 },
@@ -155,17 +154,12 @@ namespace COMTUR.Migrations
                     imagematracaoid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     imagem = table.Column<string>(type: "text", nullable: false),
-                    IdAtracao = table.Column<int>(type: "integer", nullable: false),
-                    AtracaoModelId = table.Column<int>(type: "integer", nullable: true)
+                    legendaImagem = table.Column<string>(type: "text", nullable: false),
+                    IdAtracao = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_imagematracao", x => x.imagematracaoid);
-                    table.ForeignKey(
-                        name: "FK_imagematracao_atracao_AtracaoModelId",
-                        column: x => x.AtracaoModelId,
-                        principalTable: "atracao",
-                        principalColumn: "atracaoid");
                     table.ForeignKey(
                         name: "FK_imagematracao_atracao_IdAtracao",
                         column: x => x.IdAtracao,
@@ -188,11 +182,6 @@ namespace COMTUR.Migrations
                 name: "IX_empresa_usuarioid",
                 table: "empresa",
                 column: "usuarioid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_imagematracao_AtracaoModelId",
-                table: "imagematracao",
-                column: "AtracaoModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_imagematracao_IdAtracao",

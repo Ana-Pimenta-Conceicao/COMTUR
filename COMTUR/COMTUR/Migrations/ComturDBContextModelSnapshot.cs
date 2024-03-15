@@ -31,15 +31,9 @@ namespace COMTUR.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string[]>("ArquivoImagem")
-                        .IsRequired()
-                        .HasColumnType("text[]")
-                        .HasColumnName("arquivoImagem");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("text")
                         .HasColumnName("descricao");
 
                     b.Property<int>("IdTipoAtracao")
@@ -47,8 +41,7 @@ namespace COMTUR.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("text")
                         .HasColumnName("nome");
 
                     b.Property<string>("QRCode")
@@ -126,9 +119,6 @@ namespace COMTUR.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AtracaoModelId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("IdAtracao")
                         .HasColumnType("integer");
 
@@ -137,9 +127,12 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("imagem");
 
-                    b.HasKey("Id");
+                    b.Property<string>("LegendaImagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("legendaImagem");
 
-                    b.HasIndex("AtracaoModelId");
+                    b.HasKey("Id");
 
                     b.HasIndex("IdAtracao");
 
@@ -324,12 +317,8 @@ namespace COMTUR.Migrations
 
             modelBuilder.Entity("COMTUR.Models.ImagemAtracaoModel", b =>
                 {
-                    b.HasOne("COMTUR.Models.AtracaoModel", null)
-                        .WithMany("ImagemAtracao")
-                        .HasForeignKey("AtracaoModelId");
-
                     b.HasOne("COMTUR.Models.AtracaoModel", "AtracaoModel")
-                        .WithMany()
+                        .WithMany("ImagemAtracao")
                         .HasForeignKey("IdAtracao")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

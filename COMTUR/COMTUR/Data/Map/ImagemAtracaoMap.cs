@@ -12,7 +12,10 @@ namespace COMTUR.Data.Map
 			builder.HasKey(x => x.Id);
 
 			// Relacionamento da ImagemAtracao com Atracao
-			builder.HasOne(x => x.AtracaoModel).WithMany().HasForeignKey(x => x.IdAtracao);
+			builder.HasOne(x => x.AtracaoModel)
+				   .WithMany(n => n.ImagemAtracao)
+				   .HasForeignKey(x => x.IdAtracao)
+				   .IsRequired();
 		}
 
 	}

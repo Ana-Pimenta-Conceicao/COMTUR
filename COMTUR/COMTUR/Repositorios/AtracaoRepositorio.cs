@@ -39,6 +39,7 @@ namespace COMTUR.Repositorios
 		public async Task<AtracaoModel> Atualizar(AtracaoModel atracao, int id)
 		{
 			AtracaoModel AtracaoPorId = await BuscarPorId(id);
+
 			if (AtracaoPorId == null)
 			{
 				throw new Exception($"Atração para o ID: {id} nao foi encontrado no banco de dados. ");
@@ -48,7 +49,6 @@ namespace COMTUR.Repositorios
 			AtracaoPorId.Nome = atracao.Nome;
 			AtracaoPorId.Descricao = atracao.Descricao;
 			AtracaoPorId.QRCode = atracao.QRCode;
-			AtracaoPorId.ArquivoImagem = atracao.ArquivoImagem;
 
 			_dbContext.Atracao.Update(AtracaoPorId);
 			await _dbContext.SaveChangesAsync();
@@ -67,6 +67,15 @@ namespace COMTUR.Repositorios
 			_dbContext.Atracao.Remove(AtracaoPorId);
 			await _dbContext.SaveChangesAsync();
 			return true;
+		}
+
+		public async Task<List<ImagemAtracaoModel>> BuscarImagensPorAtracaoId(int atracaoId)
+		{
+			// Use o Entity Framework para consultar as imagens associadas a uma atracao específica
+			var imagens = await _dbContext.ImagemAtracao
+										   .Where(imagem => imagem.IdAtracao == atracaoId)
+										   .ToListAsync();
+			return imagens;
 		}
 	}
 }

@@ -23,16 +23,14 @@ public class AtracaoModel
 	[Column("qrcode")]
 	public string QRCode { get; set; }
 
-	[Column("arquivoImagem")]
-	public string[] ArquivoImagem { get; set; }
-
+	// relaçao com TipoAtracao
 	[JsonIgnore]
 	public TipoAtracaoModel? TipoAtracaoModel { get; set; }
 
 	[ForeignKey("idtipoatracao")]
 	public int IdTipoAtracao { get; set; }
 
-	[JsonIgnore]
+	// relaçao com ImagemAtracao
 	public ICollection<ImagemAtracaoModel>? ImagemAtracao { get; set; }
 
 }

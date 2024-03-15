@@ -10,11 +10,17 @@ namespace COMTUR.Data.Map
 		public void Configure(EntityTypeBuilder<AtracaoModel> builder)
 		{
 			builder.HasKey(x => x.Id);
-			builder.Property(x => x.Nome).IsRequired().HasMaxLength(50);
-			builder.Property(x => x.Descricao).IsRequired().HasMaxLength(200);
+			builder.Property(x => x.Nome).IsRequired();
 
 			// Relacionamento da Atracao com TipoAtracao
 			builder.HasOne(x => x.TipoAtracaoModel).WithMany().HasForeignKey(x => x.IdTipoAtracao);
+
+			// Relacionamento Atracao com ImagemAtracao
+			builder.HasMany(n => n.ImagemAtracao)
+				   .WithOne(im => im.AtracaoModel)
+				   .HasForeignKey(im => im.IdAtracao)
+				   .IsRequired()
+				   .OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

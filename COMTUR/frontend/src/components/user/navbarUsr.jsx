@@ -43,7 +43,7 @@ const NavbarUsr = () => {
  
   return (
     <div className="container-fluid p-0">
-      <nav className="navbar navbar-expand-lg bg-black p-0 pt-2" data-bs-theme="dark">
+      <nav className="navbar navbar-expand-lg bg-black p-0 pt-2 pb-1" data-bs-theme="dark">
         <div className="flex container-fluid">
           <a className="navbar-brand ML-1 w-8 sm:w-20 " href="#">
             <img src="./src/assets/logonavuser.png" alt="logo" />
@@ -64,26 +64,94 @@ const NavbarUsr = () => {
  
         </div>
  
-       
- 
         <div className={`collapse navbar-collapse mt-1 ${isNavbarOpen ? 'show' : ''}`} id="navbarSupportedContent">
-          <div className="btn-group grupobotoes ml-3 mt-1" role="group">
-          <input type="radio" className={`btn-check ${botaoSelecionado === 1 ? 'amarelocheck' : ''}`} name="btnradio" id="btnradio1" autoComplete="off" checked={botaoSelecionado === 1} onChange={() => handleBotaoSelecionado(1)} />
-            <label className={`btn btnmenunav ml-12 ${botaoSelecionado === 1 ? 'btn-outline-warning' : 'btn-outline-black'}`} htmlFor="btnradio1">Início</label>
- 
-            <input type="radio" class={`btn-check ${botaoSelecionado === 2 ? 'amarelocheck' : ''}`} name="btnradio" id="btnradio2" autocomplete="off" checked={botaoSelecionado === 2} onChange={() => handleBotaoSelecionado(2)} />
-            <label class={`btn btnmenunav ${botaoSelecionado === 2 ? 'btn-outline-warning' : 'btn-outline-black'}`} for="btnradio2">Turismo</label>
- 
-            <input type="radio" class={`btn-check ${botaoSelecionado === 3 ? 'amarelocheck' : ''}`} name="btnradio" id="btnradio3" autocomplete="off" checked={botaoSelecionado === 3} onChange={() => handleBotaoSelecionado(3)} />
-            <label class={`btn btnmenunav ${botaoSelecionado === 3 ? 'btn-outline-warning' : 'btn-outline-black'}`} for="btnradio3">Eventos</label>
- 
-            <input type="radio" class={`btn-check ${botaoSelecionado === 4 ? 'amarelocheck' : ''}`} name="btnradio" id="btnradio4" autocomplete="off" checked={botaoSelecionado === 4} onChange={() => handleBotaoSelecionado(4)} />
-            <label class={`btn btnmenunav ${botaoSelecionado === 4 ? 'btn-outline-warning' : 'btn-outline-black'}`} for="btnradio4">Empresa</label>
- 
-            <input type="radio" class={`btn-check ${botaoSelecionado === 5 ? 'amarelocheck' : ''}`} name="btnradio" id="btnradio5" autocomplete="off" checked={botaoSelecionado === 5} onChange={() => handleBotaoSelecionado(5)} />
-            <label class={`btn btnmenunav mr-1 ${botaoSelecionado === 5 ? 'btn-outline-warning' : 'btn-outline-black'}`} for="btnradio5">Notícias</label>
- 
-          </div>
+          <ol className="navbar-nav grupobotoes ml-3 mt-1" role="group">
+            <li className="nav-item">
+              <input
+                type="radio"
+                className={`btn-check ${botaoSelecionado === 1 ? 'amarelocheck' : ''}`}
+                name="btnradio"
+                id="btnradio1"
+                autoComplete="off"
+                checked={botaoSelecionado === 1}
+                onChange={() => handleBotaoSelecionado(1)}
+              />
+              <label
+                className={`btn btnmenunav ml-0 ${botaoSelecionado === 1 ? 'btn-outline-warning' : 'btn-outline-black'}`}
+                htmlFor="btnradio1"
+              >
+                Início
+              </label>
+            </li>
+            <li className="nav-item">
+              <input
+                type="radio"
+                className={`btn-check ${botaoSelecionado === 2 ? 'amarelocheck' : ''}`}
+                name="btnradio"
+                id="btnradio2"
+                autoComplete="off"
+                checked={botaoSelecionado === 2}
+                onChange={() => handleBotaoSelecionado(2)}
+              />
+              <label
+                className={`btn btnmenunav ${botaoSelecionado === 2 ? 'btn-outline-warning' : 'btn-outline-black'}`}
+                htmlFor="btnradio2"
+              >
+                Turismo
+              </label>
+            </li>
+            <li className="nav-item">
+              <input
+                type="radio"
+                className={`btn-check ${botaoSelecionado === 3 ? 'amarelocheck' : ''}`}
+                name="btnradio"
+                id="btnradio3"
+                autoComplete="off"
+                checked={botaoSelecionado === 3}
+                onChange={() => handleBotaoSelecionado(3)}
+              />
+              <label
+                className={`btn btnmenunav ${botaoSelecionado === 3 ? 'btn-outline-warning' : 'btn-outline-black'}`}
+                htmlFor="btnradio3"
+              >
+                Eventos
+              </label>
+            </li>
+            <li className="nav-item">
+              <input
+                type="radio"
+                className={`btn-check ${botaoSelecionado === 4 ? 'amarelocheck' : ''}`}
+                name="btnradio"
+                id="btnradio4"
+                autoComplete="off"
+                checked={botaoSelecionado === 4}
+                onChange={() => handleBotaoSelecionado(4)}
+              />
+              <label
+                className={`btn btnmenunav ${botaoSelecionado === 4 ? 'btn-outline-warning' : 'btn-outline-black'}`}
+                htmlFor="btnradio4"
+              >
+                Empresa
+              </label>
+            </li>
+            <li className="nav-item">
+              <input
+                type="radio"
+                className={`btn-check ${botaoSelecionado === 5 ? 'amarelocheck' : ''}`}
+                name="btnradio"
+                id="btnradio5"
+                autoComplete="off"
+                checked={botaoSelecionado === 5}
+                onChange={() => handleBotaoSelecionado(5)}
+              />
+              <label
+                className={`btn btnmenunav mr-1 ${botaoSelecionado === 5 ? 'btn-outline-warning' : 'btn-outline-black'}`}
+                htmlFor="btnradio5"
+              >
+                Notícias
+              </label>
+            </li>
+          </ol>
           <label className="btn btnmenulogin btn-warning ml-3 mt-1" htmlFor="Acessar">Entrar/Cadastrar</label>
         </div>
       </nav>

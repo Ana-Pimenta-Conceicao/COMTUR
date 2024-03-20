@@ -11,5 +11,6 @@ namespace COMTUR.Repositorios.Interfaces
 		Task<UsuarioModel> Atualizar(UsuarioModel Usuario, int id);
 		Task<List<UsuarioModel>> ListarPorTipoUsuario(int tipoUsuario);
         Task<bool> Apagar(int id);
+		Task<UsuarioModel> ValidarLogin(string email, string senha);
 	}
 }

@@ -3,13 +3,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using COMTUR.Repositorios.Interfaces;
 using COMTUR.Repositorios;
 using COMTUR.Data;
@@ -90,7 +83,7 @@ namespace COMTUR
 
 			services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 			{
-				builder.WithOrigins("http://localhost:3000", "http://localhost:5173")
+				builder.WithOrigins("http://localhost:3000", "http://localhost:3001")
 					.AllowAnyMethod()
 					.AllowAnyHeader()
 					.AllowCredentials();

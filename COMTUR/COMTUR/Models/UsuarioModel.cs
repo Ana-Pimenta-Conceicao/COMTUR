@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using COMTUR.Models.Enum;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Text.Json.Serialization;
 
 namespace COMTUR.Models

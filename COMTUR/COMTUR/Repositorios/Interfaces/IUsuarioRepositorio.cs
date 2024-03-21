@@ -1,5 +1,4 @@
 ﻿using COMTUR.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace COMTUR.Repositorios.Interfaces
 {
@@ -12,5 +11,6 @@ namespace COMTUR.Repositorios.Interfaces
 		Task<List<UsuarioModel>> ListarPorTipoUsuario(int tipoUsuario);
         Task<bool> Apagar(int id);
 		Task<UsuarioModel> ValidarLogin(string email, string senha);
+		Task<UsuarioModel> Autenticacao(LoginModel loginModel);
 	}
 }

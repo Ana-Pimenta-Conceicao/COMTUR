@@ -1,8 +1,6 @@
 ﻿using COMTUR.Models;
 using COMTUR.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Text;
 
 namespace COMTUR.Controllers
 {

@@ -33,7 +33,7 @@ const AppRoutes = () => {
                 <Route path="/perfiladministrador/:id" element={<PerfilAdministrador/> } />
                 <Route path="/usuario" element={ <Usuario/> } />
                 <Route path="/login" element={ <Login/> } />
-
+                <Route path="/administrador" element={ <Administrador/> } />
             </Routes>
         </Router>
     );

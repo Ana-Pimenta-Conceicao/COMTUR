@@ -91,22 +91,7 @@ namespace COMTUR.Repositorios
 
 		public async Task<UsuarioModel> Autenticacao(LoginModel loginModel)
 		{
-			var autenticacao = _mapper.Map<LoginModel>(loginModel);
-			var usuario = await _usuarioRepositorio.Autenticacao(autenticacao);
-
-			UsuarioModel usuarioModel = _mapper.Map<UsuarioModel>(usuario);
-			if (usuarioModel != null)
-			{
-				usuarioModel.TipoUsuario = (TipoUsuario)usuario.TipoUsuario; // Convertendo o valor do enum
-			}
-
-			return usuarioModel;
-		}
-
-
-		public async Task<UsuarioModel> ValidarLogin(string email, string senha)
-		{
-			return await _dbContext.Usuario.FirstOrDefaultAsync(u => u.EmailUsuario == email && u.SenhaUsuario == senha);
+			return await _dbContext.Usuario.Where(u => u.EmailUsuario == loginModel.Email && u.SenhaUsuario == loginModel.Senha).FirstOrDefaultAsync();
 		}
 	}
 }

@@ -24,7 +24,7 @@ namespace COMTUR
 		{
 			// Configuração do banco de dados
 			services.AddDbContext<ComturDBContext>(options =>
-				options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+				options.UseNpgsql(Configuration.GetConnectionString("DataBase")));
 
 			// Configuração do Swagger
 			services.AddSwaggerGen(c =>

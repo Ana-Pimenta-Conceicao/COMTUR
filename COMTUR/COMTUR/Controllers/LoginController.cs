@@ -18,41 +18,34 @@ namespace COMTUR.Controllers
 		{
 			_usuarioRepositorio = usuarioRepositorio;
 		}
-		/*
-		[HttpPost("ValidarLogin")]
-		public async Task<ActionResult> ValidarLogin([FromBody] LoginModel loginModel)
+
+		[HttpPost("Login")]
+		public async Task<ActionResult> Login([FromBody] LoginModel loginModel)
 		{
 			if (loginModel is null) return BadRequest("Dado inválido!");
 			var UsuarioModel = await _usuarioRepositorio.Autenticacao(loginModel);
 
-			if (!(UsuarioModel is null))
+			if (UsuarioModel is not null)
 			{
 				if (loginModel.Email == UsuarioModel.EmailUsuario && loginModel.Senha == UsuarioModel.SenhaUsuario)
 				{
-					if (UsuarioModel.StatusUsuario)
-					{
 						EntitySecurity entitySecurity = new EntitySecurity();
-						var token = GenerateToken(entitySecurity.Key, entitySecurity.Issuer, entitySecurity.Audience, UsuarioModel.EmailUsuario, 1);
+						var token = GenerateToken(entitySecurity.Key, entitySecurity.Issuer, entitySecurity.Audience, UsuarioModel.EmailUsuario, 12);
 						return Ok(new { token, usuario = UsuarioModel });
-					}
-					else
-					{
-						return Unauthorized(new { message = "O usuário " + UsuarioModel.Nome + " está inativo!" });
-					}
 				}
 			}
 
 			return Unauthorized(new { message = "E-mail ou senha incorretos!" });
 		}
 
-		private static string GenerateToken(string secretKey, string issuer, string audience, string subject, int expiryInMinutes)
+		private static string GenerateToken(string secretKey, string issuer, string audience, string subject, int expiryInHours)
 		{
 			var payload = new Dictionary<string, object>
 			{
 				{ "iss", issuer },
 				{ "aud", audience },
 				{ "sub", subject },
-				{ "exp", DateTimeOffset.UtcNow.AddHours(expiryInMinutes).ToUnixTimeSeconds() }
+				{ "exp", DateTimeOffset.UtcNow.AddHours(expiryInHours).ToUnixTimeSeconds() }
 			};
 
 			string token = JWT.Encode(payload, Encoding.UTF8.GetBytes(secretKey), JwsAlgorithm.HS256);
@@ -101,16 +94,30 @@ namespace COMTUR.Controllers
 				if (issuerClaim.ToString() != issuer || audienceClaim.ToString() != audience || subjectClaim.ToString() != expectedEmail)
 				{
 					return false;
-
-					// Passo 5: Se tudo estiver certo
-					return true;
 				}
 
+				// Passo 4: Verificar se o tempo expirou
+				if (payload.TryGetValue("exp", out object expirationClaim))
+				{
+					long expirationTime = long.Parse(expirationClaim.ToString());
+					var expirationDateTime = DateTimeOffset.FromUnixTimeSeconds(expirationTime).UtcDateTime;
+					if (expirationDateTime < DateTime.UtcNow)
+					{
+						return false;
+					}
+				}
+				else
+				{
+					return false;
+				}
 
+				// Passo 5: Se tudo estiver certo
+				return true;
+			}
 			catch (Exception)
 			{
 				return false;
 			}
-		} */
+		}
 	}
 }

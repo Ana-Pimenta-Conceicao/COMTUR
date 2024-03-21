@@ -4,10 +4,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class teste : Migration
+    public partial class teste6 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -166,6 +168,17 @@ namespace COMTUR.Migrations
                         principalTable: "atracao",
                         principalColumn: "atracaoid",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "usuario",
+                columns: new[] { "usuarioid", "emailUsuario", "imagemPerfilUsuario", "nome", "senhaUsuario", "telefone", "tipoUsuario" },
+                values: new object[,]
+                {
+                    { 1, "usuario@gmail.com", null, "usuario", "usuario", "123456", 1 },
+                    { 2, "usuario@gmail.com", null, "funcionario", "funcionario", "123456", 2 },
+                    { 3, "usuario@gmail.com", null, "empresario", "empresario", "123456", 3 },
+                    { 4, "usuario@gmail.com", null, "administrador", "administrador", "123456", 4 }
                 });
 
             migrationBuilder.CreateIndex(

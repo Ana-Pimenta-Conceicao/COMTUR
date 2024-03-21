@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240315122557_teste")]
-    partial class teste
+    [Migration("20240321164552_teste6")]
+    partial class teste6
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -290,6 +290,44 @@ namespace COMTUR.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("usuario");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EmailUsuario = "usuario@gmail.com",
+                            Nome = "usuario",
+                            SenhaUsuario = "usuario",
+                            Telefone = "123456",
+                            TipoUsuario = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EmailUsuario = "usuario@gmail.com",
+                            Nome = "funcionario",
+                            SenhaUsuario = "funcionario",
+                            Telefone = "123456",
+                            TipoUsuario = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            EmailUsuario = "usuario@gmail.com",
+                            Nome = "empresario",
+                            SenhaUsuario = "empresario",
+                            Telefone = "123456",
+                            TipoUsuario = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            EmailUsuario = "usuario@gmail.com",
+                            Nome = "administrador",
+                            SenhaUsuario = "administrador",
+                            Telefone = "123456",
+                            TipoUsuario = 4
+                        });
                 });
 
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>

@@ -1,12 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Json.Serialization;
-
-namespace COMTUR.Models
+﻿namespace COMTUR.Models
 {
 	public class EntitySecurity
 	{

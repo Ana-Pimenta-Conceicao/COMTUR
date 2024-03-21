@@ -1,17 +1,16 @@
-﻿using COMTUR.Data;
+﻿using AutoMapper;
+using COMTUR.Data;
 using COMTUR.Models;
 using COMTUR.Models.Enum;
 using COMTUR.Repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace COMTUR.Repositorios
 {
 	public class UsuarioRepositorio : IUsuarioRepositorio
 	{
+		private readonly IUsuarioRepositorio _usuarioRepositorio;
+		private readonly IMapper _mapper;
 		private readonly ComturDBContext _dbContext;
 
 		public UsuarioRepositorio(ComturDBContext dbContext)
@@ -89,6 +88,21 @@ namespace COMTUR.Repositorios
 
 			return true;
 		}
+
+		public async Task<UsuarioModel> Autenticacao(LoginModel loginModel)
+		{
+			var autenticacao = _mapper.Map<LoginModel>(loginModel);
+			var usuario = await _usuarioRepositorio.Autenticacao(autenticacao);
+
+			UsuarioModel usuarioModel = _mapper.Map<UsuarioModel>(usuario);
+			if (usuarioModel != null)
+			{
+				usuarioModel.TipoUsuario = (TipoUsuario)usuario.TipoUsuario; // Convertendo o valor do enum
+			}
+
+			return usuarioModel;
+		}
+
 
 		public async Task<UsuarioModel> ValidarLogin(string email, string senha)
 		{

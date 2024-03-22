@@ -28,26 +28,26 @@ export default function Usuario() {
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
 
-  const [nomeAdmin, setNomeAdmin] = useState("");
-  const [cargoAdmin, setCargoAdmin] = useState("");
-  const [cpfAdmin, setCpfAdmin] = useState("");
-  const [telefoneAdmin, setTelefoneAdmin] = useState("");
-  const [emailAdmin, setEmailAdmin] = useState("");
-  const [senhaAdmin, setSenhaAdmin] = useState("");
-  const [imagemAdmin, setImagemAdmin] = useState("");
-  const [idAdmin, setIdAdmin] = useState("");
+  const [nomeUser, setNomeUser] = useState("");
+  const [cargoUser, setCargoUser] = useState("");
+  const [cpfUser, setCpfUser] = useState("");
+  const [telefoneUser, setTelefoneUser] = useState("");
+  const [emailUser, setEmailUser] = useState("");
+  const [senhaUser, setSenhaUser] = useState("");
+  const [imagemUser, setImagemUser] = useState("");
+  const [idUser, setIdUser] = useState("");
 
   const navigate = useNavigate();
 
   const limparDados = () => {
-    setNomeAdmin("");
-    setCargoAdmin("");
-    setCpfAdmin("");
-    setTelefoneAdmin("");
-    setEmailAdmin("");
-    setSenhaAdmin("");
-    setImagemAdmin("");
-    setIdAdmin("");
+    setNomeUser("");
+    setCargoUser("");
+    setCpfUser("");
+    setTelefoneUser("");
+    setEmailUser("");
+    setSenhaUser("");
+    setImagemUser("");
+    setIdUser("");
   };
 
   const [showPassword, setShowPassword] = useState(false);
@@ -66,23 +66,23 @@ export default function Usuario() {
     }
   };
 
-  const AdminSet = (admin, opcao) => {
-    console.log("Admin que foi passado: ", admin);
-    setIdAdmin(admin.id);
-    setNomeAdmin(admin.nomeAdministrador);
-    setCargoAdmin(admin.cargoAdministrador);
-    setCpfAdmin(admin.cpfAdministrador);
-    setTelefoneAdmin(admin.telefoneAdministrador);
-    setEmailAdmin(admin.emailAdministrador);
-    setSenhaAdmin(admin.senhaAdministrador);
-    setImagemAdmin(admin.imagemPerfilAdministrador);
+  const UserSet = (user, opcao) => {
+    console.log("User que foi passado: ", user);
+    setIdUser(user.id);
+    setNomeUser(user.nomeUseristrador);
+    setCargoUser(user.cargoUseristrador);
+    setCpfUser(user.cpfUseristrador);
+    setTelefoneUser(user.telefoneUseristrador);
+    setEmailUser(user.emailUseristrador);
+    setSenhaUser(user.senhaUseristrador);
+    setImagemUser(user.imagemPerfilUseristrador);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
     } else if (opcao === "Excluir") {
       abrirFecharModalDeletar();
     } else {
-      navigate(`/perfilAdministrador/${admin.id}`);
+      navigate(`/perfilUseristrador/${user.id}`);
     }
   };
 
@@ -114,15 +114,15 @@ export default function Usuario() {
 
   const pedidoPost = async () => {
     const formData = new FormData();
-    formData.append("nomeUsuario", nomeAdmin);
-    formData.append("cpfAdministrador", cpfAdmin);
-    formData.append("cargoAdministrador", cargoAdmin);
-    formData.append("telefoneAdministrador", telefoneAdmin);
-    formData.append("emailAdministrador", emailAdmin);
-    formData.append("senhaAdministrador", senhaAdmin);
+    formData.append("nomeUsuario", nomeUser);
+    formData.append("cpfUseristrador", cpfUser);
+    formData.append("cargoUseristrador", cargoUser);
+    formData.append("telefoneUseristrador", telefoneUser);
+    formData.append("emailUseristrador", emailUser);
+    formData.append("senhaUseristrador", senhaUser);
 
-    const base64Image = await convertImageToBase64(imagemAdmin);
-    formData.append("imagemPerfilAdministrador", base64Image);
+    const base64Image = await convertImageToBase64(imagemUser);
+    formData.append("imagemPerfilUseristrador", base64Image);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -131,8 +131,8 @@ export default function Usuario() {
         },
       });
 
-      const newAdmin = response.data; // Ensure the response contains the newly registered admin data
-      setData([...data, newAdmin]); // Add the new admin to the existing data
+      const newUser = response.data; // Ensure the response contains the newly registered user data
+      setData([...data, newUser]); // Add the new user to the existing data
 
       abrirFecharModalInserir();
       limparDados();
@@ -157,36 +157,36 @@ export default function Usuario() {
   async function pedidoAtualizar() {
     const formData = new FormData();
 
-    formData.append("nomeAdministrador", nomeAdmin);
-    formData.append("cpfAdministrador", cpfAdmin);
-    formData.append("cargoAdministrador", cargoAdmin);
-    formData.append("telefoneAdministrador", telefoneAdmin);
-    formData.append("emailAdministrador", emailAdmin);
-    formData.append("senhaAdministrador", senhaAdmin);
+    formData.append("nomeUseristrador", nomeUser);
+    formData.append("cpfUseristrador", cpfUser);
+    formData.append("cargoUseristrador", cargoUser);
+    formData.append("telefoneUseristrador", telefoneUser);
+    formData.append("emailUseristrador", emailUser);
+    formData.append("senhaUseristrador", senhaUser);
 
-    if (imagemAdmin instanceof File) {
+    if (imagemUser instanceof File) {
       // Converter a imagem para base64 antes de enviar
-      const base64Image = await convertImageToBase64(imagemAdmin);
-      formData.append("imagemPerfilAdministrador", base64Image);
+      const base64Image = await convertImageToBase64(imagemUser);
+      formData.append("imagemPerfilUseristrador", base64Image);
     } else {
-      formData.append("imagemPerfilAdministrador", imagemAdmin);
+      formData.append("imagemPerfilUseristrador", imagemUser);
     }
 
     try {
-      const response = await axios.put(`${baseUrl}/${idAdmin}`, formData, {
+      const response = await axios.put(`${baseUrl}/${idUser}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      const updateAdmin = response.data;
+      const updateUser = response.data;
 
       setData((prevData) => {
-        return prevData.map((admin) => {
-          if (admin.id === idAdmin) {
-            return updateAdmin;
+        return prevData.map((user) => {
+          if (user.id === idUser) {
+            return updateUser;
           }
-          return admin;
+          return user;
         });
       });
 
@@ -197,7 +197,7 @@ export default function Usuario() {
     }
   }
 
-  const atualizarListaAdmin = async () => {
+  const atualizarListaUser = async () => {
     await axios
       .get(baseUrl)
       .then((response) => {
@@ -210,16 +210,16 @@ export default function Usuario() {
 
   const pedidoRemoverImagem = () => {
     // Método para limpar a constante (não limpa o campo)
-    setImagemAdmin("");
+    setImagemUser("");
   };
 
   const pedidoDeletar = async () => {
     await axios
-      .delete(baseUrl + "/" + idAdmin)
+      .delete(baseUrl + "/" + idUser)
       .then((response) => {
-        const newAdmin = data.filter((admin) => admin.id !== response.data);
-        setData(newAdmin);
-        atualizarListaAdmin();
+        const newUser = data.filter((user) => user.id !== response.data);
+        setData(newUser);
+        atualizarListaUser();
         abrirFecharModalDeletar();
         limparDados();
       })
@@ -244,16 +244,16 @@ export default function Usuario() {
   const getCurrentPageItems = (page) => {
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return data.slice(startIndex, endIndex).map((admin) => {
-      if (admin.imagemPerfilAdministrador instanceof File) {
+    return data.slice(startIndex, endIndex).map((user) => {
+      if (user.imagemPerfilUseristrador instanceof File) {
         return {
-          ...admin,
-          imagemPerfilAdministrador: URL.createObjectURL(
-            admin.imagemPerfilAdministrador
+          ...user,
+          imagemPerfilUseristrador: URL.createObjectURL(
+            user.imagemPerfilUseristrador
           ),
         };
       }
-      return admin;
+      return user;
     });
   };
 
@@ -268,12 +268,12 @@ export default function Usuario() {
   };
 
   const [userType, setUserType] = useState(4); // Valor padrão é 4
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([4]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`api/Usuarios/porTipoUsuario/${userType}`);
+        const response = await axios.get(`https://localhost:7256/api/Usuarios/porTipoUsuario/${userType}`);
         setUsers(response.data);
       } catch (error) {
         console.error('Erro ao buscar os dados dos usuários:', error);
@@ -294,7 +294,7 @@ export default function Usuario() {
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[20px]">
           <h1 className="text-3xl font-semibold pb-2">
-            Lista de Administradores
+            Lista de Usuários
           </h1>
           <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
           <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
@@ -312,20 +312,20 @@ export default function Usuario() {
               </span>
             </div>
             <ul className="w-full">
-              {currentItems.map((admin) => (
-                <React.Fragment key={admin.id}>
+              {currentItems.map((user) => (
+                <React.Fragment key={user.id}>
                   <li className="grid grid-cols-11 w-full bg-[#F5F5F5]">
                     <span
                       scope="row"
                       className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700"
                     >
-                      {admin.id}
+                      {user.id}
                     </span>
                     <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
-                      {admin.imagemPerfilAdministrador ? (
+                      {user.imagemPerfilUseristrador ? (
                         <img
                           className="flex w-10 h-10 rounded "
-                          src={admin.imagemPerfilAdministrador}
+                          src={user.imagemPerfilUseristrador}
                           alt="Preview"
                         />
                       ) : (
@@ -333,10 +333,10 @@ export default function Usuario() {
                       )}
                     </span>
                     <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
-                      {admin.nomeAdministrador}
+                      {user.nomeUseristrador}
                     </span>
                     <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
-                      {admin.cargoAdministrador}
+                      {user.cargoUseristrador}
                     </span>
                     <span className="flex col-span-3 justify-center items-center border-t-[1px] gap-[3px] 
                     border-[#DBDBDB]">
@@ -344,7 +344,7 @@ export default function Usuario() {
                         className="inline-flex text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 
                         focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
                          items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                        onClick={() => AdminSet(admin, "Editar")}
+                        onClick={() => UserSet(user, "Editar")}
                       >
                         {" "}
                         <Pencil className="flex mr-1" size={16} />
@@ -355,7 +355,7 @@ export default function Usuario() {
                         className="inline-flex text-white bg-red-800 hover:bg-red-900 focus:ring-4 
                         focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
                          items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                        onClick={() => AdminSet(admin, "Excluir")}
+                        onClick={() => UserSet(user, "Excluir")}
                       >
                         {" "}
                         <Trash className="mr-1" size={16} />
@@ -365,7 +365,7 @@ export default function Usuario() {
                       <button
                         className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none
                          font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        onClick={() => AdminSet(admin, "Visualizar")}
+                        onClick={() => UserSet(user, "Visualizar")}
                       >
                         <Eye className="mr-1" size={16} />
                         Visualizar
@@ -419,7 +419,7 @@ export default function Usuario() {
             <input
               type="text "
               className="form-control text-sm"
-              onChange={(e) => setNomeAdmin(e.target.value)}
+              onChange={(e) => setNomeUser(e.target.value)}
               placeholder="Digite o nome "
             />
             <br />
@@ -428,7 +428,7 @@ export default function Usuario() {
             <input
               type="text "
               className="form-control text-sm"
-              onChange={(e) => setCargoAdmin(e.target.value)}
+              onChange={(e) => setCargoUser(e.target.value)}
               placeholder="Digite o cargo"
             />
             <br />
@@ -440,7 +440,7 @@ export default function Usuario() {
               maskPlaceholder="999.999.999-99"
               type="text "
               className="form-control text-sm"
-              onChange={(e) => setCpfAdmin(e.target.value)}
+              onChange={(e) => setCpfUser(e.target.value)}
               placeholder="Digite apenas números"
             />
             <br />
@@ -451,7 +451,7 @@ export default function Usuario() {
               maskPlaceholder="(99) 99999-9999"
               type="text "
               className="form-control text-sm"
-              onChange={(e) => setTelefoneAdmin(e.target.value)}
+              onChange={(e) => setTelefoneUser(e.target.value)}
               placeholder="Digite apenas números"
             />
             <br />
@@ -460,7 +460,7 @@ export default function Usuario() {
             <input
               type="text "
               className="form-control text-sm"
-              onChange={(e) => setEmailAdmin(e.target.value)}
+              onChange={(e) => setEmailUser(e.target.value)}
               onBlur={(e) => validateEmail(e.target.value)}
               placeholder="Exemplo: email@gmail.com"
             />
@@ -471,7 +471,7 @@ export default function Usuario() {
               <input
                 type={showPassword ? "text" : "password"}
                 className="form-control text-sm"
-                onChange={(e) => setSenhaAdmin(e.target.value)}
+                onChange={(e) => setSenhaUser(e.target.value)}
                 placeholder="Digite a senha"
               />
               <button
@@ -484,22 +484,21 @@ export default function Usuario() {
             </div>
 
             <br />
-            {/* select para selecionar o usuario */}
+            {/* select para selecionar o usuario*/}
 
             <div>
               <label htmlFor="userTypeSelect">Selecione o tipo de usuário:</label>
               <select id="userTypeSelect" value={userType} onChange={handleUserTypeChange}>
-                <option value={5}></option>
-                <option value={4}></option>
-                <option value={3}></option>
-                <option value={2}></option>
-                <option value={1}></option>
+                <option value={4}>Admiistardor</option>
+                <option value={3}>Empresário</option>
+                <option value={2}>Funcionário</option>
+                <option value={1}>Usuário</option>
               </select>
 
               <h2>Usuários do Tipo {userType}:</h2>
               <ul>
                 {users.map((user) => (
-                  <li key={user.id}>{user.name}</li> // Substitua "name" pelo campo que deseja exibir
+                  <li key={user.id}>{user.nomeUser}</li> // Substitua "name" pelo campo que deseja exibir
                 ))}
               </ul>
             </div>
@@ -509,7 +508,7 @@ export default function Usuario() {
               <input
                 type={showPassword ? "text" : "password"}
                 className="form-control text-sm"
-                onChange={(e) => setSenhaAdmin(e.target.value)}
+                onChange={(e) => setSenhaUser(e.target.value)}
                 placeholder="Digite a senha"
               />
               <button
@@ -524,20 +523,20 @@ export default function Usuario() {
             <br />
 
             <label>Imagem:</label>
-            {imagemAdmin && modalEditar && (
+            {imagemUser && modalEditar && (
               <div
                 className="bg-[#DBDBDB]   border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
                 style={{ position: "relative", display: "inline-block" }}
               >
-                {typeof imagemAdmin === "string" ? (
+                {typeof imagemUser === "string" ? (
                   <img
-                    src={base64ToImage(imagemAdmin)}
+                    src={base64ToImage(imagemUser)}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
                 ) : (
                   <img
-                    src={URL.createObjectURL(imagemAdmin)}
+                    src={URL.createObjectURL(imagemUser)}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
@@ -565,8 +564,8 @@ export default function Usuario() {
             <input
               type="file"
               className="form-control"
-              onChange={(e) => setImagemAdmin(e.target.files[0])}
-              value={imagemAdmin === "" ? "" : undefined}
+              onChange={(e) => setImagemUser(e.target.files[0])}
+              value={imagemUser === "" ? "" : undefined}
             />
             <br />
           </div>
@@ -597,7 +596,7 @@ export default function Usuario() {
               type="text"
               className="form-control  text-sm"
               readOnly
-              value={idAdmin}
+              value={idUser}
             />
             <br />
             <label>Nome: </label>
@@ -605,8 +604,8 @@ export default function Usuario() {
             <input
               type="text"
               className="form-control  text-sm"
-              onChange={(e) => setNomeAdmin(e.target.value)}
-              value={nomeAdmin}
+              onChange={(e) => setNomeUser(e.target.value)}
+              value={nomeUser}
             />
             <br />
             <label>Cargo:</label>
@@ -614,8 +613,8 @@ export default function Usuario() {
             <input
               type="text"
               className="form-control  text-sm"
-              onChange={(e) => setCargoAdmin(e.target.value)}
-              value={cargoAdmin}
+              onChange={(e) => setCargoUser(e.target.value)}
+              value={cargoUser}
             />
             <br />
             <label>CPF:</label>
@@ -625,8 +624,8 @@ export default function Usuario() {
               maskPlaceholder="999.999.999-99"
               type="text "
               className="form-control  text-sm"
-              onChange={(e) => setCpfAdmin(e.target.value)}
-              value={cpfAdmin}
+              onChange={(e) => setCpfUser(e.target.value)}
+              value={cpfUser}
             />
 
             <br />
@@ -637,8 +636,8 @@ export default function Usuario() {
               maskPlaceholder="(99) 99999-9999"
               type="text "
               className="form-control  text-sm"
-              onChange={(e) => setTelefoneAdmin(e.target.value)}
-              value={telefoneAdmin}
+              onChange={(e) => setTelefoneUser(e.target.value)}
+              value={telefoneUser}
             />
 
             <br />
@@ -647,8 +646,8 @@ export default function Usuario() {
             <input
               type="text "
               className="form-control  text-sm"
-              onChange={(e) => setEmailAdmin(e.target.value)}
-              value={emailAdmin}
+              onChange={(e) => setEmailUser(e.target.value)}
+              value={emailUser}
             />
             <br />
             <label>Senha:</label>
@@ -657,8 +656,8 @@ export default function Usuario() {
               <input
                 type={showPassword ? "text" : "password"}
                 className="form-control text-sm"
-                onChange={(e) => setSenhaAdmin(e.target.value)}
-                value={senhaAdmin}
+                onChange={(e) => setSenhaUser(e.target.value)}
+                value={senhaUser}
               />
               <button
                 className="btn btn-outline-secondary bg-[#DBDBDB]  border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
@@ -671,17 +670,17 @@ export default function Usuario() {
 
             <br />
             <label>Imagem:</label>
-            {imagemAdmin && modalEditar && (
+            {imagemUser && modalEditar && (
               <div style={{ position: "relative", display: "inline-block" }}>
-                {typeof imagemAdmin === "string" ? (
+                {typeof imagemUser === "string" ? (
                   <img
-                    src={imagemAdmin}
+                    src={imagemUser}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
                 ) : (
                   <img
-                    src={URL.createObjectURL(imagemAdmin)}
+                    src={URL.createObjectURL(imagemUser)}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
@@ -709,8 +708,8 @@ export default function Usuario() {
             <input
               type="file"
               className="form-control"
-              onChange={(e) => setImagemAdmin(e.target.files[0])}
-              value={imagemAdmin === "" ? "" : undefined}
+              onChange={(e) => setImagemUser(e.target.files[0])}
+              value={imagemUser === "" ? "" : undefined}
             />
             <br />
           </div>
@@ -734,7 +733,7 @@ export default function Usuario() {
 
       <Modal isOpen={modalDeletar}>
         <ModalBody>
-          Confirma a exclusão do Usuario: "{nomeAdmin}" ?
+          Confirma a exclusão do Usuario: "{nomeUser}" ?
         </ModalBody>
         <ModalFooter>
           <button

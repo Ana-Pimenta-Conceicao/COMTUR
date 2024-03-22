@@ -11,9 +11,11 @@ import Empresario from "./screens/empresario/empresario";
 import Administrador from "./screens/administrador/administrador";
 import TipoUsuario from "./screens/tipousuario/tipousuario";
 import PerfilAdministrador from "./screens/administrador/perfilAdministrador";
-import Usuario from "./screens/usuario/usuario";
+import Usuario from "./screens/usuarios/usuarios";
 import Login from "./screens/login/login";
 import TipoAtracao from "./screens/tipoatracao/tipoatracao";
+
+
 
 
 const AppRoutes = () => {
@@ -31,9 +33,10 @@ const AppRoutes = () => {
                 <Route path="/administrador" element={<Administrador/>} />
                 <Route path="/tipousuario" element={<TipoUsuario/>} />
                 <Route path="/perfiladministrador/:id" element={<PerfilAdministrador/> } />
-                <Route path="/usuario" element={ <Usuario/> } />
+                <Route path="/usuarios" element={ <Usuario/> } />
                 <Route path="/login" element={ <Login/> } />
                 <Route path="/administrador" element={ <Administrador/> } />
+            
             </Routes>
         </Router>
     );

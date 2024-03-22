@@ -30,11 +30,7 @@ namespace COMTUR.Models
         [Column("horaPublicacao")]
         public string HoraPublicacao { get; set; }
 
+        public ICollection<ImagemNoticiaModel>? ImagemNoticia { get; set; }
 
-        [Column("legendaImagem")]
-        public string LegendaImagem { get; set; }
-
-		public ICollection<ImagemNoticiaModel>? ImagemNoticia { get; set; }
-
-	}
+    }
 }

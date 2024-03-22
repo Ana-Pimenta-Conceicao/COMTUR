@@ -48,20 +48,28 @@ namespace COMTUR.Controllers
         }
 
         [HttpPost("{id}/CadastrarImagensNoticia")]
-        public async Task<ActionResult<List<ImagemNoticiaModel>>> CadastrarImagensNoticia([FromForm] List<string> imagens, int id)
+        public async Task<ActionResult<List<ImagemNoticiaModel>>> CadastrarImagensNoticia([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id)
         {
+            NoticiaModel noticia = await _NoticiaRepository.BuscarPorId(id);
+            if (noticia == null)
+            {
+                return NotFound($"Notícia com ID {id} não encontrada!");
+            }
+
             List<ImagemNoticiaModel> imagensNoticiaModel = new List<ImagemNoticiaModel>();
-            foreach (string imagem in imagens)
+            for (int i = 0; i < imagens.Count; i++)
             {
                 ImagemNoticiaModel novaImagem = new ImagemNoticiaModel()
                 {
                     IdNoticia = id,
-                    Imagem = imagem
+                    Imagem = imagens[i],
+                    LegendaImagem = legendas[i]
                 };
 
                 await _ImagemNoticiaRepositorio.Adicionar(novaImagem);
                 imagensNoticiaModel.Add(novaImagem);
             }
+
 
             return Ok(imagensNoticiaModel);
         }
@@ -76,38 +84,63 @@ namespace COMTUR.Controllers
         }
 
         [HttpPut("{id}/AtualizarImagensNoticia")]
-        public async Task<ActionResult<List<ImagemNoticiaModel>>> AtualizarImagensNoticia([FromForm] List<string> imagens, int id)
+        public async Task<ActionResult<List<ImagemNoticiaModel>>> AtualizarImagensNoticia([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id)
         {
+            NoticiaModel noticia = await _NoticiaRepository.BuscarPorId(id);
+            if (noticia == null)
+            {
+                return NotFound($"Notícia com ID {id} não encontrada!");
+            }
+
             // Busca as imagens relacionadas à notícia no banco de dados
             List<ImagemNoticiaModel> imagensNoticia = await _NoticiaRepository.BuscarImagensPorNoticiaId(id);
 
-            // Identifica as imagens que devem ser cadastradas (presentes em imagens, mas não em imagensNoticia)
-            List<string> imagensParaCadastrar = imagens.Except(imagensNoticia.Select(i => i.Imagem)).ToList();
+            List<ImagemNoticiaModel> imagensAtualizadas = new List<ImagemNoticiaModel>();
 
-            // Identifica as imagens que devem ser removidas (presentes em imagensNoticia, mas não em imagens)
-            List<ImagemNoticiaModel> imagensParaRemover = imagensNoticia.Where(i => !imagens.Contains(i.Imagem)).ToList();
-
-            // Lógica para cadastrar as novas imagens
-            foreach (string imagem in imagensParaCadastrar)
+            // Atualiza ou cadastra novas imagens
+            for (int i = 0; i < imagens.Count; i++)
             {
-                ImagemNoticiaModel novaImagem = new ImagemNoticiaModel()
-                {
-                    IdNoticia = id,
-                    Imagem = imagem
-                };
+                string imagem = imagens[i];
+                string legenda = legendas[i];
 
-                await _ImagemNoticiaRepositorio.Adicionar(novaImagem);
-                imagensNoticia.Add(novaImagem);
+                // Verifica se a imagem já existe na lista de imagens relacionadas à notícia
+                ImagemNoticiaModel imagemExistente = imagensNoticia.FirstOrDefault(img => img.Imagem == imagem);
+
+                if (imagemExistente != null)
+                {
+                    // Se a imagem existe, atualiza a legenda se necessário
+                    if (imagemExistente.LegendaImagem != legenda)
+                    {
+                        imagemExistente.LegendaImagem = legenda;
+                        // Atualiza a imagem no banco de dados (se necessário)
+                        await _ImagemNoticiaRepositorio.Atualizar(imagemExistente, imagemExistente.Id);
+                    }
+                }
+                else
+                {
+                    // Se a imagem não existe, cadastra uma nova imagem
+                    ImagemNoticiaModel novaImagem = new ImagemNoticiaModel { IdNoticia = id, Imagem = imagem, LegendaImagem = legenda };
+                    // Insere a nova imagem no banco de dados
+                    await _ImagemNoticiaRepositorio.Adicionar(novaImagem);
+                    imagensNoticia.Add(novaImagem); // Adiciona a nova imagem à lista de imagens relacionadas à notícia
+                }
+
+                // Adiciona a imagem atualizada ou nova à lista de imagens atualizadas
+                imagensAtualizadas.Add(new ImagemNoticiaModel { Imagem = imagem, LegendaImagem = legenda });
             }
 
-            // Lógica para remover as imagens antigas
-            foreach (ImagemNoticiaModel imagem in imagensParaRemover)
+            // Remove as imagens que foram excluídas
+            foreach (var imagem in imagensNoticia)
             {
-                await _ImagemNoticiaRepositorio.Apagar(imagem.Id);
-                imagensNoticia.Remove(imagem);
-            } imagensNoticia.AddRange(imagensNoticia);
+                if (!imagens.Contains(imagem.Imagem))
+                {
+                    // Remove a imagem do banco de dados
+                    await _ImagemNoticiaRepositorio.Apagar(imagem.Id);
+                }
+            }
 
-            return Ok(imagensNoticia);
+            // Retorna a lista de imagens atualizadas
+            return Ok(imagensAtualizadas);
         }
 
         [HttpDelete("{id}")]

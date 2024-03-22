@@ -156,6 +156,11 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("imagem");
 
+                    b.Property<string>("LegendaImagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("legendaImagem");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdNoticia");
@@ -185,11 +190,6 @@ namespace COMTUR.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("horaPublicacao");
-
-                    b.Property<string>("LegendaImagem")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("legendaImagem");
 
                     b.Property<string>("Subtitulo")
                         .IsRequired()

@@ -2,8 +2,8 @@
 {
 	public class EntitySecurity
 	{
-			public string Issuer { get; } = "Server API";
-			public string Audience { get; } = "WebSite";
-			public string Key { get; } = "COMTUR_BarramentUser_API_Autentication";
+			public string Issuer { get; } = "COMTUR_Client";
+			public string Audience { get; } = "COMTUR_Server";
+			public string Key { get; } = "COMTUR_System";
 		}
 }

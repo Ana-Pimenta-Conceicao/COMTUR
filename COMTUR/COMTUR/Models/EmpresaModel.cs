@@ -32,13 +32,16 @@ namespace COMTUR.Models
 		[Column("descricao")]
 		public string Descricao { get; set; }
 
-
+		// relação com empresario
         [JsonIgnore]
         public UsuarioModel? UsuarioModel { get; set; }
 
 		[Column("usuarioid")]
 		[ForeignKey("usuarioid")]
 		public int IdUsuario { get; set; }
+
+		// relação ImagemEmpresa
+		public ICollection<ImagemEmpresaModel>? ImagemEmpresa { get; set; }
 
 	}
 }

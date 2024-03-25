@@ -10,5 +10,6 @@ namespace COMTUR.Repositorios.Interfaces
 		Task<EmpresaModel> Adicionar(EmpresaModel empresaModel);
 		Task<EmpresaModel> Atualizar(EmpresaModel empresaModel, int id);
 		Task<bool> Apagar(int id);
+		Task<List<ImagemEmpresaModel>> BuscarImagensPorEmpresaId(int empresaId);
 	}
 }

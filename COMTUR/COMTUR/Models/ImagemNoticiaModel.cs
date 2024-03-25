@@ -17,6 +17,7 @@ namespace COMTUR.Models
         [Column("imagem")]
         public string Imagem { get; set; }
 
+        // relação com Noticia
         [JsonIgnore]
         public NoticiaModel NoticiaModel { get; set; }
 

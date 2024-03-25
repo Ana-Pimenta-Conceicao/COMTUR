@@ -26,7 +26,7 @@ namespace COMTUR.Repositorios
 
 		public async Task<EmpresaModel> BuscarPorId(int id)
 		{
-			return await _dbContext.Empresa.FirstOrDefaultAsync(x => x.Id == id);
+			return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).FirstOrDefaultAsync(x => x.Id == id);
 		}
 
 		public async Task<EmpresaModel> GetById(int id)
@@ -83,6 +83,15 @@ namespace COMTUR.Repositorios
 			await _dbContext.SaveChangesAsync();
 
 			return true;
+		}
+
+		public async Task<List<ImagemEmpresaModel>> BuscarImagensPorEmpresaId(int EmpresaId)
+		{
+			// Use o Entity Framework para consultar as imagens associadas a uma empresa específica
+			var imagens = await _dbContext.ImagemEmpresa
+										   .Where(imagem => imagem.IdEmpresa == EmpresaId)
+										   .ToListAsync();
+			return imagens;
 		}
 	}
 }

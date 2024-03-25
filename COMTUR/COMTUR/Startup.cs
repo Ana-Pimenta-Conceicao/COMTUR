@@ -103,27 +103,22 @@ namespace COMTUR
 
 			// Dependência: AtracaoRepositorio
 			services.AddScoped<IAtracaoRepositorio, AtracaoRepositorio>();
-
 			// Dependência: EmpresaRepositorio
 			services.AddScoped<IEmpresaRepositorio, EmpresaRepositorio>();
-
 			// Dependência: ImagemAtracao
 			services.AddScoped<IImagemAtracaoRepositorio, ImagemAtracaoRepositorio>();
-
 			// Dependência: ImagemNoticia
 			services.AddScoped<IImagemNoticiaRepositorio, ImagemNoticiaRepositorio>();
-
 			// Dependência: Noticia
 			services.AddScoped<INoticiaRepository, NoticiaRepository>();
-
 			// Dependência: TipoAtração
 			services.AddScoped<ITipoAtracaoRepositorio, TipoAtracaoRepositorio>();
-
 			// Dependência: TipoTurismo
 			services.AddScoped<ITipoTurismoRepositorio, TipoTurismoRepositorio>();
-
 			// Dependência: TipoUsuario
 			services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+			// Dependência: ImagemEmpresa
+			services.AddScoped<IImagemEmpresaRepositorio, ImagemEmpresaRepositorio>();
 
 		}
 

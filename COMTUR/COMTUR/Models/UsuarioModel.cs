@@ -34,7 +34,7 @@ namespace COMTUR.Models
 		[Column("imagemPerfilUsuario")]
 		public string? ImagemPerfilUsuario { get; set; }
 
-
+		// Relacionamento com empresa para o empresário
         [JsonIgnore]
         public ICollection<EmpresaModel>? Empresas { get; set; }
     }

@@ -139,6 +139,35 @@ namespace COMTUR.Migrations
                     b.ToTable("imagematracao");
                 });
 
+            modelBuilder.Entity("COMTUR.Models.ImagemEmpresaModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("imagemempresaid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IdEmpresa")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Imagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagem");
+
+                    b.Property<string>("LegendaImagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("legendaImagem");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdEmpresa");
+
+                    b.ToTable("imagemempresa");
+                });
+
             modelBuilder.Entity("COMTUR.Models.ImagemNoticiaModel", b =>
                 {
                     b.Property<int>("Id")
@@ -364,6 +393,17 @@ namespace COMTUR.Migrations
                     b.Navigation("AtracaoModel");
                 });
 
+            modelBuilder.Entity("COMTUR.Models.ImagemEmpresaModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.EmpresaModel", "EmpresaModel")
+                        .WithMany("ImagemEmpresa")
+                        .HasForeignKey("IdEmpresa")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EmpresaModel");
+                });
+
             modelBuilder.Entity("COMTUR.Models.ImagemNoticiaModel", b =>
                 {
                     b.HasOne("COMTUR.Models.NoticiaModel", "NoticiaModel")
@@ -378,6 +418,11 @@ namespace COMTUR.Migrations
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
                 {
                     b.Navigation("ImagemAtracao");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.EmpresaModel", b =>
+                {
+                    b.Navigation("ImagemEmpresa");
                 });
 
             modelBuilder.Entity("COMTUR.Models.NoticiaModel", b =>

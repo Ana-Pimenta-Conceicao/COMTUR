@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class teste6 : Migration
+    public partial class comtur : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,8 +24,7 @@ namespace COMTUR.Migrations
                     subtitulo = table.Column<string>(type: "text", nullable: false),
                     conteudo = table.Column<string>(type: "text", nullable: false),
                     datapublicacao = table.Column<DateOnly>(type: "date", nullable: false),
-                    horaPublicacao = table.Column<string>(type: "text", nullable: false),
-                    legendaImagem = table.Column<string>(type: "text", nullable: false)
+                    horaPublicacao = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,6 +81,7 @@ namespace COMTUR.Migrations
                 {
                     imagemnoticiaid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    legendaImagem = table.Column<string>(type: "text", nullable: false),
                     imagem = table.Column<string>(type: "text", nullable: false),
                     IdNoticia = table.Column<int>(type: "integer", nullable: false)
                 },

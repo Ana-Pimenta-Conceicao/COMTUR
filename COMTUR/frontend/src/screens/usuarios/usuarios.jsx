@@ -4,39 +4,50 @@ import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import InputMask from "react-input-mask";
-import SidebarAdm from "../../components/admin/sidebarAdm"
+import SidebarAdm from "../../components/admin/sidebarAdm";
 import NavBarAdm from "../../components/admin/navbarAdm";
 import { useNavigate } from "react-router-dom";
-import { CaretLeft, CaretRight, EyeSlash, Eye, FilePlus, Pencil, Trash } from "@phosphor-icons/react"
-
+import {
+  CaretLeft,
+  CaretRight,
+  Eye,
+  EyeSlash,
+  Trash,
+  FilePlus,
+  Pencil,
+} from "@phosphor-icons/react";
 
 export default function Usuario() {
   const baseUrl = "https://localhost:7256/api/Usuario";
 
   const [data, setData] = useState([]);
+
   const [atualizarData, setAtualizarData] = useState(true);
 
   const [modalInserir, setModalInserir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
 
-  // IdleDeadline, nome, emailUsuario, senhaUsuario
-
-  const [nomeUsr, setNomeUsr] = useState("");
-  const [emailUsr, setEmailUsr] = useState("");
-  const [senhaUsr, setSenhaUsr] = useState("");
-  const [imagemUsr, setImagemUsr] = useState("");
-  const [idUsr, setIdUsr] = useState("");
-
+  const [nomeUser, setNomeUser] = useState("");
+  const [cargoUser, setCargoUser] = useState("");
+  const [cpfUser, setCpfUser] = useState("");
+  const [telefoneUser, setTelefoneUser] = useState("");
+  const [emailUser, setEmailUser] = useState("");
+  const [senhaUser, setSenhaUser] = useState("");
+  const [imagemUser, setImagemUser] = useState("");
+  const [idUser, setIdUser] = useState("");
 
   const navigate = useNavigate();
 
   const limparDados = () => {
-    setNomeUsr("");
-    setEmailUsr("");
-    setSenhaUsr("");
-    setImagemUsr("");
-    setIdUsr("");
+    setNomeUser("");
+    setCargoUser("");
+    setCpfUser("");
+    setTelefoneUser("");
+    setEmailUser("");
+    setSenhaUser("");
+    setImagemUser("");
+    setIdUser("");
   };
 
   const [showPassword, setShowPassword] = useState(false);
@@ -55,21 +66,23 @@ export default function Usuario() {
     }
   };
 
-
-  const UsrSet = (usr, opcao) => {
-    console.log("Usuário que foi passado: ", usr);
-    setIdUsr(usr.id);
-    setNomeUsr(usr.nome);
-    setEmailUsr(usr.emailUsuario);
-    setSenhaUsr(usr.senhaUsuario);
-    setImagemUsr(usr.imagemPerfilUsuario);
+  const UserSet = (user, opcao) => {
+    console.log("User que foi passado: ", user);
+    setIdUser(user.id);
+    setNomeUser(user.nomeUseristrador);
+    setCargoUser(user.cargoUseristrador);
+    setCpfUser(user.cpfUseristrador);
+    setTelefoneUser(user.telefoneUseristrador);
+    setEmailUser(user.emailUseristrador);
+    setSenhaUser(user.senhaUseristrador);
+    setImagemUser(user.imagemPerfilUseristrador);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
     } else if (opcao === "Excluir") {
       abrirFecharModalDeletar();
     } else {
-      navigate(`/perfilUsuario/${usr.id}`);
+      navigate(`/perfilUseristrador/${user.id}`);
     }
   };
 
@@ -99,16 +112,17 @@ export default function Usuario() {
       });
   };
 
-
-  // IdleDeadline, nome, emailUsuario, senhaUsuario
   const pedidoPost = async () => {
     const formData = new FormData();
-    formData.append("nome", nomeUsr);
-    formData.append("emailUsuario", emailUsr);
-    formData.append("senhaUsuario", senhaUsr)
+    formData.append("nomeUsuario", nomeUser);
+    formData.append("cpfUseristrador", cpfUser);
+    formData.append("cargoUseristrador", cargoUser);
+    formData.append("telefoneUseristrador", telefoneUser);
+    formData.append("emailUseristrador", emailUser);
+    formData.append("senhaUseristrador", senhaUser);
 
-    const base64Image = await convertImageToBase64(imagemUsr);
-    formData.append("imagemPerfilUsuario", base64Image);
+    const base64Image = await convertImageToBase64(imagemUser);
+    formData.append("imagemPerfilUseristrador", base64Image);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -116,8 +130,9 @@ export default function Usuario() {
           "Content-Type": "multipart/form-data",
         },
       });
-      const newUsr = response.data;
-      setData([...data, newUsr]);
+
+      const newUser = response.data; // Ensure the response contains the newly registered user data
+      setData([...data, newUser]); // Add the new user to the existing data
 
       abrirFecharModalInserir();
       limparDados();
@@ -139,38 +154,39 @@ export default function Usuario() {
     });
   }
 
-
   async function pedidoAtualizar() {
     const formData = new FormData();
 
-    formData.append("nome", nomeUsr);
-    formData.append("emailUsuario", emailUsr);
-    formData.append("senhaUsuario", senhaUsr);
-    formData.append("imagemPerfilUsuario", imagemUsr);
+    formData.append("nomeUseristrador", nomeUser);
+    formData.append("cpfUseristrador", cpfUser);
+    formData.append("cargoUseristrador", cargoUser);
+    formData.append("telefoneUseristrador", telefoneUser);
+    formData.append("emailUseristrador", emailUser);
+    formData.append("senhaUseristrador", senhaUser);
 
-    if (imagemUsr instanceof File) {
+    if (imagemUser instanceof File) {
       // Converter a imagem para base64 antes de enviar
-      const base64Image = await convertImageToBase64(imagemUsr);
-      formData.append("imagemPerfilUsuario", base64Image);
+      const base64Image = await convertImageToBase64(imagemUser);
+      formData.append("imagemPerfilUseristrador", base64Image);
     } else {
-      formData.append("imagemPerfilUsuario", imagemUsr);
+      formData.append("imagemPerfilUseristrador", imagemUser);
     }
 
     try {
-      const response = await axios.put(`${baseUrl}/${idUsr}`, formData, {
+      const response = await axios.put(`${baseUrl}/${idUser}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      const updateUsr = response.data;
+      const updateUser = response.data;
 
       setData((prevData) => {
-        return prevData.map((usr) => {
-          if (usr.id === idUsr) {
-            return updateUsr;
+        return prevData.map((user) => {
+          if (user.id === idUser) {
+            return updateUser;
           }
-          return usr;
+          return user;
         });
       });
 
@@ -179,10 +195,9 @@ export default function Usuario() {
     } catch (error) {
       console.log(error);
     }
-
   }
 
-  const atualizarListaUsr = async () => {
+  const atualizarListaUser = async () => {
     await axios
       .get(baseUrl)
       .then((response) => {
@@ -193,19 +208,18 @@ export default function Usuario() {
       });
   };
 
-
   const pedidoRemoverImagem = () => {
     // Método para limpar a constante (não limpa o campo)
-    setImagemUsr("");
+    setImagemUser("");
   };
 
   const pedidoDeletar = async () => {
     await axios
-      .delete(baseUrl + "/" + idUsr)
+      .delete(baseUrl + "/" + idUser)
       .then((response) => {
-        const newUsr = data.filter((usr) => usr.id !== response.data);
-        setData(newUsr);
-        atualizarListaUsr();
+        const newUser = data.filter((user) => user.id !== response.data);
+        setData(newUser);
+        atualizarListaUser();
         abrirFecharModalDeletar();
         limparDados();
       })
@@ -230,20 +244,18 @@ export default function Usuario() {
   const getCurrentPageItems = (page) => {
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return data.slice(startIndex, endIndex).map((usr) => {
-      if (usr.imagemPerfilUsuario instanceof File) {
+    return data.slice(startIndex, endIndex).map((user) => {
+      if (user.imagemPerfilUseristrador instanceof File) {
         return {
-          ...usr,
-          imagemPerfilUsuario: URL.createObjectURL(
-            usr.imagemPerfilUsuario
+          ...user,
+          imagemPerfilUseristrador: URL.createObjectURL(
+            user.imagemPerfilUseristrador
           ),
         };
       }
-      return usr;
+      return user;
     });
   };
-
-
 
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
@@ -255,6 +267,25 @@ export default function Usuario() {
     }
   };
 
+  const [userType, setUserType] = useState(4); // Valor padrão é 4
+  const [users, setUsers] = useState([4]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://localhost:7256/api/Usuarios/porTipoUsuario/${userType}`);
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar os dados dos usuários:', error);
+      }
+    };
+
+    fetchData();
+  }, [userType]);
+
+  const handleUserTypeChange = (e) => {
+    setUserType(parseInt(e.target.value));
+  };
 
   return (
     <div className="h-screen flex">
@@ -274,27 +305,27 @@ export default function Usuario() {
                 Nome
               </span>
               <span className="flex col-span-3 justify-center items-center">
-                Email
+                Cargo
               </span>
               <span className="flex col-span-3 justify-center items-center">
                 Ações
               </span>
             </div>
             <ul className="w-full">
-              {currentItems.map((usr) => (
-                <React.Fragment key={usr.id}>
+              {currentItems.map((user) => (
+                <React.Fragment key={user.id}>
                   <li className="grid grid-cols-11 w-full bg-[#F5F5F5]">
                     <span
                       scope="row"
                       className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700"
                     >
-                      {usr.id}
+                      {user.id}
                     </span>
                     <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
-                      {usr.imagemPerfilUsuario ? (
+                      {user.imagemPerfilUseristrador ? (
                         <img
                           className="flex w-10 h-10 rounded "
-                          src={usr.imagemPerfilUsuario}
+                          src={user.imagemPerfilUseristrador}
                           alt="Preview"
                         />
                       ) : (
@@ -302,18 +333,18 @@ export default function Usuario() {
                       )}
                     </span>
                     <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
-                      {usr.nome}
+                      {user.nomeUseristrador}
                     </span>
                     <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
-                      {usr.emailUsuario}
+                      {user.cargoUseristrador}
                     </span>
                     <span className="flex col-span-3 justify-center items-center border-t-[1px] gap-[3px] 
-                        border-[#DBDBDB]">
+                    border-[#DBDBDB]">
                       <button
                         className="inline-flex text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 
-                            focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
-                             items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                        onClick={() => UsrSet(usr, "Editar")}
+                        focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
+                         items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+                        onClick={() => UserSet(user, "Editar")}
                       >
                         {" "}
                         <Pencil className="flex mr-1" size={16} />
@@ -322,9 +353,9 @@ export default function Usuario() {
 
                       <button
                         className="inline-flex text-white bg-red-800 hover:bg-red-900 focus:ring-4 
-                            focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
-                             items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                        onClick={() => UsrSet(usr, "Excluir")}
+                        focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
+                         items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                        onClick={() => UserSet(user, "Excluir")}
                       >
                         {" "}
                         <Trash className="mr-1" size={16} />
@@ -333,8 +364,8 @@ export default function Usuario() {
 
                       <button
                         className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none
-                             font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        onClick={() => UsrSet(usr, "Visualizar")}
+                         font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        onClick={() => UserSet(user, "Visualizar")}
                       >
                         <Eye className="mr-1" size={16} />
                         Visualizar
@@ -367,7 +398,7 @@ export default function Usuario() {
           <div className="float-right flex-auto py-6">
             <button
               className="text-white bg-yellow-400 hover:bg-yellow-500 
-                   rounded-xl text-lg px-3 font-semibold py-1.5 text-center"
+               rounded-xl text-lg px-3 font-semibold py-1.5 text-center"
               onClick={() => abrirFecharModalInserir()}
             >
               <span className="inline-flex items-center">
@@ -379,23 +410,57 @@ export default function Usuario() {
         </div>
       </div>
 
-
       <Modal isOpen={modalInserir}>
-        <ModalHeader>Cadastrar Usuário</ModalHeader>
+        <ModalHeader>Cadastrar Usuario</ModalHeader>
         <ModalBody>
           <div className="form-group">
             <label>Nome: </label>
             <br />
-            <input type="text " className="form-control text-sm"
-              onChange={(e) => setNomeUsr(e.target.value)}
-              placeholder="Digite o nome " />
+            <input
+              type="text "
+              className="form-control text-sm"
+              onChange={(e) => setNomeUser(e.target.value)}
+              placeholder="Digite o nome "
+            />
+            <br />
+            <label>Cargo:</label>
+            <br />
+            <input
+              type="text "
+              className="form-control text-sm"
+              onChange={(e) => setCargoUser(e.target.value)}
+              placeholder="Digite o cargo"
+            />
+            <br />
+
+            <label>CPF:</label>
+            <br />
+            <InputMask
+              mask="999.999.999-99"
+              maskPlaceholder="999.999.999-99"
+              type="text "
+              className="form-control text-sm"
+              onChange={(e) => setCpfUser(e.target.value)}
+              placeholder="Digite apenas números"
+            />
+            <br />
+            <label>Telefone:</label>
+            <br />
+            <InputMask
+              mask="(99) 99999-9999"
+              maskPlaceholder="(99) 99999-9999"
+              type="text "
+              className="form-control text-sm"
+              onChange={(e) => setTelefoneUser(e.target.value)}
+              placeholder="Digite apenas números"
+            />
             <br />
             <label>Email:</label>
             <br />
             <input
               type="text "
               className="form-control text-sm"
-              onChange={(e) => setEmailUsr(e.target.value)}
+              onChange={(e) => setEmailUser(e.target.value)}
               onBlur={(e) => validateEmail(e.target.value)}
               placeholder="Exemplo: email@gmail.com"
             />
@@ -406,7 +471,7 @@ export default function Usuario() {
               <input
                 type={showPassword ? "text" : "password"}
                 className="form-control text-sm"
-                onChange={(e) => setSenhaUsr(e.target.value)}
+                onChange={(e) => setSenhaUser(e.target.value)}
                 placeholder="Digite a senha"
               />
               <button
@@ -419,21 +484,59 @@ export default function Usuario() {
             </div>
 
             <br />
+            {/* select para selecionar o usuario*/}
+
+            <div>
+              <label htmlFor="userTypeSelect">Selecione o tipo de usuário:</label>
+              <select id="userTypeSelect" value={userType} onChange={handleUserTypeChange}>
+                <option value={4}>Admiistardor</option>
+                <option value={3}>Empresário</option>
+                <option value={2}>Funcionário</option>
+                <option value={1}>Usuário</option>
+              </select>
+
+              <h2>Usuários do Tipo {userType}:</h2>
+              <ul>
+                {users.map((user) => (
+                  <li key={user.id}>{user.nomeUser}</li> // Substitua "name" pelo campo que deseja exibir
+                ))}
+              </ul>
+            </div>
+
+
+            <div className="input-group">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="form-control text-sm"
+                onChange={(e) => setSenhaUser(e.target.value)}
+                placeholder="Digite a senha"
+              />
+              <button
+                className="btn btn-outline-secondary bg-[#DBDBDB]  border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
+                type="button"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? <EyeSlash size={24} /> : <Eye size={24} />}
+              </button>
+            </div>
+
+            <br />
+
             <label>Imagem:</label>
-            {imagemUsr && modalEditar && (
+            {imagemUser && modalEditar && (
               <div
                 className="bg-[#DBDBDB]   border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
                 style={{ position: "relative", display: "inline-block" }}
               >
-                {typeof imagemUsr === "string" ? (
+                {typeof imagemUser === "string" ? (
                   <img
-                    src={base64ToImage(imagemUsr)}
+                    src={base64ToImage(imagemUser)}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
                 ) : (
                   <img
-                    src={URL.createObjectURL(imagemUsr)}
+                    src={URL.createObjectURL(imagemUser)}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
@@ -461,8 +564,8 @@ export default function Usuario() {
             <input
               type="file"
               className="form-control"
-              onChange={(e) => setImagemUsr(e.target.files[0])}
-              value={imagemUsr === "" ? "" : undefined}
+              onChange={(e) => setImagemUser(e.target.files[0])}
+              value={imagemUser === "" ? "" : undefined}
             />
             <br />
           </div>
@@ -483,9 +586,8 @@ export default function Usuario() {
           </button>
         </ModalFooter>
       </Modal>
-
       <Modal isOpen={modalEditar}>
-        <ModalHeader>Alterar Usuário</ModalHeader>
+        <ModalHeader>Alterar Usuario</ModalHeader>
         <ModalBody>
           <div className="form-group">
             <label>ID: </label>
@@ -494,7 +596,7 @@ export default function Usuario() {
               type="text"
               className="form-control  text-sm"
               readOnly
-              value={idUsr}
+              value={idUser}
             />
             <br />
             <label>Nome: </label>
@@ -502,17 +604,50 @@ export default function Usuario() {
             <input
               type="text"
               className="form-control  text-sm"
-              onChange={(e) => setNomeUsr(e.target.value)}
-              value={nomeUsr}
+              onChange={(e) => setNomeUser(e.target.value)}
+              value={nomeUser}
             />
+            <br />
+            <label>Cargo:</label>
+            <br />
+            <input
+              type="text"
+              className="form-control  text-sm"
+              onChange={(e) => setCargoUser(e.target.value)}
+              value={cargoUser}
+            />
+            <br />
+            <label>CPF:</label>
+            <br />
+            <InputMask
+              mask="999.999.999-99"
+              maskPlaceholder="999.999.999-99"
+              type="text "
+              className="form-control  text-sm"
+              onChange={(e) => setCpfUser(e.target.value)}
+              value={cpfUser}
+            />
+
+            <br />
+            <label>Telefone:</label>
+            <br />
+            <InputMask
+              mask="(99) 99999-9999"
+              maskPlaceholder="(99) 99999-9999"
+              type="text "
+              className="form-control  text-sm"
+              onChange={(e) => setTelefoneUser(e.target.value)}
+              value={telefoneUser}
+            />
+
             <br />
             <label>Email:</label>
             <br />
             <input
               type="text "
               className="form-control  text-sm"
-              onChange={(e) => setEmailUsr(e.target.value)}
-              value={emailUsr}
+              onChange={(e) => setEmailUser(e.target.value)}
+              value={emailUser}
             />
             <br />
             <label>Senha:</label>
@@ -521,8 +656,8 @@ export default function Usuario() {
               <input
                 type={showPassword ? "text" : "password"}
                 className="form-control text-sm"
-                onChange={(e) => setSenhaUsr(e.target.value)}
-                value={senhaUsr}
+                onChange={(e) => setSenhaUser(e.target.value)}
+                value={senhaUser}
               />
               <button
                 className="btn btn-outline-secondary bg-[#DBDBDB]  border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
@@ -535,17 +670,17 @@ export default function Usuario() {
 
             <br />
             <label>Imagem:</label>
-            {imagemUsr && modalEditar && (
+            {imagemUser && modalEditar && (
               <div style={{ position: "relative", display: "inline-block" }}>
-                {typeof imagemUsr === "string" ? (
+                {typeof imagemUser === "string" ? (
                   <img
-                    src={imagemUsr}
+                    src={imagemUser}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
                 ) : (
                   <img
-                    src={URL.createObjectURL(imagemUsr)}
+                    src={URL.createObjectURL(imagemUser)}
                     alt="Preview"
                     style={{ maxWidth: "100%", marginTop: "10px" }}
                   />
@@ -573,8 +708,8 @@ export default function Usuario() {
             <input
               type="file"
               className="form-control"
-              onChange={(e) => setImagemUsr(e.target.files[0])}
-              value={imagemUsr === "" ? "" : undefined}
+              onChange={(e) => setImagemUser(e.target.files[0])}
+              value={imagemUser === "" ? "" : undefined}
             />
             <br />
           </div>
@@ -595,9 +730,10 @@ export default function Usuario() {
           </button>
         </ModalFooter>
       </Modal>
+
       <Modal isOpen={modalDeletar}>
         <ModalBody>
-          Confirma a exclusão do usuário: "{nomeUsr}" ?
+          Confirma a exclusão do Usuario: "{nomeUser}" ?
         </ModalBody>
         <ModalFooter>
           <button
@@ -614,17 +750,6 @@ export default function Usuario() {
           </button>
         </ModalFooter>
       </Modal>
-
     </div>
-
   );
-
-
-
-
-
-
-
-
-
 }

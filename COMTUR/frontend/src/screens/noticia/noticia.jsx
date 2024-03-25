@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import InputMask from "react-input-mask";
 import BtnAcao from "../../components/botoes/btnAcao";
 import BtnModais from "../../components/botoes/btnModais";
+import BtnModaisIMG from "../../components/botoes/btnModaisIMG";
 import SidebarAdm from "../../components/admin/sidebarAdm";
 import NavBarAdm from "../../components/admin/navbarAdm";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +23,7 @@ export default function Noticia() {
   const baseUrl = "https://localhost:7256/api/Noticia";
   const baseUrlImagem = "https://localhost:7256/api/ImagemNoticia";
 
+
   const [data, setData] = useState([]);
 
   const [atualizarData, setAtualizarData] = useState(true);
@@ -35,8 +37,9 @@ export default function Noticia() {
   const [noticiaConteudo, setNoticiaConteudo] = useState("");
   const [noticiaDataPublicacao, setNoticiaDataPublicacao] = useState("");
   const [noticiaHoraPublicacao, setNoticiaHoraPublicacao] = useState("");
-  const [noticiaLegendaImagem, setNoticiaLegendaImagem] = useState("");
+  const [noticiaLegendaImagem, setNoticiaLegendaImagem] = useState([]);
   const [imagensNoticia, setImagensNoticia] = useState([]);
+
   const [noticiaId, setNoticiaId] = useState("");
 
   const navigate = useNavigate();
@@ -60,11 +63,9 @@ export default function Noticia() {
     setNoticiaConteudo(noticia.conteudo);
     setNoticiaDataPublicacao(formatarDataParaExibicao(noticia.dataPublicacao));
     setNoticiaHoraPublicacao(noticia.horaPublicacao);
-    setNoticiaLegendaImagem(noticia.legendaImagem);
-
-    //
+    
     setImagensNoticia(noticia.imagemNoticia);
-    console.log(noticia.imagemNoticia);
+  console.log(noticia.imagemNoticia);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar(/*noticia.id*/);
@@ -157,7 +158,6 @@ export default function Noticia() {
     formData.append("conteudo", noticiaConteudo);
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
-    formData.append("legendaImagem", noticiaLegendaImagem);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -179,10 +179,9 @@ export default function Noticia() {
   const pedidoPostImagens = async (idNoticia) => {
     const formData = new FormData();
     imagensNoticia.forEach((imagem) => {
-      formData.append("imagens", imagem);
+      formData.append("imagens", imagem.imagem);
+      formData.append("legendas", imagem.legendaImagem);
     });
-
-    console.log(formData.getAll("imagens"));
 
     try {
       const response = await axios.post(
@@ -206,7 +205,6 @@ export default function Noticia() {
     formData.append("conteudo", noticiaConteudo);
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
-    formData.append("legendaImagem", noticiaLegendaImagem);
 
     try {
       const response = await axios.put(`${baseUrl}/${noticiaId}`, formData, {
@@ -238,10 +236,9 @@ export default function Noticia() {
   const pedidoPutImagens = async () => {
     const formData = new FormData();
     imagensNoticia.forEach((imagem) => {
-      formData.append("imagens", imagem.imagem ? imagem.imagem : imagem);
+      formData.append("imagens", imagem.imagem);
+      formData.append("legendas", imagem.legendaImagem);
     });
-
-    console.log(formData.getAll("imagens"));
 
     try {
       const response = await axios.put(
@@ -493,9 +490,10 @@ export default function Noticia() {
                   onChange={(e) => {
                     convertImageToBase64(e.target.files[0], (result) => {
                       if (result) {
+                        const objetoImagem = {"imagem": result, "legendaImagem": ""};
                         setImagensNoticia((prevImagens) => [
                           ...prevImagens,
-                          result,
+                          objetoImagem ,
                         ]);
                       }
                       // Limpa o campo de entrada de arquivo após a seleção
@@ -523,8 +521,6 @@ export default function Noticia() {
                                 className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
                                 src={
                                   imagensNoticia[index + i].imagem
-                                    ? imagensNoticia[index + i].imagem
-                                    : imagensNoticia[index + i]
                                 }
                                 alt={`Imagem ${index}`}
                               />
@@ -534,7 +530,11 @@ export default function Noticia() {
                                   type="text"
                                   className="form-control text-sm w-[286px] mb-0 "
                                   onChange={(e) =>
-                                    setNoticiaLegendaImagem(e.target.value)
+                                    setImagensNoticia((prevImagens) => {
+                                      const novasImagens = [...prevImagens];
+                                      novasImagens[index + i].legendaImagem = e.target.value;
+                                      return novasImagens;
+                                    })
                                   }
                                   placeholder="Digite a legenda"
                                 />
@@ -565,142 +565,149 @@ export default function Noticia() {
           </div>
         </ModalBody>
       </Modal>
-
-      <Modal isOpen={modalEditar}>
+      <Modal className="modal-xl-gridxl" isOpen={modalEditar} style={{ maxWidth: "1000px" }}>
         <ModalHeader>Editar Noticia</ModalHeader>
         <ModalBody>
-          <div className="form-group">
-            <label>ID: </label>
-            <br />
-            <input
-              type="text"
-              className="form-control  text-sm"
-              readOnly
-              value={noticiaId}
-            />{" "}
-            <br />
-            <label>Titulo:</label>
-            <input
-              type="text"
-              className="form-control  text-sm"
-              name="noticiaTitulo"
-              onChange={(e) => setNoticiaTitulo(e.target.value)}
-              value={noticiaTitulo}
-            />
-            <br />
-            <label>Subtitulo:</label>
-            <br />
-            <textarea
-              className="form-control  text-sm"
-              name="noticiaSubtitulo"
-              onChange={(e) => setNoticiaSubtitulo(e.target.value)}
-              value={noticiaSubtitulo}
-            />
-            <br />
-            <label>Conteúdo:</label>
-            <br />
-            <textarea
-              className="form-control  text-sm"
-              name="noticiaConteudo"
-              onChange={(e) => setNoticiaConteudo(e.target.value)}
-              value={noticiaConteudo}
-            />
-            <br />
-            <label>Data:</label>
-            <br />
-            <InputMask
-              mask="99/99/9999"
-              maskPlaceholder="dd/mm/yyyy"
-              type="text"
-              className="form-control  text-sm"
-              id="noticiaDataPublicacao"
-              onChange={(e) => setNoticiaDataPublicacao(e.target.value)}
-              value={noticiaDataPublicacao}
-            />
-            <br />
-            <label>Hora:</label>
-            <br />
-            <InputMask
-              mask="99:99"
-              maskPlaceholder="hh:mm"
-              type="text"
-              className="form-control  text-sm"
-              onChange={(e) => setNoticiaHoraPublicacao(e.target.value)}
-              value={noticiaHoraPublicacao}
-            />
-            <br />
-            <label>Legenda:</label>
-            <br />
-            <input
-              type="text"
-              className="form-control  text-sm"
-              onChange={(e) => setNoticiaLegendaImagem(e.target.value)}
-              value={noticiaLegendaImagem}
-            />
-            <br />
-            <label>Imagem:</label>
-            {modalEditar && (
-              <div>
-                {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map(
-                  (imagem, index) =>
-                    index % 3 === 0 && (
-                      <div className="flex " key={`row-${index}`}>
-                        {Array.from(
-                          {
-                            length: Math.min(3, imagensNoticia.length - index),
-                          },
-                          (_, i) => (
-                            <div
-                              key={index + i}
-                              className="flex flex-col items-start pr-5"
-                            >
-                              <img
-                                className="w-[140px] h-[90px] mr-2 rounded-md"
-                                src={
-                                  imagensNoticia[index + i].imagem
-                                    ? imagensNoticia[index + i].imagem
-                                    : imagensNoticia[index + i]
-                                }
-                              />
-                              <button
-                                className="w-[140px] rounded-md  mt-[2px] mb-3 text-md text-white p-[0.2px]  bg-red-800 hover:bg-red-900"
-                                onClick={() => removeImagemByIndex(index + i)}
-                              >
-                                Remover
-                              </button>
-                            </div>
-                          )
-                        )}
-                      </div>
-                    )
-                )}
+          <div className="grid grid-cols-2 ">
+            <div className="form-group  ">
+              <div className="flex flex-col pr-6">
+                <label>Titulo: </label>
+                <input
+                  type="text"
+                  className="form-control text-sm"
+                  onChange={(e) => setNoticiaTitulo(e.target.value)}
+                  value={noticiaTitulo}
+                />
+                <br />
+                <label>Subtitulo:</label>
+                <textarea
+                  className="form-control  text-sm"
+                  name="noticiaSubtitulo"
+                  onChange={(e) => setNoticiaSubtitulo(e.target.value)}
+                  value={noticiaSubtitulo}
+                />
+                <br />
+                <label>Conteúdo:</label>
+                <textarea
+                  className="form-control  text-sm"
+                  name="noticiaConteudo"
+                  onChange={(e) => setNoticiaConteudo(e.target.value)}
+                  value={noticiaConteudo}
+                />
+                <br />
+                <label>Data:</label>
+                <InputMask
+                  mask="99/99/9999"
+                  maskPlaceholder="dd/mm/yyyy"
+                  type="text"
+                  className="form-control  text-sm"
+                  id="noticiaDataPublicacao"
+                  onChange={(e) => setNoticiaDataPublicacao(e.target.value)}
+                  value={noticiaDataPublicacao}
+                />
+                <br />
+                <label>Hora:</label>
+                <InputMask
+                  mask="99:99"
+                  maskPlaceholder="hh:mm"
+                  type="text"
+                  className="form-control  text-sm"
+                  onChange={(e) => setNoticiaHoraPublicacao(e.target.value)}
+                  value={noticiaHoraPublicacao}
+                />
+                <br />
               </div>
-            )}
-            <input
-              type="file"
-              className="form-control"
-              onChange={(e) => {
-                Array.from(e.target.files).forEach((file) => {
-                  convertImageToBase64(file, (result) => {
-                    if (result) {
-                      setImagensNoticia((prevImagens) => [
-                        ...prevImagens,
-                        result,
-                      ]);
-                    }
+            </div>
+
+
+            <div className="flex flex-col col-span-1  pl-4  border-l-[1px]">
+              <label>Imagem:</label>
+              <input
+                type="file"
+                className="form-control"
+                onChange={(e) => {
+                  Array.from(e.target.files).forEach((file) => {
+                    convertImageToBase64(file, (result) => {
+                      if (result) {
+                        const objetoImagem = {"imagem": result, "legendaImagem": ""};
+                        setImagensNoticia((prevImagens) => [
+                          ...prevImagens,
+                          objetoImagem ,
+                        ]);
+                      }
+                    });
                   });
-                });
-                // Limpa o campo de entrada de arquivo após a seleção
-                e.target.value = null;
-              }}
-              multiple
-            />
+                  // Limpa o campo de entrada de arquivo após a seleção
+                  e.target.value = null;
+                }}
+                multiple
+              />
+
+              {modalEditar && (
+                <div>
+                  {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map(
+                    (imagem, index) =>
+                      index % 1 === 0 && (
+                        <div className="flex pt-3 justify-end " key={`row-${index}`}>
+                          {Array.from(
+                            {
+                              length: Math.min(1, imagensNoticia.length - index),
+                            },
+                            (_, i) => (
+                              <div
+                                key={index + i}
+                                className="flex flex-col items-start pr-5"
+                              >
+                                <div className="flex w-[140px] justify-end">
+                                  <img
+                                    className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
+                                    src={
+                                      imagensNoticia[index + i].imagem
+                                    }
+                                  />
+                                  <div className="flex flex-col pl-3 justify-end">
+                                    <label>Legenda:</label>
+                                    <input
+                                      type="text"
+                                      className="form-control  text-sm w-[286px]"
+                                      onChange={(e) =>
+                                        setImagensNoticia((prevImagens) => {
+                                          const novasImagens = [...prevImagens];
+                                          novasImagens[index + i].legendaImagem = e.target.value;
+                                          return novasImagens;
+                                        })
+                                      }
+                                      value={imagensNoticia[index + i].legendaImagem}
+                                    />
+                                    <br />
+
+                                    <button
+                                      className="w-[140px] rounded-md  mt-[2px] mb-3 text-md text-white p-[0.2px]  bg-red-800 hover:bg-red-900"
+                                      onClick={() => removeImagemByIndex(index + i)}
+                                    >
+                                      Remover
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      )
+                  )}
+                </div>
+              )}
+
+
+            </div>
+          </div>
+          <div className="flex justify-between items-center px-[395px] pt-5">
+            <BtnModaisIMG funcao={() => pedidoAtualizar(noticiaId)} acao="Editar" />
+            <BtnModaisIMG funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
           </div>
         </ModalBody>
-        <ModalFooter>
-          <BtnModais funcao={() => pedidoAtualizar(noticiaId)} acao="Editar" />
-          <BtnModais funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
-        </ModalFooter>
+
+
       </Modal>
       <Modal isOpen={modalDeletar}>
         <ModalBody>

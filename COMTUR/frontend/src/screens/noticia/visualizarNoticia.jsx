@@ -21,7 +21,6 @@ export default function VisualizarNoticia() {
     const obterDetalhesNoticia = async () => {
       try {
         const response = await axios.get(baseUrl + `/${id}`);
-        console.log(response.data);
         setNoticia(response.data);
       } catch (error) {
         console.error("Erro ao obter detalhes da notícia:", error);
@@ -31,7 +30,7 @@ export default function VisualizarNoticia() {
     const obterOutrasNoticias = async () => {
       try {
         const response = await axios.get(`${baseUrl}`);
-        setOutrasNoticias(response.data);
+        setOutrasNoticias(response.data.filter(outraNoticia => outraNoticia.id !== parseInt(id)));
         setAtualizarOutrasNoticias(true);
       } catch (error) {
         console.error("Erro ao obter outras notícias:", error);
@@ -45,7 +44,7 @@ export default function VisualizarNoticia() {
   useEffect(() => {
     if (atualizarOutrasNoticias) {
       const outrasNoticiasOrdenada = [...outrasNoticias].sort((a, b) => b.id - a.id);
-      const outrasNoticiasFiltradas = outrasNoticiasOrdenada.filter(outraNoticia => outraNoticia.id !== noticia?.id).slice(0, 3);
+      const outrasNoticiasFiltradas = outrasNoticiasOrdenada.slice(0, 3);
 
       setOutrasNoticias(outrasNoticiasFiltradas);
     }
@@ -94,7 +93,7 @@ export default function VisualizarNoticia() {
 
       <div className="sm:px-16" >
         <div className="relative w-full px-4 h-[200px] sm:h-[400px] lg:h-[500px]">
-       
+
           {noticia.imagemNoticia?.length > 1 && (
             <button
               className="absolute top-1/2 left-0 z-10 transform -translate-y-1/2 text-gray-800
@@ -105,36 +104,35 @@ export default function VisualizarNoticia() {
             </button>
           )}
 
-            {noticia.imagemNoticia?.length > 1 && (
-              <button
-                className="absolute top-1/2 right-0 z-10 transform -translate-y-1/2 
+          {noticia.imagemNoticia?.length > 1 && (
+            <button
+              className="absolute top-1/2 right-0 z-10 transform -translate-y-1/2 
                 text-gray-800 bg-[#FDE964]  p-2 px-2 m-2 rounded-lg  focus:outline-none"
-                onClick={nextSlide}
-              >
-                <CaretRight size={14} />
-              </button>
-            )}
+              onClick={nextSlide}
+            >
+              <CaretRight size={14} />
+            </button>
+          )}
 
 
-            {noticia.imagemNoticia?.length > 0 && (
+          {noticia.imagemNoticia?.length > 0 && (
+            <>
               <img
                 src={noticia.imagemNoticia[currentSlide]?.imagem}
                 alt={`Imagem ${currentSlide + 1}`}
                 className="object-cover w-full h-full sm:h-full sm:px-16 rounded-lg"
               />
-            )}
-          
-        </div>
 
+              <h3 className="text-xs sm:text-lg font-medium text-center italic ">
+                {noticia.imagemNoticia[currentSlide]?.legendaImagem}
+              </h3>
+            </>
+          )}
 
-        <div className="sm:px-16">
           <h3 className="text-xs sm:text-lg font-medium text-justify italic px-4 ">
-
             {noticia.legendaImagem}
           </h3>
         </div>
-
-
 
 
         <div className=" px-4 pb-10 text-[#373636] text-sm sm:text-lg font-base pt-4">

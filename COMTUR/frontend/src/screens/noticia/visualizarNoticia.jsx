@@ -91,13 +91,13 @@ export default function VisualizarNoticia() {
         </p>
       </div>
 
-      <div className="sm:px-16" >
-        <div className="relative w-full px-4 h-[200px] sm:h-[400px] lg:h-[500px]">
+      
+        <div className="relative w-full h-[200px] sm:h-[400px] lg:h-[500px] mb-10">
 
           {noticia.imagemNoticia?.length > 1 && (
             <button
-              className="absolute top-1/2 left-0 z-10 transform -translate-y-1/2 text-gray-800
-               bg-[#FDE964] p-2 px-2 m-2    rounded-lg focus:outline-none"
+              className="absolute top-1/2 z-10 transform -translate-y-1/2 text-white
+               bg-[#FFD121] p-3 px-3 m-2 rounded-full opacity-90 hover:opacity-100 focus:outline-none"
               onClick={prevSlide}
             >
               <CaretLeft size={14} />
@@ -107,7 +107,7 @@ export default function VisualizarNoticia() {
           {noticia.imagemNoticia?.length > 1 && (
             <button
               className="absolute top-1/2 right-0 z-10 transform -translate-y-1/2 
-                text-gray-800 bg-[#FDE964]  p-2 px-2 m-2 rounded-lg  focus:outline-none"
+                text-white bg-[#FFD121] opacity-90 hover:opacity-100  p-3 px-3 m-2 rounded-full  focus:outline-none"
               onClick={nextSlide}
             >
               <CaretRight size={14} />
@@ -120,7 +120,7 @@ export default function VisualizarNoticia() {
               <img
                 src={noticia.imagemNoticia[currentSlide]?.imagem}
                 alt={`Imagem ${currentSlide + 1}`}
-                className="object-cover w-full h-full sm:h-full sm:px-16 rounded-lg"
+                className="object-cover w-full h-full sm:h-full "
               />
 
               <h3 className="text-xs sm:text-lg font-medium text-center italic ">
@@ -135,7 +135,9 @@ export default function VisualizarNoticia() {
         </div>
 
 
-        <div className=" px-4 pb-10 text-[#373636] text-sm sm:text-lg font-base pt-4">
+
+        <div className="sm:px-16" >
+        <div className=" px-4 pb-10 text-[#373636] text-sm sm:text-lg font-base pt-6">
           {noticia.conteudo.split("\n").map((paragrafo, index) => (
             <React.Fragment key={index}>
               <p className="sm:px-14 pt-1 text-justify">{paragrafo}</p>

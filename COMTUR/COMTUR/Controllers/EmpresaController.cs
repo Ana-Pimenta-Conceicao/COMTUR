@@ -11,11 +11,21 @@ namespace COMTUR.Controllers
 	public class EmpresaController : ControllerBase
 	{
 		private readonly IEmpresaRepositorio _empresaRepositorio;
+		private readonly IImagemEmpresaRepositorio _imagemEmpresaRepositorio;
 
 
-		public EmpresaController(IEmpresaRepositorio empresaRepositorio)
+		public EmpresaController(IEmpresaRepositorio EmpresaRepositorio, IImagemEmpresaRepositorio imagemEmpresaRepositorio)
 		{
-			_empresaRepositorio = empresaRepositorio;
+			_empresaRepositorio = EmpresaRepositorio;
+			_imagemEmpresaRepositorio = imagemEmpresaRepositorio;
+		}
+
+		[HttpPost("{empresaId}/imagens")]
+		public IActionResult AdicionarImagem(int empresaId, [FromForm] ImagemEmpresaModel imagem)
+		{
+			imagem.IdEmpresa = empresaId;
+			_imagemEmpresaRepositorio.Adicionar(imagem);
+			return Ok();
 		}
 
 		[HttpGet]
@@ -29,7 +39,18 @@ namespace COMTUR.Controllers
 		public async Task<ActionResult<EmpresaModel>> BuscarPorId(int id)
 		{
 			EmpresaModel empresa = await _empresaRepositorio.BuscarPorId(id);
+			if (empresa == null)
+			{
+				return NotFound($"Empresa com ID {id} não encontrada.");
+			}
 			return Ok(empresa);
+		}
+
+		[HttpGet("{id}/imagens")]
+		public async Task<ActionResult<List<string>>> BuscarImagensPorEmpresaId(int empresaId)
+		{
+			var imagens = await _empresaRepositorio.BuscarImagensPorEmpresaId(empresaId);
+			return Ok(imagens);
 		}
 
 		[HttpPost]

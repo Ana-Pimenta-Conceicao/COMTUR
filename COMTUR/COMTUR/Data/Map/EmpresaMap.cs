@@ -13,6 +13,13 @@ namespace COMTUR.Data.Map
 
 			// Relacionamento da Empresa com Empresario
 			builder.HasOne(e => e.UsuarioModel).WithMany(u => u.Empresas).HasForeignKey(e => e.IdUsuario);
+
+			// Relacionamento Empresa com ImagemEmpresa
+			builder.HasMany(n => n.ImagemEmpresa)
+				   .WithOne(im => im.EmpresaModel)
+				   .HasForeignKey(im => im.IdEmpresa)
+				   .IsRequired()
+				   .OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

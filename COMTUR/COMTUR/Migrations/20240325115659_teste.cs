@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class comtur : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -170,6 +170,27 @@ namespace COMTUR.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "imagemempresa",
+                columns: table => new
+                {
+                    imagemempresaid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    legendaImagem = table.Column<string>(type: "text", nullable: false),
+                    imagem = table.Column<string>(type: "text", nullable: false),
+                    IdEmpresa = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_imagemempresa", x => x.imagemempresaid);
+                    table.ForeignKey(
+                        name: "FK_imagemempresa_empresa_IdEmpresa",
+                        column: x => x.IdEmpresa,
+                        principalTable: "empresa",
+                        principalColumn: "empresaid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "usuario",
                 columns: new[] { "usuarioid", "emailUsuario", "imagemPerfilUsuario", "nome", "senhaUsuario", "telefone", "tipoUsuario" },
@@ -202,6 +223,11 @@ namespace COMTUR.Migrations
                 column: "IdAtracao");
 
             migrationBuilder.CreateIndex(
+                name: "IX_imagemempresa_IdEmpresa",
+                table: "imagemempresa",
+                column: "IdEmpresa");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_imagemnoticia_IdNoticia",
                 table: "imagemnoticia",
                 column: "IdNoticia");
@@ -211,10 +237,10 @@ namespace COMTUR.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "empresa");
+                name: "imagematracao");
 
             migrationBuilder.DropTable(
-                name: "imagematracao");
+                name: "imagemempresa");
 
             migrationBuilder.DropTable(
                 name: "imagemnoticia");
@@ -223,16 +249,19 @@ namespace COMTUR.Migrations
                 name: "tipoturismo");
 
             migrationBuilder.DropTable(
-                name: "usuario");
+                name: "atracao");
 
             migrationBuilder.DropTable(
-                name: "atracao");
+                name: "empresa");
 
             migrationBuilder.DropTable(
                 name: "noticia");
 
             migrationBuilder.DropTable(
                 name: "tipoatracao");
+
+            migrationBuilder.DropTable(
+                name: "usuario");
         }
     }
 }

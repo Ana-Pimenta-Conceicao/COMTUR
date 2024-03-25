@@ -30,6 +30,7 @@ namespace COMTUR.Models
         [Column("horaPublicacao")]
         public string HoraPublicacao { get; set; }
 
+        // relação com ImagemNoticia
         public ICollection<ImagemNoticiaModel>? ImagemNoticia { get; set; }
 
     }

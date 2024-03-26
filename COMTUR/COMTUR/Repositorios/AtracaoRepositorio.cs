@@ -2,20 +2,23 @@
 using COMTUR.Data;
 using COMTUR.Models;
 using COMTUR.Repositorios.Interfaces;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace COMTUR.Repositorios
 {
 	public class AtracaoRepositorio : IAtracaoRepositorio
 	{
 		private readonly ComturDBContext _dbContext;
-		public AtracaoRepositorio(ComturDBContext AtracaoDBContext)
+		private readonly IWebHostEnvironment _hostingEnvironment;
+		public AtracaoRepositorio(ComturDBContext AtracaoDBContext, IWebHostEnvironment hostingEnvironment)
 		{
 			_dbContext = AtracaoDBContext;
+			_hostingEnvironment = hostingEnvironment;
 		}
 
 		public async Task<AtracaoModel> BuscarPorId(int id)
 		{
-			return await _dbContext.Atracao.FirstOrDefaultAsync(x => x.Id == id);
+			return await _dbContext.Atracao.Include(n => n.ImagemAtracao).FirstOrDefaultAsync(x => x.Id == id);
 		}
 
 		public async Task<AtracaoModel> GetById(int id)
@@ -25,7 +28,7 @@ namespace COMTUR.Repositorios
 
 		public async Task<List<AtracaoModel>> BuscarAtracao()
 		{
-			return await _dbContext.Atracao.ToListAsync();
+			return await _dbContext.Atracao.Include(n => n.ImagemAtracao).ToListAsync();
 		}
 
 		public async Task<AtracaoModel> Adicionar(AtracaoModel atracao)

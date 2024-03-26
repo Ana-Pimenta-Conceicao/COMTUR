@@ -13,9 +13,9 @@ namespace COMTUR.Controllers
 	public class ImagemAtracaoController : ControllerBase
 	{
 		private readonly IImagemAtracaoRepositorio _ImagemAtracaoRepositorio;
-		private readonly AtracaoRepositorio _AtracaoRepositorio;
+		private readonly IAtracaoRepositorio _AtracaoRepositorio;
 
-		public ImagemAtracaoController(IImagemAtracaoRepositorio ImagemAtracaoRepositorio, AtracaoRepositorio AtracaoRepositorio)
+		public ImagemAtracaoController(IImagemAtracaoRepositorio ImagemAtracaoRepositorio, IAtracaoRepositorio AtracaoRepositorio)
 		{
 			_ImagemAtracaoRepositorio = ImagemAtracaoRepositorio;
 			_AtracaoRepositorio = AtracaoRepositorio;
@@ -34,7 +34,7 @@ namespace COMTUR.Controllers
 			ImagemAtracaoModel imagemAtracao = await _ImagemAtracaoRepositorio.BuscarPorId(id);
 			if (imagemAtracao == null)
 			{
-				return NotFound($"Notícia com ID {id} não encontrada.");
+				return NotFound($"Atração com ID {id} não encontrada.");
 			}
 
 			return Ok(imagemAtracao);
@@ -49,20 +49,28 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpPost("{id}/CadastrarImagensAtracao")]
-		public async Task<ActionResult<List<ImagemAtracaoModel>>> CadastrarImagensAtracao([FromForm] List<string> imagens, int id)
+		public async Task<ActionResult<List<ImagemAtracaoModel>>> CadastrarImagensAtracao([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id)
 		{
+			AtracaoModel Atracao = await _AtracaoRepositorio.BuscarPorId(id);
+			if (Atracao == null)
+			{
+				return NotFound($"Atração com ID {id} não encontrada!");
+			}
+
 			List<ImagemAtracaoModel> imagensAtracaoModel = new List<ImagemAtracaoModel>();
-			foreach (string imagem in imagens)
+			for (int i = 0; i < imagens.Count; i++)
 			{
 				ImagemAtracaoModel novaImagem = new ImagemAtracaoModel()
 				{
 					IdAtracao = id,
-					Imagem = imagem
+					Imagem = imagens[i],
+					LegendaImagem = legendas[i]
 				};
 
 				await _ImagemAtracaoRepositorio.Adicionar(novaImagem);
 				imagensAtracaoModel.Add(novaImagem);
 			}
+
 
 			return Ok(imagensAtracaoModel);
 		}
@@ -77,39 +85,63 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpPut("{id}/AtualizarImagensAtracao")]
-		public async Task<ActionResult<List<ImagemAtracaoModel>>> AtualizarImagensAtracao([FromForm] List<string> imagens, int id)
+		public async Task<ActionResult<List<ImagemAtracaoModel>>> AtualizarImagensAtracao([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id)
 		{
+			AtracaoModel Atracao = await _AtracaoRepositorio.BuscarPorId(id);
+			if (Atracao == null)
+			{
+				return NotFound($"Atração com ID {id} não encontrada!");
+			}
+
 			// Busca as imagens relacionadas à atração no banco de dados
 			List<ImagemAtracaoModel> imagensAtracao = await _AtracaoRepositorio.BuscarImagensPorAtracaoId(id);
 
-			// Identifica as imagens que devem ser cadastradas (presentes em imagens, mas não em imagensAtracao)
-			List<string> imagensParaCadastrar = imagens.Except(imagensAtracao.Select(i => i.Imagem)).ToList();
+			List<ImagemAtracaoModel> imagensAtualizadas = new List<ImagemAtracaoModel>();
 
-			// Identifica as imagens que devem ser removidas (presentes em imagensAtracao, mas não em imagens)
-			List<ImagemAtracaoModel> imagensParaRemover = imagensAtracao.Where(i => !imagens.Contains(i.Imagem)).ToList();
-
-			// Lógica para cadastrar as novas imagens
-			foreach (string imagem in imagensParaCadastrar)
+			// Atualiza ou cadastra novas imagens
+			for (int i = 0; i < imagens.Count; i++)
 			{
-				ImagemAtracaoModel novaImagem = new ImagemAtracaoModel()
+				string imagem = imagens[i];
+				string legenda = legendas[i];
+
+				// Verifica se a imagem já existe na lista de imagens relacionadas à atração
+				ImagemAtracaoModel imagemExistente = imagensAtracao.FirstOrDefault(img => img.Imagem == imagem);
+
+				if (imagemExistente != null)
 				{
-					IdAtracao = id,
-					Imagem = imagem
-				};
+					// Se a imagem existe, atualiza a legenda se necessário
+					if (imagemExistente.LegendaImagem != legenda)
+					{
+						imagemExistente.LegendaImagem = legenda;
+						// Atualiza a imagem no banco de dados (se necessário)
+						await _ImagemAtracaoRepositorio.Atualizar(imagemExistente, imagemExistente.Id);
+					}
+				}
+				else
+				{
+					// Se a imagem não existe, cadastra uma nova imagem
+					ImagemAtracaoModel novaImagem = new ImagemAtracaoModel { IdAtracao = id, Imagem = imagem, LegendaImagem = legenda };
+					// Insere a nova imagem no banco de dados
+					await _ImagemAtracaoRepositorio.Adicionar(novaImagem);
+					imagensAtracao.Add(novaImagem); // Adiciona a nova imagem à lista de imagens relacionadas à atração
+				}
 
-				await _ImagemAtracaoRepositorio.Adicionar(novaImagem);
-				imagensAtracao.Add(novaImagem);
+				// Adiciona a imagem atualizada ou nova à lista de imagens atualizadas
+				imagensAtualizadas.Add(new ImagemAtracaoModel { Imagem = imagem, LegendaImagem = legenda });
 			}
 
-			// Lógica para remover as imagens antigas
-			foreach (ImagemAtracaoModel imagem in imagensParaRemover)
+			// Remove as imagens que foram excluídas
+			foreach (var imagem in imagensAtracao)
 			{
-				await _ImagemAtracaoRepositorio.Apagar(imagem.Id);
-				imagensAtracao.Remove(imagem);
+				if (!imagens.Contains(imagem.Imagem))
+				{
+					// Remove a imagem do banco de dados
+					await _ImagemAtracaoRepositorio.Apagar(imagem.Id);
+				}
 			}
-			imagensAtracao.AddRange(imagensAtracao);
 
-			return Ok(imagensAtracao);
+			// Retorna a lista de imagens atualizadas
+			return Ok(imagensAtualizadas);
 		}
 
 		[HttpDelete("{id}")]

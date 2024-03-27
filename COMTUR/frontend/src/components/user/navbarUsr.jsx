@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import $ from 'jquery'; // Certifique-se de instalar o jQuery no seu projeto
 import 'bootstrap/dist/css/bootstrap.min.css'; // Certifique-se de importar o Bootstrap CSS
-import 'bootstrap/dist/js/bootstrap.bundle.min'; // Certifique-se de importar o Bootstrap JavaScript/jQuery
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import logoSF from '../../assets/logoComturSF.png'
  
 import './folhasyle.css';
  
@@ -46,7 +47,7 @@ const NavbarUsr = () => {
       <nav className="navbar navbar-expand-lg bg-black p-0 pt-2 pb-1" data-bs-theme="dark">
         <div className="flex container-fluid">
           <a className="navbar-brand ML-1 w-8 sm:w-20 " href="#">
-            <img src="./src/assets/logonavuser.png" alt="logo" />
+            <img src={logoSF} alt="logo" />
           </a>
  
           <form className="flex bg-white w-56 sm:w-5/12 sm:h-12 h-8" role="search" style={{

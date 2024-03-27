@@ -76,6 +76,13 @@ export default function Noticia() {
     }
   };
 
+
+  const VisualizarTodasNoticias  = () => {
+
+    navigate(`/todasnoticias`);
+
+  }
+
   const abrirFecharModalInserir = () => {
     modalInserir ? limparDados() : null;
     setModalInserir(!modalInserir);
@@ -409,6 +416,11 @@ export default function Noticia() {
             </div>
           </div>
           <div className="float-right flex-auto py-6">
+          <BtnAcao
+            funcao={() => VisualizarTodasNoticias()}
+            acao="Publicados"
+            />
+
             <BtnAcao
               funcao={() => abrirFecharModalInserir("Cadastrar")}
               acao="Cadastrar"

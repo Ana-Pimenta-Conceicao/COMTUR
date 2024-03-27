@@ -40,9 +40,9 @@ export default function TodasNoticias() {
       const outrasNoticiasOrdenada = [...outrasNoticias].sort(
         (a, b) => b.id - a.id
       );
-      const outrasNoticiasFiltradas = outrasNoticiasOrdenada
-        .filter((outraNoticia) => outraNoticia.id !== noticia?.id)
-        .slice(0, 3);
+      const outrasNoticiasFiltradas = outrasNoticiasOrdenada.filter(
+        (outraNoticia) => outraNoticia.id !== noticia?.id
+      );
 
       setOutrasNoticias(outrasNoticiasFiltradas);
     }
@@ -61,12 +61,18 @@ export default function TodasNoticias() {
     if (currentNoticiaIndex > 0) {
       setCurrentNoticiaIndex(currentNoticiaIndex - 1);
       setCurrentSlide(0); // Define o slide para o primeiro ao mudar de notícia
+    } else {
+      setCurrentNoticiaIndex(outrasNoticias.length - 1); // Vai para a última notícia
+      setCurrentSlide(0); // Define o slide para o primeiro ao mudar de notícia
     }
   };
 
   const nextSlide = () => {
     if (currentNoticiaIndex < outrasNoticias.length - 1) {
       setCurrentNoticiaIndex(currentNoticiaIndex + 1);
+      setCurrentSlide(0); // Define o slide para o primeiro ao mudar de notícia
+    } else {
+      setCurrentNoticiaIndex(0); // Volta para a primeira notícia
       setCurrentSlide(0); // Define o slide para o primeiro ao mudar de notícia
     }
   };
@@ -79,13 +85,12 @@ export default function TodasNoticias() {
     }
     return data; // Retorna a data original se não estiver no formato esperado
   }
- 
 
   return (
     <div>
       <NavbarUsr />
-      <div className="flex flex-col sm:pl-24 sm:pr-24">
-        <div className="sm:px-16 pb-6">
+      <div className="">
+        <div className="pb-6">
           <div className="relative w-full  h-[200px] sm:h-[400px] lg:h-[500px]">
             {outrasNoticias.map((outraNoticia, index) => (
               <div
@@ -97,8 +102,8 @@ export default function TodasNoticias() {
               >
                 {outraNoticia.imagemNoticia && (
                   <button
-                    className="absolute top-1/2 z-10 transform -translate-y-1/2 text-white
-                                     bg-[#FFD121] p-3 px-3 m-2 rounded-full opacity-80 hover:opacity-100 focus:outline-none"
+                    className="absolute top-1/2  transform -translate-y-1/2 text-white
+                                   px-3 m-2  bg-[#FFD121] p-3  rounded-full opacity-80 hover:opacity-100 focus:outline-none"
                     onClick={prevSlide}
                   >
                     <CaretLeft size={16} />
@@ -108,7 +113,7 @@ export default function TodasNoticias() {
                 {outraNoticia.imagemNoticia && (
                   <button
                     className="absolute top-1/2 right-0 z-10 transform -translate-y-1/2 
-                                      text-white bg-[#FFD121] opacity-80 hover:opacity-100  p-3 px-3 m-2 rounded-full  focus:outline-none"
+                        px-3 m-2 p-3 text-white bg-[#FFD121] opacity-80 hover:opacity-100  rounded-full  focus:outline-none"
                     onClick={nextSlide}
                   >
                     <CaretRight size={16} />
@@ -121,7 +126,11 @@ export default function TodasNoticias() {
                       <img
                         src={outraNoticia.imagemNoticia[currentSlide]?.imagem}
                         alt={`Imagem ${currentSlide + 1}`}
-                        className="object-cover w-full h-[200px] sm:h-[200px]  rounded-lg"
+                        className="object-cover w-full h-[200px] sm:h-[400px]  rounded-lg"
+                        onClick={() => {
+                          navigate(`/visualizarNoticia/${outraNoticia.id}`);
+                          window.location.reload();
+                        }}
                       />
 
                       {/* <h3 className="text-xs sm:text-lg font-medium text-center italic">
@@ -129,8 +138,15 @@ export default function TodasNoticias() {
                                         </h3> */}
                     </>
                   )}
-                <h3 className="text-xs sm:text-lg font-medium text-justify italic px-4 " onClick={navigate}>
-                {formatarDataParaExibicao(outraNoticia.dataPublicacao)} - "{outraNoticia.titulo}"
+                <h3
+                  className="text-xs sm:text-lg font-medium text-justify italic px-4 "
+                  onClick={() => {
+                    navigate(`/visualizarNoticia/${outraNoticia.id}`);
+                    window.location.reload();
+                  }}
+                >
+                  {formatarDataParaExibicao(outraNoticia.dataPublicacao)} - "
+                  {outraNoticia.titulo}"
                 </h3>
               </div>
             ))}
@@ -143,8 +159,6 @@ export default function TodasNoticias() {
             <h1 className="text-[#373636] text-2xl font-bold">NOTÍCIAS</h1>
           </div>
         </div>
-
-
 
         <div className="flex justify-center pb-2 pt-4 items-center">
           {/* Cards de outras notícias */}

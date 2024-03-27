@@ -4,6 +4,7 @@ import NavbarUsr from "../../components/user/navbarUsr";
 import FooterUsr from "../../components/user/footerUsr";
 import { useParams, useNavigate } from "react-router-dom";
 import { CaretRight, CaretLeft } from "@phosphor-icons/react";
+import BtnAcao from "../../components/botoes/btnAcao";
 
 export default function VisualizarNoticia() {
   const { id } = useParams(); // UseParams para obter parâmetros da URL
@@ -67,7 +68,7 @@ export default function VisualizarNoticia() {
   };
 
   const prevSlide = () => {
-    if (noticia.imagemNoticia.length > 1) {
+    if (noticia.imagemNoticia.length > 1) { 
       setCurrentSlide((prev) => (prev === 0 ? noticia.imagemNoticia.length - 1 : prev - 1));
     }
   };
@@ -76,11 +77,17 @@ export default function VisualizarNoticia() {
     return <p>Carregando...</p>;
   }
 
+  const VisualizarTodasNoticias  = () => {
+
+    navigate(`/todasnoticias`);
+
+  }
+
   return (
     <div>
       <NavbarUsr />
       <div className="flex flex-col px-4 sm:pl-24 sm:pr-24">
-        <h1 className="text-[#373636] text-lg font-extrabold pt-14 sm:px-16 sm:text-4xl">
+        <h1 className="text-[#373636] text-lg font-extrabold pt-4 sm:pt-14 sm:px-16 sm:text-4xl">
           {noticia.titulo}
         </h1>
         <h2 className="text-[#373636] text-xs sm:text-lg font-semibold sm:px-16  pt-3 pb-2">
@@ -137,7 +144,7 @@ export default function VisualizarNoticia() {
 
 
         <div className="sm:px-16" >
-        <div className=" px-4 pb-10 text-[#373636] text-sm sm:text-lg font-base pt-6">
+        <div className=" px-4 pb-10 text-[#373636] text-sm sm:text-lg font-base sm:pt-6 pt-0">
           {noticia.conteudo.split("\n").map((paragrafo, index) => (
             <React.Fragment key={index}>
               <p className="sm:px-14 pt-1 text-justify">{paragrafo}</p>
@@ -198,6 +205,13 @@ export default function VisualizarNoticia() {
                 </div>
               </div>
             ))}
+
+            <div className="flex items-center justify-center">
+            <BtnAcao
+              funcao={() => VisualizarTodasNoticias()}
+              acao="VisualizarMais"
+            /> 
+            </div>
           </div>
         </div>
       </div>

@@ -28,26 +28,24 @@ export default function Usuario() {
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
 
-  const [nomeUser, setNomeUser] = useState("");
-  const [cargoUser, setCargoUser] = useState("");
-  const [cpfUser, setCpfUser] = useState("");
-  const [telefoneUser, setTelefoneUser] = useState("");
-  const [emailUser, setEmailUser] = useState("");
-  const [senhaUser, setSenhaUser] = useState("");
+  const [nomeUser, setNome] = useState("");
+  const [telefoneUser, setTelefone] = useState("");
+  const [emailUser, setEmail] = useState("");
+  const [senhaUser, setSenha] = useState("");
+  const [tipoUsuario, setTipoUsuario] = useState("");
   const [imagemUser, setImagemUser] = useState("");
-  const [idUser, setIdUser] = useState("");
+  const [idUser, setId] = useState("");
 
   const navigate = useNavigate();
 
   const limparDados = () => {
-    setNomeUser("");
-    setCargoUser("");
-    setCpfUser("");
-    setTelefoneUser("");
-    setEmailUser("");
-    setSenhaUser("");
+    setNome("");
+    setTelefone("");
+    setEmail("");
+    setSenha("");
+    setTipoUsuario("");
     setImagemUser("");
-    setIdUser("");
+    setId("");
   };
 
   const [showPassword, setShowPassword] = useState(false);
@@ -68,21 +66,20 @@ export default function Usuario() {
 
   const UserSet = (user, opcao) => {
     console.log("User que foi passado: ", user);
-    setIdUser(user.id);
-    setNomeUser(user.nomeUseristrador);
-    setCargoUser(user.cargoUseristrador);
-    setCpfUser(user.cpfUseristrador);
-    setTelefoneUser(user.telefoneUseristrador);
-    setEmailUser(user.emailUseristrador);
-    setSenhaUser(user.senhaUseristrador);
-    setImagemUser(user.imagemPerfilUseristrador);
+    setId(user.id);
+    setNome(user.nome);
+    setTelefone(user.telefone);
+    setEmail(user.emailUsuario);
+    setSenha(user.senhaUsuario);
+    setTipoUsuario(user.tipoUsuario);
+    setImagemUser(user.imagemUsuario);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
     } else if (opcao === "Excluir") {
       abrirFecharModalDeletar();
     } else {
-      navigate(`/perfilUseristrador/${user.id}`);
+      navigate(`/perfilUsuario/${user.id}`);
     }
   };
 
@@ -114,15 +111,14 @@ export default function Usuario() {
 
   const pedidoPost = async () => {
     const formData = new FormData();
-    formData.append("nomeUsuario", nomeUser);
-    formData.append("cpfUseristrador", cpfUser);
-    formData.append("cargoUseristrador", cargoUser);
-    formData.append("telefoneUseristrador", telefoneUser);
-    formData.append("emailUseristrador", emailUser);
-    formData.append("senhaUseristrador", senhaUser);
+    formData.append("nome", nomeUser);
+    formData.append("telefone", telefoneUser);
+    formData.append("emailUsuario", emailUser);
+    formData.append("senhaUsuario", senhaUser);
+    formData.append("tipoUsuario", userType);
 
     const base64Image = await convertImageToBase64(imagemUser);
-    formData.append("imagemPerfilUseristrador", base64Image);
+    formData.append("imagemPerfilUsuario", base64Image);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -157,19 +153,18 @@ export default function Usuario() {
   async function pedidoAtualizar() {
     const formData = new FormData();
 
-    formData.append("nomeUseristrador", nomeUser);
-    formData.append("cpfUseristrador", cpfUser);
-    formData.append("cargoUseristrador", cargoUser);
-    formData.append("telefoneUseristrador", telefoneUser);
-    formData.append("emailUseristrador", emailUser);
-    formData.append("senhaUseristrador", senhaUser);
+    formData.append("nome", nomeUser);
+    formData.append("telefone", telefoneUser);
+    formData.append("emailUsuario", emailUser);
+    formData.append("senhaUsuario", senhaUser);
+    formData.append("tipoUsuario", userType);
 
     if (imagemUser instanceof File) {
       // Converter a imagem para base64 antes de enviar
       const base64Image = await convertImageToBase64(imagemUser);
-      formData.append("imagemPerfilUseristrador", base64Image);
+      formData.append("imagemPerfilUsuario", base64Image);
     } else {
-      formData.append("imagemPerfilUseristrador", imagemUser);
+      formData.append("imagemPerfilUsuario", imagemUser);
     }
 
     try {
@@ -245,11 +240,11 @@ export default function Usuario() {
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     return data.slice(startIndex, endIndex).map((user) => {
-      if (user.imagemPerfilUseristrador instanceof File) {
+      if (user.imagemPerfilUsuario instanceof File) {
         return {
           ...user,
-          imagemPerfilUseristrador: URL.createObjectURL(
-            user.imagemPerfilUseristrador
+          imagemPerfilUsuario: URL.createObjectURL(
+            user.imagemPerfilUsuario
           ),
         };
       }
@@ -268,20 +263,6 @@ export default function Usuario() {
   };
 
   const [userType, setUserType] = useState(4); // Valor padrão é 4
-  const [users, setUsers] = useState([4]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`https://localhost:7256/api/Usuarios/porTipoUsuario/${userType}`);
-        setUsers(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar os dados dos usuários:', error);
-      }
-    };
-
-    fetchData();
-  }, [userType]);
 
   const handleUserTypeChange = (e) => {
     setUserType(parseInt(e.target.value));
@@ -298,23 +279,28 @@ export default function Usuario() {
           </h1>
           <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
           <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
-            <div className="grid grid-cols-11 w-full border-0 bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
+            <div className="grid grid-cols-9 w-full border-0 bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
+              <div className="row">
               <span className="flex ml-5 items-center">ID</span>
+              </div>
+              <div className="row ml-9">
               <span className="flex justify-center items-center">Imagem</span>
+              </div>
+              <div className="row ml-">
               <span className="flex col-span-3 justify-center items-center">
                 Nome
               </span>
-              <span className="flex col-span-3 justify-center items-center">
-                Cargo
-              </span>
+              </div>
+              <div className="row ml-60">
               <span className="flex col-span-3 justify-center items-center">
                 Ações
               </span>
+              </div>
             </div>
             <ul className="w-full">
               {currentItems.map((user) => (
                 <React.Fragment key={user.id}>
-                  <li className="grid grid-cols-11 w-full bg-[#F5F5F5]">
+                  <li className="grid grid-cols-8 w-full bg-[#F5F5F5]">
                     <span
                       scope="row"
                       className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700"
@@ -322,10 +308,10 @@ export default function Usuario() {
                       {user.id}
                     </span>
                     <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
-                      {user.imagemPerfilUseristrador ? (
+                      {user.imagemPerfil ? (
                         <img
                           className="flex w-10 h-10 rounded "
-                          src={user.imagemPerfilUseristrador}
+                          src={user.imagemPerfil}
                           alt="Preview"
                         />
                       ) : (
@@ -333,10 +319,7 @@ export default function Usuario() {
                       )}
                     </span>
                     <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
-                      {user.nomeUseristrador}
-                    </span>
-                    <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
-                      {user.cargoUseristrador}
+                      {user.nome}
                     </span>
                     <span className="flex col-span-3 justify-center items-center border-t-[1px] gap-[3px] 
                     border-[#DBDBDB]">
@@ -419,29 +402,8 @@ export default function Usuario() {
             <input
               type="text "
               className="form-control text-sm"
-              onChange={(e) => setNomeUser(e.target.value)}
+              onChange={(e) => setNome(e.target.value)}
               placeholder="Digite o nome "
-            />
-            <br />
-            <label>Cargo:</label>
-            <br />
-            <input
-              type="text "
-              className="form-control text-sm"
-              onChange={(e) => setCargoUser(e.target.value)}
-              placeholder="Digite o cargo"
-            />
-            <br />
-
-            <label>CPF:</label>
-            <br />
-            <InputMask
-              mask="999.999.999-99"
-              maskPlaceholder="999.999.999-99"
-              type="text "
-              className="form-control text-sm"
-              onChange={(e) => setCpfUser(e.target.value)}
-              placeholder="Digite apenas números"
             />
             <br />
             <label>Telefone:</label>
@@ -451,7 +413,7 @@ export default function Usuario() {
               maskPlaceholder="(99) 99999-9999"
               type="text "
               className="form-control text-sm"
-              onChange={(e) => setTelefoneUser(e.target.value)}
+              onChange={(e) => setTelefone(e.target.value)}
               placeholder="Digite apenas números"
             />
             <br />
@@ -460,7 +422,7 @@ export default function Usuario() {
             <input
               type="text "
               className="form-control text-sm"
-              onChange={(e) => setEmailUser(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               onBlur={(e) => validateEmail(e.target.value)}
               placeholder="Exemplo: email@gmail.com"
             />
@@ -471,7 +433,7 @@ export default function Usuario() {
               <input
                 type={showPassword ? "text" : "password"}
                 className="form-control text-sm"
-                onChange={(e) => setSenhaUser(e.target.value)}
+                onChange={(e) => setSenha(e.target.value)}
                 placeholder="Digite a senha"
               />
               <button
@@ -489,18 +451,11 @@ export default function Usuario() {
             <div>
               <label htmlFor="userTypeSelect">Selecione o tipo de usuário:</label>
               <select id="userTypeSelect" value={userType} onChange={handleUserTypeChange}>
-                <option value={4}>Admiistardor</option>
+                <option value={4}>Admistrador</option>
                 <option value={3}>Empresário</option>
                 <option value={2}>Funcionário</option>
                 <option value={1}>Usuário</option>
               </select>
-
-              <h2>Usuários do Tipo {userType}:</h2>
-              <ul>
-                {users.map((user) => (
-                  <li key={user.id}>{user.nomeUser}</li> // Substitua "name" pelo campo que deseja exibir
-                ))}
-              </ul>
             </div>
 
 
@@ -508,7 +463,7 @@ export default function Usuario() {
               <input
                 type={showPassword ? "text" : "password"}
                 className="form-control text-sm"
-                onChange={(e) => setSenhaUser(e.target.value)}
+                onChange={(e) => setSenha(e.target.value)}
                 placeholder="Digite a senha"
               />
               <button
@@ -604,29 +559,12 @@ export default function Usuario() {
             <input
               type="text"
               className="form-control  text-sm"
-              onChange={(e) => setNomeUser(e.target.value)}
+              onChange={(e) => setNome(e.target.value)}
               value={nomeUser}
             />
             <br />
-            <label>Cargo:</label>
-            <br />
-            <input
-              type="text"
-              className="form-control  text-sm"
-              onChange={(e) => setCargoUser(e.target.value)}
-              value={cargoUser}
-            />
-            <br />
-            <label>CPF:</label>
-            <br />
-            <InputMask
-              mask="999.999.999-99"
-              maskPlaceholder="999.999.999-99"
-              type="text "
-              className="form-control  text-sm"
-              onChange={(e) => setCpfUser(e.target.value)}
-              value={cpfUser}
-            />
+           
+           
 
             <br />
             <label>Telefone:</label>
@@ -636,7 +574,7 @@ export default function Usuario() {
               maskPlaceholder="(99) 99999-9999"
               type="text "
               className="form-control  text-sm"
-              onChange={(e) => setTelefoneUser(e.target.value)}
+              onChange={(e) => setTelefone(e.target.value)}
               value={telefoneUser}
             />
 
@@ -646,7 +584,7 @@ export default function Usuario() {
             <input
               type="text "
               className="form-control  text-sm"
-              onChange={(e) => setEmailUser(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               value={emailUser}
             />
             <br />
@@ -656,7 +594,7 @@ export default function Usuario() {
               <input
                 type={showPassword ? "text" : "password"}
                 className="form-control text-sm"
-                onChange={(e) => setSenhaUser(e.target.value)}
+                onChange={(e) => setSenha(e.target.value)}
                 value={senhaUser}
               />
               <button
@@ -666,6 +604,18 @@ export default function Usuario() {
               >
                 {showPassword ? <EyeSlash size={24} /> : <Eye size={24} />}
               </button>
+            </div>
+
+            <br/>
+
+            <div>
+              <label htmlFor="userTypeSelect">Selecione o tipo de usuário:</label>
+              <select id="userTypeSelect" value={userType} onChange={handleUserTypeChange}>
+                <option value={4}>Admistrador</option>
+                <option value={3}>Empresário</option>
+                <option value={2}>Funcionário</option>
+                <option value={1}>Usuário</option>
+              </select>
             </div>
 
             <br />
@@ -700,7 +650,6 @@ export default function Usuario() {
                   }}
                   onClick={() => pedidoRemoverImagem()}
                 >
-                  X
                 </button>
                 <br />
               </div>

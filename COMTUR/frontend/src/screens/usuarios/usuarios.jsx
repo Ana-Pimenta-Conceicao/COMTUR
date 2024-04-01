@@ -7,6 +7,7 @@ import InputMask from "react-input-mask";
 import SidebarAdm from "../../components/admin/sidebarAdm";
 import NavBarAdm from "../../components/admin/navbarAdm";
 import { useNavigate } from "react-router-dom";
+import BtnAcao from "../../components/botoes/btnAcao";
 import {
   CaretLeft,
   CaretRight,
@@ -35,6 +36,7 @@ export default function Usuario() {
   const [tipoUsuario, setTipoUsuario] = useState("");
   const [imagemUser, setImagemUser] = useState("");
   const [idUser, setId] = useState("");
+  const [editImage, setEditImage] = useState(false); // Estado para controlar se a imagem está sendo editada
 
   const navigate = useNavigate();
 
@@ -98,6 +100,10 @@ export default function Usuario() {
     setModalDeletar(!modalDeletar);
   };
 
+  const toggleEditImage = () => {
+    setEditImage(!editImage); // Alternar entre editar e não editar a imagem
+  };
+
   const pedidoGet = async () => {
     await axios
       .get(baseUrl)
@@ -117,8 +123,16 @@ export default function Usuario() {
     formData.append("senhaUsuario", senhaUser);
     formData.append("tipoUsuario", userType);
 
-    const base64Image = await convertImageToBase64(imagemUser);
-    formData.append("imagemPerfilUsuario", base64Image);
+    // Verificar se o campo de imagem está vazio
+    if (imagemUser instanceof File) {
+      const base64Image = await convertImageToBase64(imagemUser);
+      formData.append("imagemPerfilUsuario", base64Image);
+    } else {
+      // Se estiver vazio, fornecer uma imagem padrão
+      const defaultImage = await fetch("./src/assets/userpadrao.png");
+      const blob = await defaultImage.blob();
+      formData.append("imagemPerfilUsuario", blob);
+    }
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -127,8 +141,8 @@ export default function Usuario() {
         },
       });
 
-      const newUser = response.data; // Ensure the response contains the newly registered user data
-      setData([...data, newUser]); // Add the new user to the existing data
+      const newUser = response.data;
+      setData([...data, newUser]);
 
       abrirFecharModalInserir();
       limparDados();
@@ -136,6 +150,7 @@ export default function Usuario() {
       console.log(error);
     }
   };
+
 
   function base64ToImage(base64String) {
     return `data:image/jpeg;base64,${base64String}`;
@@ -279,86 +294,50 @@ export default function Usuario() {
           </h1>
           <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
           <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
-            <div className="grid grid-cols-9 w-full border-0 bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
-              <div className="row">
+            <div className="grid grid-cols-6 w-full border-0 bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
               <span className="flex ml-5 items-center">ID</span>
-              </div>
-              <div className="row ml-9">
-              <span className="flex justify-center items-center">Imagem</span>
-              </div>
-              <div className="row ml-">
               <span className="flex col-span-3 justify-center items-center">
                 Nome
               </span>
-              </div>
-              <div className="row ml-60">
-              <span className="flex col-span-3 justify-center items-center">
+
+              <span className="flex col-span-2 justify-center items-center">
                 Ações
               </span>
-              </div>
+
             </div>
             <ul className="w-full">
               {currentItems.map((user) => (
                 <React.Fragment key={user.id}>
-                  <li className="grid grid-cols-8 w-full bg-[#F5F5F5]">
+                  <li className="grid grid-cols-6 w-full bg-[#F5F5F5]">
                     <span
                       scope="row"
                       className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700"
                     >
                       {user.id}
                     </span>
-                    <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
-                      {user.imagemPerfil ? (
-                        <img
-                          className="flex w-10 h-10 rounded "
-                          src={user.imagemPerfil}
-                          alt="Preview"
-                        />
-                      ) : (
-                        <div>No image</div>
-                      )}
-                    </span>
                     <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
                       {user.nome}
                     </span>
-                    <span className="flex col-span-3 justify-center items-center border-t-[1px] gap-[3px] 
-                    border-[#DBDBDB]">
-                      <button
-                        className="inline-flex text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 
-                        focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
-                         items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                        onClick={() => UserSet(user, "Editar")}
-                      >
-                        {" "}
-                        <Pencil className="flex mr-1" size={16} />
-                        Editar
-                      </button>
 
-                      <button
-                        className="inline-flex text-white bg-red-800 hover:bg-red-900 focus:ring-4 
-                        focus:outline-none font-medium rounded-lg text-sm p-2 text-center 
-                         items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                        onClick={() => UserSet(user, "Excluir")}
-                      >
-                        {" "}
-                        <Trash className="mr-1" size={16} />
-                        Excluir
-                      </button>
-
-                      <button
-                        className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none
-                         font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        onClick={() => UserSet(user, "Visualizar")}
-                      >
-                        <Eye className="mr-1" size={16} />
-                        Visualizar
-                      </button>
+                    <span className="flex col-span-2 items-center justify-center border-t-[1px] gap-2 border-[#DBDBDB]">
+                      <BtnAcao
+                        funcao={() => UserSet(user, "Editar")}
+                        acao="Editar"
+                      />
+                      <BtnAcao
+                        funcao={() => UserSet(user, "Excluir")}
+                        acao="Excluir"
+                      />
+                      <BtnAcao
+                        funcao={() => UserSet(user, "Visualizar")}
+                        acao="Visualizar"
+                      />
                     </span>
                   </li>
                 </React.Fragment>
               ))}
             </ul>
-            <div className="pt-4 pb-4 flex justify-center gap-2">
+            <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px] border-[#DBDBDB]">
               <button className="" onClick={() => goToPage(currentPage - 1)}>
                 <CaretLeft size={22} className="text-[#DBDBDB]" />
               </button>
@@ -379,16 +358,10 @@ export default function Usuario() {
             </div>
           </div>
           <div className="float-right flex-auto py-6">
-            <button
-              className="text-white bg-yellow-400 hover:bg-yellow-500 
-               rounded-xl text-lg px-3 font-semibold py-1.5 text-center"
-              onClick={() => abrirFecharModalInserir()}
-            >
-              <span className="inline-flex items-center">
-                <FilePlus className="mr-1" size={24} />
-                Cadastrar
-              </span>
-            </button>
+            <BtnAcao
+              funcao={() => abrirFecharModalInserir("Cadastrar")}
+              acao="Cadastrar"
+            />
           </div>
         </div>
       </div>
@@ -446,19 +419,7 @@ export default function Usuario() {
             </div>
 
             <br />
-            {/* select para selecionar o usuario*/}
-
-            <div>
-              <label htmlFor="userTypeSelect">Selecione o tipo de usuário:</label>
-              <select id="userTypeSelect" value={userType} onChange={handleUserTypeChange}>
-                <option value={4}>Admistrador</option>
-                <option value={3}>Empresário</option>
-                <option value={2}>Funcionário</option>
-                <option value={1}>Usuário</option>
-              </select>
-            </div>
-
-
+            <label>Confirmar senha:</label>
             <div className="input-group">
               <input
                 type={showPassword ? "text" : "password"}
@@ -474,10 +435,78 @@ export default function Usuario() {
                 {showPassword ? <EyeSlash size={24} /> : <Eye size={24} />}
               </button>
             </div>
+            <br />
+            {/* select para selecionar o usuario*/}
+            <label>Tipo Usuário:</label>
+            <div>
+              <select className="form-control" id="userTypeSelect" value={userType} onChange={handleUserTypeChange}>
+                <option value={4}>Admistrador</option>
+                <option value={3}>Empresário</option>
+                <option value={2}>Funcionário</option>
+                <option value={1}>Usuário</option>
+              </select>
+            </div>
 
             <br />
-
-            <label>Imagem:</label>
+            {/* Imagem, verificar */}
+            {/* Exibir imagem fixa apenas quando editImage for falso */}
+            {!editImage && (
+              <img  hidden src="./src/assets/userpadrao.png" alt="Imagem Fixa" />
+            )}
+            {/* aqui o usuário escolhe se deseja acionar imagem */}
+            {!editImage && (
+              <button className="btn bg-warning" onClick={toggleEditImage}>Adicionar Imagem</button>
+            )}
+            {/* Campo para adicionar imagem dentro da modal */}
+            {editImage && (
+              <>
+                {imagemUser && (
+                  <div
+                    className="bg-[#DBDBDB]   border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
+                    style={{ position: "relative", display: "inline-block" }}
+                  >
+                    {typeof imagemUser === "string" ? (
+                      <img
+                        src={base64ToImage(imagemUser)}
+                        alt="Preview"
+                        style={{ maxWidth: "100%", marginTop: "10px" }}
+                      />
+                    ) : (
+                      <img
+                        src={URL.createObjectURL(imagemUser)}
+                        alt="Preview"
+                        style={{ maxWidth: "100%", marginTop: "10px" }}
+                      />
+                    )}
+                    <button
+                      style={{
+                        position: "absolute",
+                        top: "15px",
+                        right: "5px",
+                        width: "30px",
+                        height: "30px",
+                        backgroundColor: "rgba(255, 255, 255, 0.5)",
+                        borderRadius: "50%",
+                        border: "none",
+                        padding: "0",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => pedidoRemoverImagem()}
+                    >
+                      X
+                    </button>
+                    <br />
+                  </div>
+                )}
+                <input
+                  type="file"
+                  className="form-control"
+                  onChange={(e) => setImagemUser(e.target.files[0])}
+                  value={imagemUser === "" ? "" : undefined}
+                />
+              </>
+            )}
+            {/* <label>Imagem:</label>
             {imagemUser && modalEditar && (
               <div
                 className="bg-[#DBDBDB]   border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
@@ -522,7 +551,7 @@ export default function Usuario() {
               onChange={(e) => setImagemUser(e.target.files[0])}
               value={imagemUser === "" ? "" : undefined}
             />
-            <br />
+            <br /> */}
           </div>
         </ModalBody>
         <ModalFooter>
@@ -563,10 +592,6 @@ export default function Usuario() {
               value={nomeUser}
             />
             <br />
-           
-           
-
-            <br />
             <label>Telefone:</label>
             <br />
             <InputMask
@@ -606,11 +631,10 @@ export default function Usuario() {
               </button>
             </div>
 
-            <br/>
-
+            <br />
+            <label>Tipo Usuário:</label>
             <div>
-              <label htmlFor="userTypeSelect">Selecione o tipo de usuário:</label>
-              <select id="userTypeSelect" value={userType} onChange={handleUserTypeChange}>
+              <select className="form-control" id="userTypeSelect" value={userType} onChange={handleUserTypeChange}>
                 <option value={4}>Admistrador</option>
                 <option value={3}>Empresário</option>
                 <option value={2}>Funcionário</option>

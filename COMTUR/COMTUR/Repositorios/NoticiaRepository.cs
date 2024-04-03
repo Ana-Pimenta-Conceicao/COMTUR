@@ -1,68 +1,63 @@
 ﻿using COMTUR.Data;
 using COMTUR.Models;
 using COMTUR.Repositorios.Interfaces;
-using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace COMTUR.Repositorios
 {
     public class NoticiaRepository : INoticiaRepository
     {
         private readonly ComturDBContext _dbContext;
-
         private readonly IWebHostEnvironment _hostingEnvironment;
 
-        //private string _caminhoImagens = AppContext.BaseDirectory;
-
-        public NoticiaRepository(ComturDBContext dbContext, IWebHostEnvironment webHostEnvironment)
+        public NoticiaRepository(ComturDBContext dbContext, IWebHostEnvironment hostingEnvironment)
         {
             _dbContext = dbContext;
-            _hostingEnvironment = webHostEnvironment;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public async Task<NoticiaModel> BuscarPorId(int id)
         {
-            return await _dbContext.Noticia.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Noticia.Include(n => n.ImagemNoticia).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<NoticiaModel>> BuscarNoticia()
         {
-            return await _dbContext.Noticia.ToListAsync();
+            return await _dbContext.Noticia.Include(n => n.ImagemNoticia).ToListAsync();
         }
 
         public async Task<NoticiaModel> Adicionar(NoticiaModel noticiaModel)
         {
+            // Adiciona a notícia no banco de dados
             await _dbContext.Noticia.AddAsync(noticiaModel);
             await _dbContext.SaveChangesAsync();
 
             return noticiaModel;
         }
 
-        public async Task<NoticiaModel> Atualizar(NoticiaModel noticiaModel, int id)
+
+        public async Task<NoticiaModel> Atualizar(NoticiaModel noticiaDto, int id)
         {
-            NoticiaModel noticiaPorId = await BuscarPorId(id);
+            var noticiaPorId = await BuscarPorId(id);
 
             if (noticiaPorId == null)
             {
-                throw new Exception($"Noticia {id} nao foi encontrado no banco de dados. ");
+                throw new Exception($"Noticia {id} não foi encontrada no banco de dados.");
             }
 
-            noticiaPorId.Id = noticiaModel.Id;
-            noticiaPorId.Titulo = noticiaModel.Titulo;
-            noticiaPorId.Subtitulo = noticiaModel.Subtitulo;
-            noticiaPorId.Conteudo = noticiaModel.Conteudo;
-            noticiaPorId.DataPublicacao = noticiaModel.DataPublicacao;
-            noticiaPorId.HoraPublicacao = noticiaModel.HoraPublicacao;
-            noticiaPorId.LegendaImagem = noticiaModel.LegendaImagem;
-            if (noticiaModel.CaminhoImagem != noticiaPorId.CaminhoImagem) // Verificando se o dado (seja cheio ou vazio) vindo do objeto é diferente do que está no banco de dados
-            {
-                noticiaPorId.CaminhoImagem = noticiaModel.CaminhoImagem;
-            }
+            // Atribui os valores do DTO para a entidade NoticiaModel
+            noticiaPorId.Titulo = noticiaDto.Titulo;
+            noticiaPorId.Subtitulo = noticiaDto.Subtitulo;
+            noticiaPorId.Conteudo = noticiaDto.Conteudo;
+            noticiaPorId.DataPublicacao = noticiaDto.DataPublicacao;
+            noticiaPorId.HoraPublicacao = noticiaDto.HoraPublicacao;
+
 
             _dbContext.Noticia.Update(noticiaPorId);
             await _dbContext.SaveChangesAsync();
@@ -70,13 +65,14 @@ namespace COMTUR.Repositorios
             return noticiaPorId;
         }
 
-        public async Task<bool> Apagar(int id, IWebHostEnvironment hostingEnvironment)
+
+        public async Task<bool> Apagar(int id)
         {
             var noticiaParaExcluir = await BuscarPorId(id);
 
             if (noticiaParaExcluir == null)
             {
-                return false;
+                throw new Exception($"Notícia {id} não foi encontrada");
             }
 
             _dbContext.Noticia.Remove(noticiaParaExcluir);
@@ -85,56 +81,15 @@ namespace COMTUR.Repositorios
             return true;
         }
 
-        public async Task<string> SalvarImagem(IFormFile imagem, IWebHostEnvironment hostingEnvironment)
+        public async Task<List<ImagemNoticiaModel>> BuscarImagensPorNoticiaId(int noticiaId)
         {
-            if (imagem == null || imagem.Length == 0)
-                return null;
+            // Use o Entity Framework para consultar as imagens associadas a uma notícia específica
+            var imagens = await _dbContext.ImagemNoticia
+                                           .Where(imagem => imagem.IdNoticia == noticiaId)
+                                           .ToListAsync();
 
-            var path = Path.Combine(hostingEnvironment.WebRootPath, "imagens", imagem.FileName);
-
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                await imagem.CopyToAsync(stream);
-            }
-
-            return path;
+            return imagens;
         }
 
-        public async Task<string> ExcluirImagem(string imagePath, IWebHostEnvironment hostingEnvironment)
-        {
-            string caminhoImagem = Path.Combine(hostingEnvironment.WebRootPath, "imagens", imagePath); // Fazendo com que o método construa a url, sem precisar sempre ficar criando em outras situações
-
-            if (System.IO.File.Exists(caminhoImagem))
-            {
-                System.IO.File.Delete(caminhoImagem);
-                return Path.Combine("imagens", imagePath);
-            }
-
-            return null;
-        }
-
-        public async Task<string> AtualizarImagem(int id, IFormFile imagem, IWebHostEnvironment hostingEnvironment)
-        {
-            NoticiaModel noticia = await BuscarPorId(id);
-
-            if (noticia != null && noticia.CaminhoImagem != null) // Verificando se há um objeto com esse id e se o mesmo tem uma imagem dentro de si
-            {
-                await ExcluirImagem(noticia.CaminhoImagem, hostingEnvironment);
-            }
-
-            return await SalvarImagem(imagem, hostingEnvironment); // Retornando o resultado do método salvarImagem
-        }
-
-        public async Task<byte[]> ObterImagem(string imagePath, IWebHostEnvironment hostingEnvironment)
-        {
-            var path = Path.Combine(hostingEnvironment.WebRootPath, "imagens", imagePath);
-
-            if (System.IO.File.Exists(path))
-            {
-                return System.IO.File.ReadAllBytes(path);
-            }
-
-            return null;
-        }
     }
 }

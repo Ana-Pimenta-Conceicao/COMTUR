@@ -1,0 +1,87 @@
+/* .amarelocheck{
+  background-color: #FFD121;
+} */
+
+/* css reset */
+
+.titulo{
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.subtitulo{
+  font-size: 15px;
+  
+}
+.formulario{
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.display{
+  display: block;
+}
+
+.btnvoltar{
+  color: #cccccc;
+  padding-left: 1%;
+  font-size: 18px;
+
+}
+
+.marg{
+  margin-top: 15px;
+}
+
+.btn-cadastrar {
+  background-color: black;
+  color: white; 
+}
+
+
+.c_text{
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  padding-bottom: 7px;
+  padding-top: 7px;
+  
+  
+}
+
+.btncad{
+  background-color: #D9D9D9;
+  padding: 10px;
+}
+
+.btntipocad{
+  font-size: 25px;
+  font-weight: 900;
+}
+
+
+.btnmenunav{
+  border-radius: 0;
+  padding: 20px !important;
+  margin: 0;
+}
+.ajustelocal{
+  margin-bottom: 23px;
+}
+.btnmenulogin{
+  border-radius: 0;
+  padding: 20px !important;
+  margin: 0;
+}
+
+.alinhar {
+  display: flex; /* torna o contêiner um flex container */
+  justify-content: center; /* alinha os itens horizontalmente ao centro */
+  align-items: center; /* alinha os itens verticalmente ao centro */
+  height: 75vh; /* altura do contêiner, por exemplo, 100% da altura da viewport */
+}
+
+.container-cad {
+  background: white;
+  padding: 4% 6%;
+  border-Radius: 10px;
+}

@@ -19,7 +19,7 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="bg-black" style={{ background: '#0000', width: '100%', padding: "4%", paddingTop: "2%", paddingBottom: "10%" }}>
+    <div className='telacadastro'>
       <div>
         <button className="btnvoltar">
           <div className="d-flex align-items-center">
@@ -30,7 +30,7 @@ const Login = () => {
           </div>
         </button>
       </div>
-      <div className="container display" style={{ background: 'white', width: '100%', marginTop: "2%", padding: "5% 5%" }}>
+      <div className="container display" style={{ background: 'white', width: '100%', marginTop: "6%", padding: "5% 5%", borderRadius: "5px"}}>
         <div className="row">
           {(!isSmallScreen || (isSmallScreen && showFirstCard)) && (
             <div className={isSmallScreen ? "card-flex col-12" : "card-flex col-7"}>

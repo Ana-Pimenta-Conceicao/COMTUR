@@ -21,7 +21,7 @@ const CadastroUsuario = () => {
   }, []);
 
   return (
-    <div style={{ background: '#000', width: '100%', height: '110vh', padding: "4%", paddingTop: "2%", paddingBottom: "10%" }}>
+    <div style={{ background: '#000', width: '100%', height: '100vh', padding: "4%", paddingTop: "2%", paddingBottom: "10%" }}>
       <div>
         <button className="btnvoltar">
           <div className="d-flex align-items-center">

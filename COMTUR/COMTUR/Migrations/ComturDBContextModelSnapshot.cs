@@ -22,51 +22,6 @@ namespace COMTUR.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("COMTUR.Models.AdministradorModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("administradorid");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CargoAdministrador")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("cargoadministrador");
-
-                    b.Property<string>("CpfAdministrador")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("cpfadministrador");
-
-                    b.Property<string>("EmailAdministrador")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("emailadministrador");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("nome");
-
-                    b.Property<string>("SenhaAdministrador")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("senhaadministrador");
-
-                    b.Property<string>("TelefoneAdministrador")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("telefoneadministrador");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("administrador");
-                });
-
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
                 {
                     b.Property<int>("Id")
@@ -76,10 +31,9 @@ namespace COMTUR.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Descrição")
+                    b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("text")
                         .HasColumnName("descricao");
 
                     b.Property<int>("IdTipoAtracao")
@@ -87,14 +41,12 @@ namespace COMTUR.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("text")
                         .HasColumnName("nome");
 
                     b.Property<string>("QRCode")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("text")
                         .HasColumnName("qrcode");
 
                     b.Property<int?>("TipoAtracaoModelId")
@@ -109,19 +61,41 @@ namespace COMTUR.Migrations
                     b.ToTable("atracao");
                 });
 
-            modelBuilder.Entity("COMTUR.Models.EmpresarioModel", b =>
+            modelBuilder.Entity("COMTUR.Models.EmpresaModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("empresarioid");
+                        .HasColumnName("empresaid");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("EmailEmpresario")
+                    b.Property<long>("CNPJ")
+                        .HasColumnType("bigint")
+                        .HasColumnName("cnpj");
+
+                    b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("emailempresario");
+                        .HasColumnName("descricao");
+
+                    b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("endereco");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer")
+                        .HasColumnName("usuarioid");
+
+                    b.Property<string>("Imagem")
+                        .HasColumnType("text")
+                        .HasColumnName("imagem");
+
+                    b.Property<string>("LegendaImagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("legendaImagem");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -129,19 +103,98 @@ namespace COMTUR.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("nome");
 
-                    b.Property<string>("SenhaEmpresario")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("senhaempresario");
+                    b.HasKey("Id");
 
-                    b.Property<string>("TelefoneEmpresario")
+                    b.HasIndex("IdUsuario");
+
+                    b.ToTable("empresa");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.ImagemAtracaoModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("imagematracaoid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IdAtracao")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Imagem")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("telefoneempresario");
+                        .HasColumnName("imagem");
+
+                    b.Property<string>("LegendaImagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("legendaImagem");
 
                     b.HasKey("Id");
 
-                    b.ToTable("empresario");
+                    b.HasIndex("IdAtracao");
+
+                    b.ToTable("imagematracao");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.ImagemEmpresaModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("imagemempresaid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IdEmpresa")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Imagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagem");
+
+                    b.Property<string>("LegendaImagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("legendaImagem");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdEmpresa");
+
+                    b.ToTable("imagemempresa");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.ImagemNoticiaModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("imagemnoticiaid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IdNoticia")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Imagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagem");
+
+                    b.Property<string>("LegendaImagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("legendaImagem");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdNoticia");
+
+                    b.ToTable("imagemnoticia");
                 });
 
             modelBuilder.Entity("COMTUR.Models.NoticiaModel", b =>
@@ -152,10 +205,6 @@ namespace COMTUR.Migrations
                         .HasColumnName("noticiaid");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CaminhoImagem")
-                        .HasColumnType("text")
-                        .HasColumnName("caminhoImagem");
 
                     b.Property<string>("Conteudo")
                         .IsRequired()
@@ -170,11 +219,6 @@ namespace COMTUR.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("horaPublicacao");
-
-                    b.Property<string>("LegendaImagem")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("legendaImagem");
 
                     b.Property<string>("Subtitulo")
                         .IsRequired()
@@ -231,6 +275,87 @@ namespace COMTUR.Migrations
                     b.ToTable("tipoturismo");
                 });
 
+            modelBuilder.Entity("COMTUR.Models.UsuarioModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("usuarioid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmailUsuario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("emailUsuario");
+
+                    b.Property<string>("ImagemPerfilUsuario")
+                        .HasColumnType("text")
+                        .HasColumnName("imagemPerfilUsuario");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("nome");
+
+                    b.Property<string>("SenhaUsuario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("senhaUsuario");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("telefone");
+
+                    b.Property<int>("TipoUsuario")
+                        .HasColumnType("integer")
+                        .HasColumnName("tipoUsuario");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("usuario");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EmailUsuario = "usuario@gmail.com",
+                            Nome = "usuario",
+                            SenhaUsuario = "usuario",
+                            Telefone = "123456",
+                            TipoUsuario = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EmailUsuario = "usuario@gmail.com",
+                            Nome = "funcionario",
+                            SenhaUsuario = "funcionario",
+                            Telefone = "123456",
+                            TipoUsuario = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            EmailUsuario = "usuario@gmail.com",
+                            Nome = "empresario",
+                            SenhaUsuario = "empresario",
+                            Telefone = "123456",
+                            TipoUsuario = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            EmailUsuario = "usuario@gmail.com",
+                            Nome = "administrador",
+                            SenhaUsuario = "administrador",
+                            Telefone = "123456",
+                            TipoUsuario = 4
+                        });
+                });
+
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
                 {
                     b.HasOne("COMTUR.Models.TipoAtracaoModel", "TipoAtracaoModel")
@@ -246,9 +371,73 @@ namespace COMTUR.Migrations
                     b.Navigation("TipoAtracaoModel");
                 });
 
+            modelBuilder.Entity("COMTUR.Models.EmpresaModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
+                        .WithMany("Empresas")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UsuarioModel");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.ImagemAtracaoModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.AtracaoModel", "AtracaoModel")
+                        .WithMany("ImagemAtracao")
+                        .HasForeignKey("IdAtracao")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AtracaoModel");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.ImagemEmpresaModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.EmpresaModel", "EmpresaModel")
+                        .WithMany("ImagemEmpresa")
+                        .HasForeignKey("IdEmpresa")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EmpresaModel");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.ImagemNoticiaModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.NoticiaModel", "NoticiaModel")
+                        .WithMany("ImagemNoticia")
+                        .HasForeignKey("IdNoticia")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NoticiaModel");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
+                {
+                    b.Navigation("ImagemAtracao");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.EmpresaModel", b =>
+                {
+                    b.Navigation("ImagemEmpresa");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.NoticiaModel", b =>
+                {
+                    b.Navigation("ImagemNoticia");
+                });
+
             modelBuilder.Entity("COMTUR.Models.TipoAtracaoModel", b =>
                 {
                     b.Navigation("Atracao");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.UsuarioModel", b =>
+                {
+                    b.Navigation("Empresas");
                 });
 #pragma warning restore 612, 618
         }

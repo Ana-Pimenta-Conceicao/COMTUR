@@ -2,20 +2,23 @@
 using COMTUR.Data;
 using COMTUR.Models;
 using COMTUR.Repositorios.Interfaces;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace COMTUR.Repositorios
 {
 	public class AtracaoRepositorio : IAtracaoRepositorio
 	{
 		private readonly ComturDBContext _dbContext;
-		public AtracaoRepositorio(ComturDBContext AtracaoDBContext)
+		private readonly IWebHostEnvironment _hostingEnvironment;
+		public AtracaoRepositorio(ComturDBContext AtracaoDBContext, IWebHostEnvironment hostingEnvironment)
 		{
 			_dbContext = AtracaoDBContext;
+			_hostingEnvironment = hostingEnvironment;
 		}
 
 		public async Task<AtracaoModel> BuscarPorId(int id)
 		{
-			return await _dbContext.Atracao.FirstOrDefaultAsync(x => x.Id == id);
+			return await _dbContext.Atracao.Include(n => n.ImagemAtracao).FirstOrDefaultAsync(x => x.Id == id);
 		}
 
 		public async Task<AtracaoModel> GetById(int id)
@@ -25,7 +28,7 @@ namespace COMTUR.Repositorios
 
 		public async Task<List<AtracaoModel>> BuscarAtracao()
 		{
-			return await _dbContext.Atracao.ToListAsync();
+			return await _dbContext.Atracao.Include(n => n.ImagemAtracao).ToListAsync();
 		}
 
 		public async Task<AtracaoModel> Adicionar(AtracaoModel atracao)
@@ -39,6 +42,7 @@ namespace COMTUR.Repositorios
 		public async Task<AtracaoModel> Atualizar(AtracaoModel atracao, int id)
 		{
 			AtracaoModel AtracaoPorId = await BuscarPorId(id);
+
 			if (AtracaoPorId == null)
 			{
 				throw new Exception($"Atração para o ID: {id} nao foi encontrado no banco de dados. ");
@@ -46,7 +50,7 @@ namespace COMTUR.Repositorios
 
 			AtracaoPorId.Id = atracao.Id;
 			AtracaoPorId.Nome = atracao.Nome;
-			AtracaoPorId.Descrição = atracao.Descrição;
+			AtracaoPorId.Descricao = atracao.Descricao;
 			AtracaoPorId.QRCode = atracao.QRCode;
 
 			_dbContext.Atracao.Update(AtracaoPorId);
@@ -66,6 +70,15 @@ namespace COMTUR.Repositorios
 			_dbContext.Atracao.Remove(AtracaoPorId);
 			await _dbContext.SaveChangesAsync();
 			return true;
+		}
+
+		public async Task<List<ImagemAtracaoModel>> BuscarImagensPorAtracaoId(int atracaoId)
+		{
+			// Use o Entity Framework para consultar as imagens associadas a uma atracao específica
+			var imagens = await _dbContext.ImagemAtracao
+										   .Where(imagem => imagem.IdAtracao == atracaoId)
+										   .ToListAsync();
+			return imagens;
 		}
 	}
 }

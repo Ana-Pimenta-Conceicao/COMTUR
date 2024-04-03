@@ -3,9 +3,16 @@ import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import axios from 'axios'
 import "../tipoturismo/index.css"
 import "bootstrap/dist/css/bootstrap.min.css"
-import SidebarAdm from '../../components/sidebarAdm';
-import NavbarAdm from '../../components/navbarAdm';
-
+import SidebarAdm from '../../components/admin/sidebarAdm';
+import NavBarAdm from '../../components/admin/navbarAdm';
+import {
+    CaretLeft,
+    CaretRight,
+    Pencil,
+    Trash,
+    Eye,
+    FilePlus,
+} from "@phosphor-icons/react";
 
 function TipoTurismo() {
 
@@ -64,6 +71,15 @@ function TipoTurismo() {
             })
     }
 
+    const atualizarListaTipoTurismo = async () => {
+        await axios.get(baseUrl)
+            .then(response => {
+                setData(response.data);
+            }).catch(error => {
+                console.log(error);
+            })
+    }
+
     const pedidoPost = async () => {
         delete tipoturismoSelecionado.id
         await axios.post(baseUrl, { nome: tipoturismoNome })
@@ -104,6 +120,7 @@ function TipoTurismo() {
         await axios.delete(baseUrl + "/" + tipoturismoId)
             .then(response => {
                 setData(data.filter(tipoturismo => tipoturismo.id !== response.data));
+                atualizarListaTipoTurismo();
                 abrirFecharModalDeletar();
             }).catch(error => {
                 console.log(error);
@@ -117,181 +134,163 @@ function TipoTurismo() {
         }
     }, [atualizarData])
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+    const totalItems = data.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    // Função para pegar uma parte específica da lista
+    const getCurrentPageItems = (page) => {
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return data.slice(startIndex, endIndex);
+    };
+
+    // Renderiza os itens da página atual
+    const currentItems = getCurrentPageItems(currentPage);
+
+    // Funções para navegar entre as páginas
+    const goToPage = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+        }
+    };
+
+
     return (
-            <div className='h-screen flex'>
+        <div className="h-screen flex">
             <SidebarAdm />
-            <div className='flex-2 container-fluid'>
-            <NavbarAdm/>
-            
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" />
-                <link rel="stylesheet" href="bootstrap-4.0.0-dist/css/bootstrap-grid.css"></link>
-                <link href="https://fonts.googleapis.com/css?family=Bungee+Inline" rel="stylesheet"></link>
-            
-                        
-                        
-                        <div class="col py-3">
-
-                            <div className="Cadastro" style={{ width: 242, height: 37, color: 'black', fontSize: 40, fontFamily: 'Mulish', fontWeight: '500', wordWrap: 'break-word' }}>Cadastro</div>
-
-                            <br />
-                            <hr class="linhaseparacao"></hr>
-                            <div class="Turismo" style={{ width: 219, height: 37, color: 'black', fontSize: 32, fontFamily: 'Mulish', fontWeight: '600', wordWrap: 'break-word' }}>Turismo</div>
-
-
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-7">
-                                        <div class="card cardcadastros">
-                                            <form class="row g-2">
-
-                                                <div class="col-md-7">
-                                                    <label for="inputName" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>*Nome:</label>
-                                                    <input type="name" class="form-control" id="inputName" />
-                                                </div>
-                                                <div class="col-7">
-                                                    <label for="inputDescricao" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>*Descrição:</label>
-                                                    <input type="text" class="form-control" id="inputDescricao" placeholder="Breve descrição" />
-                                                </div>
-                                                <div class="col-7">
-                                                    <label for="inputLocal" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>*Local:</label>
-                                                    <input type="text" class="form-control" id="inputLocal" />
-                                                </div>
-                                                <div class="col-md-7">
-                                                    <label for="inputDias" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>Dias de Funcionamento:</label>
-                                                    <select id="inputDias" class="form-select">
-                                                        <option selected>selecione</option>
-                                                        <option selected>de segunda a sexta</option>
-                                                        <option>terça a domingo</option>
-                                                        <option>sexta- sabádo- domingo</option>
-                                                        <option>quinta a domingo</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-7">
-                                                    <label for="inputDias" class="labelformulario form-label" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>Horários:</label>
-                                                    <div class="row mb-3 ">
-                                                        <label for="colFormLabelSm" class="labelformulario col-sm-2 col-form-label col-form-label-sm" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>Das</label>
-                                                        <div class="col-sm-3">
-                                                            <input type="name" class="form-control form-control" id="colFormLabelSm" placeholder="   :   " />
-                                                        </div>
-                                                        <label for="colFormLabelSm" class="labelformulario col-sm-2 col-form-label col-form-label-sm" style={{ color: 'black', fontSize: 18, fontFamily: 'Mulish', fontWeight: '400', wordWrap: 'break-word' }}>às</label>
-                                                        <div class="col-sm-3">
-                                                            <input type="name" class="form-control form-control" id="colFormLabelSm" placeholder="   :   " />
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-5">
-                                        <div class="card cardtipo">
-                                            <div class="row row-cols-lg-auto g-3 align-items-center">
-                                                <form >
-
-                                                    <div class="col-12">
-
-                                                        <div class="row g-3 align-items-center">
-                                                            <div class="col-auto">
-                                                                <label for="inputPassword6" class="col-form-label">*Tipo</label>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <select class="form-select" aria-label="Default select example">
-                                                                    <option selected>Selecione tipo de turismo</option>
-                                                                    <option value="1">        </option>
-                                                                    <option value="2">        </option>
-                                                                    <option value="3">        </option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                                <div class="col-10">
-                                                    <button class="btn btnpesquisar p-2" type="submit"><img class="" src="./src/assets/search.svg" /> </button>
-                                                    <button className='btn btnadicionar p-2 m-1' onClick={() => abrirFecharModalInserir()}><img class="" src="./src/assets/edit.svg" /></button>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <button class="btn btncancelar  me-md-2" type="button">Cancelar</button>
-                                    <button class="btn btnsalvar " type="button">Salvar</button>
-                                </div>
-
-                            </div>
-                            
-                            <table className='table table-bordered'>
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Nome</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {data.map(tipoturismo => (
-                                        <tr key={tipoturismo.id}>
-                                            <td>{tipoturismo.id}</td>
-                                            <td>{tipoturismo.nome}</td>
-                                            <td>
-                                                <button className="btn btnalterar text-white" onClick={() => TipoTurismoSet(tipoturismo, "Editar")}>Editar</button> {"  "}
-                                                <button className="btn btnexcluir text-white" onClick={() => TipoTurismoSet(tipoturismo, "Excluir")}>Excluir</button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+            <div className="flex-2 container-fluid">
+                <NavBarAdm />
+                <div className="pl-8 pr-8 pt-[20px]">
+                    <h1 className="text-3xl font-semibold pb-2">Lista de Tipo Turismo</h1>
+                    <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
+                    <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
+                        <div className="grid grid-cols-3 w-full bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
+                            <span className="flex ml-5 items-center">ID</span>
+                            <span className="flex justify-center items-center">Nome</span>
+                            <span className="flex justify-center items-center">Ações</span>
                         </div>
+
+
+                        <ul className="w-full">
+                            {currentItems.map(tipoturismo => (
+                                <React.Fragment key={tipoturismo.id}>
+                                    <li className="grid grid-cols-3 w-full bg-[#F5F5F5]">
+                                        <span scope="row" className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700">{tipoturismo.id}</span>
+                                        <span className="flex justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">{tipoturismo.nome.length > 25 ? tipoturismo.nome.substring(0, 25) + '...' : tipoturismo.nome}</span>
+                                        <span className="flex items-center justify-center border-t-[1px] gap-2 border-[#DBDBDB]">
+
+
+                                            <button className="text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+                                                onClick={() => TipoTurismoSet(tipoturismo, "Editar")}>
+                                                <Pencil className="mr-1" size={16} />
+                                                Editar
+                                            </button>
+
+                                            <button className="text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                                                onClick={() => TipoTurismoSet(tipoturismo, "Excluir")}>
+                                                <Trash className="mr-1" size={16} />
+                                                Excluir
+                                            </button>
+
+                                        </span>
+                                    </li>
+                                </React.Fragment>
+                            ))}
+                        </ul>
+
+                        <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px] border-[#DBDBDB]">
+                            <button
+                                className=""
+                                onClick={() => goToPage(currentPage - 1)}
+                            >
+                                <CaretLeft size={22} className="text-[#DBDBDB]" />
+                            </button>
+                            <select
+                                className="rounded-sm hover:border-[#DBDBDB] select-none"
+                                value={currentPage}
+                                onChange={(e) => goToPage(Number(e.target.value))}
+                            >
+                                {[...Array(totalPages)].map((_, index) => (
+                                    <option key={index + 1} value={index + 1}>
+                                        {index + 1}
+                                    </option>
+                                ))}
+                            </select>
+                            <button
+                                className=""
+                                onClick={() => goToPage(currentPage + 1)}
+                            >
+                                <CaretRight size={22} className="text-[#DBDBDB]" />
+                            </button>
+                        </div>
+                    </div>
+                    <div className="float-right flex-auto py-6">
+            <button
+              className="text-white bg-yellow-400 hover:bg-yellow-500 
+               rounded-xl text-lg px-3 font-semibold py-1.5 text-center"
+              onClick={() => abrirFecharModalInserir()}
+            >
+              <span className="inline-flex items-center">
+                <FilePlus className="mr-1" size={24} />
+                Cadastrar
+              </span>
+            </button>
+          </div>
+                </div>
             </div>
-                        <Modal isOpen={modalInserir}>
-                            <ModalHeader>Incluir Tipo Turismo</ModalHeader>
-                            <ModalBody>
-                                <div className="form-group">
-                                    <label>Nome: </label>
-                                    <br />
-                                    <input type="text" className="form-control" onChange={(e) => setTipoTurismoNome(e.target.value)} />
-                                    <br />
-                                </div>
-                            </ModalBody>
-                            <ModalFooter>
-                                <button className="btn btncadastrarmodal" onClick={() => pedidoPost()}>Cadastrar</button>{"  "}
-                                <button className="btn btncancelarmodal" onClick={() => abrirFecharModalInserir()}>Cancelar</button>
-                            </ModalFooter>
-                        </Modal>
-                        <Modal isOpen={modalEditar}>
-                            <ModalHeader>Editar Tipo Turismo</ModalHeader>
-                            <ModalBody>
-                                <div className="form-group">
-                                    <label>ID: </label><br />
-                                    <input type="text" className="form-control" readOnly value={tipoturismoId} /> <br />
 
-                                    <label>Nome:</label>
-                                    <input type="text" className="form-control" name="tipoturismoNome" onChange={(e) => setTipoTurismoNome(e.target.value)}
-                                        value={tipoturismoNome} />
-                                    <br />
-                                </div>
-                            </ModalBody>
-                            <ModalFooter>
-                                <button className="btn btnmodalverde  text-white" onClick={() => pedidoAtualizar()}>Alterar</button>{"  "}
-                                <button className="btn btnmodalcinza  text-white" onClick={() => abrirFecharModalEditar()}>Cancelar</button>
-                            </ModalFooter>
-                        </Modal>
-                        <Modal isOpen={modalDeletar}>
-                            <ModalBody>
-                                <label> Confirma a exclusão deste tipo Turismo : {tipoturismoNome} ?</label>
-                            </ModalBody>
-                            <ModalFooter>
-                                <button className='btn btnmodalverde  text-white' onClick={() => pedidoDeletar()}>Sim</button>
-                                <button className='btn btnmodalcinza  text-white' onClick={() => abrirFecharModalDeletar()}>Não</button>
-                            </ModalFooter>
-                        </Modal>
+            <Modal isOpen={modalInserir}>
+                <ModalHeader>Incluir Tipo Turismo</ModalHeader>
+                <ModalBody>
+                    <div className="form-group">
+                        <label>Nome: </label>
+                        <br />
+                        <input type="text" className="form-control text-sm" 
+                        placeholder='Digite o Tipo de Turismo'
+                        onChange={(e) => setTipoTurismoNome(e.target.value)} />
+                        <br />
+                    </div>
+                </ModalBody>
+                <ModalFooter>
+                    <button className="btn btncadastrarmodal" onClick={() => pedidoPost()}>Cadastrar</button>{"  "}
+                    <button className="btn btncancelarmodal" onClick={() => abrirFecharModalInserir()}>Cancelar</button>
+                </ModalFooter>
+            </Modal>
+            <Modal isOpen={modalEditar}>
+                <ModalHeader>Editar Tipo Turismo</ModalHeader>
+                <ModalBody>
+                    <div className="form-group">
+                        <label>ID: </label><br />
+                        <input type="text" className="form-control text-sm"
+                         readOnly value={tipoturismoId} /> <br />
 
-                    
+                        <label>Nome:</label>
+                        <input type="text" className="form-control" name="tipoturismoNome" onChange={(e) => setTipoTurismoNome(e.target.value)}
+                            value={tipoturismoNome} />
+                        <br />
+                    </div>
+                </ModalBody>
+                <ModalFooter>
+                    <button className="btn btnmodalverde  text-white" onClick={() => pedidoAtualizar()}>Alterar</button>{"  "}
+                    <button className="btn btnmodalcinza  text-white" onClick={() => abrirFecharModalEditar()}>Cancelar</button>
+                </ModalFooter>
+            </Modal>
+            <Modal isOpen={modalDeletar}>
+                <ModalBody>
+                    <label> Confirma a exclusão deste tipo Turismo : {tipoturismoNome} ?</label>
+                </ModalBody>
+                <ModalFooter>
+                    <button className='btn btnmodalverde  text-white' onClick={() => pedidoDeletar()}>Sim</button>
+                    <button className='btn btnmodalcinza  text-white' onClick={() => abrirFecharModalDeletar()}>Não</button>
+                </ModalFooter>
+            </Modal>
 
 
-    </div>
+
+
+        </div>
 
 
 

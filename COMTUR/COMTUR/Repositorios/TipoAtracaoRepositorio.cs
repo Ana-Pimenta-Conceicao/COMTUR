@@ -36,7 +36,7 @@ namespace COMTUR.Repositorios
 			TipoAtracaoModel TipoAtracaoPorId = await BuscarPorId(id);
 			if (TipoAtracaoPorId == null)
 			{
-				throw new Exception($"Usuário para o ID: {id} nao foi encontrado no banco de dados. ");
+				throw new Exception($"Tipo de atração para o ID: {id} nao foi encontrado no banco de dados. ");
 			}
 
 			TipoAtracaoPorId.Nome = tipoAtracao.Nome;
@@ -52,7 +52,7 @@ namespace COMTUR.Repositorios
 			TipoAtracaoModel TipoAtracaoPorId = await BuscarPorId(id);
 			if (TipoAtracaoPorId == null)
 			{
-				throw new Exception($"Usuário para o ID: {id} nao foi encontrado no banco de dados. ");
+				throw new Exception($"Tipo de atração para o ID: {id} nao foi encontrado no banco de dados. ");
 			}
 
 			_dbContext.TipoAtracao.Remove(TipoAtracaoPorId);

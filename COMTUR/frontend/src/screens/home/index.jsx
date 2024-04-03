@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SidebarAdm from "../../components/sidebarAdm";
-import NavbarAdm from "../../components/navbarAdm";
+import SidebarAdm from "../../components/admin/sidebarAdm";
+import NavbarAdm from "../../components/admin/navbarAdm";
 import { Card } from "reactstrap";
 
 const Home = () => {
@@ -22,13 +22,13 @@ const Home = () => {
                 <div
                   className="max-w-sm flex-row rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                   style={{
-                    background: "#FFD121",
+                    background: "#FDE964",
                     justifyContent: "center",
                     alignItems: "center",
                     height: 200,
                   }}
                 >
-                  <a href="./empresario">
+                  <a href="./tipousuario">
                     <img
                       className="rounded-t-lg w-full"
                       src="./src/assets/homeUsuario.png"
@@ -46,9 +46,9 @@ const Home = () => {
                     
                     }}
                   >
-                    <a href="./empresario">
+                    <a href="./tipousuario">
                       <h5 className="mb-2 pt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
-                        Empresários
+                        Usuários
                       </h5>
                     </a>
                   </div>

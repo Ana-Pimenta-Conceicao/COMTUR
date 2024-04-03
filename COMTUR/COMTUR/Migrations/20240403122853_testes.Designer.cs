@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240326112923_teste")]
-    partial class teste
+    [Migration("20240403122853_testes")]
+    partial class testes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -198,6 +198,33 @@ namespace COMTUR.Migrations
                     b.HasIndex("IdNoticia");
 
                     b.ToTable("imagemnoticia");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.ImagemTurismoModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("imagemTurismoid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IdTurismo")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Imagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagem");
+
+                    b.Property<string>("LegendaImagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("legendaImagem");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("imagemturismo");
                 });
 
             modelBuilder.Entity("COMTUR.Models.NoticiaModel", b =>

@@ -18,6 +18,7 @@ namespace COMTUR.Data
 		public DbSet<ImagemNoticiaModel> ImagemNoticia { get; set; }
 		public DbSet<ImagemAtracaoModel> ImagemAtracao { get; set; }
 		public DbSet<ImagemEmpresaModel> ImagemEmpresa { get; set; }
+		public DbSet<ImagemTurismoModel> ImagemTurismo { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -30,6 +31,7 @@ namespace COMTUR.Data
 			modelBuilder.ApplyConfiguration(new ImagemNoticiaMap());
 			modelBuilder.ApplyConfiguration(new ImagemAtracaoMap());
 			modelBuilder.ApplyConfiguration(new ImagemEmpresaMap());
+			modelBuilder.ApplyConfiguration(new ImagemTurismoMap());
 
 			base.OnModelCreating(modelBuilder);
 

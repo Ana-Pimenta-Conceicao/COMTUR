@@ -5,11 +5,12 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import logoSF from '../../assets/logoComturSF.png'
  
 import './folhasyle.css';
+import { useNavigate } from "react-router-dom";
  
 const NavbarUsr = () => {
   const tamanhoFonteInicial = 16;
   const cliquesMaximos = 4;
- 
+  const navigate = useNavigate();
   const [tamanhoFonte, setTamanhoFonte] = useState(tamanhoFonteInicial);
   const [cliques, setCliques] = useState(0);
   const [botaoSelecionado, setBotaoSelecionado] = useState(3); // Início selecionado inicialmente
@@ -147,7 +148,11 @@ const NavbarUsr = () => {
               />
               <label
                 className={`btn btnmenunav mr-1 ${botaoSelecionado === 5 ? 'btn-outline-warning' : 'btn-outline-black'}`}
-                htmlFor="btnradio5"
+                htmlFor="btnradio5" 
+                onClick={() => {
+                  navigate(`/todasNoticias`);
+                  window.location.reload();
+                }}
               >
                 Notícias
               </label>
@@ -162,4 +167,3 @@ const NavbarUsr = () => {
 };
  
 export default NavbarUsr;
- 

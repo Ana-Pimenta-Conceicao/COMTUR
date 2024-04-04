@@ -1,99 +1,82 @@
-import React, { useState, useEffect } from 'react';
-import "../login/folhasyle.css";
-import { Input } from 'reactstrap';
+import React, { useState } from "react";
+import { Eye, EyeSlash } from "@phosphor-icons/react";
+import logoComturSF from "../../assets/logoSF.svg";
+import comturBranco from "../../assets/comturBranco.svg";
 
-const Login = () => {
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const [showFirstCard, setShowFirstCard] = useState(true);
+export default function CadastroUsuario() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [isRotated, setIsRotated] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
-  useEffect(() => {
-    const handleResize = () => {
-      const windowWidth = window.innerWidth;
-      setIsSmallScreen(windowWidth < 768); // Adjust breakpoint as needed
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    // Cleanup function to remove event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const rotateLogo = () => {
+    setIsRotated(!isRotated);
+  };
 
   return (
-    <div className="bg-black" style={{ background: '#0000', width: '100%', padding: "4%", paddingTop: "2%", paddingBottom: "10%" }}>
-      <div>
-        <button className="btnvoltar">
-          <div className="d-flex align-items-center">
-            <img src="../src/assets/iconseta.png" />
-            <div className="ml-2" style={{ paddingLeft: "1%" }}>
-              Voltar
+    <div className="bg-black w-full min-h-screen">
+      <div className="flex flex-col md:flex-row h-full">
+        <div className="flex flex-col w-full md:w-auto pt-5 justify-center items-center sm:ml-32">
+          <img src={comturBranco} alt="Comtur Branco" className="sm:hidden block w-[180px] pt-4" />
+          <div className="bg-white sm:w-[450px] w-[300px] h-[400px] ml-2 mt-4 rounded-2xl">
+            <h1 className="text-xl font-light pl-4 pt-4 tracking-normal">
+              Bem Vindo de Volta!
+            </h1>
+            <h1 className="text-2xl font-semibold pl-4 pt-3 tracking-wide">
+              Efetuar Login
+            </h1>
+            <div className="pl-5 pr-5 pt-1">
+              <label htmlFor="email" className="font-semibold pt-4">
+                E-mail:
+              </label>
+              <br />
+              <input
+                id="email"
+                className="border-1 pl-3 rounded-md w-full h-[40px]"
+                type="email"
+                name="email"
+                placeholder="Digite seu email"
+                required
+              />
+              <br />
+              <label htmlFor="password" className="font-semibold pt-4">
+                Senha:
+              </label>
+              <br />
+              <div className="flex flex-row input-group w-full">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  className="border-1 pl-3 rounded-md w-[80%]  h-[40px]"
+                  placeholder="Digite a senha"
+                />
+                <button
+                  className="btn flex w-[20%] h-[40px] justify-center bg-[#DBDBDB]  border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <EyeSlash size={32} /> : <Eye size={30} />}
+                </button>
+              </div>
+              <div className="flex w-full justify-center pt-5">
+                <button className="text-white text-lg bg-black w-full h-[50px] rounded-md">
+                  Entrar
+                </button>
+              </div>
             </div>
           </div>
-        </button>
-      </div>
-      <div className="container display" style={{ background: 'white', width: '100%', marginTop: "2%", padding: "5% 5%" }}>
-        <div className="row">
-          {(!isSmallScreen || (isSmallScreen && showFirstCard)) && (
-            <div className={isSmallScreen ? "card-flex col-12" : "card-flex col-7"}>
-              <label className="titulo display">LOGIN</label>
-              <label className="display">Informe seus dados para acessar</label>
-              <div style={{ marginTop: "15px" }}>
-                <label className="formulario">E-mail:</label>
-                <input className={isSmallScreen ? "col-12 display c_text" : "col-9 display c_text"} type="email" name="email" id="email" placeholder="name@company.com" required="" />
-                <label style={{ marginTop: "10px" }} className="display formulario">
-                  Senha
-                </label>
-                <input className={isSmallScreen ? "col-12 display c_text" : "col-9 display c_text"} type="password" name="password" id="password" placeholder="••••••••" />
-
-                <div className="text-center" style={{ paddingRight: "30%", marginTop: "10px" }}>
-                  <label>Esqueci minha senha</label>
-                </div>
-                <div className="text-center display" style={{ marginTop: "15px", paddingRight: "30%" }}>
-                  <button className="titulo btn btncad">ENTRAR</button>
-                </div>
-              </div>
-              {isSmallScreen && (
-                <div className="text-center" style={{ marginTop: "15px", paddingRight: "30%" }}>
-                  <button className="btn btncad" onClick={() => setShowFirstCard(false)}>Ver Cadastro</button>
-                </div>
-              )}
+        </div>
+        <div className="hidden sm:block">
+          <div className="flex w-full md:w-auto h-screen justify-center items-center">
+            <div className="flex flex-col sm:ml-48 w-full justify-center items-center ">
+              <img src={logoComturSF} alt="Logo" className={`w-[400px] cursor-pointer duration-500 ${isRotated ? 'rotate-[360deg]' : ''}`}
+               onClick={rotateLogo} />
+              <img src={comturBranco} alt="Comtur Branco" className="w-[200px] pt-4" />
             </div>
-          )}
-          {(!isSmallScreen || (isSmallScreen && !showFirstCard)) && (
-            <div className={isSmallScreen ? "card-flex col-12" : "card-flex col-5"}>
-              <label className="titulo display">CADASTRO</label>
-              <label className="display">Ainda não possui conta?</label>
-              <label className="display">Faça seu cadastro gratuitamente</label>
-              <div>
-                <button className="btncad" style={{ marginTop: "25px", paddingRight: "5%" }}>
-                  <div className="d-flex align-items-center">
-                    <img src="../src/assets/empresario.png" width="20%" height="20%" />
-                    <div style={{ paddingLeft: "7%", textAlign: 'left' }}>
-                      <label className="display btntipocad">Empresário</label>
-                      <label className="display">Clique para cadastrar seu negócio</label>
-                    </div>
-                  </div>
-                </button>
-
-                <button className="btncad" style={{ marginTop: "15px", paddingRight: "13%" }}>
-                  <div className="d-flex align-items-center">
-                    <img src="../src/assets/cidadao.png" width="20%" height="20%" />
-                    <div className="ml-2" style={{ paddingLeft: "7%", textAlign: 'left' }}>
-                      <label className="display btntipocad">Cidadão</label>
-                      <label className="display">Clique para se cadastrar</label>
-                    </div>
-                  </div>
-                </button>
-              </div>
-              {isSmallScreen && (
-                <div className="text-center" style={{ marginTop: "15px", paddingRight: "30%" }}>
-                  <button className="btn btncad" onClick={() => setShowFirstCard(true)}>Voltar para o Login</button>
-                </div>
-              )}
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
-export default Login;

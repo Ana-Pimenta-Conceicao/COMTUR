@@ -14,6 +14,8 @@ const SidebarAdm = () => {
     { title: "Atrações ", src: "tipoAtracao" },
     { title: "Notícia", src: "Noticia" },
     { title: "Dashboard", src: "iconeDashboard" },
+    { title: "Sair", src: "login" },
+    
   ];
 
   return (
@@ -38,7 +40,7 @@ const SidebarAdm = () => {
             className={`text-white origin-left font-medium text-xl duration-200 ${!open && "scale-0"
               }`}
           >
-            Rodrigo Faro
+            "Nome Usuario"
           </h1>
         </div>
         <ul className="pt-6" style={{ padding: 0, position: 'relative' }} >

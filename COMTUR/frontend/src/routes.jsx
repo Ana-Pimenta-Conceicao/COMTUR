@@ -21,6 +21,7 @@ import CadastroEmpresario from "./screens/cadastro/cadastroEmpresario";
 
 
 
+
 const AppRoutes = () => {
     return (
         <Router>
@@ -36,12 +37,12 @@ const AppRoutes = () => {
                 <Route path="/administrador" element={<Administrador/>} />
                 <Route path="/tipousuario" element={<TipoUsuario/>} />
                 <Route path="/perfiladministrador/:id" element={<PerfilAdministrador/> } />
-                <Route path="/usuarios" element={ <Usuario/> } />
+                <Route path="/usuario" element={ <Usuario/> } />
                 <Route path="/login" element={ <Login/> } />
-                <Route path="/administrador" element={ <Administrador/> } />
                 <Route path="/todasnoticias" element={<TodasNoticias/>} />
                 <Route path="/cadastrousuario" element={<CadastroUsuario/>} />
                 <Route path="/cadastroempresario" element={<CadastroEmpresario/>} />
+
             
             </Routes>
         </Router>

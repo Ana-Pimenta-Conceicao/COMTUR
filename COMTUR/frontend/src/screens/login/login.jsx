@@ -2,8 +2,18 @@ import React, { useState } from "react";
 import { Eye, EyeSlash, ArrowLeft } from "@phosphor-icons/react";
 import logoComturSF from "../../assets/logoSF.svg";
 import comturBranco from "../../assets/comturBranco.svg";
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 export default function CadastroUsuario() {
+
+  const navigate = useNavigate();
+  const baseUrl = "https://localhost:7256/api/Login";
+
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erroLogin, setErroLogin] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
   const [isRotated, setIsRotated] = useState(false);
   const togglePasswordVisibility = () => {
@@ -14,14 +24,61 @@ export default function CadastroUsuario() {
     setIsRotated(!isRotated);
   };
 
+  const determinarRota = (tipoUsuario) => {
+    switch (tipoUsuario) {
+      case 1:
+        return "/inicio";
+      case 2: // funcionário
+        return "/home";
+      case 3:
+        return "/empresario";
+      case 4:
+        return "/home";
+      default:
+        return "/login"
+    }
+  };
+
+  const login = async () => {
+    setErroLogin("");
+
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("senha", senha);
+
+    try {
+      const response = await axios.post(baseUrl + "/Login", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log(response.data);
+
+      if (response.data.autentication) {
+        console.log(2);
+        localStorage.setItem("token", response.data.message.tokenUsuario);
+        localStorage.setItem("tipoUsuario", response.data.message.tipoUsuario);
+
+        navigate(determinarRota(response.data.message.tipoUsuario));
+      } else {
+        console.log(3);
+        setErroLogin(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      setErroLogin(error.response.data.message);
+    }
+  };
+
   return (
     <div className="bg-black w-full min-h-screen">
       <div className="flex flex-col md:flex-row h-full">
-          <div className="flex flex-row text-lg text-white pt-4 pl-8">
+        <div className="flex flex-row text-lg text-white pt-4 pl-2">
           <ArrowLeft className="mr-3" size={26} />
-            Voltar
-          </div>
-        <div className="flex flex-col w-full md:w-auto pt-5 justify-center items-center sm:ml-32">
+          Voltar
+        </div>
+        <div className="flex flex-col w-full pt-5 justify-center items-center">
 
           <img
             src={comturBranco}
@@ -29,7 +86,7 @@ export default function CadastroUsuario() {
             className="sm:hidden block w-[180px] pt-4"
           />
 
-          <div className="bg-white sm:w-[450px] w-[300px] h-[450px] ml-2 sm:ml-48  mt-4 rounded-2xl">
+          <div className="bg-white sm:w-[450px] w-[300px] h-[480px] ml-2 sm:ml-24  mt-4 rounded-2xl">
             <div className="">
               <h1 className="text-xl font-light pl-4 pt-4 tracking-normal">
                 Bem Vindo de Volta!
@@ -49,6 +106,9 @@ export default function CadastroUsuario() {
                   name="email"
                   placeholder="Digite seu email"
                   required
+                  aria-required="true"
+                  aria-label="E-mail obrigatório"
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <br />
                 <label htmlFor="password" className="font-semibold pt-4">
@@ -61,6 +121,10 @@ export default function CadastroUsuario() {
                     type={showPassword ? "text" : "password"}
                     className="border-1 pl-3 rounded-md w-[80%]  h-[40px]"
                     placeholder="Digite a senha"
+                    required
+                    aria-required="true"
+                    aria-label="Senha obrigatória"
+                    onChange={(e) => setSenha(e.target.value)}
                   />
                   <button
                     className="btn flex w-[20%] h-[40px] justify-center bg-white text-black  border-y-[#DBDBDB] border-r-[#DBDBDB] hover:text-[#FFD121] "
@@ -72,17 +136,22 @@ export default function CadastroUsuario() {
                 </div>
               </div>
 
-             
+              <label htmlFor="erro" className="font-semibold pt-4">
+                {erroLogin}
+              </label>
 
               <div className="flex flex-col w-full justify-center pt-4 px-4">
-                <button className="text-white text-lg bg-black w-full h-[50px] rounded-md">
+                <button className="text-white text-lg bg-black w-full h-[50px] rounded-md" onClick={(e) => login()}>
                   Entrar
                 </button>
               </div>
 
               <div className="flex flex-col items-center pt-2 sm:text-lg text-sm">
                 <h2 className="text-gray-500">Ainda não tem uma conta?</h2>
-                <h2 className="uppercase underline font-bold">Cadastre-se</h2>
+                <h2 className="uppercase underline font-bold" onClick={() => {
+                  navigate(`/cadastrousuario`);
+                  window.location.reload();
+                }}>Cadastre-se</h2>
               </div>
             </div>
           </div>
@@ -90,13 +159,12 @@ export default function CadastroUsuario() {
 
         <div className="hidden sm:block w-full justify-center">
           <div className="flex w-full md:w-auto h-screen justify-center items-center">
-            <div className="flex flex-col sm:ml-48 w-full justify-center items-center ">
+            <div className="flex flex-col sm:ml-20 w-full justify-center items-center ">
               <img
                 src={logoComturSF}
                 alt="Logo"
-                className={`w-[400px] cursor-pointer duration-500 ${
-                  isRotated ? "rotate-[360deg]" : ""
-                }`}
+                className={`w-[400px] cursor-pointer duration-500 ${isRotated ? "rotate-[360deg]" : ""
+                  }`}
                 onClick={rotateLogo}
               />
               <img

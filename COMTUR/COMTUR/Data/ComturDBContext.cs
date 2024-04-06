@@ -37,10 +37,10 @@ namespace COMTUR.Data
 
 			modelBuilder.Entity<UsuarioModel>().HasData(
 		
-			new UsuarioModel { Id = 1, Nome = "usuario", Telefone = "123456", EmailUsuario = "usuario@gmail.com", SenhaUsuario = "usuario", TipoUsuario = TipoUsuario.Usuario },
-			new UsuarioModel { Id = 2, Nome = "funcionario", Telefone = "123456", EmailUsuario = "usuario@gmail.com", SenhaUsuario = "funcionario", TipoUsuario = TipoUsuario.Funcionario },
-			new UsuarioModel { Id = 3, Nome = "empresario", Telefone = "123456", EmailUsuario = "usuario@gmail.com", SenhaUsuario = "empresario", TipoUsuario = TipoUsuario.Empresario },
-			new UsuarioModel { Id = 4, Nome = "administrador", Telefone = "123456", EmailUsuario = "usuario@gmail.com", SenhaUsuario = "administrador", TipoUsuario = TipoUsuario.Administrador }
+			new UsuarioModel { Id = 1, Nome = "Usuário", Telefone = "(11) 11111-1111", EmailUsuario = "usuario@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Usuario },
+			new UsuarioModel { Id = 2, Nome = "Funcionário", Telefone = "(22) 22222-2222", EmailUsuario = "funcionario@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Funcionario },
+			new UsuarioModel { Id = 3, Nome = "Empresário", Telefone = "(33) 33333-3333", EmailUsuario = "empresario@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Empresario },
+			new UsuarioModel { Id = 4, Nome = "Administrador", Telefone = "(44) 44444-4444", EmailUsuario = "administrador@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Administrador }
 			);
 		}
 	}

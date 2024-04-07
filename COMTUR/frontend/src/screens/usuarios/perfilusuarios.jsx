@@ -3,7 +3,6 @@ import axios from "axios";
 import SidebarAdm from "../../components/admin/sidebarAdm";
 import NavBarAdm from "../../components/admin/navbarAdm";
 import { useParams } from "react-router-dom";
-import "./VisualizarPerfil.css"; // Importando arquivo de estilos
 
 export default function VisualizarPerfil({ userType }) {
   const { id } = useParams();

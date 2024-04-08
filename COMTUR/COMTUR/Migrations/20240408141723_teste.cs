@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class Login : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -186,6 +186,48 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "anuncio",
+                columns: table => new
+                {
+                    anuncioid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nomeEmpresa = table.Column<string>(type: "text", nullable: false),
+                    imagemAnuncio = table.Column<string>(type: "text", nullable: true),
+                    legendaAnuncio = table.Column<string>(type: "text", nullable: true),
+                    DescricaoAnuncio = table.Column<string>(type: "text", nullable: false),
+                    IdTipoTurismo = table.Column<int>(type: "integer", nullable: false),
+                    IdEmpresa = table.Column<int>(type: "integer", nullable: false),
+                    EmpresaModelId = table.Column<int>(type: "integer", nullable: true),
+                    TipoTurismoModelId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_anuncio", x => x.anuncioid);
+                    table.ForeignKey(
+                        name: "FK_anuncio_empresa_EmpresaModelId",
+                        column: x => x.EmpresaModelId,
+                        principalTable: "empresa",
+                        principalColumn: "empresaid");
+                    table.ForeignKey(
+                        name: "FK_anuncio_empresa_IdEmpresa",
+                        column: x => x.IdEmpresa,
+                        principalTable: "empresa",
+                        principalColumn: "empresaid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_anuncio_tipoturismo_IdTipoTurismo",
+                        column: x => x.IdTipoTurismo,
+                        principalTable: "tipoturismo",
+                        principalColumn: "tipoturismoid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_anuncio_tipoturismo_TipoTurismoModelId",
+                        column: x => x.TipoTurismoModelId,
+                        principalTable: "tipoturismo",
+                        principalColumn: "tipoturismoid");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "imagemempresa",
                 columns: table => new
                 {
@@ -216,6 +258,26 @@ namespace COMTUR.Migrations
                     { 3, "empresario@gmail.com", null, "Empresário", "123456", "(33) 33333-3333", 3 },
                     { 4, "administrador@gmail.com", null, "Administrador", "123456", "(44) 44444-4444", 4 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_anuncio_EmpresaModelId",
+                table: "anuncio",
+                column: "EmpresaModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_anuncio_IdEmpresa",
+                table: "anuncio",
+                column: "IdEmpresa");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_anuncio_IdTipoTurismo",
+                table: "anuncio",
+                column: "IdTipoTurismo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_anuncio_TipoTurismoModelId",
+                table: "anuncio",
+                column: "TipoTurismoModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_atracao_IdTipoAtracao",
@@ -251,6 +313,9 @@ namespace COMTUR.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "anuncio");
+
             migrationBuilder.DropTable(
                 name: "imagematracao");
 

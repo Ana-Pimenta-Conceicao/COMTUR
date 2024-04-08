@@ -20,6 +20,9 @@ namespace COMTUR.Data.Map
 				   .HasForeignKey(im => im.IdEmpresa)
 				   .IsRequired()
 				   .OnDelete(DeleteBehavior.Cascade);
+
+			// Relacionamento Empresa com Anuncio
+			builder.HasMany(x => x.AnuncioEmpresa).WithOne(x => x.EmpresaModel).IsRequired().OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

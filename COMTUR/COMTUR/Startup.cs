@@ -121,6 +121,8 @@ namespace COMTUR
 			services.AddScoped<IImagemEmpresaRepositorio, ImagemEmpresaRepositorio>();
 			// Dependência: ImagemTurismo
 			services.AddScoped<IImagemTurismoRepositorio, ImagemTurismoRepositorio>();
+			// Dependência: Anuncio
+			services.AddScoped<IAnuncioRepositorio, AnuncioRepositorio>();
 
 		}
 

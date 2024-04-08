@@ -17,7 +17,7 @@ import TipoAtracao from "./screens/tipoatracao/tipoatracao";
 import TodasNoticias from "./screens/noticia/todasNoticias";
 import CadastroUsuario from "./screens/cadastro/cadastrousuario";
 import CadastroEmpresario from "./screens/cadastro/cadastroEmpresario";
-
+import PerfilUsuario from "./screens/usuarios/perfilusuarios";
 
 
 
@@ -42,6 +42,7 @@ const AppRoutes = () => {
                 <Route path="/todasnoticias" element={<TodasNoticias/>} />
                 <Route path="/cadastrousuario" element={<CadastroUsuario/>} />
                 <Route path="/cadastroempresario" element={<CadastroEmpresario/>} />
+                <Route path="/perfilUsuario/:id" element={ <PerfilUsuario/> } />
 
             
             </Routes>

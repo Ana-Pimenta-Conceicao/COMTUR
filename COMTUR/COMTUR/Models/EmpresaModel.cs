@@ -40,8 +40,11 @@ namespace COMTUR.Models
 		[ForeignKey("usuarioid")]
 		public int IdUsuario { get; set; }
 
-		// relação ImagemEmpresa
+		// relação com ImagemEmpresa
 		public ICollection<ImagemEmpresaModel>? ImagemEmpresa { get; set; }
+
+		// relação com Anuncio
+		public ICollection<AnuncioModel>? AnuncioEmpresa { get; set; }
 
 	}
 }

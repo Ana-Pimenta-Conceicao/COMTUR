@@ -23,7 +23,12 @@ namespace COMTUR.Repositorios
 			return await _dbContext.Usuario.Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
 
-		public async Task<List<UsuarioModel>> BuscarUsuario()
+        public async Task<UsuarioModel> BuscarPorEmail(string email)
+        {
+            return await _dbContext.Usuario.Where(x => x.EmailUsuario.ToUpper() == email.ToUpper()).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<UsuarioModel>> BuscarUsuario()
 		{
 			return await _dbContext.Usuario.ToListAsync();
 		}

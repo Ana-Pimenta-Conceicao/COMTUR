@@ -349,36 +349,36 @@ namespace COMTUR.Migrations
                         {
                             Id = 1,
                             EmailUsuario = "usuario@gmail.com",
-                            Nome = "usuario",
-                            SenhaUsuario = "usuario",
-                            Telefone = "123456",
+                            Nome = "Usuário",
+                            SenhaUsuario = "123456",
+                            Telefone = "(11) 11111-1111",
                             TipoUsuario = 1
                         },
                         new
                         {
                             Id = 2,
-                            EmailUsuario = "usuario@gmail.com",
-                            Nome = "funcionario",
-                            SenhaUsuario = "funcionario",
-                            Telefone = "123456",
+                            EmailUsuario = "funcionario@gmail.com",
+                            Nome = "Funcionário",
+                            SenhaUsuario = "123456",
+                            Telefone = "(22) 22222-2222",
                             TipoUsuario = 2
                         },
                         new
                         {
                             Id = 3,
-                            EmailUsuario = "usuario@gmail.com",
-                            Nome = "empresario",
-                            SenhaUsuario = "empresario",
-                            Telefone = "123456",
+                            EmailUsuario = "empresario@gmail.com",
+                            Nome = "Empresário",
+                            SenhaUsuario = "123456",
+                            Telefone = "(33) 33333-3333",
                             TipoUsuario = 3
                         },
                         new
                         {
                             Id = 4,
-                            EmailUsuario = "usuario@gmail.com",
-                            Nome = "administrador",
-                            SenhaUsuario = "administrador",
-                            Telefone = "123456",
+                            EmailUsuario = "administrador@gmail.com",
+                            Nome = "Administrador",
+                            SenhaUsuario = "123456",
+                            Telefone = "(44) 44444-4444",
                             TipoUsuario = 4
                         });
                 });

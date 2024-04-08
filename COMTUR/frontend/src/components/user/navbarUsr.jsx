@@ -158,7 +158,10 @@ const NavbarUsr = () => {
               </label>
             </li>
           </ol>
-          <label className="btn btnmenulogin btn-warning ml-3 mt-1" htmlFor="Acessar">Entrar/Cadastrar</label>
+          <label className="btn btnmenulogin btn-warning ml-3 mt-1" htmlFor="Acessar" onClick={() => {
+                  navigate(`/login`);
+                  window.location.reload();
+                }}>Entrar/Cadastrar</label>
         </div>
       </nav>
      

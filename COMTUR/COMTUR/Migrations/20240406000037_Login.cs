@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class testes : Migration
+    public partial class Login : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -211,10 +211,10 @@ namespace COMTUR.Migrations
                 columns: new[] { "usuarioid", "emailUsuario", "imagemPerfilUsuario", "nome", "senhaUsuario", "telefone", "tipoUsuario" },
                 values: new object[,]
                 {
-                    { 1, "usuario@gmail.com", null, "usuario", "usuario", "123456", 1 },
-                    { 2, "usuario@gmail.com", null, "funcionario", "funcionario", "123456", 2 },
-                    { 3, "usuario@gmail.com", null, "empresario", "empresario", "123456", 3 },
-                    { 4, "usuario@gmail.com", null, "administrador", "administrador", "123456", 4 }
+                    { 1, "usuario@gmail.com", null, "Usuário", "123456", "(11) 11111-1111", 1 },
+                    { 2, "funcionario@gmail.com", null, "Funcionário", "123456", "(22) 22222-2222", 2 },
+                    { 3, "empresario@gmail.com", null, "Empresário", "123456", "(33) 33333-3333", 3 },
+                    { 4, "administrador@gmail.com", null, "Administrador", "123456", "(44) 44444-4444", 4 }
                 });
 
             migrationBuilder.CreateIndex(

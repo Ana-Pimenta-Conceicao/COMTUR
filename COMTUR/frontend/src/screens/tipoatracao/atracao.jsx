@@ -213,10 +213,13 @@ function Atracao() {
     }
   };
 
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
-    <div className="h-screen flex">
-      <SidebarAdm />
-      <div className="flex-2 container-fluid">
+    <div className="home">
+      <div className="h-screen flex fixed">
+        <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
+      </div>
+      <div className="flex-1 container-fluid" style={{ paddingLeft: sidebarOpen ? 200 : 100 }}>
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[20px]">
           <h1 className="text-3xl font-semibold pb-2">Lista de Atração</h1>

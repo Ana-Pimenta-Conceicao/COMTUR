@@ -29,10 +29,13 @@ export default function VisualizarPerfil({ userType }) {
     return <p>Carregando...</p>;
   }
 
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
-    <div className="h-screen flex">
-      <SidebarAdm />
-      <div className="flex-2 container-fluid">
+    <div className="home">
+      <div className="h-screen flex fixed">
+        <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
+      </div>
+      <div className="flex-1 container-fluid" style={{ paddingLeft: sidebarOpen ? 200 : 100 }}>
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[16px]">
           <h1 className="text-2xl font-semibold pb-2">

@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 
-const SidebarAdm = () => {
+const SidebarAdm = ({setOpen, open}) => {
 
-  const [open, setOpen] = useState(true);
+
 
   const Menus = [
     { title: "Início", src: "Home" , gap:true},
@@ -19,15 +19,15 @@ const SidebarAdm = () => {
   ];
 
   return (
-    <div className="sidebar" style={{ height: '100vh' }}>
+    <div className="sidebar fixed pr-20" style={{ height: '100vh' }}>
       <div
         className={` ${open ? "w-52" : "w-20"
-          } bg-black h-screen pl-5 pr-5  pt-8 relative duration-300`}
+          } bg-black h-screen pl-5 pr-5 pt-8 relative duration-300`}
       >
         <img
           src=" ../src/assets/control.png"
           className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
-           border-2 rounded-full  ${!open && "rotate-180"}`}
+           border-2 rounded-full  ${!open && "rotate-180 "}`}
           onClick={() => setOpen(!open)}
         />
         <div className="flex gap-x-4 items-center">

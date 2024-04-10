@@ -10,28 +10,34 @@ import BtnModaisIMG from "../../components/botoes/btnModaisIMG";
 import SidebarAdm from "../../components/admin/sidebarAdm";
 import NavBarAdm from "../../components/admin/navbarAdm";
 import { useNavigate } from "react-router-dom";
+import Alertas from "../../components/alerts/alerts";
 import {
   CaretLeft,
-  CaretRight,
-  Pencil,
-  Trash,
-  Eye,
-  FilePlus,
+  CaretRight
 } from "@phosphor-icons/react";
 
 export default function Noticia() {
   const baseUrl = "https://localhost:7256/api/Noticia";
   const baseUrlImagem = "https://localhost:7256/api/ImagemNoticia";
 
-
   const [data, setData] = useState([]);
 
   const [atualizarData, setAtualizarData] = useState(true);
 
+  const [cadastroSucesso, setCadastroSucesso] = useState(false);
+  
+  const handleCadastroSucesso = () => {
+    setCadastroSucesso(true);
+  };
+
+  const handleAlertClose = () => {
+    setCadastroSucesso(false);
+  };
+
   const [modalInserir, setModalInserir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
-
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [noticiaTitulo, setNoticiaTitulo] = useState("");
   const [noticiaSubtitulo, setNoticiaSubtitulo] = useState("");
   const [noticiaConteudo, setNoticiaConteudo] = useState("");
@@ -39,6 +45,7 @@ export default function Noticia() {
   const [noticiaHoraPublicacao, setNoticiaHoraPublicacao] = useState("");
   const [noticiaLegendaImagem, setNoticiaLegendaImagem] = useState([]);
   const [imagensNoticia, setImagensNoticia] = useState([]);
+  
 
   const [noticiaId, setNoticiaId] = useState("");
 
@@ -63,9 +70,9 @@ export default function Noticia() {
     setNoticiaConteudo(noticia.conteudo);
     setNoticiaDataPublicacao(formatarDataParaExibicao(noticia.dataPublicacao));
     setNoticiaHoraPublicacao(noticia.horaPublicacao);
-    
+
     setImagensNoticia(noticia.imagemNoticia);
-  console.log(noticia.imagemNoticia);
+    console.log(noticia.imagemNoticia);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar(/*noticia.id*/);
@@ -76,12 +83,9 @@ export default function Noticia() {
     }
   };
 
-
-  const VisualizarTodasNoticias  = () => {
-
+  const VisualizarTodasNoticias = () => {
     navigate(`/todasnoticias`);
-
-  }
+  };
 
   const abrirFecharModalInserir = () => {
     modalInserir ? limparDados() : null;
@@ -178,6 +182,7 @@ export default function Noticia() {
       abrirFecharModalInserir();
       limparDados();
       setAtualizarData(true);
+      setCadastroSucesso(true); 
     } catch (error) {
       console.log(error);
     }
@@ -230,6 +235,8 @@ export default function Noticia() {
           return noticia;
         });
       });
+
+      
 
       abrirFecharModalEditar();
       await pedidoPutImagens();
@@ -295,7 +302,7 @@ export default function Noticia() {
   }, [atualizarData]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 9;
   const totalItems = data.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -340,13 +347,16 @@ export default function Noticia() {
     }
   }
 
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+
   return (
     <div className="home">
       <div className="h-screen flex fixed">
         <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
       </div>
-      <div className="flex-1 container-fluid" style={{ paddingLeft: sidebarOpen ? 200 : 100 }}>
+      <div
+        className="flex-1 container-fluid"
+        style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
+      >
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[20px]">
           <h1 className="text-3xl font-semibold pb-2">Lista de Notícias</h1>
@@ -419,9 +429,9 @@ export default function Noticia() {
             </div>
           </div>
           <div className="float-right flex-auto py-6">
-          <BtnAcao
-            funcao={() => VisualizarTodasNoticias()}
-            acao="Publicados"
+            <BtnAcao
+              funcao={() => VisualizarTodasNoticias()}
+              acao="Publicados"
             />
 
             <BtnAcao
@@ -429,9 +439,10 @@ export default function Noticia() {
               acao="Cadastrar"
             />
           </div>
+         
         </div>
+      {cadastroSucesso && <Alertas onClose={handleAlertClose} />}
       </div>
-
       <Modal
         className="modal-xl-gridxl"
         isOpen={modalInserir}
@@ -505,10 +516,13 @@ export default function Noticia() {
                   onChange={(e) => {
                     convertImageToBase64(e.target.files[0], (result) => {
                       if (result) {
-                        const objetoImagem = {"imagem": result, "legendaImagem": ""};
+                        const objetoImagem = {
+                          imagem: result,
+                          legendaImagem: "",
+                        };
                         setImagensNoticia((prevImagens) => [
                           ...prevImagens,
-                          objetoImagem ,
+                          objetoImagem,
                         ]);
                       }
                       // Limpa o campo de entrada de arquivo após a seleção
@@ -521,47 +535,46 @@ export default function Noticia() {
                 {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map(
                   (imagem, index) =>
                     index % 1 === 0 && (
-                      <div className="flex pt-3 justify-end " key={`row-${index}`}>
+                      <div
+                        className="flex pt-3 justify-end "
+                        key={`row-${index}`}
+                      >
                         {Array.from(
                           {
                             length: Math.min(1, imagensNoticia.length - index),
                           },
                           (_, i) => (
-                            <div
-                              key={index}
-                              className="flex flex-col  pr-5 "
-                            >
+                            <div key={index} className="flex flex-col  pr-5 ">
                               <div className="flex w-[140px] justify-end">
-                              <img
-                                className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
-                                src={
-                                  imagensNoticia[index + i].imagem
-                                }
-                                alt={`Imagem ${index}`}
-                              />
-                              <div className="flex flex-col pl-3 justify-end">
-                                <label>Legenda:</label>
-                                <input
-                                  type="text"
-                                  className="form-control text-sm w-[286px] mb-0 "
-                                  onChange={(e) =>
-                                    setImagensNoticia((prevImagens) => {
-                                      const novasImagens = [...prevImagens];
-                                      novasImagens[index + i].legendaImagem = e.target.value;
-                                      return novasImagens;
-                                    })
-                                  }
-                                  placeholder="Digite a legenda"
+                                <img
+                                  className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
+                                  src={imagensNoticia[index + i].imagem}
+                                  alt={`Imagem ${index}`}
                                 />
-                                <br />
-                                <button
-                                  className="w-[140px] rounded-md text-md text-white  bg-red-800 hover:bg-red-900"
-                                  onClick={() => removeImagemByIndex(index)}
-                                >
-                                  Remover
-                                </button>
+                                <div className="flex flex-col pl-3 justify-end">
+                                  <label>Legenda:</label>
+                                  <input
+                                    type="text"
+                                    className="form-control text-sm w-[286px] mb-0 "
+                                    onChange={(e) =>
+                                      setImagensNoticia((prevImagens) => {
+                                        const novasImagens = [...prevImagens];
+                                        novasImagens[index + i].legendaImagem =
+                                          e.target.value;
+                                        return novasImagens;
+                                      })
+                                    }
+                                    placeholder="Digite a legenda"
+                                  />
+                                  <br />
+                                  <button
+                                    className="w-[140px] rounded-md text-md text-white  bg-red-800 hover:bg-red-900"
+                                    onClick={() => removeImagemByIndex(index)}
+                                  >
+                                    Remover
+                                  </button>
+                                </div>
                               </div>
-                            </div>
                             </div>
                           )
                         )}
@@ -580,7 +593,13 @@ export default function Noticia() {
           </div>
         </ModalBody>
       </Modal>
-      <Modal className="modal-xl-gridxl" isOpen={modalEditar} style={{ maxWidth: "1000px" }}>
+
+
+      <Modal
+        className="modal-xl-gridxl"
+        isOpen={modalEditar}
+        style={{ maxWidth: "1000px" }}
+      >
         <ModalHeader>Editar Noticia</ModalHeader>
         <ModalBody>
           <div className="grid grid-cols-2 ">
@@ -634,7 +653,6 @@ export default function Noticia() {
               </div>
             </div>
 
-
             <div className="flex flex-col col-span-1  pl-4  border-l-[1px]">
               <label>Imagem:</label>
               <input
@@ -644,10 +662,13 @@ export default function Noticia() {
                   Array.from(e.target.files).forEach((file) => {
                     convertImageToBase64(file, (result) => {
                       if (result) {
-                        const objetoImagem = {"imagem": result, "legendaImagem": ""};
+                        const objetoImagem = {
+                          imagem: result,
+                          legendaImagem: "",
+                        };
                         setImagensNoticia((prevImagens) => [
                           ...prevImagens,
-                          objetoImagem ,
+                          objetoImagem,
                         ]);
                       }
                     });
@@ -663,10 +684,16 @@ export default function Noticia() {
                   {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map(
                     (imagem, index) =>
                       index % 1 === 0 && (
-                        <div className="flex pt-3 justify-end " key={`row-${index}`}>
+                        <div
+                          className="flex pt-3 justify-end "
+                          key={`row-${index}`}
+                        >
                           {Array.from(
                             {
-                              length: Math.min(1, imagensNoticia.length - index),
+                              length: Math.min(
+                                1,
+                                imagensNoticia.length - index
+                              ),
                             },
                             (_, i) => (
                               <div
@@ -676,9 +703,7 @@ export default function Noticia() {
                                 <div className="flex w-[140px] justify-end">
                                   <img
                                     className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
-                                    src={
-                                      imagensNoticia[index + i].imagem
-                                    }
+                                    src={imagensNoticia[index + i].imagem}
                                   />
                                   <div className="flex flex-col pl-3 justify-end">
                                     <label>Legenda:</label>
@@ -688,17 +713,23 @@ export default function Noticia() {
                                       onChange={(e) =>
                                         setImagensNoticia((prevImagens) => {
                                           const novasImagens = [...prevImagens];
-                                          novasImagens[index + i].legendaImagem = e.target.value;
+                                          novasImagens[
+                                            index + i
+                                          ].legendaImagem = e.target.value;
                                           return novasImagens;
                                         })
                                       }
-                                      value={imagensNoticia[index + i].legendaImagem}
+                                      value={
+                                        imagensNoticia[index + i].legendaImagem
+                                      }
                                     />
                                     <br />
 
                                     <button
                                       className="w-[140px] rounded-md  mt-[2px] mb-3 text-md text-white p-[0.2px]  bg-red-800 hover:bg-red-900"
-                                      onClick={() => removeImagemByIndex(index + i)}
+                                      onClick={() =>
+                                        removeImagemByIndex(index + i)
+                                      }
                                     >
                                       Remover
                                     </button>
@@ -712,17 +743,19 @@ export default function Noticia() {
                   )}
                 </div>
               )}
-
-
             </div>
           </div>
           <div className="flex justify-between items-center px-[395px] pt-5">
-            <BtnModaisIMG funcao={() => pedidoAtualizar(noticiaId)} acao="Editar" />
-            <BtnModaisIMG funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
+            <BtnModaisIMG
+              funcao={() => pedidoAtualizar(noticiaId)}
+              acao="Editar"
+            />
+            <BtnModaisIMG
+              funcao={() => abrirFecharModalEditar()}
+              acao="Cancelar"
+            />
           </div>
         </ModalBody>
-
-
       </Modal>
       <Modal isOpen={modalDeletar}>
         <ModalBody>

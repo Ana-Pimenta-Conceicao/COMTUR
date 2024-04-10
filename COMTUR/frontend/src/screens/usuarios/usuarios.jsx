@@ -37,6 +37,7 @@ export default function Usuario() {
   const [imagemUser, setImagemUser] = useState("");
   const [idUser, setId] = useState("");
   const [editImage, setEditImage] = useState(false); // Estado para controlar se a imagem está sendo editada
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const navigate = useNavigate();
 
@@ -100,8 +101,6 @@ export default function Usuario() {
     setModalDeletar(!modalDeletar);
   };
 
-  
-
   const pedidoGet = async () => {
     await axios
       .get(baseUrl)
@@ -149,7 +148,6 @@ export default function Usuario() {
       console.log(error);
     }
   };
-
 
   function base64ToImage(base64String) {
     return `data:image/jpeg;base64,${base64String}`;
@@ -257,9 +255,7 @@ export default function Usuario() {
       if (user.imagemPerfilUsuario instanceof File) {
         return {
           ...user,
-          imagemPerfilUsuario: URL.createObjectURL(
-            user.imagemPerfilUsuario
-          ),
+          imagemPerfilUsuario: URL.createObjectURL(user.imagemPerfilUsuario),
         };
       }
       return user;
@@ -282,18 +278,18 @@ export default function Usuario() {
     setUserType(parseInt(e.target.value));
   };
 
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
     <div className="home">
       <div className="h-screen flex fixed">
         <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
       </div>
-      <div className="flex-1 container-fluid" style={{ paddingLeft: sidebarOpen ? 200 : 100 }}>
+      <div
+        className="flex-1 container-fluid"
+        style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
+      >
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[20px]">
-          <h1 className="text-3xl font-semibold pb-2">
-            Lista de Usuários
-          </h1>
+          <h1 className="text-3xl font-semibold pb-2">Lista de Usuários</h1>
           <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
           <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
             <div className="grid grid-cols-6 w-full border-0 bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
@@ -305,7 +301,6 @@ export default function Usuario() {
               <span className="flex col-span-2 justify-center items-center">
                 Ações
               </span>
-
             </div>
             <ul className="w-full">
               {currentItems.map((user) => (
@@ -424,7 +419,12 @@ export default function Usuario() {
             {/* select para selecionar o usuario*/}
             <label>Tipo Usuário:</label>
             <div>
-              <select className="form-control" id="userTypeSelect" value={userType} onChange={handleUserTypeChange}>
+              <select
+                className="form-control"
+                id="userTypeSelect"
+                value={userType}
+                onChange={handleUserTypeChange}
+              >
                 <option value={4}>Admistrador</option>
                 <option value={3}>Empresário</option>
                 <option value={2}>Funcionário</option>
@@ -515,7 +515,12 @@ export default function Usuario() {
             <br />
             <label>Tipo Usuário:</label>
             <div>
-              <select className="form-control" id="userTypeSelect" value={userType} onChange={handleUserTypeChange}>
+              <select
+                className="form-control"
+                id="userTypeSelect"
+                value={userType}
+                onChange={handleUserTypeChange}
+              >
                 <option value={4}>Admistrador</option>
                 <option value={3}>Empresário</option>
                 <option value={2}>Funcionário</option>
@@ -554,8 +559,7 @@ export default function Usuario() {
                     cursor: "pointer",
                   }}
                   onClick={() => pedidoRemoverImagem()}
-                >
-                </button>
+                ></button>
                 <br />
               </div>
             )}
@@ -586,9 +590,7 @@ export default function Usuario() {
       </Modal>
 
       <Modal isOpen={modalDeletar}>
-        <ModalBody>
-          Confirma a exclusão do Usuario: "{nomeUser}" ?
-        </ModalBody>
+        <ModalBody>Confirma a exclusão do Usuario: "{nomeUser}" ?</ModalBody>
         <ModalFooter>
           <button
             className="btn bg-red-800 hover:bg-red-900 text-white"

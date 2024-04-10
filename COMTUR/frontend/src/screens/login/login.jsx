@@ -203,8 +203,8 @@ export default function Login() {
 
               {/* Formulário de cadastro */}
               {showSignupForm && (
-                <div className="w-full">
-                  <div className="bg-white sm:mr-24 sm:w-[450px] w-[300px] h-[600px] ml-2 sm:ml-24 mt-4 rounded-2xl">
+                <div className="flex w-full">
+                  <div className="flex bg-white sm:mr-24 sm:w-[450px] w-[300px] h-[600px] ml-2 sm:ml-24 mt-4 rounded-2xl">
                     <div className="">
                       <h1 className="text-xl font-light pl-4 pt-3 tracking-normal">
                         É bom ter você por aqui!
@@ -338,17 +338,8 @@ export default function Login() {
                 </div>
               )}
             </div>
-
           </div>
         </div>
-        <div className="hidden sm:block w-full justify-center">
-          <div className="flex w-full md:w-auto h-screen justify-center items-center">
-            <div className="flex flex-col sm:ml-20 w-full justify-center items-center ">
-
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   );

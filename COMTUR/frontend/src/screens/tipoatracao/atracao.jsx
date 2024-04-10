@@ -42,7 +42,7 @@ function Atracao() {
 
   const [tipoAtracaoSelecionada, setTipoAtracaoSelecionada] = useState(null);
   const [tipoAtracaoOptions, setTipoAtracaoOptions] = useState([]);
-
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [atracaoSelecionado, setAtracaoSelecionado] = useState({
     id: '',
     nome: '',
@@ -213,7 +213,6 @@ function Atracao() {
     }
   };
 
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
     <div className="home">
       <div className="h-screen flex fixed">

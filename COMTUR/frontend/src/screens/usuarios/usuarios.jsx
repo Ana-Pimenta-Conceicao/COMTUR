@@ -100,9 +100,7 @@ export default function Usuario() {
     setModalDeletar(!modalDeletar);
   };
 
-  const toggleEditImage = () => {
-    setEditImage(!editImage); // Alternar entre editar e não editar a imagem
-  };
+  
 
   const pedidoGet = async () => {
     await axios
@@ -131,7 +129,8 @@ export default function Usuario() {
       // Se estiver vazio, fornecer uma imagem padrão
       const defaultImage = await fetch("./src/assets/userpadrao.png");
       const blob = await defaultImage.blob();
-      formData.append("imagemPerfilUsuario", blob);
+      const base64Image = await convertImageToBase64(blob);
+      formData.append("imagemPerfilUsuario", base64Image);
     }
 
     try {
@@ -422,23 +421,6 @@ export default function Usuario() {
             </div>
 
             <br />
-            <label>Confirmar senha:</label>
-            <div className="input-group">
-              <input
-                type={showPassword ? "text" : "password"}
-                className="form-control text-sm"
-                onChange={(e) => setSenha(e.target.value)}
-                placeholder="Digite a senha"
-              />
-              <button
-                className="btn btn-outline-secondary bg-[#DBDBDB]  border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
-                type="button"
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? <EyeSlash size={24} /> : <Eye size={24} />}
-              </button>
-            </div>
-            <br />
             {/* select para selecionar o usuario*/}
             <label>Tipo Usuário:</label>
             <div>
@@ -451,110 +433,6 @@ export default function Usuario() {
             </div>
 
             <br />
-            {/* Imagem, verificar */}
-            {/* Exibir imagem fixa apenas quando editImage for falso */}
-            {!editImage && (
-              <img  hidden src="./src/assets/userpadrao.png" alt="Imagem Fixa" />
-            )}
-            {/* aqui o usuário escolhe se deseja acionar imagem */}
-            {!editImage && (
-              <button className="btn bg-warning" onClick={toggleEditImage}>Adicionar Imagem</button>
-            )}
-            {/* Campo para adicionar imagem dentro da modal */}
-            {editImage && (
-              <>
-                {imagemUser && (
-                  <div
-                    className="bg-[#DBDBDB]   border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
-                    style={{ position: "relative", display: "inline-block" }}
-                  >
-                    {typeof imagemUser === "string" ? (
-                      <img
-                        src={base64ToImage(imagemUser)}
-                        alt="Preview"
-                        style={{ maxWidth: "100%", marginTop: "10px" }}
-                      />
-                    ) : (
-                      <img
-                        src={URL.createObjectURL(imagemUser)}
-                        alt="Preview"
-                        style={{ maxWidth: "100%", marginTop: "10px" }}
-                      />
-                    )}
-                    <button
-                      style={{
-                        position: "absolute",
-                        top: "15px",
-                        right: "5px",
-                        width: "30px",
-                        height: "30px",
-                        backgroundColor: "rgba(255, 255, 255, 0.5)",
-                        borderRadius: "50%",
-                        border: "none",
-                        padding: "0",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => pedidoRemoverImagem()}
-                    >
-                      X
-                    </button>
-                    <br />
-                  </div>
-                )}
-                <input
-                  type="file"
-                  className="form-control"
-                  onChange={(e) => setImagemUser(e.target.files[0])}
-                  value={imagemUser === "" ? "" : undefined}
-                />
-              </>
-            )}
-            {/* <label>Imagem:</label>
-            {imagemUser && modalEditar && (
-              <div
-                className="bg-[#DBDBDB]   border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
-                style={{ position: "relative", display: "inline-block" }}
-              >
-                {typeof imagemUser === "string" ? (
-                  <img
-                    src={base64ToImage(imagemUser)}
-                    alt="Preview"
-                    style={{ maxWidth: "100%", marginTop: "10px" }}
-                  />
-                ) : (
-                  <img
-                    src={URL.createObjectURL(imagemUser)}
-                    alt="Preview"
-                    style={{ maxWidth: "100%", marginTop: "10px" }}
-                  />
-                )}
-                <button
-                  style={{
-                    position: "absolute",
-                    top: "15px",
-                    right: "5px",
-                    width: "30px",
-                    height: "30px",
-                    backgroundColor: "rgba(255, 255, 255, 0.5)",
-                    borderRadius: "50%",
-                    border: "none",
-                    padding: "0",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => pedidoRemoverImagem()}
-                >
-                  X
-                </button>
-                <br />
-              </div>
-            )}
-            <input
-              type="file"
-              className="form-control"
-              onChange={(e) => setImagemUser(e.target.files[0])}
-              value={imagemUser === "" ? "" : undefined}
-            />
-            <br /> */}
           </div>
         </ModalBody>
         <ModalFooter>

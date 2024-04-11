@@ -10,34 +10,27 @@ import BtnModaisIMG from "../../components/botoes/btnModaisIMG";
 import SidebarAdm from "../../components/admin/sidebarAdm";
 import NavBarAdm from "../../components/admin/navbarAdm";
 import { useNavigate } from "react-router-dom";
-import Alertas from "../../components/alerts/alerts";
-import {
-  CaretLeft,
-  CaretRight
-} from "@phosphor-icons/react";
+import { CaretLeft, CaretRight } from "@phosphor-icons/react";
+import PopupCadastrado from "../../components/popups/popupCadastro";
+import PopupExcluido from "../../components/popups/popupExcluido";
+import PopupEditado from "../../components/popups/popupEditado";
 
 export default function Noticia() {
   const baseUrl = "https://localhost:7256/api/Noticia";
   const baseUrlImagem = "https://localhost:7256/api/ImagemNoticia";
 
   const [data, setData] = useState([]);
-
   const [atualizarData, setAtualizarData] = useState(true);
 
-  const [cadastroSucesso, setCadastroSucesso] = useState(false);
-  
-  const handleCadastroSucesso = () => {
-    setCadastroSucesso(true);
-  };
-
-  const handleAlertClose = () => {
-    setCadastroSucesso(false);
-  };
-
+  const [modalCadastrado, setModalCadastrado] = useState(false);
+  const [modalExcluido, setModalExcluido] = useState(false);
   const [modalInserir, setModalInserir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
-  const [modalDeletar, setModalDeletar] = useState(false);
+  const [modalDeletar, setModalDeletar] = useState(false); 
+  const [modalEditado, setModalEditado] = useState(false);
+  
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
   const [noticiaTitulo, setNoticiaTitulo] = useState("");
   const [noticiaSubtitulo, setNoticiaSubtitulo] = useState("");
   const [noticiaConteudo, setNoticiaConteudo] = useState("");
@@ -45,8 +38,6 @@ export default function Noticia() {
   const [noticiaHoraPublicacao, setNoticiaHoraPublicacao] = useState("");
   const [noticiaLegendaImagem, setNoticiaLegendaImagem] = useState([]);
   const [imagensNoticia, setImagensNoticia] = useState([]);
-  
-
   const [noticiaId, setNoticiaId] = useState("");
 
   const navigate = useNavigate();
@@ -92,15 +83,31 @@ export default function Noticia() {
     setModalInserir(!modalInserir);
   };
 
-  const abrirFecharModalEditar = async (id) => {
-    /*var imagem;
-    if (id) {
-      imagem = await carregarImagensNoticia(noticiaId); // Suponha que buscarImagensDaNoticia é uma função que retorna as imagens associadas à notícia
+  const abrirModalCadastrado = () => {
+    setModalCadastrado(true);
+  };
 
-      // Defina o estado imagensNoticia com as imagens recuperadas
-      console.log(imagem);
-      setImagensNoticia(imagem);
-    };*/
+  const fecharModalCadastrado = () => {
+    setModalCadastrado(false);
+  };
+
+  const abrirModalExcluido = () =>{
+    setModalExcluido(true);
+  };
+
+  const fecharModaExcluido = () => {
+    setModalExcluido(false);
+  };
+
+  const abrirModalEditado = () =>{
+    setModalEditado(true);
+  };
+
+  const fecharModaEditado = () => {
+    setModalEditado(false);
+  };
+
+  const abrirFecharModalEditar = async (id) => {
     modalEditar ? limparDados() : null;
     setModalEditar(!modalEditar);
   };
@@ -182,7 +189,7 @@ export default function Noticia() {
       abrirFecharModalInserir();
       limparDados();
       setAtualizarData(true);
-      setCadastroSucesso(true); 
+      abrirModalCadastrado();
     } catch (error) {
       console.log(error);
     }
@@ -236,12 +243,11 @@ export default function Noticia() {
         });
       });
 
-      
-
       abrirFecharModalEditar();
       await pedidoPutImagens();
       limparDados();
       setAtualizarData(true);
+      abrirModalEditado();
     } catch (error) {
       console.log(error);
     }
@@ -288,6 +294,7 @@ export default function Noticia() {
         abrirFecharModalDeletar();
         limparDados();
         setAtualizarData(true);
+        abrirModalExcluido();
       })
       .catch((error) => {
         console.log(error);
@@ -316,17 +323,6 @@ export default function Noticia() {
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
 
-  // function createImageUrl(image) {
-  //   /* Verificar se é uma instância de Blob ou File */
-  //   if (image instanceof Blob || image instanceof File) {
-  //     /* Criar URL apenas se for um objeto válido */
-  //     return URL.createObjectURL(image);
-  //   } else {
-  //     console.error('noticiaArquivoImagens não é um Blob ou File válido.');
-  //     return ''; /* Retornar uma string vazia em caso de erro */
-  //   }
-  // }
-
   // Funções para navegar entre as páginas
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -334,21 +330,7 @@ export default function Noticia() {
     }
   };
 
-  //Carregar imagens da Classe imagemNoticia para a preview dentro da modalEditar
-  async function carregarImagensNoticia(noticiaId) {
-    try {
-      const response = await axios.get(`${baseUrlImagem}/${noticiaId}`);
-      const imagens = response.data;
-      // Atualize o estado para incluir as imagens recuperadas
-      return imagens;
-    } catch (error) {
-      console.error("Erro ao carregar imagens da notícia:", error);
-      return [];
-    }
-  }
-
-
-  return (
+   return (
     <div className="home">
       <div className="h-screen flex fixed">
         <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
@@ -439,9 +421,7 @@ export default function Noticia() {
               acao="Cadastrar"
             />
           </div>
-         
         </div>
-      {cadastroSucesso && <Alertas onClose={handleAlertClose} />}
       </div>
       <Modal
         className="modal-xl-gridxl"
@@ -593,8 +573,9 @@ export default function Noticia() {
           </div>
         </ModalBody>
       </Modal>
-
-
+      <PopupCadastrado isOpen={modalCadastrado} toggle={fecharModalCadastrado} objeto="Notícia" />
+      <PopupExcluido isOpen={modalExcluido} toggle={fecharModaExcluido} objeto="Notícia" />
+      <PopupEditado isOpen={modalEditado} toggle={fecharModaEditado} objeto="Notícia" />
       <Modal
         className="modal-xl-gridxl"
         isOpen={modalEditar}
@@ -766,6 +747,7 @@ export default function Noticia() {
           <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
         </ModalFooter>
       </Modal>
+
     </div>
   );
 }

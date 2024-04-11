@@ -18,9 +18,10 @@ import {
   Pencil,
 } from "@phosphor-icons/react";
 
+
 export default function Usuario() {
   const baseUrl = "https://localhost:7256/api/Usuario";
-
+  
   const [data, setData] = useState([]);
 
   const [atualizarData, setAtualizarData] = useState(true);
@@ -101,6 +102,8 @@ export default function Usuario() {
     setModalDeletar(!modalDeletar);
   };
 
+ 
+
   const pedidoGet = async () => {
     await axios
       .get(baseUrl)
@@ -144,6 +147,7 @@ export default function Usuario() {
 
       abrirFecharModalInserir();
       limparDados();
+   
     } catch (error) {
       console.log(error);
     }
@@ -451,6 +455,7 @@ export default function Usuario() {
           </button>
         </ModalFooter>
       </Modal>
+
       <Modal isOpen={modalEditar}>
         <ModalHeader>Alterar Usuario</ModalHeader>
         <ModalBody>

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240408141723_teste")]
-    partial class teste
+    [Migration("20240425194944_BDAtualizado")]
+    partial class BDAtualizado
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -317,6 +317,47 @@ namespace COMTUR.Migrations
                     b.ToTable("noticia");
                 });
 
+            modelBuilder.Entity("COMTUR.Models.SessaoModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("idssessao");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmailUsuario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("emailusuario");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("NivelAcesso")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("nivelacesso");
+
+                    b.Property<bool>("StatusSessao")
+                        .HasColumnType("boolean")
+                        .HasColumnName("statussessao");
+
+                    b.Property<string>("TokenSessao")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("tokensessao");
+
+                    b.Property<int?>("UsuarioModelId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioModelId");
+
+                    b.ToTable("sessao");
+                });
+
             modelBuilder.Entity("COMTUR.Models.TipoAtracaoModel", b =>
                 {
                     b.Property<int>("Id")
@@ -522,6 +563,15 @@ namespace COMTUR.Migrations
                         .IsRequired();
 
                     b.Navigation("NoticiaModel");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.SessaoModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
+                        .WithMany()
+                        .HasForeignKey("UsuarioModelId");
+
+                    b.Navigation("UsuarioModel");
                 });
 
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>

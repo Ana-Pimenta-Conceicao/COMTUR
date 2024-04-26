@@ -4,54 +4,72 @@ using COMTUR.Repositorios.Interfaces;
 using System.Text;
 using Newtonsoft.Json;
 using COMTUR.Models;
-using COMTUR.Repositorios;
+using COMTUR.Data;
 
 namespace COMTUR.Controllers
 {
 
-	[Route("api/[controller]")]
-	[ApiController]
-	public class LoginController : Controller
-	{
-		private readonly IUsuarioRepositorio _usuarioRepositorio;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LoginController : Controller
+    {
+        private readonly IUsuarioRepositorio _usuarioRepositorio;
+        private readonly ComturDBContext _dbContext;
 
-		public LoginController(IUsuarioRepositorio usuarioRepositorio)
-		{
-			_usuarioRepositorio = usuarioRepositorio;
-		}
 
-		[HttpPost("Login")]
-		public async Task<ActionResult> Login([FromForm] LoginModel loginModel)
-		{
-			if (loginModel is null) return BadRequest(new { autentication = false, message = "Dado inválido!" });
-			var UsuarioModel = await _usuarioRepositorio.Autenticacao(loginModel);
+        public LoginController(IUsuarioRepositorio usuarioRepositorio, ComturDBContext dbContext)
+        {
+            _usuarioRepositorio = usuarioRepositorio;
+            _dbContext = dbContext;
+        }
 
-			if (UsuarioModel is not null)
-			{
-				if (loginModel.Email == UsuarioModel.EmailUsuario && loginModel.Senha == UsuarioModel.SenhaUsuario)
-				{
-						EntitySecurity entitySecurity = new EntitySecurity();
-						var token = GenerateToken(entitySecurity.Key, entitySecurity.Issuer, entitySecurity.Audience, UsuarioModel.EmailUsuario, 12);
-						return Ok(new { autentication = true, message = new { tokenUsuario = token, tipoUsuario = UsuarioModel.TipoUsuario } });
-				}
-			}
+        [HttpPost("Login")]
+        public async Task<ActionResult> Login([FromForm] LoginModel loginModel)
+        {
+            if (loginModel is null) return BadRequest(new { autentication = false, message = "Dado inválido!" });
+            var UsuarioModel = await _usuarioRepositorio.Autenticacao(loginModel);
 
-			return Unauthorized(new { autentication = false, message = "E-mail ou senha incorretos!" });
-		}
+            if (UsuarioModel is not null)
+            {
+                if (loginModel.Email == UsuarioModel.EmailUsuario && loginModel.Senha == UsuarioModel.SenhaUsuario)
+                {
+                    EntitySecurity entitySecurity = new EntitySecurity();
+                    var token = GenerateToken(entitySecurity.Key, entitySecurity.Issuer, entitySecurity.Audience, UsuarioModel.EmailUsuario, 12);
+                    // Após gerar o token com sucesso
+                    SessaoModel sessao = new SessaoModel
+                    {
+                        TokenSessao = token,
+                        StatusSessao = true, // Assumindo que a sessão está ativa após a autenticação
+                        EmailUsuario = UsuarioModel.EmailUsuario,
+                        NivelAcesso = UsuarioModel.TipoUsuario.ToString(),
+                        IdUsuario = UsuarioModel.Id // Supondo que IdUsuario seja o ID do usuário
+                    };
 
-		private static string GenerateToken(string secretKey, string issuer, string audience, string subject, int expiryInHours)
-		{
-			var payload = new Dictionary<string, object>
-			{
-				{ "iss", issuer },
-				{ "aud", audience },
-				{ "sub", subject },
-				{ "exp", DateTimeOffset.UtcNow.AddHours(expiryInHours).ToUnixTimeSeconds() }
-			};
+                    // Adicione a sessão ao contexto
+                    _dbContext.Sessao.Add(sessao); // Ou _sessaoRepositorio.Adicionar(sessao);
+                    await _dbContext.SaveChangesAsync(); // Ou _sessaoRepositorio.SalvarAsync();
 
-			string token = JWT.Encode(payload, Encoding.UTF8.GetBytes(secretKey), JwsAlgorithm.HS256);
-			return token;
-		}
+                    return Ok(new { autentication = true, message = new { tokenUsuario = token, tipoUsuario = UsuarioModel.TipoUsuario } });
+                }
+            }
+
+            return Unauthorized(new { autentication = false, message = "E-mail ou senha incorretos!" });
+        }
+
+
+        private static string GenerateToken(string secretKey, string issuer, string audience, string subject, int expiryInHours)
+        {
+            var payload = new Dictionary<string, object>
+            {
+                { "iss", issuer },
+                { "aud", audience },
+                { "sub", subject },
+                { "exp", DateTimeOffset.UtcNow.AddHours(expiryInHours).ToUnixTimeSeconds() }
+            };
+
+            string token = JWT.Encode(payload, Encoding.UTF8.GetBytes(secretKey), JwsAlgorithm.HS256);
+            return token;
+        }
 
         [HttpPost("Validation")]
         public ActionResult Validation([FromForm] string token)
@@ -64,11 +82,20 @@ namespace COMTUR.Controllers
             EntitySecurity entitySecurity = new EntitySecurity();
             if (ValidateToken(token, entitySecurity.Issuer, entitySecurity.Audience, _usuarioRepositorio))
             {
-                return Ok(new { validation = "true" });
+                // Consulte o banco de dados para verificar se o token existe e está ativo
+                var sessao = _dbContext.Sessao.FirstOrDefault(s => s.TokenSessao == token && s.StatusSessao);
+                if (sessao != null)
+                {
+                    return Ok(new { validation = "true" });
+                }
+                else
+                {
+                    return Unauthorized(new { validation = "false", message = "Token de sessão inválido ou expirado!" });
+                }
             }
             else
             {
-                return Unauthorized(new { validation = "false", message = "Acesso negado!" });
+                return Unauthorized(new { validation = "false", message = "Token JWT inválido!" });
             }
         }
 
@@ -127,6 +154,27 @@ namespace COMTUR.Controllers
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        [HttpPost("Logout")]
+        public async Task<ActionResult> Logout([FromForm] string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest(0);
+            }
+
+            var sessao = _dbContext.Sessao.FirstOrDefault(s => s.TokenSessao == token);
+            if (sessao != null)
+            {
+                sessao.StatusSessao = false; // Desativa a sessão
+                await _dbContext.SaveChangesAsync(); // Salva as alterações no banco de dados
+                return Ok(new { message = "Logout realizado com sucesso!" });
+            }
+            else
+            {
+                return Unauthorized(new { message = "Token de sessão inválido!" });
             }
         }
     }

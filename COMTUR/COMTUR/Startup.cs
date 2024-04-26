@@ -123,7 +123,8 @@ namespace COMTUR
 			services.AddScoped<IImagemTurismoRepositorio, ImagemTurismoRepositorio>();
 			// Dependência: Anuncio
 			services.AddScoped<IAnuncioRepositorio, AnuncioRepositorio>();
-
+			// Dependência: Sessão
+			services.AddScoped<ISessaoRepositorio, SessaoRepositorio>();
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

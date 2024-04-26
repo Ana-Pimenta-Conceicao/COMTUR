@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class teste : Migration
+    public partial class BDAtualizado : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -165,6 +165,29 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "sessao",
+                columns: table => new
+                {
+                    idssessao = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    tokensessao = table.Column<string>(type: "text", nullable: false),
+                    statussessao = table.Column<bool>(type: "boolean", nullable: false),
+                    emailusuario = table.Column<string>(type: "text", nullable: false),
+                    nivelacesso = table.Column<string>(type: "text", nullable: false),
+                    UsuarioModelId = table.Column<int>(type: "integer", nullable: true),
+                    IdUsuario = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sessao", x => x.idssessao);
+                    table.ForeignKey(
+                        name: "FK_sessao_usuario_UsuarioModelId",
+                        column: x => x.UsuarioModelId,
+                        principalTable: "usuario",
+                        principalColumn: "usuarioid");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "imagematracao",
                 columns: table => new
                 {
@@ -308,6 +331,11 @@ namespace COMTUR.Migrations
                 name: "IX_imagemnoticia_IdNoticia",
                 table: "imagemnoticia",
                 column: "IdNoticia");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sessao_UsuarioModelId",
+                table: "sessao",
+                column: "UsuarioModelId");
         }
 
         /// <inheritdoc />
@@ -327,6 +355,9 @@ namespace COMTUR.Migrations
 
             migrationBuilder.DropTable(
                 name: "imagemturismo");
+
+            migrationBuilder.DropTable(
+                name: "sessao");
 
             migrationBuilder.DropTable(
                 name: "tipoturismo");

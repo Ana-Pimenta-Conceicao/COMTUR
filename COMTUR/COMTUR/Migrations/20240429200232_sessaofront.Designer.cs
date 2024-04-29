@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240425194944_BDAtualizado")]
-    partial class BDAtualizado
+    [Migration("20240429200232_sessaofront")]
+    partial class sessaofront
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -338,6 +338,11 @@ namespace COMTUR.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("nivelacesso");
+
+                    b.Property<string>("NomeUsuario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("nomeusuario");
 
                     b.Property<bool>("StatusSessao")
                         .HasColumnType("boolean")

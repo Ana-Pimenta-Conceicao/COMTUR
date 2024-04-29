@@ -17,6 +17,9 @@ namespace COMTUR.Models
         [Column("emailusuario")]
         public string EmailUsuario { get; set; }
 
+        [Column("nomeusuario")]
+        public string NomeUsuario { get; set; }
+
         [Column("nivelacesso")]
         public string NivelAcesso { get; set; }
 

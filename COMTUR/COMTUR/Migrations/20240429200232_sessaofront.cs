@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class BDAtualizado : Migration
+    public partial class sessaofront : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -173,6 +173,7 @@ namespace COMTUR.Migrations
                     tokensessao = table.Column<string>(type: "text", nullable: false),
                     statussessao = table.Column<bool>(type: "boolean", nullable: false),
                     emailusuario = table.Column<string>(type: "text", nullable: false),
+                    nomeusuario = table.Column<string>(type: "text", nullable: false),
                     nivelacesso = table.Column<string>(type: "text", nullable: false),
                     UsuarioModelId = table.Column<int>(type: "integer", nullable: true),
                     IdUsuario = table.Column<int>(type: "integer", nullable: false)

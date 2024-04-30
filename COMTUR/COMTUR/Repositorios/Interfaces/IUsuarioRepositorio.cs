@@ -10,7 +10,8 @@ namespace COMTUR.Repositorios.Interfaces
         Task<UsuarioModel> Adicionar(UsuarioModel Usuario);
 		Task<UsuarioModel> Atualizar(UsuarioModel Usuario, int id);
 		Task<List<UsuarioModel>> ListarPorTipoUsuario(int tipoUsuario);
-        Task<bool> Apagar(int id);
+		Task<List<UsuarioModel>> ListarPorTipoStatus(int tipoStatus);
+		Task<bool> Apagar(int id);
 		Task<UsuarioModel> Autenticacao(LoginModel loginModel);
 	}
 }

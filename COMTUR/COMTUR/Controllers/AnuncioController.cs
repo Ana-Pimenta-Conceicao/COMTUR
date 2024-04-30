@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using COMTUR.Models;
 using COMTUR.Repositorios.Interfaces;
 using Microsoft.Extensions.Hosting;
+using COMTUR.Repositorios;
 
 namespace COMTUR.Controllers
 {
@@ -19,6 +20,19 @@ namespace COMTUR.Controllers
 		public AnuncioController(IAnuncioRepositorio AnuncioRepositorio)
 		{
 			_AnuncioRepositorio = AnuncioRepositorio;
+		}
+
+		[HttpGet("porTipoStatus/{tipoStatus}")]
+		public async Task<ActionResult<IEnumerable<AnuncioModel>>> GetAnuncioPorTipo(int tipoStatus)
+		{
+			var anuncios = await _AnuncioRepositorio.ListarPorTipoStatus(tipoStatus);
+
+			if (anuncios == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(anuncios);
 		}
 
 		[HttpGet]

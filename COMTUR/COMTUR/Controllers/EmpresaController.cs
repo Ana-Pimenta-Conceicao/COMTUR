@@ -20,6 +20,19 @@ namespace COMTUR.Controllers
 			_imagemEmpresaRepositorio = imagemEmpresaRepositorio;
 		}
 
+		[HttpGet("porTipoStatus/{tipoStatus}")]
+		public async Task<ActionResult<IEnumerable<EmpresaModel>>> GetEmpresaPorTipo(int tipoStatus)
+		{
+			var empresas = await _empresaRepositorio.ListarPorTipoStatus(tipoStatus);
+
+			if (empresas == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(empresas);
+		}
+
 		[HttpPost("{empresaId}/imagens")]
 		public IActionResult AdicionarImagem(int empresaId, [FromForm] ImagemEmpresaModel imagem)
 		{

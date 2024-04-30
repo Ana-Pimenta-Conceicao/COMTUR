@@ -26,6 +26,11 @@ namespace COMTUR.Models
 		[Column("DescricaoAnuncio")]
 		public string DescricaoAnuncio { get; set; }
 
+		// Mapear o campo tipoStatus como enum
+		[Column("tipoStatus")]
+		[EnumDataType(typeof(TipoStatus))]
+		public TipoStatus TipoStatus { get; set; }
+
 		// Relacionamento com tipoTurismo e Anuncio
 		[JsonIgnore]
 		public TipoTurismoModel? TipoTurismoModel { get; set; }

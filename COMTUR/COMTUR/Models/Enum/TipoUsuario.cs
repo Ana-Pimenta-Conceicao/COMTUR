@@ -7,6 +7,4 @@
 		Empresario = 3,
 		Administrador = 4
 	}
-
-
 }

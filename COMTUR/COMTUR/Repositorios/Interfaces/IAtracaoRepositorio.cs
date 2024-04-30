@@ -11,6 +11,7 @@ namespace COMTUR.Repositorios.Interfaces
 		Task<AtracaoModel> Atualizar(AtracaoModel Atracao, int id);
 		Task<bool> Apagar(int id);
 		Task<List<ImagemAtracaoModel>> BuscarImagensPorAtracaoId(int atracaoId);
+		Task<List<AtracaoModel>> ListarPorTipoStatus(int tipoStutus);
 	}
 }
 

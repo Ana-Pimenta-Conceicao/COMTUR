@@ -1,18 +1,44 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CaretRight } from "@phosphor-icons/react";
 import Login from "../../assets/login.png";
 
-
 const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
   const [submenuOpen, setSubmenuOpen] = useState(false);
-  
+  const [userName, setUserName] = useState("");
 
-  const handleLogout = () => {
-    // Limpar o localStorage
-    localStorage.clear();
+  useEffect(() => {
+    // Buscar o nome do usuário do localStorage ao montar o componente
+    const storedUserName = localStorage.getItem("nome");
+    if (storedUserName) {
+      setUserName(storedUserName);
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    const baseUrl = "https://localhost:7256/api/Login";
+
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+
+      const formData = new FormData();
+      formData.append("token", token);
+
+      try {
+        await axios.post(baseUrl + "/Logout", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }); return;
+      } catch (error) {
+        return;
+      }
+    }
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("tipoUsuario");
+    localStorage.removeItem("nome");
     // Redirecionar o usuário para a página de login
-   
   };
 
   const Menus = [
@@ -60,7 +86,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
               !open && "scale-0"
             }`}
           >
-            {nomeUsuario}
+            {userName}
           </h1>
         </div>
         <ul className="pt-6" style={{ padding: 0, position: "relative" }}>

@@ -41,6 +41,7 @@ namespace COMTUR.Controllers
                         TokenSessao = token,
                         StatusSessao = true, // Assumindo que a sessão está ativa após a autenticação
                         EmailUsuario = UsuarioModel.EmailUsuario,
+                        NomeUsuario = UsuarioModel.Nome,
                         NivelAcesso = UsuarioModel.TipoUsuario.ToString(),
                         IdUsuario = UsuarioModel.Id // Supondo que IdUsuario seja o ID do usuário
                     };
@@ -49,7 +50,7 @@ namespace COMTUR.Controllers
                     _dbContext.Sessao.Add(sessao); // Ou _sessaoRepositorio.Adicionar(sessao);
                     await _dbContext.SaveChangesAsync(); // Ou _sessaoRepositorio.SalvarAsync();
 
-                    return Ok(new { autentication = true, message = new { tokenUsuario = token, tipoUsuario = UsuarioModel.TipoUsuario } });
+                    return Ok(new { autentication = true, message = new { tokenUsuario = token, tipoUsuario = UsuarioModel.TipoUsuario, nome = UsuarioModel.Nome } });
                 }
             }
 

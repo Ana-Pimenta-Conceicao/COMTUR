@@ -336,6 +336,11 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("nivelacesso");
 
+                    b.Property<string>("NomeUsuario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("nomeusuario");
+
                     b.Property<bool>("StatusSessao")
                         .HasColumnType("boolean")
                         .HasColumnName("statussessao");

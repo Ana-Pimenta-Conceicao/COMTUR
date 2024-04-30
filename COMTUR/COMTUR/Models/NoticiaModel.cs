@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using COMTUR.Models.Enum;
 
 namespace COMTUR.Models
 {
@@ -30,8 +31,13 @@ namespace COMTUR.Models
         [Column("horaPublicacao")]
         public string HoraPublicacao { get; set; }
 
-        // relação com ImagemNoticia
-        public ICollection<ImagemNoticiaModel>? ImagemNoticia { get; set; }
+		// Mapear o campo tipoStatus como enum
+		[Column("tipoStatus")]
+		[EnumDataType(typeof(TipoStatus))]
+		public TipoStatus TipoStatus { get; set; }
+
+		// relação com ImagemNoticia
+		public ICollection<ImagemNoticiaModel>? ImagemNoticia { get; set; }
 
     }
 }

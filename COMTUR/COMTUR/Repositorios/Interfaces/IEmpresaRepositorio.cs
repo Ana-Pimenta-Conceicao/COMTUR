@@ -9,6 +9,7 @@ namespace COMTUR.Repositorios.Interfaces
 		Task<EmpresaModel> GetById(int id);
 		Task<EmpresaModel> Adicionar(EmpresaModel empresaModel);
 		Task<EmpresaModel> Atualizar(EmpresaModel empresaModel, int id);
+		Task<List<EmpresaModel>> ListarPorTipoStatus(int tipoStatus);
 		Task<bool> Apagar(int id);
 		Task<List<ImagemEmpresaModel>> BuscarImagensPorEmpresaId(int empresaId);
 	}

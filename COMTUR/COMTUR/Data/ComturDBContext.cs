@@ -35,7 +35,7 @@ namespace COMTUR.Data
 			modelBuilder.ApplyConfiguration(new ImagemEmpresaMap());
 			modelBuilder.ApplyConfiguration(new ImagemTurismoMap());
 			modelBuilder.ApplyConfiguration(new AnuncioMap());
-			modelBuilder.ApplyConfiguration(new  SessaoMap());
+			modelBuilder.ApplyConfiguration(new SessaoMap());
 
 			base.OnModelCreating(modelBuilder);
 

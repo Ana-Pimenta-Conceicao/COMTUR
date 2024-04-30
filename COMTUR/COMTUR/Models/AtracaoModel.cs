@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using COMTUR.Models.Enum;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,6 +23,14 @@ public class AtracaoModel
 
 	[Column("qrcode")]
 	public string QRCode { get; set; }
+
+	// Mapear o campo tipoStatus como enum
+	[Column("tipoStatus")]
+	[EnumDataType(typeof(TipoStatus))]
+	public TipoStatus TipoStatus { get; set; }
+
+	[Column("imagemPerfilUsuario")]
+	public string? ImagemPerfilUsuario { get; set; }
 
 	// relaçao com TipoAtracao
 	[JsonIgnore]

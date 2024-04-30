@@ -10,6 +10,7 @@ namespace COMTUR.Repositorios.Interfaces
 		Task<AnuncioModel> BuscarPorId(int id);
 		Task<AnuncioModel> Adicionar(AnuncioModel Anuncio);
 		Task<AnuncioModel> Atualizar(AnuncioModel Anuncio, int id);
+		Task<List<AnuncioModel>> ListarPorTipoStatus(int tipoStatus);
 		Task<bool> Apagar(int id);
 	}
 }

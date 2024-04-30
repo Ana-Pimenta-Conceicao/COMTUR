@@ -39,12 +39,23 @@ namespace COMTUR.Repositorios
 				.Where(x => (int)x.TipoUsuario == tipoUsuario)
 				.ToListAsync();
 		}
+		public async Task<List<UsuarioModel>> ListarPorTipoStatus(int tipoStatus)
+		{
+			return await _dbContext.Usuario
+				.Where(x => (int)x.TipoStatus == tipoStatus)
+				.ToListAsync();
+		}
 
 		public async Task<UsuarioModel> Adicionar(UsuarioModel usuarioModel)
 		{
 			if (!Enum.IsDefined(typeof(TipoUsuario), usuarioModel.TipoUsuario))
 			{
 				throw new ArgumentException("Tipo de usuário inválido");
+			}
+
+			if (!Enum.IsDefined(typeof(TipoStatus), usuarioModel.TipoStatus))
+			{
+				throw new ArgumentException("Tipo de status inválido");
 			}
 
 			await _dbContext.Usuario.AddAsync(usuarioModel);
@@ -66,12 +77,18 @@ namespace COMTUR.Repositorios
 				throw new ArgumentException("Tipo de usuário inválido");
 			}
 
+			if (!Enum.IsDefined(typeof(TipoStatus), usuarioModel.TipoStatus))
+			{
+				throw new ArgumentException("Tipo de status inválido");
+			}
+
 			usuarioPorId.Nome = usuarioModel.Nome;
 			usuarioPorId.Telefone = usuarioModel.Telefone;
 			usuarioPorId.EmailUsuario = usuarioModel.EmailUsuario;
 			usuarioPorId.SenhaUsuario = usuarioModel.SenhaUsuario;
 			usuarioPorId.ImagemPerfilUsuario = usuarioModel.ImagemPerfilUsuario;
 			usuarioPorId.TipoUsuario = usuarioModel.TipoUsuario; // Atualizar o tipo de usuário
+			usuarioPorId.TipoStatus = usuarioModel.TipoStatus; // Atualizar o tipo de status
 
 			_dbContext.Usuario.Update(usuarioPorId);
 			await _dbContext.SaveChangesAsync();

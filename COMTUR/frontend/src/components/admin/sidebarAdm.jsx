@@ -29,7 +29,8 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }); return;
+        });
+        return;
       } catch (error) {
         return;
       }
@@ -49,9 +50,10 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
       src: "tipousuario",
       submenu: true,
       submenuItems: [
-        { title: "Administrador" },
-        { title: "Empresário" },
-        { title: "Usuário Comum" },
+        { title: "Administradores" },
+        { title: "Funcionários" },
+        { title: "Usuários Comuns" },
+        { title: "Empresários" },
       ],
     },
     { title: "Ponto Turístico", src: "tipoTurismo" },
@@ -85,8 +87,13 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
             className={`text-white origin-left font-medium text-xl duration-200 ${
               !open && "scale-0"
             }`}
-          >
-            {userName}
+
+           
+            >
+            {userName.length > 10 ? userName.substring(0, 9) + "..." : userName}
+                    
+                      
+            
           </h1>
         </div>
         <ul className="pt-6" style={{ padding: 0, position: "relative" }}>
@@ -109,6 +116,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
                       className={`flex ${
                         !open && "hidden"
                       } origin-left duration-200 pl-2 w-full`}
+                      onClick={() => setSubmenuOpen(!submenuOpen)}
                     >
                       {Menu.title}
                     </span>
@@ -126,11 +134,12 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
               </li>
 
               {Menu.submenu && submenuOpen && open && (
-                <ul>
+                <ul >
                   {Menu.submenuItems.map((submenuItem, index) => (
                     <li
                       key={index}
-                      className={`flex rounded-md p-2 cursor-pointer px-4 hover:bg-light-white text-gray-300 text-xs items-center gap-x-4`}
+                      className={`flex rounded-md p-2 cursor-pointer ml-7 hover:bg-light-white text-gray-300 text-xs items-center gap-x-4`}
+                      
                     >
                       {submenuItem.title}
                     </li>

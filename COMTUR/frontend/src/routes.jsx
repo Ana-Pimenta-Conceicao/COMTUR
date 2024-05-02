@@ -20,7 +20,7 @@ import PerfilUsuario from "./screens/usuarios/perfilusuarios";
 import NotFound from "./screens/notFound";
 
 const isUserLoggedIn = () => {
-    // Verificar se há um token de autenticação armazenado no localStorage
+    // Verificar se há um token armazenado no localStorage
     const token = localStorage.getItem("token");
 
     // Se o token existir e não for nulo, consideramos o usuário como logado

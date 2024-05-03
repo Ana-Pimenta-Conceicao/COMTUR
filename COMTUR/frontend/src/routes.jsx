@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Noticia from './screens/noticia/noticia';
 import VisualizarNoticia from './screens/noticia/visualizarNoticia';
 import Home from "./screens/home";
+import Empresa from "./screens/empresa/empresa"; 
 import TipoTurismo from "./screens/tipoturismo";
 import Atracao from "./screens/tipoatracao/atracao";
 import Inicio from "./screens/inicio/inicio";
@@ -18,6 +19,7 @@ import CadastroUsuario from "./screens/cadastro/cadastrousuario";
 import CadastroEmpresario from "./screens/cadastro/cadastroEmpresario";
 import PerfilUsuario from "./screens/usuarios/perfilusuarios";
 import NotFound from "./screens/notFound";
+
 
 const isUserLoggedIn = () => {
     // Verificar se há um token armazenado no localStorage
@@ -42,7 +44,7 @@ const AppRoutes = () => {
                 <Route path="/todasnoticias" element={<TodasNoticias/>} />
                 <Route path="/login" element={ <Login/> } />
                 <Route path="/notfound" element={<NotFound/>} />
-                
+                <Route path="/empresa" element={<Empresa/>}/>
 
                 {/* <Route path="/home"  element={ <Home />} /> */}
                 <Route path="/noticia" element={<ProtectedRoute element={ <Noticia /> } />}/>

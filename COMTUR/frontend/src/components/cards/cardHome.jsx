@@ -3,7 +3,7 @@ import React from "react";
 const Card = ({ link, imageSrc, title, imageAlt }) => {
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 p-4 ">
-      <div className="max-w-sm flex-row rounded-lg justify-center items-center bg-[#FFD121] dark:bg-gray-800 dark:border-gray-700" >
+      <div className="max-w-sm flex-row rounded-lg justify-center items-center bg-[#FFD121] dark:bg-gray-800 dark:border-gray-700 shadow-md hover:transition-opacity hover:scale-105" >
         <a href={link}>
           <img className="rounded-t-lg w-full" src={imageSrc} alt={imageAlt} />
         </a>

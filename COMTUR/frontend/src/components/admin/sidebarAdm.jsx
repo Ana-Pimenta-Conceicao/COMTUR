@@ -1,18 +1,45 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CaretRight } from "@phosphor-icons/react";
 import Login from "../../assets/login.png";
 
-
 const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
   const [submenuOpen, setSubmenuOpen] = useState(false);
-  
+  const [userName, setUserName] = useState("");
 
-  const handleLogout = () => {
-    // Limpar o localStorage
-    localStorage.clear();
+  useEffect(() => {
+    // Buscar o nome do usuário do localStorage ao montar o componente
+    const storedUserName = localStorage.getItem("nome");
+    if (storedUserName) {
+      setUserName(storedUserName);
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    const baseUrl = "https://localhost:7256/api/Login";
+
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+
+      const formData = new FormData();
+      formData.append("token", token);
+
+      try {
+        await axios.post(baseUrl + "/Logout", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        return;
+      } catch (error) {
+        return;
+      }
+    }
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("tipoUsuario");
+    localStorage.removeItem("nome");
     // Redirecionar o usuário para a página de login
-   
   };
 
   const Menus = [
@@ -23,9 +50,10 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
       src: "tipousuario",
       submenu: true,
       submenuItems: [
-        { title: "Administrador" },
-        { title: "Empresário" },
-        { title: "Usuário Comum" },
+        { title: "Administradores" },
+        { title: "Funcionários" },
+        { title: "Usuários Comuns" },
+        { title: "Empresários" },
       ],
     },
     { title: "Ponto Turístico", src: "tipoTurismo" },
@@ -59,8 +87,13 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
             className={`text-white origin-left font-medium text-xl duration-200 ${
               !open && "scale-0"
             }`}
-          >
-            {nomeUsuario}
+
+           
+            >
+            {userName.length > 10 ? userName.substring(0, 9) + "..." : userName}
+                    
+                      
+            
           </h1>
         </div>
         <ul className="pt-6" style={{ padding: 0, position: "relative" }}>
@@ -83,6 +116,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
                       className={`flex ${
                         !open && "hidden"
                       } origin-left duration-200 pl-2 w-full`}
+                      onClick={() => setSubmenuOpen(!submenuOpen)}
                     >
                       {Menu.title}
                     </span>
@@ -100,11 +134,12 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
               </li>
 
               {Menu.submenu && submenuOpen && open && (
-                <ul>
+                <ul >
                   {Menu.submenuItems.map((submenuItem, index) => (
                     <li
                       key={index}
-                      className={`flex rounded-md p-2 cursor-pointer px-4 hover:bg-light-white text-gray-300 text-xs items-center gap-x-4`}
+                      className={`flex rounded-md p-2 cursor-pointer ml-7 hover:bg-light-white text-gray-300 text-xs items-center gap-x-4`}
+                      
                     >
                       {submenuItem.title}
                     </li>

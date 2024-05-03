@@ -28,7 +28,7 @@ export default function Login() {
   const determinarRota = (tipoUsuario) => {
     switch (tipoUsuario) {
       case 1: //usuario comum
-        return "/inicio";
+        return "/";
       case 2: // funcionário
         return "/home";
       case 3: //empresario
@@ -78,7 +78,7 @@ export default function Login() {
     <div className="bg-black w-full min-h-screen">
       <div className="flex flex-col md:flex-row w-full h-full">
         <div className="flex flex-row text-lg text-white pt-4 pl-2" onClick={() => {
-          navigate(`/inicio`)
+          navigate(`/`)
         }}>
           <ArrowLeft className="mr-3" size={26} />
           Voltar

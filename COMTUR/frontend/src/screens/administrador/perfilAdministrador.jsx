@@ -60,14 +60,14 @@ export default function PerfilAdministrador() {
     formData.append("telefoneAdministrador", telefoneAdmin);
     formData.append("emailAdministrador", emailAdmin);
     formData.append("senhaAdministrador", senhaAdmin);
-    
+
     if (imagemPerfilAdmin instanceof File) {
-        // Converter a imagem para base64 antes de enviar
-        const base64Image = await convertImageToBase64(imagemPerfilAdmin);
-        formData.append("imagemPerfilAdministrador", base64Image);
-      } else {
-        formData.append("imagemPerfilAdministrador", imagemPerfilAdmin);
-      }
+      // Converter a imagem para base64 antes de enviar
+      const base64Image = await convertImageToBase64(imagemPerfilAdmin);
+      formData.append("imagemPerfilAdministrador", base64Image);
+    } else {
+      formData.append("imagemPerfilAdministrador", imagemPerfilAdmin);
+    }
 
     try {
       const response = await axios.put(`${baseUrl}/${id}`, formData, {
@@ -101,10 +101,16 @@ export default function PerfilAdministrador() {
     });
   }
 
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
-    <div className="h-screen flex">
-      <SidebarAdm />
-      <div className="flex-2 container-fluid">
+    <div className="home">
+      <div className="h-screen flex fixed">
+        <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
+      </div>
+      <div
+        className="flex-1 container-fluid"
+        style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
+      >
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[16px]">
           <h1 className="text-2xl font-semibold pb-2">
@@ -125,20 +131,14 @@ export default function PerfilAdministrador() {
             <div className="relative rounded-full">
               <img
                 className="flex w-40 h-40 rounded-full cursor-pointer"
-                src={imagemPerfilAdmin instanceof File ? URL.createObjectURL(imagemPerfilAdmin) : imagemPerfilAdmin}
+                src={
+                  imagemPerfilAdmin instanceof File
+                    ? URL.createObjectURL(imagemPerfilAdmin)
+                    : imagemPerfilAdmin
+                }
                 alt="Imagem"
                 onClick={handleImageClick} // Manipulador de clique na imagem
               />
-              
-                <button
-                  className="flex w-10 h-10 bottom-[-4px] left-28 absolute bg-[#FDE964] hover:bg-black hover:text-white border-2
-                   border-white dark:border-gray-800 rounded-full  justify-center items-center"
-                  onClick={handleImageClick}
-                >
-                  <Camera className="text-gray-700 hover:text-white" size={20} />
-                </button>
-             
-              
             </div>
             <h2 className="flex pt-2 justify-left text-lg font-bold pb-2">
               {administrador.nomeAdministrador}
@@ -159,76 +159,75 @@ export default function PerfilAdministrador() {
               </button>
             )}
           </div>
-
-          <div className="flex flex-col col-span-3 pl-20 form-group ">
-            <label className="text-sm font-semibold">ID: </label>
-            <input
-              type="text"
-              className="form-control text-sm mb-2 w-[300px] pointer-events-none"
-              readOnly
-              value={administrador.id}
-            />
-            <label className="text-sm font-semibold">Nome: </label>
-            <input
-              type="text"
-              className="form-control text-sm mb-2  w-[300px] pointer-events-none"
-              readOnly={!editing}
-              onChange={(e) => setNomeAdmin(e.target.value)}
-              value={nomeAdmin}
-            />
-            <label className="text-sm font-semibold">Cargo:</label>
-            <input
-              type="text"
-              className="form-control text-sm mb-2 w-[300px]"
-              readOnly={!editing}
-              onChange={(e) => setCargoAdmin(e.target.value)}
-              value={cargoAdmin}
-            />
-            <label className="text-sm font-semibold">CPF:</label>
-            <InputMask
-              mask="999.999.999-99"
-              type="text"
-              className="form-control text-sm mb-2  w-[300px]"
-              readOnly={!editing}
-              onChange={(e) => setCpfAdmin(e.target.value)}
-              value={cpfAdmin}
-            />
-            <label className="text-sm font-semibold">Telefone:</label>
-            <InputMask
-              mask="(99) 99999-9999"
-              type="text"
-              className="form-control text-sm mb-2 w-[300px]"
-              readOnly={!editing}
-              onChange={(e) => setTelefoneAdmin(e.target.value)}
-              value={telefoneAdmin}
-            />
-            <label className="text-sm font-semibold">Email:</label>
-            <input
-              type="text"
-              className="form-control text-sm mb-2 w-[300px]"
-              readOnly={!editing}
-              onChange={(e) => setEmailAdmin(e.target.value)}
-              value={emailAdmin}
-            />
-            <label className="text-sm font-semibold">Senha:</label>
-            <div className="input-group h-8 w-[300px]">
-              <input
-                type={showPassword ? "text" : "password"}
-                className="form-control text-sm mb-4 h-8"
-                readOnly={!editing}
-                onChange={(e) => setSenhaAdmin(e.target.value)}
-                value={senhaAdmin}
-              />
-              <button
-                className="btn btn-outline-secondary bg-[#DBDBDB] border-[#DBDBDB]
+        </div>
+      </div>
+      <div className="flex flex-col col-span-3 pl-20 form-group ">
+        <label className="text-sm font-semibold">ID: </label>
+        <input
+          type="text"
+          className="form-control text-sm mb-2 w-[300px] pointer-events-none"
+          readOnly
+          value={administrador.id}
+        />
+        <label className="text-sm font-semibold">Nome: </label>
+        <input
+          type="text"
+          className="form-control text-sm mb-2  w-[300px] pointer-events-none"
+          readOnly={!editing}
+          onChange={(e) => setNomeAdmin(e.target.value)}
+          value={nomeAdmin}
+        />
+        <label className="text-sm font-semibold">Cargo:</label>
+        <input
+          type="text"
+          className="form-control text-sm mb-2 w-[300px]"
+          readOnly={!editing}
+          onChange={(e) => setCargoAdmin(e.target.value)}
+          value={cargoAdmin}
+        />
+        <label className="text-sm font-semibold">CPF:</label>
+        <InputMask
+          mask="999.999.999-99"
+          type="text"
+          className="form-control text-sm mb-2  w-[300px]"
+          readOnly={!editing}
+          onChange={(e) => setCpfAdmin(e.target.value)}
+          value={cpfAdmin}
+        />
+        <label className="text-sm font-semibold">Telefone:</label>
+        <InputMask
+          mask="(99) 99999-9999"
+          type="text"
+          className="form-control text-sm mb-2 w-[300px]"
+          readOnly={!editing}
+          onChange={(e) => setTelefoneAdmin(e.target.value)}
+          value={telefoneAdmin}
+        />
+        <label className="text-sm font-semibold">Email:</label>
+        <input
+          type="text"
+          className="form-control text-sm mb-2 w-[300px]"
+          readOnly={!editing}
+          onChange={(e) => setEmailAdmin(e.target.value)}
+          value={emailAdmin}
+        />
+        <label className="text-sm font-semibold">Senha:</label>
+        <div className="input-group h-8 w-[300px]">
+          <input
+            type={showPassword ? "text" : "password"}
+            className="form-control text-sm mb-4 h-8"
+            readOnly={!editing}
+            onChange={(e) => setSenhaAdmin(e.target.value)}
+            value={senhaAdmin}
+          />
+          <button
+            className="btn btn-outline-secondary bg-[#DBDBDB] border-[#DBDBDB]
                                  hover:bg-gray-300 hover:border-gray-300 h-8"
-                type="button"
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? <EyeSlash size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-          </div>
+            type="button"
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? <EyeSlash size={16} /> : <Eye size={16} />}
+          </button>
         </div>
       </div>
     </div>

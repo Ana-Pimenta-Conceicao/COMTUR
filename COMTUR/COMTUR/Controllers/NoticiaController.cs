@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using COMTUR.Models;
 using COMTUR.Repositorios.Interfaces;
 using Microsoft.Extensions.Hosting;
+using COMTUR.Repositorios;
 
 namespace COMTUR.Controllers
 {
@@ -16,14 +17,26 @@ namespace COMTUR.Controllers
         private readonly INoticiaRepository _noticiaRepository;
         private readonly IImagemNoticiaRepositorio _imagemNoticiaRepositorio;
 
-
         public NoticiaController(INoticiaRepository noticiaRepository, IImagemNoticiaRepositorio imagemNoticiaRepositorio)
         {
             _noticiaRepository = noticiaRepository;
             _imagemNoticiaRepositorio = imagemNoticiaRepositorio;
         }
 
-        [HttpPost("{noticiaId}/imagens")]
+		[HttpGet("porTipoStatus/{tipoStatus}")]
+		public async Task<ActionResult<IEnumerable<NoticiaModel>>> GetNoticiaPorTipo(int tipoStatus)
+		{
+			var noticias = await _noticiaRepository.ListarPorTipoStatus(tipoStatus);
+
+			if (noticias == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(noticias);
+		} 
+
+		[HttpPost("{noticiaId}/imagens")]
         public IActionResult AdicionarImagem(int noticiaId, [FromForm] ImagemNoticiaModel imagem)
         {
             imagem.IdNoticia = noticiaId;

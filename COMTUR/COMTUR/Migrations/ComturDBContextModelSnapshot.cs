@@ -22,6 +22,62 @@ namespace COMTUR.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("COMTUR.Models.AnuncioModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("anuncioid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DescricaoAnuncio")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("DescricaoAnuncio");
+
+                    b.Property<int?>("EmpresaModelId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IdEmpresa")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IdTipoTurismo")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Imagem")
+                        .HasColumnType("text")
+                        .HasColumnName("imagemAnuncio");
+
+                    b.Property<string>("Legenda")
+                        .HasColumnType("text")
+                        .HasColumnName("legendaAnuncio");
+
+                    b.Property<string>("NomeEmpresa")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("nomeEmpresa");
+
+                    b.Property<int>("TipoStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("tipoStatus");
+
+                    b.Property<int?>("TipoTurismoModelId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmpresaModelId");
+
+                    b.HasIndex("IdEmpresa");
+
+                    b.HasIndex("IdTipoTurismo");
+
+                    b.HasIndex("TipoTurismoModelId");
+
+                    b.ToTable("anuncio");
+                });
+
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
                 {
                     b.Property<int>("Id")
@@ -39,6 +95,10 @@ namespace COMTUR.Migrations
                     b.Property<int>("IdTipoAtracao")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ImagemPerfilUsuario")
+                        .HasColumnType("text")
+                        .HasColumnName("imagemPerfilUsuario");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("text")
@@ -51,6 +111,10 @@ namespace COMTUR.Migrations
 
                     b.Property<int?>("TipoAtracaoModelId")
                         .HasColumnType("integer");
+
+                    b.Property<int>("TipoStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("tipoStatus");
 
                     b.HasKey("Id");
 
@@ -102,6 +166,10 @@ namespace COMTUR.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("nome");
+
+                    b.Property<int>("TipoStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("tipoStatus");
 
                     b.HasKey("Id");
 
@@ -197,6 +265,33 @@ namespace COMTUR.Migrations
                     b.ToTable("imagemnoticia");
                 });
 
+            modelBuilder.Entity("COMTUR.Models.ImagemTurismoModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("imagemTurismoid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IdTurismo")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Imagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagem");
+
+                    b.Property<string>("LegendaImagem")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("legendaImagem");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("imagemturismo");
+                });
+
             modelBuilder.Entity("COMTUR.Models.NoticiaModel", b =>
                 {
                     b.Property<int>("Id")
@@ -225,6 +320,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("subtitulo");
 
+                    b.Property<int>("TipoStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("tipoStatus");
+
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("text")
@@ -233,6 +332,52 @@ namespace COMTUR.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("noticia");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.SessaoModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("idssessao");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmailUsuario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("emailusuario");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("NivelAcesso")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("nivelacesso");
+
+                    b.Property<string>("NomeUsuario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("nomeusuario");
+
+                    b.Property<bool>("StatusSessao")
+                        .HasColumnType("boolean")
+                        .HasColumnName("statussessao");
+
+                    b.Property<string>("TokenSessao")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("tokensessao");
+
+                    b.Property<int?>("UsuarioModelId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioModelId");
+
+                    b.ToTable("sessao");
                 });
 
             modelBuilder.Entity("COMTUR.Models.TipoAtracaoModel", b =>
@@ -309,6 +454,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("telefone");
 
+                    b.Property<int>("TipoStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("tipoStatus");
+
                     b.Property<int>("TipoUsuario")
                         .HasColumnType("integer")
                         .HasColumnName("tipoUsuario");
@@ -322,38 +471,69 @@ namespace COMTUR.Migrations
                         {
                             Id = 1,
                             EmailUsuario = "usuario@gmail.com",
-                            Nome = "usuario",
-                            SenhaUsuario = "usuario",
-                            Telefone = "123456",
+                            Nome = "Usuário",
+                            SenhaUsuario = "123456",
+                            Telefone = "(11) 11111-1111",
+                            TipoStatus = 0,
                             TipoUsuario = 1
                         },
                         new
                         {
                             Id = 2,
-                            EmailUsuario = "usuario@gmail.com",
-                            Nome = "funcionario",
-                            SenhaUsuario = "funcionario",
-                            Telefone = "123456",
+                            EmailUsuario = "funcionario@gmail.com",
+                            Nome = "Funcionário",
+                            SenhaUsuario = "123456",
+                            Telefone = "(22) 22222-2222",
+                            TipoStatus = 0,
                             TipoUsuario = 2
                         },
                         new
                         {
                             Id = 3,
-                            EmailUsuario = "usuario@gmail.com",
-                            Nome = "empresario",
-                            SenhaUsuario = "empresario",
-                            Telefone = "123456",
+                            EmailUsuario = "empresario@gmail.com",
+                            Nome = "Empresário",
+                            SenhaUsuario = "123456",
+                            Telefone = "(33) 33333-3333",
+                            TipoStatus = 0,
                             TipoUsuario = 3
                         },
                         new
                         {
                             Id = 4,
-                            EmailUsuario = "usuario@gmail.com",
-                            Nome = "administrador",
-                            SenhaUsuario = "administrador",
-                            Telefone = "123456",
+                            EmailUsuario = "administrador@gmail.com",
+                            Nome = "Administrador",
+                            SenhaUsuario = "123456",
+                            Telefone = "(44) 44444-4444",
+                            TipoStatus = 0,
                             TipoUsuario = 4
                         });
+                });
+
+            modelBuilder.Entity("COMTUR.Models.AnuncioModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.EmpresaModel", null)
+                        .WithMany("AnuncioEmpresa")
+                        .HasForeignKey("EmpresaModelId");
+
+                    b.HasOne("COMTUR.Models.EmpresaModel", "EmpresaModel")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("COMTUR.Models.TipoTurismoModel", "TipoTurismoModel")
+                        .WithMany()
+                        .HasForeignKey("IdTipoTurismo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("COMTUR.Models.TipoTurismoModel", null)
+                        .WithMany("Anuncios")
+                        .HasForeignKey("TipoTurismoModelId");
+
+                    b.Navigation("EmpresaModel");
+
+                    b.Navigation("TipoTurismoModel");
                 });
 
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
@@ -415,6 +595,15 @@ namespace COMTUR.Migrations
                     b.Navigation("NoticiaModel");
                 });
 
+            modelBuilder.Entity("COMTUR.Models.SessaoModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
+                        .WithMany()
+                        .HasForeignKey("UsuarioModelId");
+
+                    b.Navigation("UsuarioModel");
+                });
+
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
                 {
                     b.Navigation("ImagemAtracao");
@@ -422,6 +611,8 @@ namespace COMTUR.Migrations
 
             modelBuilder.Entity("COMTUR.Models.EmpresaModel", b =>
                 {
+                    b.Navigation("AnuncioEmpresa");
+
                     b.Navigation("ImagemEmpresa");
                 });
 
@@ -433,6 +624,11 @@ namespace COMTUR.Migrations
             modelBuilder.Entity("COMTUR.Models.TipoAtracaoModel", b =>
                 {
                     b.Navigation("Atracao");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.TipoTurismoModel", b =>
+                {
+                    b.Navigation("Anuncios");
                 });
 
             modelBuilder.Entity("COMTUR.Models.UsuarioModel", b =>

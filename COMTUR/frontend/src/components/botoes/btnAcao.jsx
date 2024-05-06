@@ -1,15 +1,17 @@
 import React from "react";
 import { tv } from "tailwind-variants";
-import { Pencil, Trash, Eye, FilePlus, Plus } from "@phosphor-icons/react";
+import { Pencil, Trash, Eye, FilePlus, Plus, PresentationChart } from "@phosphor-icons/react";
 
 const Acoes = {
   "Editar": { icone: Pencil, texto: "Editar" },
   "Excluir": { icone: Trash, texto: "Excluir" },
   "Visualizar": { icone: Eye, texto: "Visualizar" },
-  "Publicados": {icone: Eye, texto: "Publicados"},
+  "Publicados": {icone: PresentationChart, texto: "Publicados"},
   "Cadastrar": { icone: FilePlus, texto: "Cadastrar" },
   "VisualizarMais": {icone: Plus, texto: "Visualizar Mais"}
 };
+
+
 
 const BtnAcao = ({ funcao, acao }) => {
   const style = tv({

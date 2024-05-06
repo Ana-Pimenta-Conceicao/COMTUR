@@ -11,9 +11,6 @@ namespace COMTUR.Data.Map
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Nome).IsRequired().HasMaxLength(50);
-
-            // Relacionamento TipoAtracao com Atracao
-            builder.HasMany(x => x.Atracao).WithOne(x => x.TipoAtracaoModel).IsRequired().OnDelete(DeleteBehavior.Cascade);
-        }
+		}
     }
 }

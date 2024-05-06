@@ -145,11 +145,14 @@ export default function Empresario() {
         }
     }, [atualizarData])
 
+    const [sidebarOpen, setSidebarOpen] = useState(true);
     return (
-        <div className="h-screen flex">
-            <SidebarAdm />
-            <div className="flex-2 container-fluid">
-                <NavBarAdm />
+      <div className="home">
+        <div className="h-screen flex fixed">
+          <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
+        </div>
+        <div className="flex-1 container-fluid" style={{ paddingLeft: sidebarOpen ? 200 : 100 }}>
+          <NavBarAdm />
                 <h1 className="text-2xl pb-10 font-semibold">Lista de Empresários</h1>
                 <div className="flex relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

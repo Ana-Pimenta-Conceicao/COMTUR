@@ -24,21 +24,20 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
       const formData = new FormData();
       formData.append("token", token);
 
+      localStorage.removeItem("token");
+      localStorage.removeItem("tipoUsuario");
+      localStorage.removeItem("nome");
+
       try {
         await axios.post(baseUrl + "/Logout", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-        return;
       } catch (error) {
-        return;
       }
     }
 
-    localStorage.removeItem("token");
-    localStorage.removeItem("tipoUsuario");
-    localStorage.removeItem("nome");
     // Redirecionar o usuário para a página de login
   };
 
@@ -87,13 +86,8 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
             className={`text-white origin-left font-medium text-xl duration-200 ${
               !open && "scale-0"
             }`}
-
-           
-            >
+          >
             {userName.length > 10 ? userName.substring(0, 9) + "..." : userName}
-                    
-                      
-            
           </h1>
         </div>
         <ul className="pt-6" style={{ padding: 0, position: "relative" }}>
@@ -134,12 +128,11 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
               </li>
 
               {Menu.submenu && submenuOpen && open && (
-                <ul >
+                <ul>
                   {Menu.submenuItems.map((submenuItem, index) => (
                     <li
                       key={index}
                       className={`flex rounded-md p-2 cursor-pointer ml-7 hover:bg-light-white text-gray-300 text-xs items-center gap-x-4`}
-                      
                     >
                       {submenuItem.title}
                     </li>

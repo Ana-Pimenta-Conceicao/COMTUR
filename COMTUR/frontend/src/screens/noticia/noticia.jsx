@@ -14,6 +14,7 @@ import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import PopupCadastrado from "../../components/popups/popupCadastro";
 import PopupExcluido from "../../components/popups/popupExcluido";
 import PopupEditado from "../../components/popups/popupEditado";
+import Table from "../../components/table/Table";
 
 export default function Noticia() {
   const baseUrl = "https://localhost:7256/api/Noticia";
@@ -353,9 +354,12 @@ export default function Noticia() {
           <NavBarAdm />
           <div className="pl-8 pr-8 pt-[20px]">
             <h1 className="text-3xl font-semibold pb-2">Lista de Notícias</h1>
-            <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
-            <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
-              <div className="grid grid-cols-7 w-full bg-[#DFDFDF] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
+            <hr className="pb-4 border-[2.5px] border-gray-100" />
+
+            {/* border-[#DBDBDB] border-t-[2px] border-x-[2px] */}
+            <div className="w-full rounded-[10px]   ">
+              {/* border-[#DBDBDB] border-t-[2px] border-x-[2px] */}
+              <div className="grid grid-cols-7 w-full bg-gray-200/50  rounded-t-[6px] h-10 items-center text-base font-semibold text-gray-900">
                 <span className="flex col-span-1 ml-5 items-center">ID</span>
                 <span className="flex col-span-3 justify-center items-center">
                   Titulo
@@ -368,22 +372,22 @@ export default function Noticia() {
               <ul className="w-full">
                 {currentItems.map((noticia) => (
                   <React.Fragment key={noticia.id}>
-                    <li className="grid grid-cols-7 w-full bg-[#F5F5F5]">
+                    <li className="grid grid-cols-7 w-full  border-gray-100">
                       <span
                         scope="row"
-                        className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700"
+                        className="flex pl-5 border-r-[1px] border-t-[1px]  border-gray-100 pt-[12px] pb-[12px] text-gray-700"
                       >
                         {noticia.id}
                       </span>
-                      <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
+                      <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px]  border-gray-100 text-gray-700 ">
                         {noticia.titulo.length > 50
                           ? noticia.titulo.substring(0, 55) + "..."
                           : noticia.titulo}
                       </span>
-                      <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
+                      <span className="flex justify-center items-center border-t-[1px] border-r-[1px]  border-gray-100 text-gray-700">
                         {formatarDataParaExibicao(noticia.dataPublicacao)}
                       </span>
-                      <span className="flex col-span-2 items-center justify-center border-t-[1px] gap-2 border-[#DBDBDB]">
+                      <span className="flex col-span-2 items-center justify-center border-t-[1px] gap-2  border-gray-100">
                         <BtnAcao
                           funcao={() => NoticiaSet(noticia, "Editar")}
                           acao="Editar"
@@ -401,7 +405,7 @@ export default function Noticia() {
                   </React.Fragment>
                 ))}
               </ul>
-              <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px] border-[#DBDBDB]">
+              <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px]  border-gray-100">
                 <button className="" onClick={() => goToPage(currentPage - 1)}>
                   <CaretLeft size={22} className="text-[#DBDBDB]" />
                 </button>
@@ -421,6 +425,7 @@ export default function Noticia() {
                 </button>
               </div>
             </div>
+
             <div className="float-right flex-auto py-6">
               <BtnAcao
                 funcao={() => VisualizarTodasNoticias()}

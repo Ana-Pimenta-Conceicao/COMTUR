@@ -32,9 +32,9 @@ namespace COMTUR.Models
         public string HoraPublicacao { get; set; }
 
 		// Mapear o campo tipoStatus como enum
-		[Column("tipoStatus")]
+		/*[Column("tipoStatus")]
 		[EnumDataType(typeof(TipoStatus))]
-		public TipoStatus TipoStatus { get; set; }
+		public TipoStatus TipoStatus { get; set; }*/
 
 		// relação com ImagemNoticia
 		public ICollection<ImagemNoticiaModel>? ImagemNoticia { get; set; }

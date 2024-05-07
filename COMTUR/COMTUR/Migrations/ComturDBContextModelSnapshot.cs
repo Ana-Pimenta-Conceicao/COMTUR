@@ -58,10 +58,6 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("nomeEmpresa");
 
-                    b.Property<int>("TipoStatus")
-                        .HasColumnType("integer")
-                        .HasColumnName("tipoStatus");
-
                     b.Property<int?>("TipoTurismoModelId")
                         .HasColumnType("integer");
 
@@ -111,10 +107,6 @@ namespace COMTUR.Migrations
 
                     b.Property<int?>("TipoAtracaoModelId")
                         .HasColumnType("integer");
-
-                    b.Property<int>("TipoStatus")
-                        .HasColumnType("integer")
-                        .HasColumnName("tipoStatus");
 
                     b.HasKey("Id");
 
@@ -166,10 +158,6 @@ namespace COMTUR.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("nome");
-
-                    b.Property<int>("TipoStatus")
-                        .HasColumnType("integer")
-                        .HasColumnName("tipoStatus");
 
                     b.HasKey("Id");
 
@@ -320,10 +308,6 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("subtitulo");
 
-                    b.Property<int>("TipoStatus")
-                        .HasColumnType("integer")
-                        .HasColumnName("tipoStatus");
-
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("text")
@@ -454,10 +438,6 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("telefone");
 
-                    b.Property<int>("TipoStatus")
-                        .HasColumnType("integer")
-                        .HasColumnName("tipoStatus");
-
                     b.Property<int>("TipoUsuario")
                         .HasColumnType("integer")
                         .HasColumnName("tipoUsuario");
@@ -474,7 +454,6 @@ namespace COMTUR.Migrations
                             Nome = "Usuário",
                             SenhaUsuario = "123456",
                             Telefone = "(11) 11111-1111",
-                            TipoStatus = 0,
                             TipoUsuario = 1
                         },
                         new
@@ -484,7 +463,6 @@ namespace COMTUR.Migrations
                             Nome = "Funcionário",
                             SenhaUsuario = "123456",
                             Telefone = "(22) 22222-2222",
-                            TipoStatus = 0,
                             TipoUsuario = 2
                         },
                         new
@@ -494,7 +472,6 @@ namespace COMTUR.Migrations
                             Nome = "Empresário",
                             SenhaUsuario = "123456",
                             Telefone = "(33) 33333-3333",
-                            TipoStatus = 0,
                             TipoUsuario = 3
                         },
                         new
@@ -504,7 +481,6 @@ namespace COMTUR.Migrations
                             Nome = "Administrador",
                             SenhaUsuario = "123456",
                             Telefone = "(44) 44444-4444",
-                            TipoStatus = 0,
                             TipoUsuario = 4
                         });
                 });

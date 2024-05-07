@@ -34,9 +34,9 @@ namespace COMTUR.Models
 		public string Descricao { get; set; }
 
 		// Mapear o campo tipoStatus como enum
-		[Column("tipoStatus")]
+		/*[Column("tipoStatus")]
 		[EnumDataType(typeof(TipoStatus))]
-		public TipoStatus TipoStatus { get; set; }
+		public TipoStatus TipoStatus { get; set; }*/
 
 		// relação com empresario
 		[JsonIgnore]

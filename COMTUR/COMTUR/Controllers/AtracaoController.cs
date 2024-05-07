@@ -24,7 +24,7 @@ namespace COMTUR.Controllers
 			_imagemAtracaoRepositorio = imagemAtracaoRepositorio;
 		}
 
-		[HttpGet("porTipoStatus/{tipoStatus}")]
+		/*[HttpGet("porTipoStatus/{tipoStatus}")]
 		public async Task<ActionResult<IEnumerable<AtracaoModel>>> GetAtracaoPorTipo(int tipoStatus)
 		{
 			var atracao = await _atracaoRepositorio.ListarPorTipoStatus(tipoStatus);
@@ -35,7 +35,7 @@ namespace COMTUR.Controllers
 			}
 
 			return Ok(atracao);
-		}
+		}*/
 
 		[HttpPost("{atracaoId}/imagens")]
 		public IActionResult AdicionarImagem(int atracaoId, [FromForm] ImagemAtracaoModel imagem)

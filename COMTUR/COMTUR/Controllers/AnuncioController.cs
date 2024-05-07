@@ -22,7 +22,7 @@ namespace COMTUR.Controllers
 			_AnuncioRepositorio = AnuncioRepositorio;
 		}
 
-		[HttpGet("porTipoStatus/{tipoStatus}")]
+		/*[HttpGet("porTipoStatus/{tipoStatus}")]
 		public async Task<ActionResult<IEnumerable<AnuncioModel>>> GetAnuncioPorTipo(int tipoStatus)
 		{
 			var anuncios = await _AnuncioRepositorio.ListarPorTipoStatus(tipoStatus);
@@ -33,7 +33,7 @@ namespace COMTUR.Controllers
 			}
 
 			return Ok(anuncios);
-		}
+		}*/
 
 		[HttpGet]
 		public async Task<ActionResult<List<AnuncioModel>>> BuscarAnuncio()

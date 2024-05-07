@@ -23,7 +23,7 @@ namespace COMTUR.Controllers
             _imagemNoticiaRepositorio = imagemNoticiaRepositorio;
         }
 
-		[HttpGet("porTipoStatus/{tipoStatus}")]
+		/*[HttpGet("porTipoStatus/{tipoStatus}")]
 		public async Task<ActionResult<IEnumerable<NoticiaModel>>> GetNoticiaPorTipo(int tipoStatus)
 		{
 			var noticias = await _noticiaRepository.ListarPorTipoStatus(tipoStatus);
@@ -34,7 +34,7 @@ namespace COMTUR.Controllers
 			}
 
 			return Ok(noticias);
-		} 
+		}*/
 
 		[HttpPost("{noticiaId}/imagens")]
         public IActionResult AdicionarImagem(int noticiaId, [FromForm] ImagemNoticiaModel imagem)

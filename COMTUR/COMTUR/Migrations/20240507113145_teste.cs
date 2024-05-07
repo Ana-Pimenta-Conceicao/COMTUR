@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class DBComtur : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,8 +39,7 @@ namespace COMTUR.Migrations
                     subtitulo = table.Column<string>(type: "text", nullable: false),
                     conteudo = table.Column<string>(type: "text", nullable: false),
                     datapublicacao = table.Column<DateOnly>(type: "date", nullable: false),
-                    horaPublicacao = table.Column<string>(type: "text", nullable: false),
-                    tipoStatus = table.Column<int>(type: "integer", nullable: false)
+                    horaPublicacao = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -84,7 +83,6 @@ namespace COMTUR.Migrations
                     emailUsuario = table.Column<string>(type: "text", nullable: false),
                     senhaUsuario = table.Column<string>(type: "text", nullable: false),
                     tipoUsuario = table.Column<int>(type: "integer", nullable: false),
-                    tipoStatus = table.Column<int>(type: "integer", nullable: false),
                     imagemPerfilUsuario = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -122,7 +120,6 @@ namespace COMTUR.Migrations
                     nome = table.Column<string>(type: "text", nullable: false),
                     descricao = table.Column<string>(type: "text", nullable: false),
                     qrcode = table.Column<string>(type: "text", nullable: false),
-                    tipoStatus = table.Column<int>(type: "integer", nullable: false),
                     imagemPerfilUsuario = table.Column<string>(type: "text", nullable: true),
                     IdTipoAtracao = table.Column<int>(type: "integer", nullable: false),
                     TipoAtracaoModelId = table.Column<int>(type: "integer", nullable: true)
@@ -155,7 +152,6 @@ namespace COMTUR.Migrations
                     imagem = table.Column<string>(type: "text", nullable: true),
                     legendaImagem = table.Column<string>(type: "text", nullable: false),
                     descricao = table.Column<string>(type: "text", nullable: false),
-                    tipoStatus = table.Column<int>(type: "integer", nullable: false),
                     usuarioid = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -224,7 +220,6 @@ namespace COMTUR.Migrations
                     imagemAnuncio = table.Column<string>(type: "text", nullable: true),
                     legendaAnuncio = table.Column<string>(type: "text", nullable: true),
                     DescricaoAnuncio = table.Column<string>(type: "text", nullable: false),
-                    tipoStatus = table.Column<int>(type: "integer", nullable: false),
                     IdTipoTurismo = table.Column<int>(type: "integer", nullable: false),
                     IdEmpresa = table.Column<int>(type: "integer", nullable: false),
                     EmpresaModelId = table.Column<int>(type: "integer", nullable: true),
@@ -280,13 +275,13 @@ namespace COMTUR.Migrations
 
             migrationBuilder.InsertData(
                 table: "usuario",
-                columns: new[] { "usuarioid", "emailUsuario", "imagemPerfilUsuario", "nome", "senhaUsuario", "telefone", "tipoStatus", "tipoUsuario" },
+                columns: new[] { "usuarioid", "emailUsuario", "imagemPerfilUsuario", "nome", "senhaUsuario", "telefone", "tipoUsuario" },
                 values: new object[,]
                 {
-                    { 1, "usuario@gmail.com", null, "Usuário", "123456", "(11) 11111-1111", 0, 1 },
-                    { 2, "funcionario@gmail.com", null, "Funcionário", "123456", "(22) 22222-2222", 0, 2 },
-                    { 3, "empresario@gmail.com", null, "Empresário", "123456", "(33) 33333-3333", 0, 3 },
-                    { 4, "administrador@gmail.com", null, "Administrador", "123456", "(44) 44444-4444", 0, 4 }
+                    { 1, "usuario@gmail.com", null, "Usuário", "123456", "(11) 11111-1111", 1 },
+                    { 2, "funcionario@gmail.com", null, "Funcionário", "123456", "(22) 22222-2222", 2 },
+                    { 3, "empresario@gmail.com", null, "Empresário", "123456", "(33) 33333-3333", 3 },
+                    { 4, "administrador@gmail.com", null, "Administrador", "123456", "(44) 44444-4444", 4 }
                 });
 
             migrationBuilder.CreateIndex(

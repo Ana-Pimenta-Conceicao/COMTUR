@@ -33,12 +33,12 @@ namespace COMTUR.Repositorios
 		{
 			return await _dbContext.Empresa.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
-		public async Task<List<EmpresaModel>> ListarPorTipoStatus(int tipoStatus)
+		/*public async Task<List<EmpresaModel>> ListarPorTipoStatus(int tipoStatus)
 		{
 			return await _dbContext.Empresa
 				.Where(x => (int)x.TipoStatus == tipoStatus)
 				.ToListAsync();
-		}
+		}*/
 
 		public async Task<List<EmpresaModel>> BuscarEmpresa()
 		{
@@ -47,10 +47,10 @@ namespace COMTUR.Repositorios
 
 		public async Task<EmpresaModel> Adicionar(EmpresaModel empresaModel)
 		{
-			if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
+			/*if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
 			{
 				throw new ArgumentException("Tipo de status inválido");
-			}
+			}*/
 
 			await _dbContext.Empresa.AddAsync(empresaModel);
 			await _dbContext.SaveChangesAsync();
@@ -62,10 +62,10 @@ namespace COMTUR.Repositorios
 		{
 			EmpresaModel empresaPorId = await BuscarPorId(id);
 
-			if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
+			/*if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
 			{
 				throw new ArgumentException("Tipo de status inválido");
-			}
+			}*/
 
 			if (empresaPorId == null)
 			{
@@ -79,7 +79,7 @@ namespace COMTUR.Repositorios
 			empresaPorId.Imagem = empresaModel.Imagem;
 			empresaPorId.LegendaImagem = empresaModel.LegendaImagem;
 			empresaPorId.Descricao = empresaModel.Descricao;
-			empresaPorId.TipoStatus = empresaModel.TipoStatus;
+			//empresaPorId.TipoStatus = empresaModel.TipoStatus;
 
 			_dbContext.Empresa.Update(empresaPorId);
 			await _dbContext.SaveChangesAsync();

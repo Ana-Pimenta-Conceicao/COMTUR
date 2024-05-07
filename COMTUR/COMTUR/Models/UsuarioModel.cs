@@ -32,9 +32,9 @@ namespace COMTUR.Models
 		public TipoUsuario TipoUsuario { get; set; }
 
 		// Mapear o campo tipoStatus como enum
-		[Column("tipoStatus")]
+		/*[Column("tipoStatus")]
 		[EnumDataType(typeof(TipoStatus))]
-		public TipoStatus TipoStatus { get; set; }
+		public TipoStatus TipoStatus { get; set; }*/
 
 		[Column("imagemPerfilUsuario")]
 		public string? ImagemPerfilUsuario { get; set; }

@@ -29,9 +29,6 @@ public class AtracaoModel
 	[EnumDataType(typeof(TipoStatus))]
 	public TipoStatus TipoStatus { get; set; }*/
 
-	[Column("imagemPerfilUsuario")]
-	public string? ImagemPerfilUsuario { get; set; }
-
 	// relaçao com TipoAtracao
 	[JsonIgnore]
 	public TipoAtracaoModel? TipoAtracaoModel { get; set; }
@@ -41,6 +38,13 @@ public class AtracaoModel
 
 	// relaçao com ImagemAtracao
 	public ICollection<ImagemAtracaoModel>? ImagemAtracao { get; set; }
+
+	// relaçao com Turismo
+	[JsonIgnore]
+	public TurismoModel? TurismoModel { get; set; }
+
+	[ForeignKey("idturismo")]
+	public int IdTurismo { get; set; }
 
 }
 

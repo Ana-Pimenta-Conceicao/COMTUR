@@ -17,6 +17,7 @@ public class TipoAtracaoModel
 	[Column("nome")]
 	public string Nome { get; set; }
 
+	// relação com Atracao
 	[JsonIgnore]
 	public ICollection<AtracaoModel>? Atracao { get; set; }
 }

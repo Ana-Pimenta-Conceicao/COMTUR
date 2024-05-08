@@ -76,8 +76,6 @@ namespace COMTUR.Repositorios
 			empresaPorId.Nome = empresaModel.Nome;
 			empresaPorId.CNPJ = empresaModel.CNPJ;
 			empresaPorId.Endereco = empresaModel.Endereco;
-			empresaPorId.Imagem = empresaModel.Imagem;
-			empresaPorId.LegendaImagem = empresaModel.LegendaImagem;
 			empresaPorId.Descricao = empresaModel.Descricao;
 			//empresaPorId.TipoStatus = empresaModel.TipoStatus;
 

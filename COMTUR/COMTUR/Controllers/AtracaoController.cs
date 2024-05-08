@@ -63,6 +63,17 @@ namespace COMTUR.Controllers
 			return Ok(atracao);
 		}
 
+		[HttpGet("{id}/turismo")]
+		public async Task<ActionResult<AtracaoModel>> BuscarPorIdTurismo(int id)
+		{
+			AtracaoModel atracao = await _atracaoRepositorio.GetByIdTurismo(id);
+			if (atracao == null)
+			{
+				return NotFound($"Turismo com ID {id} não encontrada.");
+			}
+			return Ok(atracao);
+		}
+
 		[HttpGet("{id}/imagens")]
 		public async Task<ActionResult<List<string>>> BuscarImagensPorAtracaoId(int atracaoId)
 		{

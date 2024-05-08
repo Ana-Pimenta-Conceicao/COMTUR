@@ -5,7 +5,8 @@ namespace COMTUR.Repositorios.Interfaces
 	public interface IAtracaoRepositorio
 	{
 		Task<List<AtracaoModel>> BuscarAtracao();
-		Task<AtracaoModel> GetById(int id);
+		Task<AtracaoModel> GetByIdTipoAtracao(int id);
+		Task<AtracaoModel> GetByIdTurismo(int id);
 		Task<AtracaoModel> BuscarPorId(int id);
 		Task<AtracaoModel> Adicionar(AtracaoModel Atracao);
 		Task<AtracaoModel> Atualizar(AtracaoModel Atracao, int id);

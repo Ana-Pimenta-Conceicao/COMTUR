@@ -22,9 +22,14 @@ namespace COMTUR.Repositorios
 			return await _dbContext.Atracao.Include(n => n.ImagemAtracao).FirstOrDefaultAsync(x => x.Id == id);
 		}
 
-		public async Task<AtracaoModel> GetById(int id)
+		public async Task<AtracaoModel> GetByIdTipoAtracao(int id)
 		{
 			return await _dbContext.Atracao.Include(objeto => objeto.TipoAtracaoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+		}
+
+		public async Task<AtracaoModel> GetByIdTurismo(int id)
+		{
+			return await _dbContext.Atracao.Include(objeto => objeto.TurismoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
 
 		public async Task<List<AtracaoModel>> BuscarAtracao()

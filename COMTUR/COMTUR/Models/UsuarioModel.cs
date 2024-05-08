@@ -42,5 +42,9 @@ namespace COMTUR.Models
 		// Relacionamento com empresa para o empresário
         [JsonIgnore]
         public ICollection<EmpresaModel>? Empresas { get; set; }
-    }
+
+		// Relacionamento com turismo para o funcionario/admin
+		[JsonIgnore]
+		public ICollection<TurismoModel>? Turismos { get; set; }
+	}
 }

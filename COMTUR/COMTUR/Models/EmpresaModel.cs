@@ -24,12 +24,6 @@ namespace COMTUR.Models
 		[Column("endereco")]
 		public string Endereco { get; set; }
 
-		[Column("imagem")]
-		public string? Imagem { get; set; }
-
-		[Column("legendaImagem")]
-		public string LegendaImagem { get; set; }
-
 		[Column("descricao")]
 		public string Descricao { get; set; }
 

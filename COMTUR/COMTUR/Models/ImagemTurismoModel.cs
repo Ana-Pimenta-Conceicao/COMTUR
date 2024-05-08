@@ -17,8 +17,8 @@ namespace COMTUR.Models
 		[Column("legendaImagem")]
 		public string LegendaImagem { get; set; }
 
-		//[JsonIgnore]
-		//public TurismoModel TurismoModel { get; set; }
+		[JsonIgnore]
+		public TurismoModel TurismoModel { get; set; }
 
 		[ForeignKey("idTurismo")]
 		public int IdTurismo { get; set; }

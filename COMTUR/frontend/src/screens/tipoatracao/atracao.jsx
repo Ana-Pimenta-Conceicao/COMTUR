@@ -4,8 +4,6 @@ import NavBarAdm from '../../components/admin/navbarAdm';
 import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
-import InputMask from 'react-input-mask';
-import { useNavigate } from 'react-router-dom';
 import {
   CaretLeft, CaretRight, Pencil,
   Trash,
@@ -18,31 +16,27 @@ function Atracao() {
 
   const baseUrl = "https://localhost:7256/api/Atracao";
   const baseUrlTipoAtracao = "https://localhost:7256/api/TipoAtracao";
+  const baseUrlImagem = "https://localhost:7256/api/ImagemAtracao";
 
   const [data, setData] = useState([])
   const [dataTipoAtracao, setDataTipoAtracao] = useState([])
 
   const [atualizarData, setAtualizarData] = useState(true)
-
   const [modalInserir, setModalInserir] = useState(false)
-
   const [modalEditar, setModalEditar] = useState(false)
-
   const [modalDeletar, setModalDeletar] = useState(false)
-
   const [atracaoNome, setAtracaoNome] = useState("")
-
   const [atracaoDescricao, setAtracaoDescricao] = useState("")
-
   const [atracaoQrCode, setAtracaoQrCode] = useState("")
-
   const [tipoatracaoId, setTipoAtracaoId] = useState("")
-
   const [atracaoId, setAtracaoId] = useState("")
+  const [imagensAtracao, setImagensAtracao] = useState([]);
+  const [atracaoLegendaImagem, setAtracaoLegendaImagem] = useState([]);
+  const [statusAtracao, setStatusAtracao] = useState('');
 
   const [tipoAtracaoSelecionada, setTipoAtracaoSelecionada] = useState(null);
   const [tipoAtracaoOptions, setTipoAtracaoOptions] = useState([]);
-
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [atracaoSelecionado, setAtracaoSelecionado] = useState({
     id: '',
     nome: '',
@@ -51,14 +45,25 @@ function Atracao() {
     idAtracao: ''
   });
 
+  const limparDados = () => {
+    setAtracaoNome("");
+    setAtracaoDescricao("");
+    setAtracaoQrCode("");
+    setImagensAtracao("");
+    setAtracaoLegendaImagem("");
+    setAtracaoId("");
+  };
 
   const AtracaoSet = (atracao, opcao) => {
-    setAtracaoNome(atracao.nome)
+    console.log("Atracao que foi passada: ", atracao);
     setAtracaoId(atracao.id)
+    setAtracaoNome(atracao.nome)
     setAtracaoDescricao(atracao.descricao)
     setAtracaoQrCode(atracao.qrCode)
     setTipoAtracaoId(atracao.tipoatracaoId)
-    setAtracaoSelecionado(atracao.id)
+
+    setImagensAtracao(atracao.imagemAtracao);
+    console.log(atracao.imagemAtracao);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
@@ -70,10 +75,12 @@ function Atracao() {
 
   const abrirFecharModalInserir = () => {
     setModalInserir(!modalInserir)
+    limparDados();
   }
 
   const abrirFecharModalEditar = () => {
     setModalEditar(!modalEditar)
+
   }
 
   const abrirFecharModalDeletar = () => {
@@ -86,8 +93,29 @@ function Atracao() {
         setData(response.data);
       }).catch(error => {
         console.log(error);
-      })
+      });
+  };
+
+  function convertImageToBase64(imageFile, callback) {
+    if (!imageFile) {
+      callback(false);
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const base64String = reader.result;
+      callback(base64String);
+    };
+
+    reader.onerror = () => {
+      callback(false);
+    };
+
+    reader.readAsDataURL(imageFile);
   }
+
 
   const pedidoGetTipoAtracao = async () => {
     await axios.get(baseUrlTipoAtracao)
@@ -110,30 +138,72 @@ function Atracao() {
 
 
   const pedidoPost = async () => {
-    delete atracaoSelecionado.id
-    await axios.post(baseUrl, {
-      nome: atracaoNome,
-      descricao: atracaoDescricao,
-      qrCode: atracaoQrCode,
-      idTipoAtracao: tipoatracaoId
-    })
-      .then(response => {
-        setData(data.concat(response.data));
-        abrirFecharModalInserir();
-      }).catch(error => {
+    const formData = new FormData();
+    formData.append("nome", atracaoNome);
+    formData.append("descricao", atracaoDescricao);
+    formData.append("qrCode", atracaoQrCode);
+    formData.append("idtipoatracao", tipoAtracaoSelecionada);
+    formData.append("status", statusAtracao);
+
+    try {
+      const response = await axios.post(baseUrl, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setData(data.concat(response.data));
+      await pedidoPostImagens(response.data.id);
+      abrirFecharModalInserir();
+      limparDados();
+      setAtualizarData(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+  const pedidoPostImagens = async (idAtracao) => {
+    if (imagensAtracao) {
+      const formData = new FormData();
+      imagensAtracao?.forEach((imagem) => {
+        formData.append("imagens", imagem.imagem);
+        formData.append("legendas", imagem.legendaImagem);
+      });
+
+      try {
+        const response = await axios.post(
+          baseUrlImagem + `/${idAtracao}/CadastrarImagensAtracao`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      } catch (error) {
         console.log(error);
-      })
-  }
+      }
+    }
+  };
 
   async function pedidoAtualizar() {
-    console.log("Id que chegou: ", atracaoId);
+    const formData = new FormData();
+    formData.append("id", atracaoId);
+    formData.append("nome", atracaoNome);
+    formData.append("descricao", atracaoDescricao);
+    formData.append("qrCode", atracaoQrCode);
+    formData.append("idtipoatracao", tipoAtracaoSelecionada);
+    formData.append("status", statusAtracao);
+
     try {
-      const response = await axios.put(`${baseUrl}/${atracaoId}`, {
-        nome: atracaoNome,
-        descricao: atracaoDescricao,
-        qrCode: atracaoQrCode,
-        idTipoAtracao: tipoatracaoId
+      const response = await axios.put(`${baseUrl}/${atracaoId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
+
+      console.log(response.data.idTipoAtracao)
 
       const updatedAtracao = response.data;
 
@@ -147,11 +217,45 @@ function Atracao() {
       });
 
       abrirFecharModalEditar();
+      await pedidoPutImagens();
+      setAtualizarData(true);
     } catch (error) {
       console.log(error);
     }
   }
 
+
+  const pedidoPutImagens = async () => {
+    if (imagensAtracao) {
+      const formData = new FormData();
+      imagensAtracao.forEach((imagem) => {
+        formData.append("imagens", imagem.imagem);
+        formData.append("legendas", imagem.legendaImagem);
+      });
+
+      try {
+        const response = await axios.put(
+          baseUrlImagem + `/${atracaoId}/AtualizarImagensAtracao`, // Correção aqui
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const removeImagemByIndex = (indexToRemove) => {
+    setImagensAtracao((prevImagens) =>
+      prevImagens.filter((_, index) => index !== indexToRemove)
+    );
+  };
 
 
   const pedidoDeletar = async () => {
@@ -192,7 +296,7 @@ function Atracao() {
   }, [dataTipoAtracao]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 9;
   const totalItems = data.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -205,6 +309,7 @@ function Atracao() {
 
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
+  
 
   // Funções para navegar entre as páginas
   const goToPage = (page) => {
@@ -212,11 +317,14 @@ function Atracao() {
       setCurrentPage(page);
     }
   };
+  
 
   return (
-    <div className="h-screen flex">
-      <SidebarAdm />
-      <div className="flex-2 container-fluid">
+    <div className="home">
+      <div className="h-screen flex fixed">
+        <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
+      </div>
+      <div className="flex-1 container-fluid" style={{ paddingLeft: sidebarOpen ? 200 : 100 }}>
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[20px]">
           <h1 className="text-3xl font-semibold pb-2">Lista de Atração</h1>
@@ -226,6 +334,7 @@ function Atracao() {
               <span className="flex ml-5 items-center">ID</span>
               <span className="flex justify-center items-center">Nome</span>
               <span className="flex justify-center items-center">Tipo atração</span>
+              <span className="flex justify-center items-center">Status</span>
               <span className="flex justify-center items-center">Ações</span>
             </div>
 
@@ -239,6 +348,7 @@ function Atracao() {
                       <span scope="row" className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700">{atracao.id}</span>
                       <span className="flex justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">{atracao.nome.length > 25 ? atracao.nome.substring(0, 25) + '...' : atracao.nome}</span>
                       <span scope="row" className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700">{tipoatracao ? tipoatracao.nome : ". . ."}</span>
+                      <span className="flex justify-center items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">{atracao.status}</span>
                       <span className="flex justify-center items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
 
                         <button className="text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
@@ -308,35 +418,132 @@ function Atracao() {
 
 
 
-      <Modal isOpen={modalInserir}>
+      <Modal
+        className="modal-xl-gridxl"
+        isOpen={modalInserir}
+        style={{ maxWidth: "1000px" }}
+      >
         <ModalHeader>Incluir Tipo Atração</ModalHeader>
         <ModalBody>
-          <div className="form-group">
-            <label>Nome: </label>
-            <br />
-            <input type="text" className="form-control" onChange={(e) => setAtracaoNome(e.target.value)} />
-            <br />
-            <label>Descrição: </label>
-            <br />
-            <input type="text" className="form-control" onChange={(e) => setAtracaoDescricao(e.target.value)} />
-            <br />
-            <label>QrCode: </label>
-            <br />
-            <input type="text" className="form-control" onChange={(e) => setAtracaoQrCode(e.target.value)} />
-            <br />
-            <label>Tipo atração: </label>
-            <br />
-            <select className="form-control"
-              value={tipoAtracaoSelecionada}
-              onChange={(e) => setTipoAtracaoSelecionada(e.target.value)}
-            >
-              {tipoAtracaoOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <br />
+          <div className="grid grid-cols-2 ">
+            <div className="form-group">
+              <div >
+                <label>Nome: </label>
+                <br />
+                <input type="text" className="form-control" onChange={(e) => setAtracaoNome(e.target.value)} />
+                <br />
+                <label>Descrição: </label>
+                <br />
+                <input type="text" className="form-control" onChange={(e) => setAtracaoDescricao(e.target.value)} />
+                <br />
+                <label>QrCode: </label>
+                <br />
+                <input type="text" className="form-control" onChange={(e) => setAtracaoQrCode(e.target.value)} />
+                <br />
+                <label>Tipo atração: </label>
+                <br />
+                <select className="form-control"
+                  value={tipoAtracaoSelecionada}
+                  onChange={(e) => setTipoAtracaoSelecionada(e.target.value)}
+                >
+                  {tipoAtracaoOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <br />
+                <label>Status:</label>
+<select
+  className="form-control"
+  value={statusAtracao}
+  onChange={(e) => setStatusAtracao(e.target.value)}
+>
+<option value="Aprovado">Aprovado</option>
+  <option value="Inativo">Inativo</option>
+  <option value="Aprovado">Reprovado</option>
+  <option value="Inativo">Analisando</option>
+</select>
+
+              </div>
+            </div>
+            <div className="flex flex-col col-span-1 pl-4  border-l-[1px]">
+              <label>Imagem:</label>
+              <div>
+                {/* Campo para seleção de imagem */}
+                <input
+                  type="file"
+                  className="form-control "
+                  onChange={(e) => {
+                    convertImageToBase64(e.target.files[0], (result) => {
+                      if (result) {
+                        const objetoImagem = {
+                          imagem: result,
+                          legendaImagem: "",
+                        };
+                        setImagensAtracao((prevImagens) => [
+                          ...prevImagens,
+                          objetoImagem,
+                        ]);
+                      }
+                      // Limpa o campo de entrada de arquivo após a seleção
+                      e.target.value = null;
+                    });
+                  }}
+                  multiple
+                />
+
+                {(Array.isArray(imagensAtracao) ? imagensAtracao : []).map(
+                  (imagem, index) =>
+                    index % 1 === 0 && (
+                      <div
+                        className="flex pt-3 justify-end "
+                        key={`row-${index}`}
+                      >
+                        {Array.from(
+                          {
+                            length: Math.min(1, imagensAtracao.length - index),
+                          },
+                          (_, i) => (
+                            <div key={index} className="flex flex-col  pr-5 ">
+                              <div className="flex w-[140px] justify-end">
+                                <img
+                                  className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
+                                  src={imagensAtracao[index + i].imagem}
+                                  alt={`Imagem ${index}`}
+                                />
+                                <div className="flex flex-col pl-3 justify-end">
+                                  <label>Legenda:</label>
+                                  <input
+                                    type="text"
+                                    className="form-control text-sm w-[286px] mb-0 "
+                                    onChange={(e) =>
+                                      setImagensAtracao((prevImagens) => {
+                                        const novasImagens = [...prevImagens];
+                                        novasImagens[index + i].legendaImagem =
+                                          e.target.value;
+                                        return novasImagens;
+                                      })
+                                    }
+                                    placeholder="Digite a legenda"
+                                  />
+                                  <br />
+                                  <button
+                                    className="w-[140px] rounded-md text-md text-white  bg-red-800 hover:bg-red-900"
+                                    onClick={() => removeImagemByIndex(index)}
+                                  >
+                                    Remover
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )
+                )}
+              </div>
+            </div>
           </div>
         </ModalBody>
         <ModalFooter>
@@ -345,47 +552,174 @@ function Atracao() {
         </ModalFooter>
       </Modal>
 
-      <Modal isOpen={modalEditar}>
+      <Modal
+        className="modal-xl-gridxl"
+        isOpen={modalEditar}
+        style={{ maxWidth: "1000px" }}
+      >
         <ModalHeader>Editar Atração</ModalHeader>
         <ModalBody>
-          <div className="form-group">
-            <label>ID: </label><br />
-            <input type="text" className="form-control" readOnly value={atracaoId} /> <br />
+          <div className="grid grid-cols-2">
+            <div className="form-group">
+              <div>
+                <label>Nome: </label>
+                <br />
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={(e) => setAtracaoNome(e.target.value)}
+                  value={atracaoNome}
+                />
+                <br />
+                <label>Descrição: </label>
+                <br />
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={(e) => setAtracaoDescricao(e.target.value)}
+                  value={atracaoDescricao}
+                />
+                <br />
+                <label>QrCode: </label>
+                <br />
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={(e) => setAtracaoQrCode(e.target.value)}
+                  value={atracaoQrCode}
+                />
+                <br />
+                <label>Tipo atração: </label>
+                <br />
+                <select
+                  className="form-control"
+                  value={tipoAtracaoSelecionada}
+                  onChange={(e) => setTipoAtracaoSelecionada(e.target.value)}
+                >
+                  {tipoAtracaoOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <br />
 
-            <label>Nome:</label>
-            <input type="text" className="form-control" name="atracaoNome" onChange={(e) => setAtracaoNome(e.target.value)}
-              value={atracaoNome} />
-            <br />
-            <label>Descrição: </label>
-            <br />
-            <input type="text" className="form-control" name="atracaoDescricao" onChange={(e) => setAtracaoDescricao(e.target.value)}
-              value={atracaoDescricao} />
-            <br />
-            <label>QrCode: </label>
-            <br />
-            <input type="text" className="form-control" name="atracaoQrCode" onChange={(e) => setAtracaoQrCode(e.target.value)}
-              value={atracaoQrCode} />
-            <br />
-            <label>Tipo atração: </label>
-            <br />
-            <select className="form-control"
-              value={tipoAtracaoSelecionada}
-              onChange={(e) => setTipoAtracaoSelecionada(e.target.value)}
-            >
-              {tipoAtracaoOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <br />
+<label>Status:</label>
+<select
+  className="form-control"
+  value={statusAtracao}
+  onChange={(e) => setStatusAtracao(e.target.value)}
+>
+  <option value="Aprovado">Aprovado</option>
+  <option value="Inativo">Inativo</option>
+  <option value="Aprovado">Reprovado</option>
+  <option value="Inativo">Analisando</option>
+</select>
+              </div>
+            </div>
+
+            <div className="flex flex-col col-span-1 pl-4 border-l-[1px]">
+              <label>Imagem:</label>
+              <div>
+                <input
+                  type="file"
+                  className="form-control"
+                  onChange={(e) => {
+                    Array.from(e.target.files).forEach((file) => {
+                      convertImageToBase64(file, (result) => {
+                        if (result) {
+                          const objetoImagem = {
+                            imagem: result,
+                            legendaImagem: "",
+                          };
+                          // Agora você precisa adicionar imagens à variável imagensAtracao
+                          setImagensAtracao((prevImagens) => [
+                            ...prevImagens,
+                            objetoImagem,
+                          ]);
+                        }
+                      });
+                    });
+                    // Limpa o campo de entrada de arquivo após a seleção
+                    e.target.value = null;
+                  }}
+                  multiple
+                />
+
+                {modalEditar && (
+                  <div>
+                    {(Array.isArray(imagensAtracao) ? imagensAtracao : []).map(
+                      (imagem, index) =>
+                        index % 1 === 0 && (
+                          <div
+                            className="flex pt-3 justify-end "
+                            key={`row-${index}`}
+                          >
+                            {Array.from(
+                              {
+                                length: Math.min(
+                                  1,
+                                  imagensAtracao.length - index
+                                ),
+                              },
+                              (_, i) => (
+                                <div
+                                  key={index + i}
+                                  className="flex flex-col items-start pr-5"
+                                >
+                                  <div className="flex w-[140px] justify-end">
+                                    <img
+                                      className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
+                                      src={imagensAtracao[index + i].imagem}
+                                    />
+                                    <div className="flex flex-col pl-3 justify-end">
+                                      <label>Legenda:</label>
+                                      <input
+                                        type="text"
+                                        className="form-control  text-sm w-[286px]"
+                                        onChange={(e) =>
+                                          setImagensAtracao((prevImagens) => {
+                                            const novasImagens = [...prevImagens];
+                                            novasImagens[
+                                              index + i
+                                            ].legendaImagem = e.target.value;
+                                            return novasImagens;
+                                          })
+                                        }
+                                        value={
+                                          imagensAtracao[index + i].legendaImagem
+                                        }
+                                      />
+                                      <br />
+
+                                      <button
+                                        className="w-[140px] rounded-md  mt-[2px] mb-3 text-md text-white p-[0.2px]  bg-red-800 hover:bg-red-900"
+                                        onClick={() =>
+                                          removeImagemByIndex(index + i)
+                                        }
+                                      >
+                                        Remover
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        )
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </ModalBody>
         <ModalFooter>
-          <button className="btn btnmodalverde" onClick={() => pedidoAtualizar()}>Alterar</button>{"  "}
+          <button className="btn btnmodalverde" onClick={() => pedidoAtualizar(atracaoId)}>Alterar</button>{"  "}
           <button className="btn btnmodalcinza" onClick={() => abrirFecharModalEditar()}>Cancelar</button>
         </ModalFooter>
       </Modal>
+
       <Modal isOpen={modalDeletar}>
         <ModalBody>
           <label>Confirma a exclusão desta Atração : {atracaoNome} ?</label>

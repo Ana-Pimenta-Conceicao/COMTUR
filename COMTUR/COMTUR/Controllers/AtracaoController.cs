@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using COMTUR.Models;
 using COMTUR.Repositorios.Interfaces;
 using Microsoft.Extensions.Hosting;
+using COMTUR.Repositorios;
 
 namespace COMTUR.Controllers
 {
@@ -21,6 +22,19 @@ namespace COMTUR.Controllers
 		{
 			_atracaoRepositorio = AtracaoRepositorio;
 			_imagemAtracaoRepositorio = imagemAtracaoRepositorio;
+		}
+
+		[HttpGet("porTipoStatus/{tipoStatus}")]
+		public async Task<ActionResult<IEnumerable<AtracaoModel>>> GetAtracaoPorTipo(int tipoStatus)
+		{
+			var atracao = await _atracaoRepositorio.ListarPorTipoStatus(tipoStatus);
+
+			if (atracao == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(atracao);
 		}
 
 		[HttpPost("{atracaoId}/imagens")]

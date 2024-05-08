@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using COMTUR.Models.Enum;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -32,16 +33,24 @@ namespace COMTUR.Models
 		[Column("descricao")]
 		public string Descricao { get; set; }
 
+		// Mapear o campo tipoStatus como enum
+		[Column("tipoStatus")]
+		[EnumDataType(typeof(TipoStatus))]
+		public TipoStatus TipoStatus { get; set; }
+
 		// relação com empresario
-        [JsonIgnore]
+		[JsonIgnore]
         public UsuarioModel? UsuarioModel { get; set; }
 
 		[Column("usuarioid")]
 		[ForeignKey("usuarioid")]
 		public int IdUsuario { get; set; }
 
-		// relação ImagemEmpresa
+		// relação com ImagemEmpresa
 		public ICollection<ImagemEmpresaModel>? ImagemEmpresa { get; set; }
+
+		// relação com Anuncio
+		public ICollection<AnuncioModel>? AnuncioEmpresa { get; set; }
 
 	}
 }

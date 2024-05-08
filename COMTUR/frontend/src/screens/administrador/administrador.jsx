@@ -267,10 +267,17 @@ export default function Administrador() {
     }
   };
 
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
   return (
-    <div className="h-screen flex">
-      <SidebarAdm />
-      <div className="flex-2 container-fluid">
+    <div className="administrador">
+      <div className="h-screen flex fixed">
+        <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
+      </div>
+      <div
+        className="flex-1 container-fluid"
+        style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
+      >
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[20px]">
           <h1 className="text-3xl font-semibold pb-2">
@@ -318,8 +325,10 @@ export default function Administrador() {
                     <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
                       {admin.cargoAdministrador}
                     </span>
-                    <span className="flex col-span-3 justify-center items-center border-t-[1px] gap-[3px] 
-                    border-[#DBDBDB]">
+                    <span
+                      className="flex col-span-3 justify-center items-center border-t-[1px] gap-[3px] 
+                    border-[#DBDBDB]"
+                    >
                       <button
                         className="inline-flex text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 
                         focus:outline-none font-medium rounded-lg text-sm p-2 text-center 

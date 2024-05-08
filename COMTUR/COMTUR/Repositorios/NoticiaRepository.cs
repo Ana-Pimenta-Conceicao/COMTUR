@@ -1,5 +1,6 @@
 ﻿using COMTUR.Data;
 using COMTUR.Models;
+using COMTUR.Models.Enum;
 using COMTUR.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -32,15 +33,27 @@ namespace COMTUR.Repositorios
             return await _dbContext.Noticia.Include(n => n.ImagemNoticia).ToListAsync();
         }
 
-        public async Task<NoticiaModel> Adicionar(NoticiaModel noticiaModel)
+		public async Task<List<NoticiaModel>> ListarPorTipoStatus(int tipoStatus)
+		{
+			return await _dbContext.Noticia
+				.Where(x => (int)x.TipoStatus == tipoStatus)
+				.ToListAsync();
+		}
+
+
+		public async Task<NoticiaModel> Adicionar(NoticiaModel noticiaModel)
         {
-            // Adiciona a notícia no banco de dados
-            await _dbContext.Noticia.AddAsync(noticiaModel);
+			if (!Enum.IsDefined(typeof(TipoStatus), noticiaModel.TipoStatus))
+			{
+				throw new ArgumentException("Tipo de status inválido");
+			}
+
+			// Adiciona a notícia no banco de dados
+			await _dbContext.Noticia.AddAsync(noticiaModel);
             await _dbContext.SaveChangesAsync();
 
             return noticiaModel;
         }
-
 
         public async Task<NoticiaModel> Atualizar(NoticiaModel noticiaDto, int id)
         {
@@ -57,9 +70,10 @@ namespace COMTUR.Repositorios
             noticiaPorId.Conteudo = noticiaDto.Conteudo;
             noticiaPorId.DataPublicacao = noticiaDto.DataPublicacao;
             noticiaPorId.HoraPublicacao = noticiaDto.HoraPublicacao;
+			noticiaPorId.TipoStatus = noticiaDto.TipoStatus;
 
 
-            _dbContext.Noticia.Update(noticiaPorId);
+			_dbContext.Noticia.Update(noticiaPorId);
             await _dbContext.SaveChangesAsync();
 
             return noticiaPorId;

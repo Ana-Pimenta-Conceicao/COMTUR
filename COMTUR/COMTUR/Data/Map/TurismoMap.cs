@@ -25,7 +25,7 @@ namespace COMTUR.Data.Map
 				   .OnDelete(DeleteBehavior.Cascade);
 
 			// Relacionamento Turismo com Atracao
-			builder.HasMany(x => x.Atracao).WithOne(x => x.TurismoModel).IsRequired().OnDelete(DeleteBehavior.Cascade);
+			builder.HasMany(x => x.Atracao).WithOne(x => x.TurismoModel).OnDelete(DeleteBehavior.Cascade);
 
 			// Relacionamento Turismo com Noticia
 			builder.HasMany(x => x.Noticia).WithOne(x => x.TurismoModel).IsRequired().OnDelete(DeleteBehavior.Cascade);

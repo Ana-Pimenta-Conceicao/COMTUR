@@ -19,6 +19,7 @@ import CadastroUsuario from "./screens/cadastro/cadastrousuario";
 import CadastroEmpresario from "./screens/cadastro/cadastroEmpresario";
 import PerfilUsuario from "./screens/usuarios/perfilusuarios";
 import NotFound from "./screens/notFound";
+import VisualizarAtracao from "./screens/tipoatracao/visualizarAtracao";
 
 
 const isUserLoggedIn = () => {
@@ -46,6 +47,8 @@ const AppRoutes = () => {
                 <Route path="/notfound" element={<NotFound/>} />
                 <Route path="/empresa" element={<Empresa/>}/>
 
+                <Route path="/visualizarAtracao/:id" element={ <VisualizarAtracao/> }/>
+
                 {/* <Route path="/home"  element={ <Home />} /> */}
                 <Route path="/noticia" element={<ProtectedRoute element={ <Noticia /> } />}/>
                 <Route path="/tipoturismo" element={<ProtectedRoute element={ <TipoTurismo/> }/>}/>
@@ -59,6 +62,7 @@ const AppRoutes = () => {
                 <Route path="/cadastrousuario" element={<ProtectedRoute element={<CadastroUsuario/>} />}/>
                 <Route path="/cadastroempresario" element={<ProtectedRoute element={<CadastroEmpresario/>} />} />
                 <Route path="/perfilUsuario/:id" element={<ProtectedRoute element={ <PerfilUsuario/> } />}/>
+                
             
                 <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
             </Routes>

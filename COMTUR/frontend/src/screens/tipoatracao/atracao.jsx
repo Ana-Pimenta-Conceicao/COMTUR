@@ -17,9 +17,11 @@ function Atracao() {
   const baseUrl = "https://localhost:7256/api/Atracao";
   const baseUrlTipoAtracao = "https://localhost:7256/api/TipoAtracao";
   const baseUrlImagem = "https://localhost:7256/api/ImagemAtracao";
+  const baseUrlTurismo = "https://localhost:7256/api/Turismo"
 
   const [data, setData] = useState([])
   const [dataTipoAtracao, setDataTipoAtracao] = useState([])
+  const [dataTurismo, setDataTurismo] = useState([])
 
   const [atualizarData, setAtualizarData] = useState(true)
   const [modalInserir, setModalInserir] = useState(false)
@@ -31,11 +33,14 @@ function Atracao() {
   const [tipoatracaoId, setTipoAtracaoId] = useState("")
   const [atracaoId, setAtracaoId] = useState("")
   const [imagensAtracao, setImagensAtracao] = useState([]);
+  const [turismoId, setTurismoId] = useState("")
   const [atracaoLegendaImagem, setAtracaoLegendaImagem] = useState([]);
-  const [statusAtracao, setStatusAtracao] = useState('');
+
 
   const [tipoAtracaoSelecionada, setTipoAtracaoSelecionada] = useState(null);
   const [tipoAtracaoOptions, setTipoAtracaoOptions] = useState([]);
+  const [turismoSelecionado, setTurismoSelecionado] = useState(null);
+  const [turismoOptions, setTurismoOptions] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [atracaoSelecionado, setAtracaoSelecionado] = useState({
     id: '',
@@ -61,6 +66,7 @@ function Atracao() {
     setAtracaoDescricao(atracao.descricao)
     setAtracaoQrCode(atracao.qrCode)
     setTipoAtracaoId(atracao.tipoatracaoId)
+    setTurismoId(atracao.turismoId)
 
     setImagensAtracao(atracao.imagemAtracao);
     console.log(atracao.imagemAtracao);
@@ -127,6 +133,16 @@ function Atracao() {
       })
   }
 
+  const pedidoGetTurismo = async () => {
+    await axios.get(baseUrlTurismo)
+      .then(response => {
+
+        setDataTurismo(response.data);
+      }).catch(error => {
+        console.log(error);
+      })
+  }
+
   const atualizarListaAtracao = async () => {
     await axios.get(baseUrl)
       .then(response => {
@@ -143,7 +159,7 @@ function Atracao() {
     formData.append("descricao", atracaoDescricao);
     formData.append("qrCode", atracaoQrCode);
     formData.append("idtipoatracao", tipoAtracaoSelecionada);
-    formData.append("status", statusAtracao);
+    formData.append("idturismo", turismoSelecionado);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -194,7 +210,7 @@ function Atracao() {
     formData.append("descricao", atracaoDescricao);
     formData.append("qrCode", atracaoQrCode);
     formData.append("idtipoatracao", tipoAtracaoSelecionada);
-    formData.append("status", statusAtracao);
+    formData.append("idturismo", turismoSelecionado);
 
     try {
       const response = await axios.put(`${baseUrl}/${atracaoId}`, formData, {
@@ -274,6 +290,7 @@ function Atracao() {
     if (atualizarData) {
       pedidoGet();
       pedidoGetTipoAtracao();
+      pedidoGetTurismo();
       setAtualizarData(false);
     }
   }, [atualizarData])
@@ -295,6 +312,24 @@ function Atracao() {
     }
   }, [dataTipoAtracao]);
 
+  useEffect(() => {
+    if (dataTurismo) {
+      const options = dataTurismo.map((turismo) => {
+        return { value: turismo.id, label: turismo.nome };
+      });
+      setTurismoOptions(options);
+
+      // Verificar se o tipoAtracaoSelecionada ainda é válido, se não for, atualizá-lo
+      if (!options.some(option => option.value === turismoSelecionado)) {
+        const atracaoPadrao = options.length > 0 ? options[0].value : '';
+
+        setTurismoSelecionado(atracaoPadrao);
+        setTurismoId(atracaoPadrao);
+      }
+    }
+  }, [dataTurismo]);
+  
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const totalItems = data.length;
@@ -309,7 +344,6 @@ function Atracao() {
 
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
-  
 
   // Funções para navegar entre as páginas
   const goToPage = (page) => {
@@ -317,7 +351,6 @@ function Atracao() {
       setCurrentPage(page);
     }
   };
-  
 
   return (
     <div className="home">
@@ -334,7 +367,6 @@ function Atracao() {
               <span className="flex ml-5 items-center">ID</span>
               <span className="flex justify-center items-center">Nome</span>
               <span className="flex justify-center items-center">Tipo atração</span>
-              <span className="flex justify-center items-center">Status</span>
               <span className="flex justify-center items-center">Ações</span>
             </div>
 
@@ -348,7 +380,6 @@ function Atracao() {
                       <span scope="row" className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700">{atracao.id}</span>
                       <span className="flex justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">{atracao.nome.length > 25 ? atracao.nome.substring(0, 25) + '...' : atracao.nome}</span>
                       <span scope="row" className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700">{tipoatracao ? tipoatracao.nome : ". . ."}</span>
-                      <span className="flex justify-center items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">{atracao.status}</span>
                       <span className="flex justify-center items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
 
                         <button className="text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
@@ -453,18 +484,19 @@ function Atracao() {
                   ))}
                 </select>
                 <br />
-                <label>Status:</label>
-<select
-  className="form-control"
-  value={statusAtracao}
-  onChange={(e) => setStatusAtracao(e.target.value)}
->
-<option value="Aprovado">Aprovado</option>
-  <option value="Inativo">Inativo</option>
-  <option value="Aprovado">Reprovado</option>
-  <option value="Inativo">Analisando</option>
-</select>
-
+                <label>Turismo: </label>
+                <br />
+                <select className="form-control"
+                  value={turismoSelecionado}
+                  onChange={(e) => setTurismoSelecionado(e.target.value)}
+                >
+                  {turismoOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <br />
               </div>
             </div>
             <div className="flex flex-col col-span-1 pl-4  border-l-[1px]">
@@ -603,18 +635,6 @@ function Atracao() {
                   ))}
                 </select>
                 <br />
-
-<label>Status:</label>
-<select
-  className="form-control"
-  value={statusAtracao}
-  onChange={(e) => setStatusAtracao(e.target.value)}
->
-  <option value="Aprovado">Aprovado</option>
-  <option value="Inativo">Inativo</option>
-  <option value="Aprovado">Reprovado</option>
-  <option value="Inativo">Analisando</option>
-</select>
               </div>
             </div>
 

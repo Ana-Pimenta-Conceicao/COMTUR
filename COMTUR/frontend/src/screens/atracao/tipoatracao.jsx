@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
 import { Navigate, useNavigate } from "react-router-dom";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
+import Tabela from "../../components/table/tabela";
+import BtnAcao from "../../components/botoes/btnAcao";
 
 function TipoAtracao() {
   const baseUrl = "https://localhost:7256/api/TipoAtracao";
@@ -138,7 +140,7 @@ function TipoAtracao() {
   }, [atualizarData]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 9;
   const totalItems = data.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -152,118 +154,84 @@ function TipoAtracao() {
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
 
-  // Funções para navegar entre as páginas
-  const goToPage = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
+  
 
   useEffect(() => {
     const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
     setUserType(userTypeFromLocalStorage);
   }, []);
 
-  if (userType === null) {
-    return <div>Carregando...</div>;
-  } else if (userType === "1" || userType === "3") {
+  const apresentaDados = Array.isArray(currentItems)
+  ? currentItems.map((tipoatracao) => {
+      return {
+        id: tipoatracao.id,
+        nome:
+        tipoatracao.nome,
+        status: "teste",
+        acoes: (
+          <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+            <BtnAcao
+              funcao={() => TipoAtracaoSet(tipoatracao, "Editar")}
+              acao="Editar"
+            />
+            <BtnAcao
+              funcao={() => TipoAtracaoSet(tipoatracao, "Excluir")}
+              acao="Excluir"
+            />
+            <BtnAcao
+              funcao={() => TipoAtracaoSet(tipoatracao, "Visualizar")}
+              acao="Visualizar"
+            />
+          </div>
+        ),
+      };
+    })
+  : [];
+
+
+  if (userType === "1" || userType === "3") {
     return <Navigate to="/notfound" />;
   } else {
     return (
       <div className="home">
-        <div className="h-screen flex fixed">
-          <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
-        </div>
-        <div
-          className="flex-1 container-fluid"
-          style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
-        >
-          <NavBarAdm />
-          <div className="pl-8 pr-8 pt-[20px]">
-            <h1 className="text-3xl font-semibold pb-2">
-              Lista de Tipo Atração
-            </h1>
-            <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
-            <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
-              <div className="grid grid-cols-4 w-full bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
-                <span className="flex ml-5 items-center">ID</span>
-                <span className="flex justify-center items-center">Nome</span>
-              </div>
+      <div className="h-screen flex fixed">
+        <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
+      </div>
+      <div
+        className="flex-1 container-fluid"
+        style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
+      >
+        <NavBarAdm />
+        <div className="pl-8 pr-8 pt-[20px]">
+          <h1 className="text-3xl font-semibold pb-2">Lista de Tipos de Atrações</h1>
+          <hr className="pb-4 border-[2.5px] border-gray-300" />
+          <Tabela
+            object={apresentaDados}
+            colunas={[
+              "ID",
+              "Nome",
+              "Status",
+              "Ações"
+            ]}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            goToPage={setCurrentPage}
+            numColunas={4}
+          />
 
-              <ul className="w-full">
-                {currentItems.map((tipoatracao) => (
-                  <React.Fragment key={tipoatracao.id}>
-                    <li className="grid grid-cols-4 w-full bg-[#F5F5F5]">
-                      <span
-                        scope="row"
-                        className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700"
-                      >
-                        {tipoatracao.id}
-                      </span>
-                      <span className="flex justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
-                        {tipoatracao.nome.length > 25
-                          ? tipoatracao.nome.substring(0, 25) + "..."
-                          : tipoatracao.nome}
-                      </span>
-                      <span className="flex items-center justify-center border-t-[1px] gap-2 border-[#DBDBDB]">
-                        <button
-                          className="text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                          onClick={() => TipoAtracaoSet(tipoatracao, "Editar")}
-                        >
-                          Editar
-                        </button>
+          <div className="float-right flex-auto py-6">
+            <BtnAcao
+              funcao={() => VisualizarTodasNoticias()}
+              acao="Publicados"
+            />
 
-                        <button
-                          className="text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                          onClick={() => TipoAtracaoSet(tipoatracao, "Excluir")}
-                        >
-                          Excluir
-                        </button>
-
-                        <button
-                          className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                          onClick={() =>
-                            TipoAtracaoSet(tipoatracao, "Visualizar")
-                          }
-                        >
-                          Visualizar
-                        </button>
-                      </span>
-                    </li>
-                  </React.Fragment>
-                ))}
-              </ul>
-
-              <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px] border-[#DBDBDB]">
-                <button className="" onClick={() => goToPage(currentPage - 1)}>
-                  <CaretLeft size={22} className="text-[#DBDBDB]" />
-                </button>
-                <select
-                  className="rounded-sm hover:border-[#DBDBDB] select-none"
-                  value={currentPage}
-                  onChange={(e) => goToPage(Number(e.target.value))}
-                >
-                  {[...Array(totalPages)].map((_, index) => (
-                    <option key={index + 1} value={index + 1}>
-                      {index + 1}
-                    </option>
-                  ))}
-                </select>
-                <button className="" onClick={() => goToPage(currentPage + 1)}>
-                  <CaretRight size={22} className="text-[#DBDBDB]" />
-                </button>
-              </div>
-            </div>
-            <div className="float-right flex-auto py-6">
-              <button
-                className="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-md text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900"
-                onClick={() => abrirFecharModalInserir()}
-              >
-                Cadastrar
-              </button>
-            </div>
+            <BtnAcao
+              funcao={() => abrirFecharModalInserir("Cadastrar")}
+              acao="Cadastrar"
+            />
           </div>
         </div>
+      </div>
 
         <Modal isOpen={modalInserir}>
           <ModalHeader>Incluir Tipo Atração</ModalHeader>

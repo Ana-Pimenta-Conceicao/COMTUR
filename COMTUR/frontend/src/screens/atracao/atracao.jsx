@@ -4,13 +4,8 @@ import NavBarAdm from '../../components/admin/navbarAdm';
 import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
-import {
-  CaretLeft, CaretRight, Pencil,
-  Trash,
-  Eye,
-  FilePlus
-} from "@phosphor-icons/react";
-
+import Tabela from '../../components/table/tabela';
+import BtnAcao from '../../components/botoes/btnAcao';
 
 function Atracao() {
 
@@ -18,7 +13,7 @@ function Atracao() {
   const baseUrlTipoAtracao = "https://localhost:7256/api/TipoAtracao";
   const baseUrlImagem = "https://localhost:7256/api/ImagemAtracao";
   const baseUrlTurismo = "https://localhost:7256/api/Turismo"
-
+  const [userType, setUserType] = useState(null);
   const [data, setData] = useState([])
   const [dataTipoAtracao, setDataTipoAtracao] = useState([])
   const [dataTurismo, setDataTurismo] = useState([])
@@ -41,14 +36,7 @@ function Atracao() {
   const [tipoAtracaoOptions, setTipoAtracaoOptions] = useState([]);
   const [turismoSelecionado, setTurismoSelecionado] = useState(null);
   const [turismoOptions, setTurismoOptions] = useState([]);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [atracaoSelecionado, setAtracaoSelecionado] = useState({
-    id: '',
-    nome: '',
-    descricao: '',
-    qrCode: '',
-    idAtracao: ''
-  });
+  const [sidebarOpen, setSidebarOpen] = useState(true); 
 
   const limparDados = () => {
     setAtracaoNome("");
@@ -345,110 +333,87 @@ function Atracao() {
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
 
-  // Funções para navegar entre as páginas
-  const goToPage = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
+  useEffect(() => {
+    const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
+    setUserType(userTypeFromLocalStorage);
+  }, []);
 
+  const apresentaDados = Array.isArray(currentItems) ? currentItems.map((atracao) => {
+    const tipoAtracao = dataTipoAtracao.find((tipo) => tipo.id === atracao.idTipoAtracao);
+    const tipoAtracaoNome = tipoAtracao ? tipoAtracao.nome : 'Tipo não encontrado';
+    
+    return {
+      id: atracao.id, 
+      nome: atracao.nome,
+      tipoAtracao: tipoAtracaoNome,
+      descricao: atracao.descricao, 
+      status: "teste",
+      acoes: (
+        <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+          <BtnAcao
+            funcao={() => AtracaoSet(atracao, "Editar")}
+            acao="Editar"
+          />
+          <BtnAcao
+            funcao={() => AtracaoSet(atracao, "Excluir")}
+            acao="Excluir"
+          />
+          <BtnAcao
+            funcao={() => AtracaoSet(atracao, "Visualizar")}
+            acao="Visualizar"
+          />
+        </div>
+      ),
+    };
+  }) : [];
+  
+    
+if (userType === "1" || userType === "3") {
+  return <Navigate to="/notfound" />;
+} else {
   return (
     <div className="home">
       <div className="h-screen flex fixed">
         <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
       </div>
-      <div className="flex-1 container-fluid" style={{ paddingLeft: sidebarOpen ? 200 : 100 }}>
+      <div
+        className="flex-1 container-fluid"
+        style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
+      >
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[20px]">
-          <h1 className="text-3xl font-semibold pb-2">Lista de Atração</h1>
-          <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
-          <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
-            <div className="grid grid-cols-4 w-full bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
-              <span className="flex ml-5 items-center">ID</span>
-              <span className="flex justify-center items-center">Nome</span>
-              <span className="flex justify-center items-center">Tipo atração</span>
-              <span className="flex justify-center items-center">Ações</span>
-            </div>
+          <h1 className="text-3xl font-semibold pb-2">Lista de Atrações</h1>
+          <hr className="pb-4 border-[2.5px] border-gray-300" />
+          <Tabela
+            object={apresentaDados}
+            colunas={[
+              "ID",
+              "Nome",
+              "Tipo",
+              "Descrição",
+              "Status",
+              "Ações",
+            ]}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            goToPage={setCurrentPage}
+            formatarData={""}
+            numColunas={6}
+          />
 
-
-            <ul className="w-full">
-              {currentItems.map(atracao => {
-                const tipoatracao = dataTipoAtracao.find((tipoatracao) => tipoatracao.id === atracao.idTipoAtracao);
-                return (
-                  <React.Fragment key={atracao.id}>
-                    <li className="grid grid-cols-4 w-full bg-[#F5F5F5]">
-                      <span scope="row" className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700">{atracao.id}</span>
-                      <span className="flex justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">{atracao.nome.length > 25 ? atracao.nome.substring(0, 25) + '...' : atracao.nome}</span>
-                      <span scope="row" className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700">{tipoatracao ? tipoatracao.nome : ". . ."}</span>
-                      <span className="flex justify-center items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
-
-                        <button className="text-white bg-teal-800 hover:bg-teal-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                          onClick={() => AtracaoSet(atracao, "Editar")}>
-                          <Pencil className="mr-1" size={16} />
-                          Editar
-                        </button>
-
-                        <button className="text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                          onClick={() => AtracaoSet(atracao, "Excluir")}>
-                          <Trash className="mr-1" size={16} />
-                          Excluir
-                        </button>
-
-                        <button className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                          onClick={() => AtracaoSet(atracao, "Visualizar")}>
-                          <Eye className="mr-1" size={16} />
-                          Visualizar
-                        </button>
-
-
-                      </span>
-                    </li>
-                  </React.Fragment>
-                );
-              })}
-            </ul>
-
-            <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px] border-[#DBDBDB]">
-              <button
-                className=""
-                onClick={() => goToPage(currentPage - 1)}
-              >
-                <CaretLeft size={22} className="text-[#DBDBDB]" />
-              </button>
-              <select
-                className="rounded-sm hover:border-[#DBDBDB] select-none"
-                value={currentPage}
-                onChange={(e) => goToPage(Number(e.target.value))}
-              >
-                {[...Array(totalPages)].map((_, index) => (
-                  <option key={index + 1} value={index + 1}>
-                    {index + 1}
-                  </option>
-                ))}
-              </select>
-              <button
-                className=""
-                onClick={() => goToPage(currentPage + 1)}
-              >
-                <CaretRight size={22} className="text-[#DBDBDB]" />
-              </button>
-            </div>
-          </div>
           <div className="float-right flex-auto py-6">
-            <button className="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-md text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900"
-              onClick={() => abrirFecharModalInserir()}>
-              <span className="inline-flex items-center">
-                <FilePlus className="mr-1" size={24} />
-                Cadastrar
-              </span>
-            </button>
+            <BtnAcao
+              funcao={""}
+              acao="Publicados"
+            />
+
+            <BtnAcao
+              funcao={() => abrirFecharModalInserir("Cadastrar")}
+              acao="Cadastrar"
+            />
           </div>
         </div>
       </div>
-
-
-
-
       <Modal
         className="modal-xl-gridxl"
         isOpen={modalInserir}
@@ -753,6 +718,6 @@ function Atracao() {
 
 
   );
-}
+}}
 
 export default Atracao

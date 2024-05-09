@@ -8,6 +8,7 @@ import SidebarAdm from "../../components/admin/sidebarAdm";
 import NavBarAdm from "../../components/admin/navbarAdm";
 import { useNavigate } from "react-router-dom";
 import BtnAcao from "../../components/botoes/btnAcao";
+import Tabela from "../../components/table/tabela";
 import {
   CaretLeft,
   CaretRight,
@@ -18,12 +19,11 @@ import {
   Pencil,
 } from "@phosphor-icons/react";
 
-
 export default function Usuario() {
   const baseUrl = "https://localhost:7256/api/Usuario";
-  
-  const [data, setData] = useState([]);
 
+  const [data, setData] = useState([]);
+  const [userType, setUserType] = useState(null);
   const [atualizarData, setAtualizarData] = useState(true);
 
   const [modalInserir, setModalInserir] = useState(false);
@@ -102,8 +102,6 @@ export default function Usuario() {
     setModalDeletar(!modalDeletar);
   };
 
- 
-
   const pedidoGet = async () => {
     await axios
       .get(baseUrl)
@@ -147,10 +145,13 @@ export default function Usuario() {
 
       abrirFecharModalInserir();
       limparDados();
-   
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleUserTypeChange = (e) => {
+    setUserType(parseInt(e.target.value));
   };
 
   function base64ToImage(base64String) {
@@ -247,7 +248,7 @@ export default function Usuario() {
   }, [atualizarData]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 9;
   const totalItems = data.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -255,362 +256,347 @@ export default function Usuario() {
   const getCurrentPageItems = (page) => {
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return data.slice(startIndex, endIndex).map((user) => {
-      if (user.imagemPerfilUsuario instanceof File) {
-        return {
-          ...user,
-          imagemPerfilUsuario: URL.createObjectURL(user.imagemPerfilUsuario),
-        };
-      }
-      return user;
-    });
+    return data.slice(startIndex, endIndex);
   };
 
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
 
-  // Funções para navegar entre as páginas
-  const goToPage = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
+  useEffect(() => {
+    const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
+    setUserType(userTypeFromLocalStorage);
+  }, []);
 
-  const [userType, setUserType] = useState(4); // Valor padrão é 4
 
-  const handleUserTypeChange = (e) => {
-    setUserType(parseInt(e.target.value));
-  };
-
-  return (
-    <div className="home">
-      <div className="h-screen flex fixed">
-        <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
-      </div>
-      <div
-        className="flex-1 container-fluid"
-        style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
-      >
-        <NavBarAdm />
-        <div className="pl-8 pr-8 pt-[20px]">
-          <h1 className="text-3xl font-semibold pb-2">Lista de Usuários</h1>
-          <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
-          <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
-            <div className="grid grid-cols-6 w-full border-0 bg-[#DBDBDB] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
-              <span className="flex ml-5 items-center">ID</span>
-              <span className="flex col-span-3 justify-center items-center">
-                Nome
-              </span>
-
-              <span className="flex col-span-2 justify-center items-center">
-                Ações
-              </span>
-            </div>
-            <ul className="w-full">
-              {currentItems.map((user) => (
-                <React.Fragment key={user.id}>
-                  <li className="grid grid-cols-6 w-full bg-[#F5F5F5]">
-                    <span
-                      scope="row"
-                      className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700"
-                    >
-                      {user.id}
-                    </span>
-                    <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
-                      {user.nome}
-                    </span>
-
-                    <span className="flex col-span-2 items-center justify-center border-t-[1px] gap-2 border-[#DBDBDB]">
-                      <BtnAcao
-                        funcao={() => UserSet(user, "Editar")}
-                        acao="Editar"
-                      />
-                      <BtnAcao
-                        funcao={() => UserSet(user, "Excluir")}
-                        acao="Excluir"
-                      />
-                      <BtnAcao
-                        funcao={() => UserSet(user, "Visualizar")}
-                        acao="Visualizar"
-                      />
-                    </span>
-                  </li>
-                </React.Fragment>
-              ))}
-            </ul>
-            <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px] border-[#DBDBDB]">
-              <button className="" onClick={() => goToPage(currentPage - 1)}>
-                <CaretLeft size={22} className="text-[#DBDBDB]" />
-              </button>
-              <select
-                className="rounded-sm hover:border-[#DBDBDB] select-none"
-                value={currentPage}
-                onChange={(e) => goToPage(Number(e.target.value))}
-              >
-                {[...Array(totalPages)].map((_, index) => (
-                  <option key={index + 1} value={index + 1}>
-                    {index + 1}
-                  </option>
-                ))}
-              </select>
-              <button className="" onClick={() => goToPage(currentPage + 1)}>
-                <CaretRight size={22} className="text-[#DBDBDB]" />
-              </button>
-            </div>
-          </div>
-          <div className="float-right flex-auto py-6">
+    
+    const apresentaDados = Array.isArray(currentItems) ? currentItems.map((usuario) => {
+      const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
+      
+      return {
+        id: usuario.id, 
+        nome: usuario.nome,
+        descricao: usuario.emailUsuario, 
+        tipoUsuario: tipoUsuarioNome,
+        status: "teste",
+        acoes: (
+          <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
             <BtnAcao
-              funcao={() => abrirFecharModalInserir("Cadastrar")}
-              acao="Cadastrar"
+              funcao={() => UserSet(usuario, "Editar")}
+              acao="Editar"
             />
+            <BtnAcao
+              funcao={() => UserSet(usuario, "Excluir")}
+              acao="Excluir"
+            />
+            <BtnAcao
+              funcao={() => UserSet(usuario, "Visualizar")}
+              acao="Visualizar"
+            />
+          </div>
+        ),
+      };
+    }) : [];
+    
+    // Função auxiliar para obter o nome do tipo de usuário com base no enum
+    function obterNomeTipoUsuario(tipoUsuario) {
+      switch (tipoUsuario) {
+        case 1:
+          return 'Usuário';
+        case 2:
+          return 'Funcionário';
+        case 3:
+          return 'Empresário';
+        case 4:
+          return 'Administrador';
+        default:
+          return 'Tipo não encontrado';
+      }
+    }
+
+  if (userType === "1" || userType === "3") {
+    return <Navigate to="/notfound" />;
+  } else {
+    return (
+      <div className="home">
+        <div className="h-screen flex fixed">
+          <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
+        </div>
+        <div
+          className="flex-1 container-fluid"
+          style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
+        >
+          <NavBarAdm />
+          <div className="pl-8 pr-8 pt-[20px]">
+            <h1 className="text-3xl font-semibold pb-2">Lista de Usuários</h1>
+            <hr className="pb-4 border-[2.5px] border-gray-300" />
+            <Tabela
+              object={apresentaDados}
+              colunas={["ID", "Nome", "Email", "Tipo", "Status", "Ações"]}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              goToPage={setCurrentPage}
+              numColunas={6}
+            />
+
+            <div className="float-right flex-auto py-6">
+              <BtnAcao
+                funcao={() => VisualizarTodasNoticias()}
+                acao="Publicados"
+              />
+
+              <BtnAcao
+                funcao={() => abrirFecharModalInserir("Cadastrar")}
+                acao="Cadastrar"
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-      <Modal isOpen={modalInserir}>
-        <ModalHeader>Cadastrar Usuario</ModalHeader>
-        <ModalBody>
-          <div className="form-group">
-            <label>Nome: </label>
-            <br />
-            <input
-              type="text "
-              className="form-control text-sm"
-              onChange={(e) => setNome(e.target.value)}
-              placeholder="Digite o nome "
-            />
-            <br />
-            <label>Telefone:</label>
-            <br />
-            <InputMask
-              mask="(99) 99999-9999"
-              maskPlaceholder="(99) 99999-9999"
-              type="text "
-              className="form-control text-sm"
-              onChange={(e) => setTelefone(e.target.value)}
-              placeholder="Digite apenas números"
-            />
-            <br />
-            <label>Email:</label>
-            <br />
-            <input
-              type="text "
-              className="form-control text-sm"
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={(e) => validateEmail(e.target.value)}
-              placeholder="Exemplo: email@gmail.com"
-            />
-            <br />
-            <label>Senha:</label>
-            <br />
-            <div className="input-group">
+        <Modal isOpen={modalInserir}>
+          <ModalHeader>Cadastrar Usuario</ModalHeader>
+          <ModalBody>
+            <div className="form-group">
+              <label>Nome: </label>
+              <br />
               <input
-                type={showPassword ? "text" : "password"}
+                type="text "
                 className="form-control text-sm"
-                onChange={(e) => setSenha(e.target.value)}
-                placeholder="Digite a senha"
+                onChange={(e) => setNome(e.target.value)}
+                placeholder="Digite o nome "
               />
-              <button
-                className="btn btn-outline-secondary bg-[#DBDBDB]  border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
-                type="button"
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? <EyeSlash size={24} /> : <Eye size={24} />}
-              </button>
-            </div>
-
-            <br />
-            {/* select para selecionar o usuario*/}
-            <label>Tipo Usuário:</label>
-            <div>
-              <select
-                className="form-control"
-                id="userTypeSelect"
-                value={userType}
-                onChange={handleUserTypeChange}
-              >
-                <option value={4}>Admistrador</option>
-                <option value={3}>Empresário</option>
-                <option value={2}>Funcionário</option>
-                <option value={1}>Usuário</option>
-              </select>
-            </div>
-
-            <br />
-          </div>
-        </ModalBody>
-        <ModalFooter>
-          <button
-            className="btn bg-yellow-400 text-white hover:bg-yellow-500"
-            onClick={() => pedidoPost()}
-          >
-            Cadastrar
-          </button>
-          {"  "}
-          <button
-            className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalInserir()}
-          >
-            Cancelar
-          </button>
-        </ModalFooter>
-      </Modal>
-
-      <Modal isOpen={modalEditar}>
-        <ModalHeader>Alterar Usuario</ModalHeader>
-        <ModalBody>
-          <div className="form-group">
-            <label>ID: </label>
-            <br />
-            <input
-              type="text"
-              className="form-control  text-sm"
-              readOnly
-              value={idUser}
-            />
-            <br />
-            <label>Nome: </label>
-            <br />
-            <input
-              type="text"
-              className="form-control  text-sm"
-              onChange={(e) => setNome(e.target.value)}
-              value={nomeUser}
-            />
-            <br />
-            <label>Telefone:</label>
-            <br />
-            <InputMask
-              mask="(99) 99999-9999"
-              maskPlaceholder="(99) 99999-9999"
-              type="text "
-              className="form-control  text-sm"
-              onChange={(e) => setTelefone(e.target.value)}
-              value={telefoneUser}
-            />
-
-            <br />
-            <label>Email:</label>
-            <br />
-            <input
-              type="text "
-              className="form-control  text-sm"
-              onChange={(e) => setEmail(e.target.value)}
-              value={emailUser}
-            />
-            <br />
-            <label>Senha:</label>
-            <br />
-            <div className="input-group">
+              <br />
+              <label>Telefone:</label>
+              <br />
+              <InputMask
+                mask="(99) 99999-9999"
+                maskPlaceholder="(99) 99999-9999"
+                type="text "
+                className="form-control text-sm"
+                onChange={(e) => setTelefone(e.target.value)}
+                placeholder="Digite apenas números"
+              />
+              <br />
+              <label>Email:</label>
+              <br />
               <input
-                type={showPassword ? "text" : "password"}
+                type="text "
                 className="form-control text-sm"
-                onChange={(e) => setSenha(e.target.value)}
-                value={senhaUser}
+                onChange={(e) => setEmail(e.target.value)}
+                onBlur={(e) => validateEmail(e.target.value)}
+                placeholder="Exemplo: email@gmail.com"
               />
-              <button
-                className="btn btn-outline-secondary bg-[#DBDBDB]  border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
-                type="button"
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? <EyeSlash size={24} /> : <Eye size={24} />}
-              </button>
-            </div>
-
-            <br />
-            <label>Tipo Usuário:</label>
-            <div>
-              <select
-                className="form-control"
-                id="userTypeSelect"
-                value={userType}
-                onChange={handleUserTypeChange}
-              >
-                <option value={4}>Admistrador</option>
-                <option value={3}>Empresário</option>
-                <option value={2}>Funcionário</option>
-                <option value={1}>Usuário</option>
-              </select>
-            </div>
-
-            <br />
-            <label>Imagem:</label>
-            {imagemUser && modalEditar && (
-              <div style={{ position: "relative", display: "inline-block" }}>
-                {typeof imagemUser === "string" ? (
-                  <img
-                    src={imagemUser}
-                    alt="Preview"
-                    style={{ maxWidth: "100%", marginTop: "10px" }}
-                  />
-                ) : (
-                  <img
-                    src={URL.createObjectURL(imagemUser)}
-                    alt="Preview"
-                    style={{ maxWidth: "100%", marginTop: "10px" }}
-                  />
-                )}
+              <br />
+              <label>Senha:</label>
+              <br />
+              <div className="input-group">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-control text-sm"
+                  onChange={(e) => setSenha(e.target.value)}
+                  placeholder="Digite a senha"
+                />
                 <button
-                  style={{
-                    position: "absolute",
-                    top: "15px",
-                    right: "5px",
-                    width: "30px",
-                    height: "30px",
-                    backgroundColor: "rgba(255, 255, 255, 0.5)",
-                    borderRadius: "50%",
-                    border: "none",
-                    padding: "0",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => pedidoRemoverImagem()}
-                ></button>
-                <br />
+                  className="btn btn-outline-secondary bg-[#DBDBDB]  border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <EyeSlash size={24} /> : <Eye size={24} />}
+                </button>
               </div>
-            )}
-            <input
-              type="file"
-              className="form-control"
-              onChange={(e) => setImagemUser(e.target.files[0])}
-              value={imagemUser === "" ? "" : undefined}
-            />
-            <br />
-          </div>
-        </ModalBody>
-        <ModalFooter>
-          <button
-            className="btn bg-yellow-400 text-white hover:bg-yellow-500"
-            onClick={() => pedidoAtualizar()}
-          >
-            Editar
-          </button>
-          {"  "}
-          <button
-            className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalEditar()}
-          >
-            Cancelar
-          </button>
-        </ModalFooter>
-      </Modal>
 
-      <Modal isOpen={modalDeletar}>
-        <ModalBody>Confirma a exclusão do Usuario: "{nomeUser}" ?</ModalBody>
-        <ModalFooter>
-          <button
-            className="btn bg-red-800 hover:bg-red-900 text-white"
-            onClick={() => pedidoDeletar()}
-          >
-            Sim
-          </button>
-          <button
-            className="btn bg-gray-400 hover:bg-gray-600 text-white"
-            onClick={() => abrirFecharModalDeletar()}
-          >
-            Não
-          </button>
-        </ModalFooter>
-      </Modal>
-    </div>
-  );
+              <br />
+              {/* select para selecionar o usuario*/}
+              <label>Tipo Usuário:</label>
+              <div>
+                <select
+                  className="form-control"
+                  id="userTypeSelect"
+                  value={userType}
+                  onChange={handleUserTypeChange}
+                >
+                  <option value={4}>Admistrador</option>
+                  <option value={3}>Empresário</option>
+                  <option value={2}>Funcionário</option>
+                  <option value={1}>Usuário</option>
+                </select>
+              </div>
+
+              <br />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <button
+              className="btn bg-yellow-400 text-white hover:bg-yellow-500"
+              onClick={() => pedidoPost()}
+            >
+              Cadastrar
+            </button>
+            {"  "}
+            <button
+              className="btn bg-gray-400 hover:bg-gray-600 text-white"
+              onClick={() => abrirFecharModalInserir()}
+            >
+              Cancelar
+            </button>
+          </ModalFooter>
+        </Modal>
+
+        <Modal isOpen={modalEditar}>
+          <ModalHeader>Alterar Usuario</ModalHeader>
+          <ModalBody>
+            <div className="form-group">
+              <label>ID: </label>
+              <br />
+              <input
+                type="text"
+                className="form-control  text-sm"
+                readOnly
+                value={idUser}
+              />
+              <br />
+              <label>Nome: </label>
+              <br />
+              <input
+                type="text"
+                className="form-control  text-sm"
+                onChange={(e) => setNome(e.target.value)}
+                value={nomeUser}
+              />
+              <br />
+              <label>Telefone:</label>
+              <br />
+              <InputMask
+                mask="(99) 99999-9999"
+                maskPlaceholder="(99) 99999-9999"
+                type="text "
+                className="form-control  text-sm"
+                onChange={(e) => setTelefone(e.target.value)}
+                value={telefoneUser}
+              />
+
+              <br />
+              <label>Email:</label>
+              <br />
+              <input
+                type="text "
+                className="form-control  text-sm"
+                onChange={(e) => setEmail(e.target.value)}
+                value={emailUser}
+              />
+              <br />
+              <label>Senha:</label>
+              <br />
+              <div className="input-group">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-control text-sm"
+                  onChange={(e) => setSenha(e.target.value)}
+                  value={senhaUser}
+                />
+                <button
+                  className="btn btn-outline-secondary bg-[#DBDBDB]  border-[#DBDBDB] hover:bg-gray-300 hover:border-gray-300"
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <EyeSlash size={24} /> : <Eye size={24} />}
+                </button>
+              </div>
+
+              <br />
+              <label>Tipo Usuário:</label>
+              <div>
+                <select
+                  className="form-control"
+                  id="userTypeSelect"
+                  value={userType}
+                  onChange={handleUserTypeChange}
+                >
+                  <option value={4}>Admistrador</option>
+                  <option value={3}>Empresário</option>
+                  <option value={2}>Funcionário</option>
+                  <option value={1}>Usuário</option>
+                </select>
+              </div>
+
+              <br />
+              <label>Imagem:</label>
+              {imagemUser && modalEditar && (
+                <div style={{ position: "relative", display: "inline-block" }}>
+                  {typeof imagemUser === "string" ? (
+                    <img
+                      src={imagemUser}
+                      alt="Preview"
+                      style={{ maxWidth: "100%", marginTop: "10px" }}
+                    />
+                  ) : (
+                    <img
+                      src={URL.createObjectURL(imagemUser)}
+                      alt="Preview"
+                      style={{ maxWidth: "100%", marginTop: "10px" }}
+                    />
+                  )}
+                  <button
+                    style={{
+                      position: "absolute",
+                      top: "15px",
+                      right: "5px",
+                      width: "30px",
+                      height: "30px",
+                      backgroundColor: "rgba(255, 255, 255, 0.5)",
+                      borderRadius: "50%",
+                      border: "none",
+                      padding: "0",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => pedidoRemoverImagem()}
+                  ></button>
+                  <br />
+                </div>
+              )}
+              <input
+                type="file"
+                className="form-control"
+                onChange={(e) => setImagemUser(e.target.files[0])}
+                value={imagemUser === "" ? "" : undefined}
+              />
+              <br />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <button
+              className="btn bg-yellow-400 text-white hover:bg-yellow-500"
+              onClick={() => pedidoAtualizar()}
+            >
+              Editar
+            </button>
+            {"  "}
+            <button
+              className="btn bg-gray-400 hover:bg-gray-600 text-white"
+              onClick={() => abrirFecharModalEditar()}
+            >
+              Cancelar
+            </button>
+          </ModalFooter>
+        </Modal>
+
+        <Modal isOpen={modalDeletar}>
+          <ModalBody>Confirma a exclusão do Usuario: "{nomeUser}" ?</ModalBody>
+          <ModalFooter>
+            <button
+              className="btn bg-red-800 hover:bg-red-900 text-white"
+              onClick={() => pedidoDeletar()}
+            >
+              Sim
+            </button>
+            <button
+              className="btn bg-gray-400 hover:bg-gray-600 text-white"
+              onClick={() => abrirFecharModalDeletar()}
+            >
+              Não
+            </button>
+          </ModalFooter>
+        </Modal>
+      </div>
+    );
+  }
 }

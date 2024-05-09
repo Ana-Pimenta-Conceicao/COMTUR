@@ -15,7 +15,6 @@ namespace COMTUR.Data.Map
             builder.HasMany(n => n.ImagemNoticia)
                    .WithOne(im => im.NoticiaModel)
                    .HasForeignKey(im => im.IdNoticia)
-                   .IsRequired()
                    .OnDelete(DeleteBehavior.Cascade);
         }
     }

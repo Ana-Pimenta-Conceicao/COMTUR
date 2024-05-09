@@ -10,28 +10,23 @@ import BtnModaisIMG from "../../components/botoes/btnModaisIMG";
 import SidebarAdm from "../../components/admin/sidebarAdm";
 import NavBarAdm from "../../components/admin/navbarAdm";
 import { Navigate, useNavigate } from "react-router-dom";
-import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import PopupCadastrado from "../../components/popups/popupCadastro";
 import PopupExcluido from "../../components/popups/popupExcluido";
 import PopupEditado from "../../components/popups/popupEditado";
-import Table from "../../components/table/Table";
+import Tabela from "../../components/table/tabela";
 
 export default function Noticia() {
   const baseUrl = "https://localhost:7256/api/Noticia";
   const baseUrlImagem = "https://localhost:7256/api/ImagemNoticia";
-
   const [data, setData] = useState([]);
   const [atualizarData, setAtualizarData] = useState(true);
-
   const [modalCadastrado, setModalCadastrado] = useState(false);
   const [modalExcluido, setModalExcluido] = useState(false);
   const [modalInserir, setModalInserir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
   const [modalEditado, setModalEditado] = useState(false);
-
   const [sidebarOpen, setSidebarOpen] = useState(true);
-
   const [noticiaTitulo, setNoticiaTitulo] = useState("");
   const [noticiaSubtitulo, setNoticiaSubtitulo] = useState("");
   const [noticiaConteudo, setNoticiaConteudo] = useState("");
@@ -325,21 +320,48 @@ export default function Noticia() {
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
 
-  // Funções para navegar entre as páginas
-  const goToPage = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
+  
 
   useEffect(() => {
     const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
     setUserType(userTypeFromLocalStorage);
   }, []);
 
-  if (userType === null) {
-    return <div>Carregando...</div>;
-  } else if (userType === "1" || userType === "3") {
+  const apresentaDados = Array.isArray(currentItems)
+    ? currentItems.map((noticia) => {
+        return {
+          id: noticia.id,
+          titulo:
+            noticia.titulo.length > 25
+              ? `${noticia.titulo.substring(0, 35)}...`
+              : noticia.titulo,
+          subtitulo:
+            noticia.subtitulo.length > 25
+              ? `${noticia.subtitulo.substring(0, 35)}...`
+              : noticia.subtitulo,
+          dataPublicacao: formatarDataParaExibicao(noticia.dataPublicacao),
+          status: "teste",
+          acoes: (
+            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+              <BtnAcao
+                funcao={() => NoticiaSet(noticia, "Editar")}
+                acao="Editar"
+              />
+              <BtnAcao
+                funcao={() => NoticiaSet(noticia, "Excluir")}
+                acao="Excluir"
+              />
+              <BtnAcao
+                funcao={() => NoticiaSet(noticia, "Visualizar")}
+                acao="Visualizar"
+              />
+            </div>
+          ),
+        };
+      })
+    : [];
+
+  if (userType === "1" || userType === "3") {
     return <Navigate to="/notfound" />;
   } else {
     return (
@@ -354,77 +376,23 @@ export default function Noticia() {
           <NavBarAdm />
           <div className="pl-8 pr-8 pt-[20px]">
             <h1 className="text-3xl font-semibold pb-2">Lista de Notícias</h1>
-            <hr className="pb-4 border-[2.5px] border-gray-100" />
-
-            {/* border-[#DBDBDB] border-t-[2px] border-x-[2px] */}
-            <div className="w-full rounded-[10px]   ">
-              {/* border-[#DBDBDB] border-t-[2px] border-x-[2px] */}
-              <div className="grid grid-cols-7 w-full bg-gray-200/50  rounded-t-[6px] h-10 items-center text-base font-semibold text-gray-900">
-                <span className="flex col-span-1 ml-5 items-center">ID</span>
-                <span className="flex col-span-3 justify-center items-center">
-                  Titulo
-                </span>
-                <span className="flex justify-center items-center">Data</span>
-                <span className="flex col-span-2 justify-center items-center">
-                  Ações
-                </span>
-              </div>
-              <ul className="w-full">
-                {currentItems.map((noticia) => (
-                  <React.Fragment key={noticia.id}>
-                    <li className="grid grid-cols-7 w-full  border-gray-100">
-                      <span
-                        scope="row"
-                        className="flex pl-5 border-r-[1px] border-t-[1px]  border-gray-100 pt-[12px] pb-[12px] text-gray-700"
-                      >
-                        {noticia.id}
-                      </span>
-                      <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px]  border-gray-100 text-gray-700 ">
-                        {noticia.titulo.length > 50
-                          ? noticia.titulo.substring(0, 55) + "..."
-                          : noticia.titulo}
-                      </span>
-                      <span className="flex justify-center items-center border-t-[1px] border-r-[1px]  border-gray-100 text-gray-700">
-                        {formatarDataParaExibicao(noticia.dataPublicacao)}
-                      </span>
-                      <span className="flex col-span-2 items-center justify-center border-t-[1px] gap-2  border-gray-100">
-                        <BtnAcao
-                          funcao={() => NoticiaSet(noticia, "Editar")}
-                          acao="Editar"
-                        />
-                        <BtnAcao
-                          funcao={() => NoticiaSet(noticia, "Excluir")}
-                          acao="Excluir"
-                        />
-                        <BtnAcao
-                          funcao={() => NoticiaSet(noticia, "Visualizar")}
-                          acao="Visualizar"
-                        />
-                      </span>
-                    </li>
-                  </React.Fragment>
-                ))}
-              </ul>
-              <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px]  border-gray-100">
-                <button className="" onClick={() => goToPage(currentPage - 1)}>
-                  <CaretLeft size={22} className="text-[#DBDBDB]" />
-                </button>
-                <select
-                  className="rounded-sm hover:border-[#DBDBDB] select-none"
-                  value={currentPage}
-                  onChange={(e) => goToPage(Number(e.target.value))}
-                >
-                  {[...Array(totalPages)].map((_, index) => (
-                    <option key={index + 1} value={index + 1}>
-                      {index + 1}
-                    </option>
-                  ))}
-                </select>
-                <button className="" onClick={() => goToPage(currentPage + 1)}>
-                  <CaretRight size={22} className="text-[#DBDBDB]" />
-                </button>
-              </div>
-            </div>
+            <hr className="pb-4 border-[2.5px] border-gray-300" />
+            <Tabela
+              object={apresentaDados}
+              colunas={[
+                "ID",
+                "Título",
+                "Subtítulo",
+                "Data",
+                "Status",
+                "Ações",
+              ]}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              goToPage={setCurrentPage}
+              formatarData={formatarDataParaExibicao}
+              numColunas={6}
+            />
 
             <div className="float-right flex-auto py-6">
               <BtnAcao

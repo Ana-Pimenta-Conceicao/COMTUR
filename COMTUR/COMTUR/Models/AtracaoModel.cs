@@ -44,7 +44,7 @@ public class AtracaoModel
 	public TurismoModel? TurismoModel { get; set; }
 
 	[ForeignKey("idturismo")]
-	public int IdTurismo { get; set; }
+	public int? IdTurismo { get; set; }
 
 }
 

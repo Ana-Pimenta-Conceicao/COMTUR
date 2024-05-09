@@ -91,7 +91,7 @@ namespace COMTUR.Migrations
                     b.Property<int>("IdTipoAtracao")
                         .HasColumnType("integer");
 
-                    b.Property<int>("IdTurismo")
+                    b.Property<int?>("IdTurismo")
                         .HasColumnType("integer");
 
                     b.Property<string>("Nome")
@@ -297,7 +297,7 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("horaPublicacao");
 
-                    b.Property<int>("IdTurismo")
+                    b.Property<int?>("IdTurismo")
                         .HasColumnType("integer");
 
                     b.Property<string>("Subtitulo")
@@ -310,7 +310,7 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("titulo");
 
-                    b.Property<int>("TurismoModelId")
+                    b.Property<int?>("TurismoModelId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -586,8 +586,7 @@ namespace COMTUR.Migrations
                     b.HasOne("COMTUR.Models.TurismoModel", "TurismoModel")
                         .WithMany("Atracao")
                         .HasForeignKey("IdTurismo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("COMTUR.Models.TipoAtracaoModel", null)
                         .WithMany("Atracao")
@@ -658,8 +657,7 @@ namespace COMTUR.Migrations
                     b.HasOne("COMTUR.Models.TurismoModel", "TurismoModel")
                         .WithMany("Noticia")
                         .HasForeignKey("TurismoModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("TurismoModel");
                 });

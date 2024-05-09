@@ -15,14 +15,14 @@ const Acoes = {
 
 const BtnAcao = ({ funcao, acao }) => {
   const style = tv({
-    base: "inline-flex p-2 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm text-center items-center",
+    base: "inline-flex px-1 py-[6px] text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm text-center items-center",
     variants: {
       Editar: "bg-[#085177] hover:bg-[#023F5F] dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800",
       Excluir: "bg-[#D30000] hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800",
       Visualizar: "bg-[#3F3F3F] hover:bg-[#222222] dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
       Publicados: "bg-[#1F9D93] hover:bg-[#00847A]",
-      Cadastrar:"bg-[#FFD121] hover:bg-[#EEBB4D] px-3",
-      VisualizarMais: "bg-[#FFD121] hover:bg-[#EEBB4D] px-3"
+      Cadastrar:"bg-[#FFD121] hover:bg-[#EEBB4D] px-3 ",
+      VisualizarMais: "bg-[#FFD121] hover:bg-[#EEBB4D] px-3  "
     }
   });
 

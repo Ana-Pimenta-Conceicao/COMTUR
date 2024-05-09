@@ -75,9 +75,10 @@ namespace COMTUR.Repositorios
 			AtracaoPorId.Nome = atracao.Nome;
 			AtracaoPorId.Descricao = atracao.Descricao;
 			AtracaoPorId.QRCode = atracao.QRCode;
-			//AtracaoPorId.TipoStatus = atracao.TipoStatus; 
+            AtracaoPorId.IdTipoAtracao = atracao.IdTipoAtracao;
+            //AtracaoPorId.TipoStatus = atracao.TipoStatus; 
 
-			_dbContext.Atracao.Update(AtracaoPorId);
+            _dbContext.Atracao.Update(AtracaoPorId);
 			await _dbContext.SaveChangesAsync();
 
 			return AtracaoPorId;

@@ -2,33 +2,32 @@ import React from "react";
 import Paginacao from "./Paginacao";
 
 function Tabela({ object, currentPage, totalPages, goToPage, colunas, numColunas }) {
- 
-  const num = numColunas - 1 ;
-  const x = num * 2;
-  const colSpan = x + 1;
- 
- 
+  const renderTableHeader = (columns, numColumns) => {
+    const colSpan = numColumns === 6 ? "grid-cols-11" : "grid-cols-7";
 
- return (
-   <div className="w-full rounded-[10px]">
-     {/* Cabeçalho da tabela */}
-     <div className={`grid grid-cols-${colSpan} bg-gray-200/50 rounded-t-[6px] h-10 items-center text-base font-semibold text-gray-900`}>
-       {colunas.map((coluna, index) => (
-         <span key={index} className={`flex justify-center items-center ${index === 0 ? `col-span-1` : `col-span-2`}`}>
-           {coluna}
-         </span>
-       ))}
-     </div>
+    return (
+      <div className={`grid ${colSpan} bg-gray-200/50 rounded-t-[6px] h-10 items-center text-base font-semibold text-gray-900`}>
+        {columns.map((coluna, index) => (
+          <span key={index} className={`flex justify-center items-center ${index === 0 ? 'col-span-1' : 'col-span-2'}`}>
+            {coluna}
+          </span>
+        ))}
+      </div>
+    );
+  };
 
-      {/* Corpo da tabela */}
+  // Função para renderizar o corpo da tabela
+  const renderTableBody = (data, numColumns) => {
+    const colSpan = numColumns === 6 ? "grid-cols-11" : "grid-cols-7";
+
+    return (
       <ul className="w-full">
-        {object.map((item, index) => (
-          <li key={index} className={`grid grid-cols-${colSpan} w-full border-gray-100`}>
-            {Object.values(item).map((value, index) => (
+        {data.map((item, rowIndex) => (
+          <li key={rowIndex} className={`grid ${colSpan} w-full border-gray-100`}>
+            {Object.values(item).map((value, colIndex) => (
               <span
-                key={index}
-                className={`flex justify-center items-center border-t-[1px] border-x-[1px] border-gray-100 col-span-1 ${index === 0 ? `col-span-1` : 'col-span-2'}`}
-            
+                key={colIndex}
+                className={`flex justify-center items-center border-t-[1px] border-x-[1px] border-gray-100 ${colIndex === 0 ? 'col-span-1' : 'col-span-2'}`}
               >
                 {value}
               </span>
@@ -36,13 +35,25 @@ function Tabela({ object, currentPage, totalPages, goToPage, colunas, numColunas
           </li>
         ))}
       </ul>
-      <Paginacao
-        currentPage={currentPage}
-        totalPages={totalPages}
-        goToPage={goToPage}
-      />
-    </div>
-  );
+    );
+  };
+
+  // Renderização principal
+  if (numColunas === 6 || numColunas === 4) {
+    return (
+      <div className="w-full rounded-[10px]">
+        {renderTableHeader(colunas, numColunas)}
+        {renderTableBody(object, numColunas)}
+        <Paginacao
+          currentPage={currentPage}
+          totalPages={totalPages}
+          goToPage={goToPage}
+        />
+      </div>
+    );
+  } else {
+    return <div>COMtUR</div>;
+  }
 }
 
 export default Tabela;

@@ -385,7 +385,7 @@ export default function Noticia() {
                 "Subtítulo",
                 "Data",
                 "Status",
-                "Ações",
+                "Ações"
               ]}
               currentPage={currentPage}
               totalPages={totalPages}

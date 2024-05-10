@@ -17,12 +17,15 @@ import {
   Trash,
   FilePlus,
   Pencil,
+  Funnel,
 } from "@phosphor-icons/react";
 
 export default function Usuario() {
   const baseUrl = "https://localhost:7256/api/Usuario";
 
   const [data, setData] = useState([]);
+  //estado do filtro 
+  const [filtroTipoUsuario, setFiltroTipoUsuario] = useState("");
   const [userType, setUserType] = useState(null);
   const [atualizarData, setAtualizarData] = useState(true);
 
@@ -41,6 +44,11 @@ export default function Usuario() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const navigate = useNavigate();
+
+  // Adicione uma função para atualizar o filtro de tipo de usuário
+  const handleFiltroTipoUsuarioChange = (e) => {
+    setFiltroTipoUsuario(e.target.value);
+  };
 
   const limparDados = () => {
     setNome("");
@@ -252,11 +260,25 @@ export default function Usuario() {
   const totalItems = data.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  // Função para pegar uma parte específica da lista
   const getCurrentPageItems = (page) => {
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return data.slice(startIndex, endIndex);
+    let filteredData = data;
+
+    // Aplicar filtro de tipo de usuário, se selecionado
+    if (filtroTipoUsuario !== "") {
+      filteredData = filteredData.filter((user) => user.tipoUsuario === parseInt(filtroTipoUsuario));
+    }
+
+    return filteredData.slice(startIndex, endIndex).map((user) => {
+      if (user.imagemPerfilUsuario instanceof File) {
+        return {
+          ...user,
+          imagemPerfilUsuario: URL.createObjectURL(user.imagemPerfilUsuario),
+        };
+      }
+      return user;
+    });
   };
 
   // Renderiza os itens da página atual
@@ -268,50 +290,50 @@ export default function Usuario() {
   }, []);
 
 
-    
-    const apresentaDados = Array.isArray(currentItems) ? currentItems.map((usuario) => {
-      const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
-      
-      return {
-        id: usuario.id, 
-        nome: usuario.nome,
-        descricao: usuario.emailUsuario, 
-        tipoUsuario: tipoUsuarioNome,
-        status: "teste",
-        acoes: (
-          <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-            <BtnAcao
-              funcao={() => UserSet(usuario, "Editar")}
-              acao="Editar"
-            />
-            <BtnAcao
-              funcao={() => UserSet(usuario, "Excluir")}
-              acao="Excluir"
-            />
-            <BtnAcao
-              funcao={() => UserSet(usuario, "Visualizar")}
-              acao="Visualizar"
-            />
-          </div>
-        ),
-      };
-    }) : [];
-    
-    // Função auxiliar para obter o nome do tipo de usuário com base no enum
-    function obterNomeTipoUsuario(tipoUsuario) {
-      switch (tipoUsuario) {
-        case 1:
-          return 'Usuário';
-        case 2:
-          return 'Funcionário';
-        case 3:
-          return 'Empresário';
-        case 4:
-          return 'Administrador';
-        default:
-          return 'Tipo não encontrado';
-      }
+
+  const apresentaDados = Array.isArray(currentItems) ? currentItems.map((usuario) => {
+    const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
+
+    return {
+      id: usuario.id,
+      nome: usuario.nome,
+      descricao: usuario.emailUsuario,
+      tipoUsuario: tipoUsuarioNome,
+      status: "teste",
+      acoes: (
+        <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+          <BtnAcao
+            funcao={() => UserSet(usuario, "Editar")}
+            acao="Editar"
+          />
+          <BtnAcao
+            funcao={() => UserSet(usuario, "Excluir")}
+            acao="Excluir"
+          />
+          <BtnAcao
+            funcao={() => UserSet(usuario, "Visualizar")}
+            acao="Visualizar"
+          />
+        </div>
+      ),
+    };
+  }) : [];
+
+  // Função auxiliar para obter o nome do tipo de usuário com base no enum
+  function obterNomeTipoUsuario(tipoUsuario) {
+    switch (tipoUsuario) {
+      case 1:
+        return 'Usuário';
+      case 2:
+        return 'Funcionário';
+      case 3:
+        return 'Empresário';
+      case 4:
+        return 'Administrador';
+      default:
+        return 'Tipo não encontrado';
     }
+  }
 
   if (userType === "1" || userType === "3") {
     return <Navigate to="/notfound" />;
@@ -327,7 +349,32 @@ export default function Usuario() {
         >
           <NavBarAdm />
           <div className="pl-8 pr-8 pt-[20px]">
-            <h1 className="text-3xl font-semibold pb-2">Lista de Usuários</h1>
+            <div className="flex justify-between items-center">
+              <h1 className="text-3xl font-semibold">Lista de Usuários</h1>
+              <div className="inline">
+                <label htmlFor="filtroTipoUsuario" className="mr-2">
+                        
+                </label>
+                <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon1"><Funnel size={18} /></span>
+                <select
+                  id="filtroTipoUsuario"
+                  className="form-control"
+                  class="form-select" aria-label="Default select example"
+                  value={filtroTipoUsuario}
+                  onChange={handleFiltroTipoUsuarioChange}
+                >
+                  <option value="">Todos</option>
+                  <option value="1">Usuário</option>
+                  <option value="2">Funcionário</option>
+                  <option value="3">Empresário</option>
+                  <option value="4">Administrador</option>
+                </select>
+                </div>
+              </div>
+            </div>
+
+
             <hr className="pb-4 border-[2.5px] border-gray-300" />
             <Tabela
               object={apresentaDados}
@@ -339,11 +386,7 @@ export default function Usuario() {
             />
 
             <div className="float-right flex-auto py-6">
-              <BtnAcao
-                funcao={() => VisualizarTodasNoticias()}
-                acao="Publicados"
-              />
-
+              
               <BtnAcao
                 funcao={() => abrirFecharModalInserir("Cadastrar")}
                 acao="Cadastrar"

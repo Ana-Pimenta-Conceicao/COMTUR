@@ -1,6 +1,6 @@
 import React from "react";
 import { tv } from "tailwind-variants";
-import { Pencil, Trash, Eye, FilePlus, Plus, PresentationChart } from "@phosphor-icons/react";
+import { Pencil, Trash, Eye, FilePlus, Plus, PresentationChart, FileText } from "@phosphor-icons/react";
 
 const Acoes = {
   "Editar": { icone: Pencil, texto: "Editar" },
@@ -8,7 +8,8 @@ const Acoes = {
   "Visualizar": { icone: Eye, texto: "Visualizar" },
   "Publicados": {icone: PresentationChart, texto: "Publicados"},
   "Cadastrar": { icone: FilePlus, texto: "Cadastrar" },
-  "VisualizarMais": {icone: Plus, texto: "Visualizar Mais"}
+  "VisualizarMais": {icone: Plus, texto: "Visualizar Mais"},
+  "CadastrarTipo": {icone: FileText, texto: "Cadastrar Tipo"}
 };
 
 
@@ -22,7 +23,8 @@ const BtnAcao = ({ funcao, acao }) => {
       Visualizar: "bg-[#3F3F3F] hover:bg-[#222222] dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
       Publicados: "bg-[#1F9D93] hover:bg-[#00847A]",
       Cadastrar:"bg-[#FFD121] hover:bg-[#EEBB4D] px-3 ",
-      VisualizarMais: "bg-[#FFD121] hover:bg-[#EEBB4D] px-3  "
+      VisualizarMais: "bg-[#FFD121] hover:bg-[#EEBB4D] px-3  ",
+      CadastrarTipo: "bg-black hover:bg-[#EEBB4D] px-3  "
     }
   });
 

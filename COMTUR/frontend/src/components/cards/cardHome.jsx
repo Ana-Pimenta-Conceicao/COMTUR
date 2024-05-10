@@ -22,12 +22,12 @@ const Card = ({ link, imageSrc, title, imageAlt }) => {
 const CardHome = () => {
   return (
     <div className="flex flex-wrap">
-      <Card link="./tipousuario" imageSrc="./src/assets/homeUsuario.png" title="Usuários" imageAlt="Imagem que redireciona para a página inicial dos usuários" />
-      <Card link="#" imageSrc="./src/assets/homeEmpresa.png" title="Empresas" imageAlt="Imagem que redireciona para a página de empresas" />
+      <Card link="./usuario" imageSrc="./src/assets/homeUsuario.png" title="Usuários" imageAlt="Imagem que redireciona para a página inicial dos usuários" />
+      <Card link="/empresa" imageSrc="./src/assets/homeEmpresa.png" title="Empresas" imageAlt="Imagem que redireciona para a página de empresas" />
       <Card link="./noticia" imageSrc="./src/assets/homeNoticia.png" title="Notícias" imageAlt="Imagem que redireciona para a página de notícias" />
       <div className="w-full h-[5px]"></div>
       <Card link="#" imageSrc="./src/assets/homeEvento.png" title="Eventos" imageAlt="Imagem que redireciona para a página de eventos" />
-      <Card link="./tipoatracao" imageSrc="./src/assets/homeAtracao.png" title="Atrações" imageAlt="Imagem que redireciona para a página de tipo de atrações" />
+      <Card link="./atracao" imageSrc="./src/assets/homeAtracao.png" title="Atrações" imageAlt="Imagem que redireciona para a página de tipo de atrações" />
       <Card link="./tipoturismo" imageSrc="./src/assets/homePontoTuristico.png" title="Pontos Turísticos" imageAlt="Imagem que redireciona para a página de tipo de turismos" />
     </div>
   );

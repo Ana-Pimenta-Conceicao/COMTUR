@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { CaretRight } from "@phosphor-icons/react";
 import Login from "../../assets/login.png";
 
-const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
+const SidebarEmp = ({ setOpen, open, nomeUsuario }) => {
   const [submenuOpen, setSubmenuOpen] = useState(false);
   const [userName, setUserName] = useState("");
 
@@ -42,24 +42,11 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
   };
 
   const Menus = [
-    { title: "Início", src: "Home", gap: true },
+    { title: "Dashboard", src: "iconeDashboard", gap: true },
     { title: "Perfil", src: "perfil" },
-    {
-      title: "Usuários",
-      src: "tipousuario",
-      submenu: true,
-      submenuItems: [
-        { title: "Administradores" },
-        { title: "Funcionários" },
-        { title: "Usuários Comuns" },
-        { title: "Empresários" },
-      ],
-    },
-    { title: "Ponto Turístico", src: "tipoTurismo" },
-    { title: "Eventos", src: "iconeEventos" },
-    { title: "Atrações ", src: "tipoAtracao" },
-    { title: "Notícia", src: "Noticia" },
-    { title: "Dashboard", src: "iconeDashboard" },
+    { title: "Avisos", src: "avisos" },
+    { title: "Empresas", src: "empresa" },
+    { title: "Anúncios", src: "anuncio" },
   ];
 
   return (
@@ -110,35 +97,12 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
                       className={`flex ${
                         !open && "hidden"
                       } origin-left duration-200 pl-2 w-full`}
-                      onClick={() => setSubmenuOpen(!submenuOpen)}
                     >
                       {Menu.title}
                     </span>
-                    {Menu.submenu && open && (
-                      <CaretRight
-                        size={15}
-                        onClick={() => setSubmenuOpen(!submenuOpen)}
-                        className={`inline-flex ${
-                          open && "ml-[60px]"
-                        } justify-end w-full ${submenuOpen && "rotate-90"} `}
-                      />
-                    )}
                   </div>
                 </Link>
               </li>
-
-              {Menu.submenu && submenuOpen && open && (
-                <ul>
-                  {Menu.submenuItems.map((submenuItem, index) => (
-                    <li
-                      key={index}
-                      className={`flex rounded-md p-2 cursor-pointer ml-7 hover:bg-light-white text-gray-300 text-xs items-center gap-x-4`}
-                    >
-                      {submenuItem.title}
-                    </li>
-                  ))}
-                </ul>
-              )}
             </>
           ))}
         </ul>
@@ -157,4 +121,4 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
   );
 };
 
-export default SidebarAdm;
+export default SidebarEmp;

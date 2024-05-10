@@ -32,7 +32,7 @@ export default function Login() {
       case 2: // funcionário
         return "/home";
       case 3: //empresario
-        return "/home";
+        return "/homeEmpresario";
       case 4: //adm
         return "/home";
       default:

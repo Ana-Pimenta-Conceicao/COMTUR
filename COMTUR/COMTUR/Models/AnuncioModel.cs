@@ -14,20 +14,20 @@ namespace COMTUR.Models
 		[Column("anuncioid")]
 		public int Id { get; set; }
 
-		[Column("nomeEmpresa")]
+		[Column("nomeempresa")]
 		public string NomeEmpresa { get; set; }
 
-		[Column("imagemAnuncio")]
+		[Column("imagemanuncio")]
 		public string? Imagem { get; set; }
 
-		[Column("legendaAnuncio")]
+		[Column("legendaanuncio")]
 		public string? Legenda { get; set; }
 
-		[Column("DescricaoAnuncio")]
+		[Column("descricaoanuncio")]
 		public string DescricaoAnuncio { get; set; }
 
 		// Mapear o campo tipoStatus como enum
-		/*[Column("tipoStatus")]
+		/*[Column("tipostatus")]
 		[EnumDataType(typeof(TipoStatus))]
 		public TipoStatus TipoStatus { get; set; }*/
 
@@ -35,6 +35,7 @@ namespace COMTUR.Models
 		[JsonIgnore]
 		public TipoTurismoModel? TipoTurismoModel { get; set; }
 
+		[Column("idtipoturismo")]
 		[ForeignKey("idtipoturismo")]
 		public int IdTipoTurismo { get; set; }
 
@@ -42,6 +43,7 @@ namespace COMTUR.Models
 		[JsonIgnore]
 		public EmpresaModel? EmpresaModel { get; set; }
 
+		[Column("idempresa")]
 		[ForeignKey("idempresa")]
 		public int IdEmpresa { get; set; }
 	}

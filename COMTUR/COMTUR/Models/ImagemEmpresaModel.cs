@@ -11,7 +11,7 @@ namespace COMTUR.Models
 		[Column("imagemempresaid")]
 		public int Id { get; set; }
 
-		[Column("legendaImagem")]
+		[Column("legendaimagem")]
 		public string LegendaImagem { get; set; }
 
 		[Column("imagem")]
@@ -21,6 +21,7 @@ namespace COMTUR.Models
 		[JsonIgnore]
 		public EmpresaModel EmpresaModel { get; set; }
 
+		[Column("idempresa")]
 		[ForeignKey("idempresa")]
 		public int IdEmpresa { get; set; }
 	}

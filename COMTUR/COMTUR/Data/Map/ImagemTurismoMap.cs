@@ -10,11 +10,11 @@ namespace COMTUR.Data.Map
 			{
 				builder.HasKey(x => x.Id);
 
-				// Relacionamento da ImagemTurismo com Turismo
-				//builder.HasOne(x => x.TurismoModel)
-				//	   .WithMany(n => n.ImagemTurismo)
-				//	   .HasForeignKey(x => x.IdTurismo)
-				//	   .IsRequired();
-			}
+			//Relacionamento da ImagemTurismo com Turismo
+				builder.HasOne(x => x.TurismoModel)
+					   .WithMany(n => n.ImagemTurismo)
+					   .HasForeignKey(x => x.IdTurismo)
+					   .IsRequired();
+		}
 	}
 }

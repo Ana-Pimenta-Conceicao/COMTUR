@@ -8,19 +8,20 @@ namespace COMTUR.Models
 	public class ImagemTurismoModel
 	{
 		[Key]
-		[Column("imagemTurismoid")]
+		[Column("imagemturismoid")]
 		public int Id { get; set; }
 
 		[Column("imagem")]
 		public string Imagem { get; set; }
 
-		[Column("legendaImagem")]
+		[Column("legendaimagem")]
 		public string LegendaImagem { get; set; }
 
 		[JsonIgnore]
 		public TurismoModel TurismoModel { get; set; }
 
-		[ForeignKey("idTurismo")]
+		[Column("idturismo")]
+		[ForeignKey("idturismo")]
 		public int IdTurismo { get; set; }
 	}
 }

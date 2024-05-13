@@ -25,7 +25,8 @@ namespace COMTUR.Models
 
         public UsuarioModel? UsuarioModel { get; set; }
 
-        [ForeignKey("idusuario")]
+		[Column("idusuario")]
+		[ForeignKey("idusuario")]
         public int IdUsuario { get; set; }
     }
 }

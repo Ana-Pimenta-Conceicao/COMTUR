@@ -21,10 +21,10 @@ namespace COMTUR.Repositorios
 				return await _dbContext.ImagemTurismo.FirstOrDefaultAsync(x => x.Id == id);
 			}
 
-		//public async Task<ImagemTurismoModel> GetById(int id)
-		//{
-		//	return await _dbContext.ImagemTurismo.Include(objeto => objeto.TurismoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
-		//}
+		public async Task<ImagemTurismoModel> GetById(int id)
+		{
+			return await _dbContext.ImagemTurismo.Include(objeto => objeto.TurismoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+		}
 
 		public async Task<List<ImagemTurismoModel>> BuscarImagemTurismo()
 			{

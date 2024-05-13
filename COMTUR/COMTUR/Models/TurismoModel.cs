@@ -27,11 +27,11 @@ namespace COMTUR.Models
 		[Column("local")]
 		public string Local { get; set; }
 
-		[Column("diafuncionmento")]
+		[Column("diafuncionamento")]
 		public string DiaFuncionamento { get; set; }
 
 		// Mapear o campo tipoStatus como enum
-		/*[Column("tipoStatus")]
+		/*[Column("tipostatus")]
 		[EnumDataType(typeof(TipoStatus))]
 		public TipoStatus TipoStatus { get; set; }*/
 
@@ -45,8 +45,9 @@ namespace COMTUR.Models
 
 		// relaçao com TipoTurismo
 		[JsonIgnore]
-		public TipoTurismoModel? TipoTurismoModel { get; set; }
+		public TipoTurismoModel TipoTurismoModel { get; set; }
 
+		[Column("idtipoturismo")]
 		[ForeignKey("idtipoturismo")]
 		public int IdTipoTurismo { get; set; }
 

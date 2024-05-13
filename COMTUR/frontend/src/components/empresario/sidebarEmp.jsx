@@ -27,15 +27,13 @@ const SidebarEmp = ({ setOpen, open, nomeUsuario }) => {
       localStorage.removeItem("token");
       localStorage.removeItem("tipoUsuario");
       localStorage.removeItem("nome");
-
       try {
         await axios.post(baseUrl + "/Logout", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-      } catch (error) {
-      }
+      } catch (error) {}
     }
 
     // Redirecionar o usuário para a página de login
@@ -70,7 +68,7 @@ const SidebarEmp = ({ setOpen, open, nomeUsuario }) => {
             }`}
           />
           <h1
-            className={`text-white origin-left font-medium text-xl duration-200 ${
+            className={`text-white origin-left font-medium text-lg duration-200 ${
               !open && "scale-0"
             }`}
           >

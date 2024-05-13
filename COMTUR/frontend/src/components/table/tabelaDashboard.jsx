@@ -24,7 +24,7 @@ const TabelaDashboard = () => {
          
         </div>
 
-        <div className="col-span-3 font-bold text-gray-700 text-[14px]">Ana Carolina Pimenta</div>
+        <div className="col-span-3 font-bold text-gray-700 text-[14px]">Ana Carolina da Conceição</div>
 
         <div className="col-span-4 font-medium text-gray-700 text-[14px]">Só tem comida boa no Restaurante da Ana Vitória, venero ela!</div>
       </div>

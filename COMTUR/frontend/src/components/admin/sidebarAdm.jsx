@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { CaretRight } from "@phosphor-icons/react";
 import Login from "../../assets/login.png";
+import axios from "axios";
 
 const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
-  const [submenuOpen, setSubmenuOpen] = useState(false);
+  const [submenuOpen, setSubmenuOpen] = useState({});
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
@@ -35,6 +36,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
           },
         });
       } catch (error) {
+        console.error("Erro ao fazer logout:", error);
       }
     }
 
@@ -46,21 +48,46 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
     { title: "Perfil", src: "perfil" },
     {
       title: "Usuários",
-      src: "tipousuario",
+      src: "usuario",
       submenu: true,
       submenuItems: [
-        { title: "Administradores" },
-        { title: "Funcionários" },
-        { title: "Usuários Comuns" },
-        { title: "Empresários" },
+        { title: "Administradores", link: "/administrador" },
+        { title: "Funcionários", link: "/funcionario" },
+        { title: "Usuários Comuns", link: "/usuariocomum" },
+        { title: "Empresários", link: "/empresario" },
       ],
     },
-    { title: "Ponto Turístico", src: "tipoTurismo" },
     { title: "Eventos", src: "iconeEventos" },
-    { title: "Atrações ", src: "tipoAtracao" },
-    { title: "Notícia", src: "Noticia" },
+
+    {
+      title: "Turismos",
+      src: "tipoTurismo",
+      submenu: true,
+      submenuItems: [
+        { title: "Turismos", link: "/turismo" },
+        { title: "Tipos de Turismos", link: "/tipoturismo" },
+      ],
+    },
+    { title: "Notícias", src: "Noticia" },
+   
+    { 
+      title: "Atrações", 
+      src: "Atracao",
+      submenu: true,
+      submenuItems: [
+        { title: "Atrações", link: "/atracao" },
+        { title: "Tipos de Atrações", link: "/tipoatracao" },
+      ], 
+    },
     { title: "Dashboard", src: "iconeDashboard" },
   ];
+
+  const toggleSubmenu = (index) => {
+    setSubmenuOpen((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
 
   return (
     <div className="sidebar fixed pr-20" style={{ height: "100vh" }}>
@@ -70,7 +97,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
         } bg-black h-screen pl-5 pr-5 pt-8 relative duration-300`}
       >
         <img
-          src=" ../src/assets/control.png"
+          src="../src/assets/control.png"
           className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
            border-2 rounded-full  ${!open && "rotate-180 "}`}
           onClick={() => setOpen(!open)}
@@ -110,31 +137,33 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
                       className={`flex ${
                         !open && "hidden"
                       } origin-left duration-200 pl-2 w-full`}
-                      onClick={() => setSubmenuOpen(!submenuOpen)}
+                      onClick={() => toggleSubmenu(index)}
                     >
                       {Menu.title}
                     </span>
                     {Menu.submenu && open && (
                       <CaretRight
                         size={15}
-                        onClick={() => setSubmenuOpen(!submenuOpen)}
+                        onClick={() => toggleSubmenu(index)}
                         className={`inline-flex ${
                           open && "ml-[60px]"
-                        } justify-end w-full ${submenuOpen && "rotate-90"} `}
+                        } justify-end w-full ${
+                          submenuOpen[index] ? "rotate-90" : ""
+                        } `}
                       />
                     )}
                   </div>
                 </Link>
               </li>
 
-              {Menu.submenu && submenuOpen && open && (
+              {Menu.submenu && submenuOpen[index] && open && (
                 <ul>
-                  {Menu.submenuItems.map((submenuItem, index) => (
+                  {Menu.submenuItems.map((submenuItem, subIndex) => (
                     <li
-                      key={index}
+                      key={subIndex}
                       className={`flex rounded-md p-2 cursor-pointer ml-7 hover:bg-light-white text-gray-300 text-xs items-center gap-x-4`}
                     >
-                      {submenuItem.title}
+                      <Link to={submenuItem.link}>{submenuItem.title}</Link>
                     </li>
                   ))}
                 </ul>

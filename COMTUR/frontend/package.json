@@ -7,6 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/mulish": "^5.0.18",
     "@heroicons/react": "^1.0.6",
     "@phosphor-icons/react": "^2.0.15",
     "axios": "^1.6.0",

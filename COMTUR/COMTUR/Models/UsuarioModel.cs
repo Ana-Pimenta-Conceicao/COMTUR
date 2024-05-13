@@ -20,23 +20,23 @@ namespace COMTUR.Models
 		[Column("telefone")]
 		public string Telefone { get; set; }
 
-		[Column("emailUsuario")]
+		[Column("emailusuario")]
 		public string EmailUsuario { get; set; }
 
-		[Column("senhaUsuario")]
+		[Column("senhausuario")]
 		public string SenhaUsuario { get; set; }
 
 		// Mapear o campo tipoUsuario como enum
-		[Column("tipoUsuario")]
+		[Column("tipousuario")]
 		[EnumDataType(typeof(TipoUsuario))]
 		public TipoUsuario TipoUsuario { get; set; }
 
 		// Mapear o campo tipoStatus como enum
-		/*[Column("tipoStatus")]
+		/*[Column("tipostatus")]
 		[EnumDataType(typeof(TipoStatus))]
 		public TipoStatus TipoStatus { get; set; }*/
 
-		[Column("imagemPerfilUsuario")]
+		[Column("imagemperfilusuario")]
 		public string? ImagemPerfilUsuario { get; set; }
 
 		// Relacionamento com empresa para o empresário

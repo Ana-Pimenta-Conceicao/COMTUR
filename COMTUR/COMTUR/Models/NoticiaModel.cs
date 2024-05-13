@@ -28,11 +28,11 @@ namespace COMTUR.Models
         public DateOnly DataPublicacao { get; set; }
 
 
-        [Column("horaPublicacao")]
+        [Column("horapublicacao")]
         public string HoraPublicacao { get; set; }
 
 		// Mapear o campo tipoStatus como enum
-		/*[Column("tipoStatus")]
+		/*[Column("tipostatus")]
 		[EnumDataType(typeof(TipoStatus))]
 		public TipoStatus TipoStatus { get; set; }*/
 
@@ -43,6 +43,7 @@ namespace COMTUR.Models
 		[JsonIgnore]
 		public TurismoModel? TurismoModel { get; set; }
 
+		[Column("idturismo")]
 		[ForeignKey("idturismo")]
 		public int? IdTurismo { get; set; }
 

@@ -25,7 +25,7 @@ public class AtracaoModel
 	public string QRCode { get; set; }
 
 	// Mapear o campo tipoStatus como enum
-	/*[Column("tipoStatus")]
+	/*[Column("tipostatus")]
 	[EnumDataType(typeof(TipoStatus))]
 	public TipoStatus TipoStatus { get; set; }*/
 
@@ -33,6 +33,7 @@ public class AtracaoModel
 	[JsonIgnore]
 	public TipoAtracaoModel? TipoAtracaoModel { get; set; }
 
+	[Column("idtipoatracao")]
 	[ForeignKey("idtipoatracao")]
 	public int IdTipoAtracao { get; set; }
 
@@ -43,8 +44,9 @@ public class AtracaoModel
 	[JsonIgnore]
 	public TurismoModel? TurismoModel { get; set; }
 
+	[Column("idturismo")]
 	[ForeignKey("idturismo")]
-	public int? IdTurismo { get; set; }
+	public int IdTurismo { get; set; }
 
 }
 

@@ -77,9 +77,10 @@ namespace COMTUR.Repositorios
 			empresaPorId.CNPJ = empresaModel.CNPJ;
 			empresaPorId.Endereco = empresaModel.Endereco;
 			empresaPorId.Descricao = empresaModel.Descricao;
-			//empresaPorId.TipoStatus = empresaModel.TipoStatus;
+            empresaPorId.IdUsuario = empresaModel.IdUsuario;
+            //empresaPorId.TipoStatus = empresaModel.TipoStatus;
 
-			_dbContext.Empresa.Update(empresaPorId);
+            _dbContext.Empresa.Update(empresaPorId);
 			await _dbContext.SaveChangesAsync();
 
 			return empresaPorId;

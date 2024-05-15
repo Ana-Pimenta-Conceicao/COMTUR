@@ -4,7 +4,7 @@ import Noticia from './screens/noticia/noticia';
 import VisualizarNoticia from './screens/noticia/visualizarNoticia';
 import Home from "./screens/home";
 import Empresa from "./screens/empresa/empresa"; 
-import TipoTurismo from "./screens/tipoturismo";
+import TipoTurismo from "./screens/turismo/tipoTurismo";
 import Atracao from "./screens/atracao/atracao";
 import Inicio from "./screens/inicio/inicio";
 import TipoUsuario from "./screens/tipousuario/tipousuario";

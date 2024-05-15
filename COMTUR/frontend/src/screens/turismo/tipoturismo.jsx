@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import axios from "axios";
-import "../tipoturismo/index.css";
+import "../turismo/index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import SidebarAdm from "../../components/admin/sidebarAdm";
 import NavBarAdm from "../../components/admin/navbarAdm";
 import {
-  CaretLeft,
-  CaretRight,
-  Pencil,
-  Trash,
-  Eye,
   FilePlus,
 } from "@phosphor-icons/react";
 import Tabela from "../../components/table/tabela";

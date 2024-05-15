@@ -39,6 +39,14 @@ namespace COMTUR.Models
 		// relação com ImagemNoticia
 		public ICollection<ImagemNoticiaModel>? ImagemNoticia { get; set; }
 
+		// relação com funcionario/admin
+		[JsonIgnore]
+		public UsuarioModel? UsuarioModel { get; set; }
+
+		[Column("usuarioid")]
+		[ForeignKey("usuarioid")]
+		public int IdUsuario { get; set; }
+
 		// relaçao com Turismo
 		[JsonIgnore]
 		public TurismoModel? TurismoModel { get; set; }

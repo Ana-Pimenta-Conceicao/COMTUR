@@ -110,7 +110,7 @@ namespace COMTUR
 			// Dependência: ImagemNoticia
 			services.AddScoped<IImagemNoticiaRepositorio, ImagemNoticiaRepositorio>();
 			// Dependência: Noticia
-			services.AddScoped<INoticiaRepository, NoticiaRepository>();
+			services.AddScoped<INoticiaRepositorio, NoticiaRepositorio>();
 			// Dependência: TipoAtração
 			services.AddScoped<ITipoAtracaoRepositorio, TipoAtracaoRepositorio>();
 			// Dependência: TipoTurismo

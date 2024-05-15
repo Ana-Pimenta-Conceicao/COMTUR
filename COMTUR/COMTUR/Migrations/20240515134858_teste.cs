@@ -273,17 +273,23 @@ namespace COMTUR.Migrations
                     conteudo = table.Column<string>(type: "text", nullable: false),
                     datapublicacao = table.Column<DateOnly>(type: "date", nullable: false),
                     horapublicacao = table.Column<string>(type: "text", nullable: false),
-                    TurismoModelId = table.Column<int>(type: "integer", nullable: true),
+                    usuarioid = table.Column<int>(type: "integer", nullable: false),
                     idturismo = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_noticia", x => x.noticiaid);
                     table.ForeignKey(
-                        name: "FK_noticia_turismo_TurismoModelId",
-                        column: x => x.TurismoModelId,
+                        name: "FK_noticia_turismo_idturismo",
+                        column: x => x.idturismo,
                         principalTable: "turismo",
                         principalColumn: "turismoid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_noticia_usuario_usuarioid",
+                        column: x => x.usuarioid,
+                        principalTable: "usuario",
+                        principalColumn: "usuarioid",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -356,9 +362,19 @@ namespace COMTUR.Migrations
                 values: new object[] { 1, 123456L, "Ana Rainha o resto NADINHA", "Rua das Maravilhas", 3, "AnaStore" });
 
             migrationBuilder.InsertData(
+                table: "noticia",
+                columns: new[] { "noticiaid", "conteudo", "datapublicacao", "horapublicacao", "idturismo", "usuarioid", "subtitulo", "titulo" },
+                values: new object[] { 1, "Ana Vitória, apelidada de Cocoricó e considerada líder do Comtur, só manda e não faz nada", new DateOnly(2024, 5, 15), "10:30", null, 2, "Membros do Comtur acham Ana Vitoria mandona, entenda o caso", "Ana Cocoricó é ditadora?" });
+
+            migrationBuilder.InsertData(
                 table: "turismo",
                 columns: new[] { "turismoid", "descricao", "diafuncionamento", "horario", "idtipoturismo", "usuarioid", "local", "nome", "qrcode", "TipoTurismoModelId" },
                 values: new object[] { 1, "Praça da Fonte", "Todos os dias", "18:00", 1, 2, "Praça da Fonte", "Praça da Fonte", "123456", null });
+
+            migrationBuilder.InsertData(
+                table: "anuncio",
+                columns: new[] { "anuncioid", "descricaoanuncio", "EmpresaModelId", "idempresa", "idtipoturismo", "imagemanuncio", "legendaanuncio", "nomeempresa", "TipoTurismoModelId" },
+                values: new object[] { 1, "Não existe mulher feia, existe mulher que não conhece a AnaStore", null, 1, 1, null, null, "AnaStore", null });
 
             migrationBuilder.InsertData(
                 table: "atracao",
@@ -426,9 +442,14 @@ namespace COMTUR.Migrations
                 column: "idturismo");
 
             migrationBuilder.CreateIndex(
-                name: "IX_noticia_TurismoModelId",
+                name: "IX_noticia_idturismo",
                 table: "noticia",
-                column: "TurismoModelId");
+                column: "idturismo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_noticia_usuarioid",
+                table: "noticia",
+                column: "usuarioid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_sessao_UsuarioModelId",

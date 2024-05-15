@@ -12,9 +12,9 @@ namespace COMTUR.Controllers
     public class ImagemNoticiaController : ControllerBase
     {
         private readonly IImagemNoticiaRepositorio _ImagemNoticiaRepositorio;
-        private readonly INoticiaRepository _NoticiaRepository;
+        private readonly INoticiaRepositorio _NoticiaRepository;
 
-        public ImagemNoticiaController(IImagemNoticiaRepositorio ImagemNoticiaRepositorio, INoticiaRepository NoticiaRepository)
+        public ImagemNoticiaController(IImagemNoticiaRepositorio ImagemNoticiaRepositorio, INoticiaRepositorio NoticiaRepository)
         {
             _ImagemNoticiaRepositorio = ImagemNoticiaRepositorio;
             _NoticiaRepository = NoticiaRepository;

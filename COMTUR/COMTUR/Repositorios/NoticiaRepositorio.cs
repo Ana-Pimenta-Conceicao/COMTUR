@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace COMTUR.Repositorios
 {
-    public class NoticiaRepository : INoticiaRepository
+    public class NoticiaRepositorio : INoticiaRepositorio
     {
         private readonly ComturDBContext _dbContext;
         private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public NoticiaRepository(ComturDBContext dbContext, IWebHostEnvironment hostingEnvironment)
+        public NoticiaRepositorio(ComturDBContext dbContext, IWebHostEnvironment hostingEnvironment)
         {
             _dbContext = dbContext;
             _hostingEnvironment = hostingEnvironment;
@@ -28,7 +28,17 @@ namespace COMTUR.Repositorios
             return await _dbContext.Noticia.Include(n => n.ImagemNoticia).FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<List<NoticiaModel>> BuscarNoticia()
+		public async Task<NoticiaModel> GetByIdTurismo(int id)
+		{
+			return await _dbContext.Noticia.Include(objeto => objeto.TurismoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+		}
+
+		public async Task<NoticiaModel> GetByIdUsuario(int id)
+		{
+			return await _dbContext.Noticia.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+		}
+
+		public async Task<List<NoticiaModel>> BuscarNoticia()
         {
             return await _dbContext.Noticia.Include(n => n.ImagemNoticia).ToListAsync();
         }
@@ -104,6 +114,5 @@ namespace COMTUR.Repositorios
 
             return imagens;
         }
-
-    }
+	}
 }

@@ -64,6 +64,11 @@ namespace COMTUR.Data
 			new EmpresaModel { Id = 1, Nome = "AnaStore", CNPJ = 123456, Endereco = "Rua das Maravilhas", Descricao = "Ana Rainha o resto NADINHA", IdUsuario = 3 }
 			);
 
+			//Adicionando anuncio para teste
+			modelBuilder.Entity<AnuncioModel>().HasData(
+			new AnuncioModel { Id = 1, NomeEmpresa = "AnaStore", DescricaoAnuncio = "Não existe mulher feia, existe mulher que não conhece a AnaStore", IdEmpresa = 1, IdTipoTurismo = 1 }
+			);
+
 			//Adicionando Atracao para teste
 			modelBuilder.Entity<AtracaoModel>().HasData(
 			new AtracaoModel { Id = 1, Nome = "Ana Castela", Descricao = "Show da Ana Castela", QRCode = "123456", IdTipoAtracao = 1, IdTurismo = 1 }
@@ -72,6 +77,11 @@ namespace COMTUR.Data
 			//Adicionando Turismo para teste
 			modelBuilder.Entity<TurismoModel>().HasData(
 			new TurismoModel { Id = 1, Nome = "Praça da Fonte", Descricao = "Praça da Fonte", Horario = "18:00", QRCode = "123456", Local = "Praça da Fonte", DiaFuncionamento = "Todos os dias", IdUsuario = 2, IdTipoTurismo = 1 }
+			);
+
+			//Adicionando noticia para teste
+			modelBuilder.Entity<NoticiaModel>().HasData(
+			new NoticiaModel { Id = 1, Titulo = "Ana Cocoricó é ditadora?", Subtitulo = "Membros do Comtur acham Ana Vitoria mandona, entenda o caso", Conteudo = "Ana Vitória, apelidada de Cocoricó e considerada líder do Comtur, só manda e não faz nada", DataPublicacao = new DateOnly(2024, 5, 15), HoraPublicacao = "10:30", IdUsuario = 2 }
 			);
 		}
 	}

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240515134858_teste")]
+    [Migration("20240515162538_teste")]
     partial class teste
     {
         /// <inheritdoc />
@@ -370,12 +370,12 @@ namespace COMTUR.Migrations
                         new
                         {
                             Id = 1,
-                            Conteudo = "Ana Vitória, apelidada de Cocoricó e considerada líder do Comtur, só manda e não faz nada",
+                            Conteudo = "O fenomeno das redes sociais, AnaStore, agora conta com uma loja fisica",
                             DataPublicacao = new DateOnly(2024, 5, 15),
                             HoraPublicacao = "10:30",
                             IdUsuario = 2,
-                            Subtitulo = "Membros do Comtur acham Ana Vitoria mandona, entenda o caso",
-                            Titulo = "Ana Cocoricó é ditadora?"
+                            Subtitulo = "A loja mais divonica agora está em espaço fisíco",
+                            Titulo = "AnaStore finalmente é inaugurada"
                         });
                 });
 

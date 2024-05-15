@@ -81,7 +81,7 @@ namespace COMTUR.Data
 
 			//Adicionando noticia para teste
 			modelBuilder.Entity<NoticiaModel>().HasData(
-			new NoticiaModel { Id = 1, Titulo = "Ana Cocoricó é ditadora?", Subtitulo = "Membros do Comtur acham Ana Vitoria mandona, entenda o caso", Conteudo = "Ana Vitória, apelidada de Cocoricó e considerada líder do Comtur, só manda e não faz nada", DataPublicacao = new DateOnly(2024, 5, 15), HoraPublicacao = "10:30", IdUsuario = 2 }
+			new NoticiaModel { Id = 1, Titulo = "AnaStore finalmente é inaugurada", Subtitulo = "A loja mais divonica agora está em espaço fisíco", Conteudo = "O fenomeno das redes sociais, AnaStore, agora conta com uma loja fisica", DataPublicacao = new DateOnly(2024, 5, 15), HoraPublicacao = "10:30", IdUsuario = 2 }
 			);
 		}
 	}

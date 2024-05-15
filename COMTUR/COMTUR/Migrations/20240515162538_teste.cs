@@ -364,7 +364,7 @@ namespace COMTUR.Migrations
             migrationBuilder.InsertData(
                 table: "noticia",
                 columns: new[] { "noticiaid", "conteudo", "datapublicacao", "horapublicacao", "idturismo", "usuarioid", "subtitulo", "titulo" },
-                values: new object[] { 1, "Ana Vitória, apelidada de Cocoricó e considerada líder do Comtur, só manda e não faz nada", new DateOnly(2024, 5, 15), "10:30", null, 2, "Membros do Comtur acham Ana Vitoria mandona, entenda o caso", "Ana Cocoricó é ditadora?" });
+                values: new object[] { 1, "O fenomeno das redes sociais, AnaStore, agora conta com uma loja fisica", new DateOnly(2024, 5, 15), "10:30", null, 2, "A loja mais divonica agora está em espaço fisíco", "AnaStore finalmente é inaugurada" });
 
             migrationBuilder.InsertData(
                 table: "turismo",

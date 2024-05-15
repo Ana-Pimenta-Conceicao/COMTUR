@@ -43,6 +43,10 @@ namespace COMTUR.Models
         [JsonIgnore]
         public ICollection<EmpresaModel>? Empresas { get; set; }
 
+		// Relacionamento com noticia para o funcionario
+		[JsonIgnore]
+		public ICollection<NoticiaModel>? Noticia { get; set; }
+
 		// Relacionamento com turismo para o funcionario/admin
 		[JsonIgnore]
 		public ICollection<TurismoModel>? Turismos { get; set; }

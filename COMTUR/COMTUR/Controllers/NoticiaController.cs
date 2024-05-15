@@ -14,19 +14,19 @@ namespace COMTUR.Controllers
     [ApiController]
     public class NoticiaController : ControllerBase
     {
-        private readonly INoticiaRepository _noticiaRepository;
+        private readonly INoticiaRepositorio _noticiaRepositorio;
         private readonly IImagemNoticiaRepositorio _imagemNoticiaRepositorio;
 
-        public NoticiaController(INoticiaRepository noticiaRepository, IImagemNoticiaRepositorio imagemNoticiaRepositorio)
+        public NoticiaController(INoticiaRepositorio noticiaRepositorio, IImagemNoticiaRepositorio imagemNoticiaRepositorio)
         {
-            _noticiaRepository = noticiaRepository;
+            _noticiaRepositorio = noticiaRepositorio;
             _imagemNoticiaRepositorio = imagemNoticiaRepositorio;
         }
 
 		/*[HttpGet("porTipoStatus/{tipoStatus}")]
 		public async Task<ActionResult<IEnumerable<NoticiaModel>>> GetNoticiaPorTipo(int tipoStatus)
 		{
-			var noticias = await _noticiaRepository.ListarPorTipoStatus(tipoStatus);
+			var noticias = await _noticiaRepositorio.ListarPorTipoStatus(tipoStatus);
 
 			if (noticias == null)
 			{
@@ -47,14 +47,14 @@ namespace COMTUR.Controllers
         [HttpGet]
         public async Task<ActionResult<List<NoticiaModel>>> BuscarNoticia()
         {
-            List<NoticiaModel> noticias = await _noticiaRepository.BuscarNoticia();
+            List<NoticiaModel> noticias = await _noticiaRepositorio.BuscarNoticia();
             return Ok(noticias);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<NoticiaModel>> BuscarPorId(int id)
         {
-            NoticiaModel noticia = await _noticiaRepository.BuscarPorId(id);
+            NoticiaModel noticia = await _noticiaRepositorio.BuscarPorId(id);
             if (noticia == null)
             {
                 return NotFound($"Notícia com ID {id} não encontrada.");
@@ -62,17 +62,28 @@ namespace COMTUR.Controllers
             return Ok(noticia);
         }
 
-        [HttpGet("{id}/imagens")]
+		[HttpGet("{id}/turismo")]
+		public async Task<ActionResult<NoticiaModel>> BuscarPorIdTurismo(int id)
+		{
+			NoticiaModel noticia = await _noticiaRepositorio.GetByIdTurismo(id);
+			if (noticia == null)
+			{
+				return NotFound($"Turismo com ID {id} não encontrada.");
+			}
+			return Ok(noticia);
+		}
+
+		[HttpGet("{id}/imagens")]
         public async Task<ActionResult<List<string>>> BuscarImagensPorNoticiaId(int noticiaId)
         {
-            var imagens = await _noticiaRepository.BuscarImagensPorNoticiaId(noticiaId);
+            var imagens = await _noticiaRepositorio.BuscarImagensPorNoticiaId(noticiaId);
             return Ok(imagens);
         }
 
         [HttpPost]
         public async Task<ActionResult<NoticiaModel>> Cadastrar([FromForm] NoticiaModel noticiaModel)
         {
-            NoticiaModel noticia = await _noticiaRepository.Adicionar(noticiaModel);
+            NoticiaModel noticia = await _noticiaRepositorio.Adicionar(noticiaModel);
 
             return Ok(noticia);
         }
@@ -81,7 +92,7 @@ namespace COMTUR.Controllers
         public async Task<ActionResult<NoticiaModel>> Atualizar([FromForm] NoticiaModel noticiaModel, int id)
         {
 
-            NoticiaModel noticia = await _noticiaRepository.Atualizar(noticiaModel, id);
+            NoticiaModel noticia = await _noticiaRepositorio.Atualizar(noticiaModel, id);
 
             return Ok(noticia);
         }
@@ -89,7 +100,7 @@ namespace COMTUR.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<NoticiaModel>> Apagar(int id)
         {
-            bool apagado = await _noticiaRepository.Apagar(id);
+            bool apagado = await _noticiaRepositorio.Apagar(id);
 
             return Ok(apagado);
         }

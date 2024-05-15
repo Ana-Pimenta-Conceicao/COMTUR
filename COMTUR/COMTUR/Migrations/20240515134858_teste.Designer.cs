@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240513124958_teste")]
+    [Migration("20240515134858_teste")]
     partial class teste
     {
         /// <inheritdoc />
@@ -77,6 +77,16 @@ namespace COMTUR.Migrations
                     b.HasIndex("TipoTurismoModelId");
 
                     b.ToTable("anuncio");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DescricaoAnuncio = "Não existe mulher feia, existe mulher que não conhece a AnaStore",
+                            IdEmpresa = 1,
+                            IdTipoTurismo = 1,
+                            NomeEmpresa = "AnaStore"
+                        });
                 });
 
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
@@ -334,6 +344,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("idturismo");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer")
+                        .HasColumnName("usuarioid");
+
                     b.Property<string>("Subtitulo")
                         .IsRequired()
                         .HasColumnType("text")
@@ -344,14 +358,25 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("titulo");
 
-                    b.Property<int?>("TurismoModelId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TurismoModelId");
+                    b.HasIndex("IdTurismo");
+
+                    b.HasIndex("IdUsuario");
 
                     b.ToTable("noticia");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Conteudo = "Ana Vitória, apelidada de Cocoricó e considerada líder do Comtur, só manda e não faz nada",
+                            DataPublicacao = new DateOnly(2024, 5, 15),
+                            HoraPublicacao = "10:30",
+                            IdUsuario = 2,
+                            Subtitulo = "Membros do Comtur acham Ana Vitoria mandona, entenda o caso",
+                            Titulo = "Ana Cocoricó é ditadora?"
+                        });
                 });
 
             modelBuilder.Entity("COMTUR.Models.SessaoModel", b =>
@@ -721,10 +746,18 @@ namespace COMTUR.Migrations
                 {
                     b.HasOne("COMTUR.Models.TurismoModel", "TurismoModel")
                         .WithMany("Noticia")
-                        .HasForeignKey("TurismoModelId")
+                        .HasForeignKey("IdTurismo")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
+                        .WithMany("Noticia")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("TurismoModel");
+
+                    b.Navigation("UsuarioModel");
                 });
 
             modelBuilder.Entity("COMTUR.Models.SessaoModel", b =>
@@ -800,6 +833,8 @@ namespace COMTUR.Migrations
             modelBuilder.Entity("COMTUR.Models.UsuarioModel", b =>
                 {
                     b.Navigation("Empresas");
+
+                    b.Navigation("Noticia");
 
                     b.Navigation("Turismos");
                 });

@@ -42,7 +42,7 @@ namespace COMTUR.Repositorios
 
 		public async Task<List<EmpresaModel>> BuscarEmpresa()
 		{
-			return await _dbContext.Empresa.ToListAsync();
+			return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).ToListAsync();
 		}
 
 		public async Task<EmpresaModel> Adicionar(EmpresaModel empresaModel)

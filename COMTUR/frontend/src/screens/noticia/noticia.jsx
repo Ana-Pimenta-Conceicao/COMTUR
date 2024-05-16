@@ -34,6 +34,7 @@ export default function Noticia() {
   const [noticiaHoraPublicacao, setNoticiaHoraPublicacao] = useState("");
   const [userType, setUserType] = useState(null);
   const [noticiaLegendaImagem, setNoticiaLegendaImagem] = useState([]);
+  const [idUsuario, setIdUsuario] = useState("");
   const [imagensNoticia, setImagensNoticia] = useState([]);
   const [noticiaId, setNoticiaId] = useState("");
 
@@ -173,6 +174,8 @@ export default function Noticia() {
     formData.append("conteudo", noticiaConteudo);
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
+    formData.append("idUsuario", idUsuario);
+
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -320,7 +323,12 @@ export default function Noticia() {
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
 
-  
+  useEffect(() => {
+    const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
+    const idTipoUsuarioAPI = localStorage.getItem("id");
+    setUserType(userTypeFromLocalStorage);
+    setIdUsuario(idTipoUsuarioAPI);
+  }, []);
 
   useEffect(() => {
     const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");

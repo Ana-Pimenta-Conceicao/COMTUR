@@ -37,7 +37,7 @@ namespace COMTUR.Controllers
 			return Ok(Turismo);
 		}*/
 
-		[HttpPost("{TurismoId}/imagens")]
+		[HttpPost("{turismoId}/imagens")]
 		public IActionResult AdicionarImagem(int TurismoId, [FromForm] ImagemTurismoModel imagem)
 		{
 			imagem.IdTurismo = TurismoId;
@@ -75,9 +75,9 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpGet("{id}/imagens")]
-		public async Task<ActionResult<List<string>>> BuscarImagensPorTurismoId(int TurismoId)
+		public async Task<ActionResult<List<string>>> BuscarImagensPorTurismoId(int turismoId)
 		{
-			var imagens = await _TurismoRepositorio.BuscarImagensPorTurismoId(TurismoId);
+			var imagens = await _TurismoRepositorio.BuscarImagensPorTurismoId(turismoId);
 			return Ok(imagens);
 		}
 

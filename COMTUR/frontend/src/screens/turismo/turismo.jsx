@@ -26,7 +26,6 @@ const Turismo = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [userType, setUserType] = useState(null);
 
-
   const [turismoNome, setTurismoNome] = useState("");
   const [turismoDescricao, setTurismoDescricao] = useState("");
   const [turismoHorario, setTurismoHorario] = useState("");
@@ -64,7 +63,7 @@ const Turismo = () => {
     setTurismoQrCode(turismo.qrCode);
     setTurismoLocal(turismo.local);
     setTurismoDias(turismo.diaFuncionamento);
-    setTipoTurismo(turismo.idTipoTurismo);
+    setTurismoIdTipo(turismo.idTipoTurismo);
 
     setTurismoImagem(turismo.imagemTurismo);
 
@@ -164,14 +163,6 @@ const Turismo = () => {
 
   const pedidoPost = async () => {
     const formData = new FormData();
-    console.log(turismoNome);
-    console.log(turismoDescricao);
-    console.log(turismoHorario);
-    console.log(turismoQrCode);
-    console.log(turismoLocal);
-    console.log(turismoDias);
-    console.log(idUsuario);
-    console.log(turismoTipoSelecionado);
     formData.append("nome", turismoNome);
     formData.append("descricao", turismoDescricao);
     formData.append("horario", turismoHorario);
@@ -188,7 +179,11 @@ const Turismo = () => {
         },
       });
       setData(data.concat(response.data));
-      await pedidoPostImagens(response.data.id);
+
+      if (turismoImagem.lenght !== 0) {
+        await pedidoPostImagens(response.data.id);
+      }
+
       abrirFecharModalInserir();
       limparDados();
       setAtualizarData(true);
@@ -199,11 +194,18 @@ const Turismo = () => {
 
   const pedidoPostImagens = async (idTurismo) => {
     const formData = new FormData();
-    console.log("Guigas")
+    console.log("chegou");
+
+    let todasImagens = [];
+    let todasLegendas = [];
+
     turismoImagem?.forEach((imagem) => {
-      formData.append("imagens", imagem.imagem);
-      formData.append("legendas", imagem.legendaImagem);
+      todasImagens = [...todasImagens, imagem.imagem];
+      todasLegendas = [...todasLegendas, imagem.legendaImagem];
     });
+
+    todasImagens.forEach((imagem) => formData.append("imagens", imagem));
+    todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
 
     try {
       const response = await axios.post(
@@ -222,6 +224,8 @@ const Turismo = () => {
 
   async function pedidoAtualizar() {
     const formData = new FormData();
+    console.log([turismoImagem]);
+    formData.append("id", turismoId);
     formData.append("nome", turismoNome);
     formData.append("descricao", turismoDescricao);
     formData.append("horario", turismoHorario);
@@ -229,6 +233,7 @@ const Turismo = () => {
     formData.append("qrCode", turismoQrCode);
     formData.append("local", turismoLocal);
     formData.append("diaFuncionamento", turismoDias);
+    formData.append("idUsuario", idUsuario);
     formData.append("idTipoTurismo", turismoTipoSelecionado);
 
     try {
@@ -250,10 +255,12 @@ const Turismo = () => {
       });
 
       abrirFecharModalEditar();
-      await pedidoPutImagens();
-      limparDados();
+
+      if (turismoImagem.lenght !== 0) {
+        await pedidoPutImagens();
+      }
+
       setAtualizarData(true);
-      abrirModalEditado();
     } catch (error) {
       console.log(error);
     }
@@ -261,10 +268,21 @@ const Turismo = () => {
 
   const pedidoPutImagens = async () => {
     const formData = new FormData();
-    imagemTurismo.forEach((imagem) => {
-      formData.append("imagens", imagem.imagem);
-      formData.append("legendas", imagem.legendaImagem);
+    console.log("cheguei chegando bagunçando a zorra toda");
+
+    let todasImagens = [];
+    let todasLegendas = [];
+
+    turismoImagem?.forEach((imagem) => {
+      todasImagens = [...todasImagens, imagem.imagem];
+      todasLegendas = [...todasLegendas, imagem.legendaImagem];
     });
+
+    todasImagens.forEach((imagem) => formData.append("imagens", imagem));
+    todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+
+    console.log(todasImagens);
+    console.log(todasLegendas);
 
     try {
       const response = await axios.put(
@@ -315,7 +333,6 @@ const Turismo = () => {
     }
   }, [atualizarData]);
 
-
   useEffect(() => {
     if (dataTipoTurismo) {
       const options = dataTipoTurismo.map((turismo) => {
@@ -332,7 +349,6 @@ const Turismo = () => {
       }
     }
   }, [dataTipoTurismo]);
-
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
@@ -356,8 +372,6 @@ const Turismo = () => {
     setIdUsuario(idTipoUsuarioAPI);
   }, []);
 
-
-
   // turismoid
   // nome
   // descricao
@@ -371,40 +385,42 @@ const Turismo = () => {
 
   const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((turismo) => {
-      const tipoTurismo = dataTipoTurismo.find(
-        (tipo) => tipo.id === turismo.idTipoTurismo
-      );
-      const tipoTurismoNome = tipoTurismo ? tipoTurismo.nome : "Tipo não encontrado";
-      return {
-        id: turismo.id,
-        nome:
-          turismo.nome.length > 25
-            ? `${turismo.nome.substring(0, 35)}...`
-            : turismo.nome,
-        descricao:
-          turismo.descricao.length > 25
-            ? `${turismo.descricao.substring(0, 35)}...`
-            : turismo.descricao,
-        tipo: tipoTurismoNome,
-        status: "teste",
-        acoes: (
-          <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-            <BtnAcao
-              funcao={() => TurismoSet(turismo, "Editar")}
-              acao="Editar"
-            />
-            <BtnAcao
-              funcao={() => TurismoSet(turismo, "Excluir")}
-              acao="Excluir"
-            />
-            <BtnAcao
-              funcao={() => TurismoSet(turismo, "Visualizar")}
-              acao="Visualizar"
-            />
-          </div>
-        ),
-      };
-    })
+        const tipoTurismo = dataTipoTurismo.find(
+          (tipo) => tipo.id === turismo.idTipoTurismo
+        );
+        const tipoTurismoNome = tipoTurismo
+          ? tipoTurismo.nome
+          : "Tipo não encontrado";
+        return {
+          id: turismo.id,
+          nome:
+            turismo.nome.length > 25
+              ? `${turismo.nome.substring(0, 35)}...`
+              : turismo.nome,
+          descricao:
+            turismo.descricao.length > 25
+              ? `${turismo.descricao.substring(0, 35)}...`
+              : turismo.descricao,
+          tipo: tipoTurismoNome,
+          status: "teste",
+          acoes: (
+            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+              <BtnAcao
+                funcao={() => TurismoSet(turismo, "Editar")}
+                acao="Editar"
+              />
+              <BtnAcao
+                funcao={() => TurismoSet(turismo, "Excluir")}
+                acao="Excluir"
+              />
+              <BtnAcao
+                funcao={() => TurismoSet(turismo, "Visualizar")}
+                acao="Visualizar"
+              />
+            </div>
+          ),
+        };
+      })
     : [];
 
   if (userType === "1" || userType === "3") {
@@ -425,14 +441,7 @@ const Turismo = () => {
             <hr className="pb-4 border-[2.5px] border-gray-300" />
             <Tabela
               object={apresentaDados}
-              colunas={[
-                "ID",
-                "Nome",
-                "Descrição",
-                "Tipo",
-                "Status",
-                "Ações"
-              ]}
+              colunas={["ID", "Nome", "Descrição", "Tipo", "Status", "Ações"]}
               currentPage={currentPage}
               totalPages={totalPages}
               goToPage={setCurrentPage}
@@ -440,10 +449,7 @@ const Turismo = () => {
             />
 
             <div className="float-right flex-auto py-6">
-              <BtnAcao
-                funcao={""}
-                acao="Publicados"
-              />
+              <BtnAcao funcao={""} acao="Publicados" />
 
               <BtnAcao
                 funcao={() => abrirFecharModalInserir("Cadastrar")}
@@ -563,10 +569,7 @@ const Turismo = () => {
                         >
                           {Array.from(
                             {
-                              length: Math.min(
-                                1,
-                                turismoImagem.length - index
-                              ),
+                              length: Math.min(1, turismoImagem.length - index),
                             },
                             (_, i) => (
                               <div key={index} className="flex flex-col  pr-5 ">
@@ -619,13 +622,221 @@ const Turismo = () => {
             </div>
           </ModalBody>
         </Modal>
+        <Modal
+          className="modal-xl-gridxl"
+          isOpen={modalEditar}
+          style={{ maxWidth: "1000px" }}
+        >
+          <ModalHeader className="">Editar Turismo</ModalHeader>
+          <ModalBody className="">
+            <div className="grid grid-cols-2 ">
+              <div className="form-group  ">
+                <div className="flex flex-col col-span-1 pr-6">
+                  <label>Nome: </label>
+                  <input
+                    type="text"
+                    className="form-control text-sm"
+                    onChange={(e) => setTurismoNome(e.target.value)}
+                    placeholder="Digite o Nome"
+                    value={turismoNome}
+                  />
+                  <br />
+
+                  <label>Descrição:</label>
+                  <textarea
+                    className="form-control text-sm"
+                    onChange={(e) => setTurismoDescricao(e.target.value)}
+                    placeholder="Digite a Descrição"
+                    value={turismoDescricao}
+                  />
+                  <br />
+
+                  <label>Horário:</label>
+                  <textarea
+                    className="form-control text-sm"
+                    onChange={(e) => setTurismoHorario(e.target.value)}
+                    placeholder="Digite o Horário"
+                    value={turismoHorario}
+                  />
+                  <br />
+
+                  <label>QrCode:</label>
+                  <textarea
+                    className="form-control text-sm"
+                    onChange={(e) => setTurismoQrCode(e.target.value)}
+                    placeholder="Digite o QrCode"
+                    value={turismoQrCode}
+                  />
+                  <br />
+
+                  <label>Local:</label>
+                  <textarea
+                    className="form-control text-sm"
+                    onChange={(e) => setTurismoLocal(e.target.value)}
+                    placeholder="Digite o Local"
+                    value={turismoLocal}
+                  />
+                  <br />
+
+                  <label>Dia de Funcionamento:</label>
+                  <textarea
+                    className="form-control text-sm"
+                    onChange={(e) => setTurismoDias(e.target.value)}
+                    placeholder="Digite o Dia de Funcionamento"
+                    value={turismoDias}
+                  />
+                  <br />
+                  <label>Tipo de Turismo: </label>
+                  <br />
+                  <select
+                    className="form-control"
+                    value={turismoTipoSelecionado}
+                    onChange={(e) => setTurismoTipoSelecionado(e.target.value)}
+                  >
+                    {turismoTipoOpcao.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <br />
+                </div>
+              </div>
+
+              <div className="flex flex-col col-span-1 pl-4  border-l-[1px]">
+                <label>Imagem:</label>
+                <div>
+                  {/* Campo para seleção de imagem */}
+                  <input
+                    type="file"
+                    className="form-control "
+                    onChange={(e) => {
+                      Array.from(e.target.files).forEach((file) => {
+                        convertImageToBase64(file, (result) => {
+                          if (result) {
+                            const objetoImagem = {
+                              imagem: result,
+                              legendaImagem: "",
+                            };
+                            setTurismoImagem((prevImagens) => [
+                              ...prevImagens,
+                              objetoImagem,
+                            ]);
+                          }
+                        });
+                      });
+                      // Limpa o campo de entrada de arquivo após a seleção
+                      e.target.value = null;
+                    }}
+                    multiple
+                  />
+
+                  {modalEditar && (
+                    <div>
+                      {(Array.isArray(turismoImagem) ? turismoImagem : []).map(
+                        (imagem, index) =>
+                          index % 1 === 0 && (
+                            <div
+                              className="flex pt-3 justify-end "
+                              key={`row-${index}`}
+                            >
+                              {Array.from(
+                                {
+                                  length: Math.min(
+                                    1,
+                                    turismoImagem.length - index
+                                  ),
+                                },
+                                (_, i) => (
+                                  <div
+                                    key={index + i}
+                                    className="flex flex-col  pr-5 "
+                                  >
+                                    <div className="flex w-[140px] justify-end">
+                                      <img
+                                        className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
+                                        src={turismoImagem[index + i].imagem}
+                                        alt={`Imagem ${index}`}
+                                      />
+                                      <div className="flex flex-col pl-3 justify-end">
+                                        <label>Legenda:</label>
+                                        <input
+                                          type="text"
+                                          className="form-control text-sm w-[286px] mb-0 "
+                                          onChange={(e) =>
+                                            setTurismoImagem((prevImagens) => {
+                                              const novasImagens = [
+                                                ...prevImagens,
+                                              ];
+                                              novasImagens[
+                                                index + i
+                                              ].legendaImagem = e.target.value;
+                                              return novasImagens;
+                                            })
+                                          }
+                                          value={
+                                            turismoImagem[index + i]
+                                              .legendaImagem
+                                          }
+                                          placeholder="Digite a legenda"
+                                        />
+                                        <br />
+                                        <button
+                                          className="w-[140px] rounded-md text-md text-white  bg-red-800 hover:bg-red-900"
+                                          onClick={() =>
+                                            removeImagemByIndex(index)
+                                          }
+                                        >
+                                          Remover
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          )
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-between items-center px-[405px] pt-5">
+              <BtnModaisIMG funcao={() => pedidoAtualizar()} acao="Editar" />
+              <BtnModaisIMG
+                funcao={() => abrirFecharModalEditar()}
+                acao="Cancelar"
+              />
+            </div>
+          </ModalBody>
+        </Modal>
         <PopupCadastrado
           isOpen={modalCadastrado}
           toggle={fecharModalCadastrado}
           objeto="Turismo"
         />
+        <Modal isOpen={modalDeletar}>
+          <ModalBody>
+            <label> Confirma a exclusão deste turismo: {turismoNome} ?</label>
+          </ModalBody>
+          <ModalFooter>
+            <button
+              className="btn btnmodalverde  text-white"
+              onClick={() => pedidoDeletar()}
+            >
+              Sim
+            </button>
+            <button
+              className="btn btnmodalcinza  text-white"
+              onClick={() => abrirFecharModalDeletar()}
+            >
+              Não
+            </button>
+          </ModalFooter>
+        </Modal>
       </div>
-    )
+    );
   }
 };
 

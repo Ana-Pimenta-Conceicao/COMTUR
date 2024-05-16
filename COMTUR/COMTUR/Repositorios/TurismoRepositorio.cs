@@ -48,7 +48,7 @@ namespace COMTUR.Repositorios
 
 		public async Task<List<TurismoModel>> BuscarTurismo()
 		{
-			return await _dbContext.Turismo.ToListAsync();
+			return await _dbContext.Turismo.Include(n => n.ImagemTurismo).ToListAsync();
 		}
 
 		public async Task<TurismoModel> Adicionar(TurismoModel TurismoModel)
@@ -85,7 +85,8 @@ namespace COMTUR.Repositorios
 			TurismoPorId.QRCode = TurismoModel.QRCode;
 			TurismoPorId.Local = TurismoModel.Local;
 			TurismoPorId.DiaFuncionamento = TurismoModel.DiaFuncionamento;
-			TurismoPorId.UsuarioModel = TurismoModel.UsuarioModel;
+			TurismoPorId.IdUsuario = TurismoModel.IdUsuario;
+			TurismoPorId.IdTipoTurismo = TurismoModel.IdTipoTurismo;
 			//TurismoPorId.TipoStatus = TurismoModel.TipoStatus;
 
 			_dbContext.Turismo.Update(TurismoPorId);
@@ -109,11 +110,11 @@ namespace COMTUR.Repositorios
 			return true;
 		}
 
-		public async Task<List<ImagemTurismoModel>> BuscarImagensPorTurismoId(int TurismoId)
+		public async Task<List<ImagemTurismoModel>> BuscarImagensPorTurismoId(int turismoId)
 		{
 			// Use o Entity Framework para consultar as imagens associadas a uma Turismo específica
 			var imagens = await _dbContext.ImagemTurismo
-										   .Where(imagem => imagem.IdTurismo == TurismoId)
+										   .Where(imagem => imagem.IdTurismo == turismoId)
 										   .ToListAsync();
 			return imagens;
 		}

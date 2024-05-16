@@ -21,7 +21,6 @@ namespace COMTUR.Data.Map
 			builder.HasMany(n => n.ImagemTurismo)
 				   .WithOne(im => im.TurismoModel)
 				   .HasForeignKey(im => im.IdTurismo)
-				   .IsRequired()
 				   .OnDelete(DeleteBehavior.Cascade);
 
 			// Relacionamento Turismo com Atracao

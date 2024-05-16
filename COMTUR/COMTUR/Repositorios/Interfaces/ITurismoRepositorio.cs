@@ -12,6 +12,6 @@ namespace COMTUR.Repositorios.Interfaces
 		Task<TurismoModel> Atualizar(TurismoModel TurismoModel, int id);
 		//Task<List<TurismoModel>> ListarPorTipoStatus(int tipoStatus);
 		Task<bool> Apagar(int id);
-		Task<List<ImagemTurismoModel>> BuscarImagensPorTurismoId(int TurismoId);
+		Task<List<ImagemTurismoModel>> BuscarImagensPorTurismoId(int turismoId);
 	}
 }

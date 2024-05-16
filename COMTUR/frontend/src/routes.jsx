@@ -17,6 +17,7 @@ import PerfilUsuario from "./screens/usuarios/perfilusuarios";
 import NotFound from "./screens/notFound";
 import HomeEmpresario from "./screens/empresario/homeEmpresario";
 import Turismo from "./screens/turismo/turismo";
+import VisualizarTurismos from "./screens/turismo/visualizarturismo";
 
 const isUserLoggedIn = () => {
     // Verificar se há um token armazenado no localStorage
@@ -42,6 +43,7 @@ const AppRoutes = () => {
                 <Route path="/login" element={ <Login/> } />
                 <Route path="/notfound" element={<NotFound/>} />
                 <Route path="/empresa" element={<Empresa/>}/>
+                <Route path="/visualizarTurismo" element={<VisualizarTurismos/>}/>
 
                 {/* <Route path="/home"  element={ <Home />} /> */}
                 <Route path="/noticia" element={<ProtectedRoute element={ <Noticia /> } />}/>

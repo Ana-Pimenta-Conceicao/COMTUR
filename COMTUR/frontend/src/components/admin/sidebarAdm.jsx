@@ -28,6 +28,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
       localStorage.removeItem("token");
       localStorage.removeItem("tipoUsuario");
       localStorage.removeItem("nome");
+      localStorage.removeItem("id");
 
       try {
         await axios.post(baseUrl + "/Logout", formData, {

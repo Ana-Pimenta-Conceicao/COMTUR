@@ -45,7 +45,7 @@ namespace COMTUR.Models
 
 		// relaçao com TipoTurismo
 		[JsonIgnore]
-		public TipoTurismoModel TipoTurismoModel { get; set; }
+		public TipoTurismoModel? TipoTurismoModel { get; set; }
 
 		[Column("idtipoturismo")]
 		[ForeignKey("idtipoturismo")]

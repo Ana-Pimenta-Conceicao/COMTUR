@@ -61,8 +61,10 @@ export default function Login() {
         localStorage.setItem("token", response.data.message.tokenUsuario);
         localStorage.setItem("tipoUsuario", response.data.message.tipoUsuario);
         localStorage.setItem("nome", response.data.message.nome);
+        localStorage.setItem("id", response.data.message.id);
 
         console.log(localStorage.getItem("token"))
+        console.log(localStorage.getItem("id"))
         navigate(determinarRota(response.data.message.tipoUsuario));
       } else {
         console.log(3);

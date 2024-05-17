@@ -10,6 +10,18 @@ namespace COMTUR.Data.Map
 		{
 			builder.HasKey(x => x.Id);
 			builder.Property(x => x.Nome).IsRequired().HasMaxLength(50);
+
+			// Relacionamento Usuario com Atracao
+			builder.HasMany(x => x.Atracao).WithOne(x => x.UsuarioModel).OnDelete(DeleteBehavior.Cascade);
+
+			// Relacionamento Usuario com Noticia
+			builder.HasMany(x => x.Noticia).WithOne(x => x.UsuarioModel).OnDelete(DeleteBehavior.Cascade);
+
+			// Relacionamento Usuario com Empresa
+			builder.HasMany(x => x.Empresas).WithOne(x => x.UsuarioModel).OnDelete(DeleteBehavior.Cascade);
+
+			// Relacionamento Usuario com Turismo
+			builder.HasMany(x => x.Turismos).WithOne(x => x.UsuarioModel).OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

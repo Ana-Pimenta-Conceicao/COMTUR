@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240516022812_dbCOMTUR")]
-    partial class dbCOMTUR
+    [Migration("20240517115842_teste")]
+    partial class teste
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,70 +24,6 @@ namespace COMTUR.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("COMTUR.Models.AnuncioModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("anuncioid");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("DescricaoAnuncio")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("descricaoanuncio");
-
-                    b.Property<int?>("EmpresaModelId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("IdEmpresa")
-                        .HasColumnType("integer")
-                        .HasColumnName("idempresa");
-
-                    b.Property<int>("IdTipoTurismo")
-                        .HasColumnType("integer")
-                        .HasColumnName("idtipoturismo");
-
-                    b.Property<string>("Imagem")
-                        .HasColumnType("text")
-                        .HasColumnName("imagemanuncio");
-
-                    b.Property<string>("Legenda")
-                        .HasColumnType("text")
-                        .HasColumnName("legendaanuncio");
-
-                    b.Property<string>("NomeEmpresa")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("nomeempresa");
-
-                    b.Property<int?>("TipoTurismoModelId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmpresaModelId");
-
-                    b.HasIndex("IdEmpresa");
-
-                    b.HasIndex("IdTipoTurismo");
-
-                    b.HasIndex("TipoTurismoModelId");
-
-                    b.ToTable("anuncio");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DescricaoAnuncio = "Não existe mulher feia, existe mulher que não conhece a AnaStore",
-                            IdEmpresa = 1,
-                            IdTipoTurismo = 1,
-                            NomeEmpresa = "AnaStore"
-                        });
-                });
 
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
                 {
@@ -111,6 +47,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("idturismo");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer")
+                        .HasColumnName("usuarioid");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("text")
@@ -130,6 +70,8 @@ namespace COMTUR.Migrations
 
                     b.HasIndex("IdTurismo");
 
+                    b.HasIndex("IdUsuario");
+
                     b.HasIndex("TipoAtracaoModelId");
 
                     b.ToTable("atracao");
@@ -141,6 +83,7 @@ namespace COMTUR.Migrations
                             Descricao = "Show da Ana Castela",
                             IdTipoAtracao = 1,
                             IdTurismo = 1,
+                            IdUsuario = 4,
                             Nome = "Ana Castela",
                             QRCode = "123456"
                         });
@@ -169,6 +112,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("endereco");
 
+                    b.Property<int>("IdTipoTurismo")
+                        .HasColumnType("integer")
+                        .HasColumnName("tipoturismoid");
+
                     b.Property<int>("IdUsuario")
                         .HasColumnType("integer")
                         .HasColumnName("usuarioid");
@@ -179,9 +126,16 @@ namespace COMTUR.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("nome");
 
+                    b.Property<int?>("TipoTurismoModelId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("IdTipoTurismo");
+
                     b.HasIndex("IdUsuario");
+
+                    b.HasIndex("TipoTurismoModelId");
 
                     b.ToTable("empresa");
 
@@ -192,6 +146,7 @@ namespace COMTUR.Migrations
                             CNPJ = 123456L,
                             Descricao = "Ana Rainha o resto NADINHA",
                             Endereco = "Rua das Maravilhas",
+                            IdTipoTurismo = 1,
                             IdUsuario = 3,
                             Nome = "AnaStore"
                         });
@@ -637,33 +592,6 @@ namespace COMTUR.Migrations
                         });
                 });
 
-            modelBuilder.Entity("COMTUR.Models.AnuncioModel", b =>
-                {
-                    b.HasOne("COMTUR.Models.EmpresaModel", null)
-                        .WithMany("AnuncioEmpresa")
-                        .HasForeignKey("EmpresaModelId");
-
-                    b.HasOne("COMTUR.Models.EmpresaModel", "EmpresaModel")
-                        .WithMany()
-                        .HasForeignKey("IdEmpresa")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("COMTUR.Models.TipoTurismoModel", "TipoTurismoModel")
-                        .WithMany()
-                        .HasForeignKey("IdTipoTurismo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("COMTUR.Models.TipoTurismoModel", null)
-                        .WithMany("Anuncios")
-                        .HasForeignKey("TipoTurismoModelId");
-
-                    b.Navigation("EmpresaModel");
-
-                    b.Navigation("TipoTurismoModel");
-                });
-
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
                 {
                     b.HasOne("COMTUR.Models.TipoAtracaoModel", "TipoAtracaoModel")
@@ -678,6 +606,12 @@ namespace COMTUR.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
+                        .WithMany("Atracao")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("COMTUR.Models.TipoAtracaoModel", null)
                         .WithMany("Atracao")
                         .HasForeignKey("TipoAtracaoModelId");
@@ -685,15 +619,29 @@ namespace COMTUR.Migrations
                     b.Navigation("TipoAtracaoModel");
 
                     b.Navigation("TurismoModel");
+
+                    b.Navigation("UsuarioModel");
                 });
 
             modelBuilder.Entity("COMTUR.Models.EmpresaModel", b =>
                 {
+                    b.HasOne("COMTUR.Models.TipoTurismoModel", "TipoTurismoModel")
+                        .WithMany()
+                        .HasForeignKey("IdTipoTurismo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
                         .WithMany("Empresas")
                         .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("COMTUR.Models.TipoTurismoModel", null)
+                        .WithMany("Empresa")
+                        .HasForeignKey("TipoTurismoModelId");
+
+                    b.Navigation("TipoTurismoModel");
 
                     b.Navigation("UsuarioModel");
                 });
@@ -799,8 +747,6 @@ namespace COMTUR.Migrations
 
             modelBuilder.Entity("COMTUR.Models.EmpresaModel", b =>
                 {
-                    b.Navigation("AnuncioEmpresa");
-
                     b.Navigation("ImagemEmpresa");
                 });
 
@@ -816,7 +762,7 @@ namespace COMTUR.Migrations
 
             modelBuilder.Entity("COMTUR.Models.TipoTurismoModel", b =>
                 {
-                    b.Navigation("Anuncios");
+                    b.Navigation("Empresa");
 
                     b.Navigation("Turismo");
                 });
@@ -832,6 +778,8 @@ namespace COMTUR.Migrations
 
             modelBuilder.Entity("COMTUR.Models.UsuarioModel", b =>
                 {
+                    b.Navigation("Atracao");
+
                     b.Navigation("Empresas");
 
                     b.Navigation("Noticia");

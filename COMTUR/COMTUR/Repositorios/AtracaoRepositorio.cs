@@ -32,6 +32,11 @@ namespace COMTUR.Repositorios
 			return await _dbContext.Atracao.Include(objeto => objeto.TurismoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
 
+		public async Task<AtracaoModel> GetByIdUsuario(int id)
+		{
+			return await _dbContext.Atracao.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+		}
+
 		public async Task<List<AtracaoModel>> BuscarAtracao()
 		{
 			return await _dbContext.Atracao.Include(n => n.ImagemAtracao).ToListAsync();
@@ -59,9 +64,9 @@ namespace COMTUR.Repositorios
 
 		public async Task<AtracaoModel> Atualizar(AtracaoModel atracao, int id)
 		{
-			AtracaoModel AtracaoPorId = await BuscarPorId(id);
+			AtracaoModel atracaoPorId = await BuscarPorId(id);
 
-			if (AtracaoPorId == null)
+			if (atracaoPorId == null)
 			{
 				throw new Exception($"Atração para o ID: {id} nao foi encontrado no banco de dados. ");
 			}
@@ -71,17 +76,18 @@ namespace COMTUR.Repositorios
 				throw new ArgumentException("Tipo de status inválido");
 			}*/
 
-			AtracaoPorId.Id = atracao.Id;
-			AtracaoPorId.Nome = atracao.Nome;
-			AtracaoPorId.Descricao = atracao.Descricao;
-			AtracaoPorId.QRCode = atracao.QRCode;
-            AtracaoPorId.IdTipoAtracao = atracao.IdTipoAtracao;
+			atracaoPorId.Id = atracao.Id;
+			atracaoPorId.Nome = atracao.Nome;
+			atracaoPorId.Descricao = atracao.Descricao;
+			atracaoPorId.QRCode = atracao.QRCode;
+            atracaoPorId.IdTipoAtracao = atracao.IdTipoAtracao;
+			atracaoPorId.IdUsuario = atracao.IdUsuario;
             //AtracaoPorId.TipoStatus = atracao.TipoStatus; 
 
-            _dbContext.Atracao.Update(AtracaoPorId);
+            _dbContext.Atracao.Update(atracaoPorId);
 			await _dbContext.SaveChangesAsync();
 
-			return AtracaoPorId;
+			return atracaoPorId;
 		}
 
 		public async Task<bool> Apagar(int id)

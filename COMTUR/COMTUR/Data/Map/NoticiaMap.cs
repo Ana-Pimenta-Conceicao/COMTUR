@@ -14,7 +14,7 @@ namespace COMTUR.Data.Map
 			// Relacionamento da noticia com Turismo
 			builder.HasOne(x => x.TurismoModel).WithMany().HasForeignKey(x => x.IdTurismo);
 
-			// Relacionamento da Noticia com Funcionario/Aadmin
+			// Relacionamento da Noticia com Funcionario/Admin
 			builder.HasOne(e => e.UsuarioModel).WithMany(u => u.Noticia).HasForeignKey(e => e.IdUsuario);
 
 			// Relacionamento Noticia com ImagemNoticia

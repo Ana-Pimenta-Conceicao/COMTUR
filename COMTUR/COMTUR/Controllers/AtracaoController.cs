@@ -74,6 +74,17 @@ namespace COMTUR.Controllers
 			return Ok(atracao);
 		}
 
+		[HttpGet("{id}/usuario")]
+		public async Task<ActionResult<AtracaoModel>> BuscarPorIdUsuario(int id)
+		{
+			AtracaoModel atracao = await _atracaoRepositorio.GetByIdUsuario(id);
+			if (atracao == null)
+			{
+				return NotFound($"Usuario com ID {id} não encontrada.");
+			}
+			return Ok(atracao);
+		}
+
 		[HttpGet("{id}/imagens")]
 		public async Task<ActionResult<List<string>>> BuscarImagensPorAtracaoId(int atracaoId)
 		{

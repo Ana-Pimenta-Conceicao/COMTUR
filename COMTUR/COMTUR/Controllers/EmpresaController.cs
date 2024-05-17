@@ -41,6 +41,17 @@ namespace COMTUR.Controllers
 			return Ok();
 		}
 
+		[HttpGet("{id}/tipoturismo")]
+		public async Task<ActionResult<EmpresaModel>> BuscarPorIdTipoTurismo(int id)
+		{
+			EmpresaModel empresa = await _empresaRepositorio.GetByIdTipoTurismo(id);
+			if (empresa == null)
+			{
+				return NotFound($"Tipo Turismo com ID {id} não encontrada.");
+			}
+			return Ok(empresa);
+		}
+
 		[HttpGet]
 		public async Task<ActionResult<List<EmpresaModel>>> BuscarEmpresa()
 		{

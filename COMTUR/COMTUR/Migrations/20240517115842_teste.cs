@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class dbCOMTUR : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -68,11 +68,24 @@ namespace COMTUR.Migrations
                     cnpj = table.Column<long>(type: "bigint", nullable: false),
                     endereco = table.Column<string>(type: "text", nullable: false),
                     descricao = table.Column<string>(type: "text", nullable: false),
-                    usuarioid = table.Column<int>(type: "integer", nullable: false)
+                    tipoturismoid = table.Column<int>(type: "integer", nullable: false),
+                    usuarioid = table.Column<int>(type: "integer", nullable: false),
+                    TipoTurismoModelId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_empresa", x => x.empresaid);
+                    table.ForeignKey(
+                        name: "FK_empresa_tipoturismo_TipoTurismoModelId",
+                        column: x => x.TipoTurismoModelId,
+                        principalTable: "tipoturismo",
+                        principalColumn: "tipoturismoid");
+                    table.ForeignKey(
+                        name: "FK_empresa_tipoturismo_tipoturismoid",
+                        column: x => x.tipoturismoid,
+                        principalTable: "tipoturismo",
+                        principalColumn: "tipoturismoid",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_empresa_usuario_usuarioid",
                         column: x => x.usuarioid,
@@ -144,48 +157,6 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "anuncio",
-                columns: table => new
-                {
-                    anuncioid = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    nomeempresa = table.Column<string>(type: "text", nullable: false),
-                    imagemanuncio = table.Column<string>(type: "text", nullable: true),
-                    legendaanuncio = table.Column<string>(type: "text", nullable: true),
-                    descricaoanuncio = table.Column<string>(type: "text", nullable: false),
-                    idtipoturismo = table.Column<int>(type: "integer", nullable: false),
-                    idempresa = table.Column<int>(type: "integer", nullable: false),
-                    EmpresaModelId = table.Column<int>(type: "integer", nullable: true),
-                    TipoTurismoModelId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_anuncio", x => x.anuncioid);
-                    table.ForeignKey(
-                        name: "FK_anuncio_empresa_EmpresaModelId",
-                        column: x => x.EmpresaModelId,
-                        principalTable: "empresa",
-                        principalColumn: "empresaid");
-                    table.ForeignKey(
-                        name: "FK_anuncio_empresa_idempresa",
-                        column: x => x.idempresa,
-                        principalTable: "empresa",
-                        principalColumn: "empresaid",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_anuncio_tipoturismo_TipoTurismoModelId",
-                        column: x => x.TipoTurismoModelId,
-                        principalTable: "tipoturismo",
-                        principalColumn: "tipoturismoid");
-                    table.ForeignKey(
-                        name: "FK_anuncio_tipoturismo_idtipoturismo",
-                        column: x => x.idtipoturismo,
-                        principalTable: "tipoturismo",
-                        principalColumn: "tipoturismoid",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "imagemempresa",
                 columns: table => new
                 {
@@ -217,6 +188,7 @@ namespace COMTUR.Migrations
                     qrcode = table.Column<string>(type: "text", nullable: false),
                     idtipoatracao = table.Column<int>(type: "integer", nullable: false),
                     idturismo = table.Column<int>(type: "integer", nullable: false),
+                    usuarioid = table.Column<int>(type: "integer", nullable: false),
                     TipoAtracaoModelId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -238,6 +210,12 @@ namespace COMTUR.Migrations
                         column: x => x.idturismo,
                         principalTable: "turismo",
                         principalColumn: "turismoid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_atracao_usuario_usuarioid",
+                        column: x => x.usuarioid,
+                        principalTable: "usuario",
+                        principalColumn: "usuarioid",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -358,8 +336,8 @@ namespace COMTUR.Migrations
 
             migrationBuilder.InsertData(
                 table: "empresa",
-                columns: new[] { "empresaid", "cnpj", "descricao", "endereco", "usuarioid", "nome" },
-                values: new object[] { 1, 123456L, "Ana Rainha o resto NADINHA", "Rua das Maravilhas", 3, "AnaStore" });
+                columns: new[] { "empresaid", "cnpj", "descricao", "endereco", "tipoturismoid", "usuarioid", "nome", "TipoTurismoModelId" },
+                values: new object[] { 1, 123456L, "Ana Rainha o resto NADINHA", "Rua das Maravilhas", 1, 3, "AnaStore", null });
 
             migrationBuilder.InsertData(
                 table: "noticia",
@@ -372,34 +350,9 @@ namespace COMTUR.Migrations
                 values: new object[] { 1, "Praça da Fonte", "Todos os dias", "18:00", 1, 2, "Praça da Fonte", "Praça da Fonte", "123456", null });
 
             migrationBuilder.InsertData(
-                table: "anuncio",
-                columns: new[] { "anuncioid", "descricaoanuncio", "EmpresaModelId", "idempresa", "idtipoturismo", "imagemanuncio", "legendaanuncio", "nomeempresa", "TipoTurismoModelId" },
-                values: new object[] { 1, "Não existe mulher feia, existe mulher que não conhece a AnaStore", null, 1, 1, null, null, "AnaStore", null });
-
-            migrationBuilder.InsertData(
                 table: "atracao",
-                columns: new[] { "atracaoid", "descricao", "idtipoatracao", "idturismo", "nome", "qrcode", "TipoAtracaoModelId" },
-                values: new object[] { 1, "Show da Ana Castela", 1, 1, "Ana Castela", "123456", null });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_anuncio_EmpresaModelId",
-                table: "anuncio",
-                column: "EmpresaModelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_anuncio_idempresa",
-                table: "anuncio",
-                column: "idempresa");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_anuncio_idtipoturismo",
-                table: "anuncio",
-                column: "idtipoturismo");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_anuncio_TipoTurismoModelId",
-                table: "anuncio",
-                column: "TipoTurismoModelId");
+                columns: new[] { "atracaoid", "descricao", "idtipoatracao", "idturismo", "usuarioid", "nome", "qrcode", "TipoAtracaoModelId" },
+                values: new object[] { 1, "Show da Ana Castela", 1, 1, 4, "Ana Castela", "123456", null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_atracao_idtipoatracao",
@@ -415,6 +368,21 @@ namespace COMTUR.Migrations
                 name: "IX_atracao_TipoAtracaoModelId",
                 table: "atracao",
                 column: "TipoAtracaoModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_atracao_usuarioid",
+                table: "atracao",
+                column: "usuarioid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_empresa_tipoturismoid",
+                table: "empresa",
+                column: "tipoturismoid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_empresa_TipoTurismoModelId",
+                table: "empresa",
+                column: "TipoTurismoModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_empresa_usuarioid",
@@ -475,9 +443,6 @@ namespace COMTUR.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "anuncio");
-
             migrationBuilder.DropTable(
                 name: "imagematracao");
 

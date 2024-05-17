@@ -86,6 +86,42 @@ namespace COMTUR.Migrations
                         });
                 });
 
+            modelBuilder.Entity("COMTUR.Models.AuditoriaModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Hora")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("NomeEntidade")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("NovosValores")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Operacao")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ValoresAntigos")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Auditoria");
+                });
+
             modelBuilder.Entity("COMTUR.Models.EmpresaModel", b =>
                 {
                     b.Property<int>("Id")

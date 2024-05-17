@@ -194,7 +194,6 @@ const Turismo = () => {
 
   const pedidoPostImagens = async (idTurismo) => {
     const formData = new FormData();
-    console.log("chegou");
 
     let todasImagens = [];
     let todasLegendas = [];
@@ -224,7 +223,6 @@ const Turismo = () => {
 
   async function pedidoAtualizar() {
     const formData = new FormData();
-    console.log([turismoImagem]);
     formData.append("id", turismoId);
     formData.append("nome", turismoNome);
     formData.append("descricao", turismoDescricao);

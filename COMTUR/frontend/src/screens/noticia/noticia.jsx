@@ -197,10 +197,17 @@ export default function Noticia() {
 
   const pedidoPostImagens = async (idNoticia) => {
     const formData = new FormData();
-    imagensNoticia.forEach((imagem) => {
-      formData.append("imagens", imagem.imagem);
-      formData.append("legendas", imagem.legendaImagem);
+
+    let todasImagens = [];
+    let todasLegendas = [];
+
+    imagensNoticia?.forEach((imagem) => {
+      formData.append(...todasImagens, imagem.imagem);
+      formData.append(...todasLegendas, imagem.legendaImagem);
     });
+
+    todasImagens.forEach((imagem) => formData.append("imagens", imagem));
+    todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
 
     try {
       const response = await axios.post(
@@ -224,6 +231,7 @@ export default function Noticia() {
     formData.append("conteudo", noticiaConteudo);
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
+    formData.append("idUsuario", idUsuario);
 
     try {
       const response = await axios.put(`${baseUrl}/${noticiaId}`, formData, {
@@ -255,10 +263,20 @@ export default function Noticia() {
 
   const pedidoPutImagens = async () => {
     const formData = new FormData();
-    imagensNoticia.forEach((imagem) => {
-      formData.append("imagens", imagem.imagem);
-      formData.append("legendas", imagem.legendaImagem);
+
+    let todasImagens = [];
+    let todasLegendas = [];
+
+    turismoImagem?.forEach((imagem) => {
+      todasImagens = [...todasImagens, imagem.imagem];
+      todasLegendas = [...todasLegendas, imagem.legendaImagem];
     });
+
+    todasImagens.forEach((imagem) => formData.append("imagens", imagem));
+    todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+
+    console.log(todasImagens);
+    console.log(todasLegendas);
 
     try {
       const response = await axios.put(
@@ -329,6 +347,7 @@ export default function Noticia() {
     setUserType(userTypeFromLocalStorage);
     setIdUsuario(idTipoUsuarioAPI);
   }, []);
+
 
   useEffect(() => {
     const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");

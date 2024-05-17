@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240517133111_teste")]
-    partial class teste
+    [Migration("20240517193701_comtur")]
+    partial class comtur
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,6 +87,42 @@ namespace COMTUR.Migrations
                             Nome = "Ana Castela",
                             QRCode = "123456"
                         });
+                });
+
+            modelBuilder.Entity("COMTUR.Models.AuditoriaModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Hora")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("NomeEntidade")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("NovosValores")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Operacao")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ValoresAntigos")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Auditoria");
                 });
 
             modelBuilder.Entity("COMTUR.Models.EmpresaModel", b =>

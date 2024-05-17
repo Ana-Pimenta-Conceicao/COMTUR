@@ -27,6 +27,14 @@ namespace COMTUR.Models
 		[Column("descricao")]
 		public string Descricao { get; set; }
 
+		// Relacionamento com tipoTurismo e Empresa
+		[JsonIgnore]
+		public TipoTurismoModel? TipoTurismoModel { get; set; }
+
+		[Column("tipoturismoid")]
+		[ForeignKey("tipoturismoid")]
+		public int IdTipoTurismo { get; set; }
+
 		// Mapear o campo tipoStatus como enum
 		/*[Column("tipostatus")]
 		[EnumDataType(typeof(TipoStatus))]
@@ -42,9 +50,6 @@ namespace COMTUR.Models
 
 		// relação com ImagemEmpresa
 		public ICollection<ImagemEmpresaModel>? ImagemEmpresa { get; set; }
-
-		// relação com Anuncio
-		public ICollection<AnuncioModel>? AnuncioEmpresa { get; set; }
 
 	}
 }

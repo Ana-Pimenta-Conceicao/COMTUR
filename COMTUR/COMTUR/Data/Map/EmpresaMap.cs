@@ -14,15 +14,15 @@ namespace COMTUR.Data.Map
 			// Relacionamento da Empresa com Empresario
 			builder.HasOne(e => e.UsuarioModel).WithMany(u => u.Empresas).HasForeignKey(e => e.IdUsuario);
 
+			// Relacionamento de Empresa com TipoTurismo
+			builder.HasOne(x => x.TipoTurismoModel).WithMany().HasForeignKey(x => x.IdTipoTurismo);
+
 			// Relacionamento Empresa com ImagemEmpresa
 			builder.HasMany(n => n.ImagemEmpresa)
 				   .WithOne(im => im.EmpresaModel)
 				   .HasForeignKey(im => im.IdEmpresa)
 				   .IsRequired()
 				   .OnDelete(DeleteBehavior.Cascade);
-
-			// Relacionamento Empresa com Anuncio
-			builder.HasMany(x => x.AnuncioEmpresa).WithOne(x => x.EmpresaModel).IsRequired().OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

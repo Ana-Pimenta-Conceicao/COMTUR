@@ -45,5 +45,13 @@ public class AtracaoModel
 	[ForeignKey("idturismo")]
 	public int IdTurismo { get; set; }
 
+	// relação com funcionario/admin
+	[JsonIgnore]
+	public UsuarioModel? UsuarioModel { get; set; }
+
+	[Column("usuarioid")]
+	[ForeignKey("usuarioid")]
+	public int IdUsuario { get; set; }
+
 }
 

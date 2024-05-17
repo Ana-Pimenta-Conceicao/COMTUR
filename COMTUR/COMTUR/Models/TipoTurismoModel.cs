@@ -17,9 +17,9 @@ public class TipoTurismoModel
     [Column("nome")]
     public string Nome { get; set; }
 
-	// relação com Anuncio
+	// relação com Empresa
 	[JsonIgnore]
-	public ICollection<AnuncioModel>? Anuncios { get; set; }
+	public ICollection<EmpresaModel>? Empresa { get; set; }
 
 	// relação com Turismo
 	[JsonIgnore]

@@ -33,12 +33,18 @@ namespace COMTUR.Repositorios
 		{
 			return await _dbContext.Empresa.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
+
 		/*public async Task<List<EmpresaModel>> ListarPorTipoStatus(int tipoStatus)
 		{
 			return await _dbContext.Empresa
 				.Where(x => (int)x.TipoStatus == tipoStatus)
 				.ToListAsync();
 		}*/
+
+		public async Task<EmpresaModel> GetByIdTipoTurismo(int id)
+		{
+			return await _dbContext.Empresa.Include(objeto => objeto.TipoTurismoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+		}
 
 		public async Task<List<EmpresaModel>> BuscarEmpresa()
 		{
@@ -78,6 +84,7 @@ namespace COMTUR.Repositorios
 			empresaPorId.Endereco = empresaModel.Endereco;
 			empresaPorId.Descricao = empresaModel.Descricao;
             empresaPorId.IdUsuario = empresaModel.IdUsuario;
+			empresaPorId.IdTipoTurismo = empresaModel.IdTipoTurismo;
             //empresaPorId.TipoStatus = empresaModel.TipoStatus;
 
             _dbContext.Empresa.Update(empresaPorId);

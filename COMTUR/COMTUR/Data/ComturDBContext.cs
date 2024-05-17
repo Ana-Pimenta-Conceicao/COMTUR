@@ -19,7 +19,6 @@ namespace COMTUR.Data
 		public DbSet<ImagemAtracaoModel> ImagemAtracao { get; set; }
 		public DbSet<ImagemEmpresaModel> ImagemEmpresa { get; set; }
 		public DbSet<ImagemTurismoModel> ImagemTurismo { get; set; }
-		public DbSet<AnuncioModel> Anuncio { get; set; }
 		public DbSet<SessaoModel> Sessao { get; set; }
 		public DbSet<TurismoModel> Turismo { get; set; }
 
@@ -35,7 +34,6 @@ namespace COMTUR.Data
 			modelBuilder.ApplyConfiguration(new ImagemAtracaoMap());
 			modelBuilder.ApplyConfiguration(new ImagemEmpresaMap());
 			modelBuilder.ApplyConfiguration(new ImagemTurismoMap());
-			modelBuilder.ApplyConfiguration(new AnuncioMap());
 			modelBuilder.ApplyConfiguration(new SessaoMap());
 			modelBuilder.ApplyConfiguration(new TurismoMap());
 
@@ -61,17 +59,12 @@ namespace COMTUR.Data
 
 			//Adicionando Empresa para teste
 			modelBuilder.Entity<EmpresaModel>().HasData(
-			new EmpresaModel { Id = 1, Nome = "AnaStore", CNPJ = 123456, Endereco = "Rua das Maravilhas", Descricao = "Ana Rainha o resto NADINHA", IdUsuario = 3 }
-			);
-
-			//Adicionando anuncio para teste
-			modelBuilder.Entity<AnuncioModel>().HasData(
-			new AnuncioModel { Id = 1, NomeEmpresa = "AnaStore", DescricaoAnuncio = "Não existe mulher feia, existe mulher que não conhece a AnaStore", IdEmpresa = 1, IdTipoTurismo = 1 }
+			new EmpresaModel { Id = 1, Nome = "AnaStore", CNPJ = 123456, Endereco = "Rua das Maravilhas", Descricao = "Ana Rainha o resto NADINHA", IdUsuario = 3, IdTipoTurismo = 1 }
 			);
 
 			//Adicionando Atracao para teste
 			modelBuilder.Entity<AtracaoModel>().HasData(
-			new AtracaoModel { Id = 1, Nome = "Ana Castela", Descricao = "Show da Ana Castela", QRCode = "123456", IdTipoAtracao = 1, IdTurismo = 1 }
+			new AtracaoModel { Id = 1, Nome = "Ana Castela", Descricao = "Show da Ana Castela", QRCode = "123456", IdTipoAtracao = 1, IdTurismo = 1, IdUsuario = 4 }
 			);
 
 			//Adicionando Turismo para teste

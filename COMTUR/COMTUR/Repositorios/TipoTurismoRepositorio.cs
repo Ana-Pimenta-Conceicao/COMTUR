@@ -42,6 +42,7 @@ namespace COMTUR.Repositorios
 
 			tipoTurismoPorId.Id = tipo.Id;
 			tipoTurismoPorId.Nome = tipo.Nome;
+			tipoTurismoPorId.Imagem = tipo.Imagem;
 
 			_dBContext.TipoTurismo.Update(tipoTurismoPorId);
 			await _dBContext.SaveChangesAsync();

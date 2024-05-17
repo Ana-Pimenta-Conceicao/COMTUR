@@ -194,6 +194,7 @@ const Turismo = () => {
 
   const pedidoPostImagens = async (idTurismo) => {
     const formData = new FormData();
+    console.log("chegou");
 
     let todasImagens = [];
     let todasLegendas = [];
@@ -202,6 +203,10 @@ const Turismo = () => {
       todasImagens = [...todasImagens, imagem.imagem];
       todasLegendas = [...todasLegendas, imagem.legendaImagem];
     });
+
+    console.log(idTurismo);
+    console.log(todasImagens);
+    console.log(todasLegendas);
 
     todasImagens.forEach((imagem) => formData.append("imagens", imagem));
     todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
@@ -223,6 +228,7 @@ const Turismo = () => {
 
   async function pedidoAtualizar() {
     const formData = new FormData();
+    console.log([turismoImagem]);
     formData.append("id", turismoId);
     formData.append("nome", turismoNome);
     formData.append("descricao", turismoDescricao);

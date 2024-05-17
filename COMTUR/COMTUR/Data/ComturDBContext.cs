@@ -25,13 +25,13 @@ namespace COMTUR.Data
 
         public override int SaveChanges()
         {
-            RegistrarAuditoria();
+            //RegistrarAuditoria();
             return base.SaveChanges();
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            RegistrarAuditoria();
+            //RegistrarAuditoria();
             return base.SaveChangesAsync(cancellationToken);
         }
 
@@ -43,9 +43,10 @@ namespace COMTUR.Data
                 {
                     NomeEntidade = e.Metadata.Name,
                     Operacao = e.State.ToString(),
-                    ValoresAntigos = e.State == EntityState.Modified ? e.OriginalValues.Properties.ToDictionary(p => p.Name, p => e.OriginalValues[p]) : null,
-                    NovosValores = e.CurrentValues.Properties.ToDictionary(p => p.Name, p => e.CurrentValues[p]),
-                    
+                    ValoresAntigos = e.State != EntityState.Added ? e.OriginalValues.Properties.ToDictionary(p => p.Name, p => e.OriginalValues[p]) : null,
+                    NovosValores = e.State != EntityState.Deleted ? e.CurrentValues.Properties.ToDictionary(p => p.Name, p => e.CurrentValues[p]) : null,
+
+
                 });
 
             var modificações = new List<AuditoriaModel>();

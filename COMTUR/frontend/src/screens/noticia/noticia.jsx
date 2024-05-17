@@ -712,6 +712,7 @@ export default function Noticia() {
                                     <img
                                       className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
                                       src={imagensNoticia[index + i].imagem}
+                                      alt={`Imagem ${index}`}
                                     />
                                     <div className="flex flex-col pl-3 justify-end">
                                       <label>Legenda:</label>

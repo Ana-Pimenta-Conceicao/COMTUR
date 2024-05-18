@@ -3,57 +3,70 @@ import $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { useNavigate } from "react-router-dom";
-import logoSF from '../../assets/logoComturSF.png'
+import logoSF from '../../assets/logoComturSF.png';
 import './folhasyle.css';
 
 const NavbarUsr = () => {
   const navigate = useNavigate();
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 991);
 
   useEffect(() => {
     // Adiciona um ouvinte de evento para fechar o menu ao clicar em um link
     $('.navbar-nav a').on('click', () => {
       setIsNavbarOpen(false);
     });
+
+    // Adiciona um ouvinte de evento para atualizar o estado de isMobile ao redimensionar a janela
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 991);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const handleNavbarToggle = () => {
     setIsNavbarOpen(!isNavbarOpen);
   };
 
-  return (
-    <nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top px-4 px-lg-5">
-        <a href="index.html" class="navbar-brand d-flex align-items-center">
-        <a className="navbar-brand ML-1 w-8 sm:w-20 " href="#">
-            <img src={logoSF} alt="logo" />
-        </a>
-        </a>
-        <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="" class="nav-item nav-link active text-white" onClick={() => {navigate(`/Inicio`); window.location.reload();}}>Início</a>
-                <a href="" class="nav-item nav-link text-white" onClick={() => {navigate(`/#`); window.location.reload();}}>Turismo</a>
-                <a href="" class="nav-item nav-link text-white" onClick={() => {navigate(`/#`); window.location.reload();}}>Eventos</a>
-                <a href="" class="nav-item nav-link text-white" onClick={() => {navigate(`/#`); window.location.reload();}}>Empresas</a>
-                {/* <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown">Visita</a>
-                    <div class="dropdown-menu bg-light m-0">
-                        <a href="gallery.html" class="dropdown-item">Guias</a>
-                        <a href="feature.html" class="dropdown-item">Mapas</a>
-                        <a href="team.html" class="dropdown-item">Agenda</a>
-                    </div>
-                </div> */}
-                <a href="" class="nav-item nav-link text-white" onClick={() => {navigate(`/#`); window.location.reload();}}>Noticias</a>
+  const handleSearchToggle = () => {
+    setIsSearchOpen(!isSearchOpen);
+  };
 
-                {/* <label className="nav-item btn btnmenulogin btn-warning mt-1 " htmlFor="Acessar" onClick={() => {navigate(`/login`); window.location.reload();}}>Entrar/Cadastrar</label> */}
-                
-            </div>
-            <div class="border-start ps-4 d-none d-lg-block">
-                <button type="button" class="btn btn-sm p-0"><i class="fa fa-search text-white"></i></button>
-            </div>
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-black sticky-top px-4 px-lg-5">
+
+      <div className="navbar-brand d-flex align-items-center">
+        <a className="navbar-brand ML-1 w-8 sm:w-20" href="#">
+          <img src={logoSF} alt="logo" />
+        </a>
+      </div>
+      <button type="button" className="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span className="navbar-toggler-icon"></span>
+      </button>
+      <div className="collapse navbar-collapse" id="navbarCollapse">
+        <div className="navbar-nav ms-auto p-4 p-lg-0">
+          <a href="" className="nav-item nav-link active text-white" onClick={() => { navigate(`/Inicio`); }}>Início</a>
+          <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/#`); }}>Turismo</a>
+          <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/#`); }}>Eventos</a>
+          <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/#`); }}>Empresas</a>
+          <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/visualizarNoticia`); }}>Noticias</a>
+          <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/login`); }}>Login</a>
         </div>
+        <div className={`border-start ps-4 ${isMobile ? 'd-flex align-items-center' : 'd-none d-lg-block'}`}>
+          {isSearchOpen && (
+            <input type="text" className="form-control search-input" placeholder="Pesquisar..." />
+          )}
+          <button type="button" className="btn btn-sm p-0 ml-2" onClick={handleSearchToggle}>
+            <i className="fa fa-search text-white"></i>
+          </button>
+        </div>
+      </div>
     </nav>
   );
 };

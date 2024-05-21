@@ -23,5 +23,12 @@ namespace COMTUR.Models
 		[Column("idturismo")]
 		[ForeignKey("idturismo")]
 		public int IdTurismo { get; set; }
-	}
+
+        [JsonIgnore]
+        public UsuarioModel? UsuarioModel { get; set; }
+
+        [Column("usuarioid")]
+        [ForeignKey("usuarioid")]
+        public int IdUsuario { get; set; }
+    }
 }

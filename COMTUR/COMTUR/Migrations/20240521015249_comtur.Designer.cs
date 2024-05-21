@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240517193701_comtur")]
+    [Migration("20240521015249_comtur")]
     partial class comtur
     {
         /// <inheritdoc />
@@ -291,6 +291,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("idturismo");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer")
+                        .HasColumnName("usuarioid");
+
                     b.Property<string>("Imagem")
                         .IsRequired()
                         .HasColumnType("text")
@@ -304,6 +308,8 @@ namespace COMTUR.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdTurismo");
+
+                    b.HasIndex("IdUsuario");
 
                     b.ToTable("imagemturismo");
                 });
@@ -453,6 +459,10 @@ namespace COMTUR.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer")
+                        .HasColumnName("usuarioid");
+
                     b.Property<string>("Imagem")
                         .HasColumnType("text")
                         .HasColumnName("imagemtipoturismo");
@@ -465,12 +475,15 @@ namespace COMTUR.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdUsuario");
+
                     b.ToTable("tipoturismo");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            IdUsuario = 4,
                             Nome = "Expo"
                         });
                 });
@@ -727,7 +740,15 @@ namespace COMTUR.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
+                        .WithMany()
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("TurismoModel");
+
+                    b.Navigation("UsuarioModel");
                 });
 
             modelBuilder.Entity("COMTUR.Models.NoticiaModel", b =>
@@ -753,6 +774,17 @@ namespace COMTUR.Migrations
                     b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
                         .WithMany()
                         .HasForeignKey("UsuarioModelId");
+
+                    b.Navigation("UsuarioModel");
+                });
+
+            modelBuilder.Entity("COMTUR.Models.TipoTurismoModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
+                        .WithMany()
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("UsuarioModel");
                 });

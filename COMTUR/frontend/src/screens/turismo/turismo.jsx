@@ -210,6 +210,8 @@ const Turismo = () => {
 
     todasImagens.forEach((imagem) => formData.append("imagens", imagem));
     todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+    console.log(idUsuario);
+    formData.append("idUsuario", idUsuario);
 
     try {
       const response = await axios.post(
@@ -284,6 +286,7 @@ const Turismo = () => {
 
     todasImagens.forEach((imagem) => formData.append("imagens", imagem));
     todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+    formData.append("idUsuario", idUsuario);
 
     console.log(todasImagens);
     console.log(todasLegendas);

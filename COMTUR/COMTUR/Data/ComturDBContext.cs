@@ -25,13 +25,13 @@ namespace COMTUR.Data
 
         public override int SaveChanges()
         {
-            RegistrarAuditoria();
+           // RegistrarAuditoria();
             return base.SaveChanges();
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            RegistrarAuditoria(); 
+            //RegistrarAuditoria(); 
             return base.SaveChangesAsync(cancellationToken);
         }
 

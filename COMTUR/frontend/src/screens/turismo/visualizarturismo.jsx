@@ -4,7 +4,15 @@ import NavbarUsr from "../../components/user/navbarUsr";
 import FooterUsr from "../../components/user/footerUsr";
 import { useParams } from "react-router-dom";
 import BtnAcao from "../../components/botoes/btnAcao";
-import { CaretRight, CaretLeft, Star, MapPinLine, Clock, CalendarCheck } from "@phosphor-icons/react";
+import {
+  CaretRight,
+  CaretLeft,
+  Star,
+  MapPinLine,
+  Clock,
+  CalendarCheck,
+} from "@phosphor-icons/react";
+import AtracaoEstatica from "../../assets/atracaoEstatica";
 
 export default function VisualizarTurismos() {
   const { id } = useParams();
@@ -117,7 +125,12 @@ export default function VisualizarTurismos() {
       {turismo && (
         <div className="sm:px-16">
           <div className=" px-4 pb-3 text-[#373636] text-sm sm:text-lg font-base sm:pt-6 pt-0">
-            <p className="sm:px-14 pt-1 text-justify">{turismo.descricao}</p>
+            <h2 className="text-sm font-semibold uppercase text-[#373636] ">
+              mais informações:
+            </h2>
+            <p className="sm:px-14 text-sm font-light pt-1 text-justify">
+              {turismo.descricao}
+            </p>
           </div>
 
           <div className="flex flex-row ml-6 gap-0">
@@ -125,12 +138,12 @@ export default function VisualizarTurismos() {
               <MapPinLine size={18} />
             </button>
             <button className="flex flex-start justify-start items-center w-full h-6 text-xs pl-1 ">
-             {turismo.local}
+              {turismo.local}
             </button>
           </div>
           <div className="flex flex-row ml-6 pt-2 gap-0">
             <button className="flex justify-center items-center w-[30px] h-6 bg-black text-sm text-[#FFD121] rounded-md ">
-            <CalendarCheck size={18} />
+              <CalendarCheck size={18} />
             </button>
             <button className="flex flex-start justify-start items-center w-full h-6 text-xs pl-1 ">
               {turismo.diaFuncionamento}
@@ -138,14 +151,60 @@ export default function VisualizarTurismos() {
           </div>
           <div className="flex flex-row ml-6 pt-2 gap-0">
             <button className="flex justify-center items-center w-[30px] h-6 bg-black text-sm text-[#FFD121] rounded-md ">
-            <Clock size={18} />
+              <Clock size={18} />
             </button>
             <button className="flex flex-start justify-start items-center w-full h-6 text-xs pl-1 ">
               {turismo.horario}
             </button>
           </div>
-          
-          
+          <div className="flex w-full justify-center items-center mt-3 bg-black h-[210px]">
+            <div className="flex flex-col w-full">
+              <h2 className="text-[#FFD121] text-base font-bold text-center pb-3">
+                GALERIA DE ATRAÇÕES
+              </h2>
+              <div className="flex flex-row w-full justify-between px-8">
+                
+                <div className="flex flex-col bg-white h-[155px]">
+                  <AtracaoEstatica />
+                  <h2 className="text-[12px] px-1 font-semibold pt-2">
+                    NOME DA ATRAÇÃO
+                  </h2>
+                  <h2 className="text-[8px] px-1 font-medium pt-2 pb-2">Tipo</h2>
+                  <div className="flex w-full justify-center">
+                  <button
+                    className="border-[#FFD121] border-[1.5px] w-[100px] h-[20px] text-[8px] sm:text-bas text-[#373636]
+                    font-medium hover:bg-black hover:text-white "
+                    >
+                    Leia Mais
+                  </button>
+                    </div>
+                </div>
+                
+                <div className="flex flex-col bg-white h-[155px]">
+                  <AtracaoEstatica />
+                  <h2 className="text-[12px] px-1 font-semibold pt-2">
+                    NOME DA ATRAÇÃO
+                  </h2>
+                  <h2 className="text-[8px] px-1 font-medium pt-2 pb-2">Tipo</h2>
+                  <div className="flex w-full justify-center">
+                  <button
+                    className="border-[#FFD121] border-[1.5px] w-[100px] h-[20px] text-[8px] sm:text-bas text-[#373636]
+                    font-medium hover:bg-black hover:text-white "
+                    >
+                    Leia Mais
+                  </button>
+                    </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+
+<div className="flex w-full justify-center pt-3 pb-[80px]">
+  <h2 className="text-[#FFD121] text-sm font-bold">Avaliações do Turismo</h2>
+  {/* Chamar o componente do Card de Avaliação */}
+</div>
+
           <div className="inline-flex items-center justify-center w-full">
             <hr className="w-full h-1 my-8 opacity-100 bg-[#FFD121] border-0 rounded" />
             <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">

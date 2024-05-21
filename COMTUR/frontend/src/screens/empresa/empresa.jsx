@@ -14,15 +14,18 @@ import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import PopupCadastrado from "../../components/popups/popupCadastro";
 import PopupExcluido from "../../components/popups/popupExcluido";
 import PopupEditado from "../../components/popups/popupEditado";
+import Select from 'react-select';
 
 export default function Empresa() {
   const baseUrl = "https://localhost:7256/api/Empresa";
   const baseUrlImagem = "https://localhost:7256/api/ImagemEmpresa";
   const baseUrlUsuario = "https://localhost:7256/api/Usuario";
+  const baseUrlTipoTurismo = "https://localhost:7256/api/TipoTurismo";
 
   const [data, setData] = useState([]);
   const [atualizarData, setAtualizarData] = useState(true);
   const [dataUsuario, setDataUsuario] = useState([])
+  const [dataTipoTurismo, setDataTipoTurismo] = useState([]);
 
   const [modalCadastrado, setModalCadastrado] = useState(false);
   const [modalExcluido, setModalExcluido] = useState(false);
@@ -41,11 +44,12 @@ export default function Empresa() {
   const [empresaDescricao, setDescricao] = useState([]);
   const [empresaId, setEmpresaId] = useState("");
   const [userType, setUserType] = useState(null);
-  const [tipoUsuario, setTipoUsuario] = useState(3);
-  const [usuarioId, setUsuarioId] = useState("")
+  const [usuarioId, setUsuarioId] = useState("");
+  const [tipoturismoId, setTipoTurismoId] = useState("");
   const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
   const [usuarioOptions, setUsuarioOptions] = useState([]);
-
+  const [tipoTurismoSelecionado, settipoTurismoSelecionado] = useState(null);
+  const [tipoTurismoOptions, setTipoTurismoOptions] = useState([]);
 
 
   const navigate = useNavigate();
@@ -58,21 +62,22 @@ export default function Empresa() {
     setEmpresaLegendaImagem("");
     setDescricao("");
     setEmpresaId("");
-    setTipoUsuario("");
   };
 
   const EmpresaSet = (empresa, opcao) => {
     console.log("Empresa que foi passada: ", empresa);
-    setEmpresaId(empresa.id);
+    setEmpresaId(parseInt(empresa.id));
     setNome(empresa.nome);
     setCNPJ(empresa.cnpj);
     setEndereco(empresa.endereco);
     setDescricao(empresa.descricao);
     setEmpresaLegendaImagem(empresa.legendaImagem);
     setImagensEmpresa(empresa.imagemEmpresa);
-    setUsuarioSelecionado(empresa.idUsuario);
     setUsuarioId(empresa.idUsuario);
-    console.log(empresa.imagemEmpresa);
+    setTipoTurismoId(empresa.idTipoTurismo);
+
+    setUsuarioSelecionado(usuarioOptions.find(opcao => opcao.value === empresa.idUsuario));
+    settipoTurismoSelecionado(empresa.idTipoTurismo);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar(/*empresa.id*/);
@@ -126,6 +131,19 @@ export default function Empresa() {
     setModalDeletar(!modalDeletar);
   };
 
+  const pedidoGetTipoTurismo = async () => {
+    await axios
+      .get(baseUrlTipoTurismo)
+      .then((response) => {
+        setDataTipoTurismo(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+
+
   const pedidoGet = async () => {
     await axios
       .get(baseUrl)
@@ -174,7 +192,10 @@ export default function Empresa() {
     formData.append("cnpj", empresaCNPJ);
     formData.append("endereco", empresaEndereco);
     formData.append("descricao", empresaDescricao);
-    formData.append("idUsuario", parseInt(usuarioSelecionado));
+    formData.append("idtipoturismo", tipoTurismoSelecionado);
+    formData.append("idUsuario", parseInt(usuarioSelecionado.value));
+
+    console.log(tipoTurismoSelecionado);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -184,7 +205,9 @@ export default function Empresa() {
       });
 
       setData(data.concat(response.data));
-      if (imagensEmpresa) await pedidoPostImagens(response.data.id);
+
+      if (imagensEmpresa.length !== 0) await pedidoPostImagens(response.data.id);
+      
       abrirFecharModalInserir();
       limparDados();
       setAtualizarData(true);
@@ -196,10 +219,17 @@ export default function Empresa() {
 
   const pedidoPostImagens = async (idEmpresa) => {
     const formData = new FormData();
-    imagensEmpresa.forEach((imagem) => {
-      formData.append("imagem", imagem.imagem);
-      formData.append("legendaImagem", imagem.legendaImagem);
+
+    let todasImagens = [];
+    let todasLegendas = [];
+
+    imagensEmpresa?.forEach((imagem) => {
+      todasImagens = [...todasImagens, imagem.imagem];
+      todasLegendas = [...todasLegendas, imagem.legendaImagem];
     });
+
+    todasImagens.forEach((imagem) => formData.append("imagens", imagem));
+    todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
 
     try {
       const response = await axios.post(
@@ -223,7 +253,8 @@ export default function Empresa() {
     formData.append("cnpj", empresaCNPJ);
     formData.append("endereco", empresaEndereco);
     formData.append("descricao", empresaDescricao);
-    formData.append("idUsuario", parseInt(usuarioSelecionado));
+    formData.append("idUsuario", parseInt(usuarioSelecionado.value));
+    formData.append("idtipoturismo", tipoTurismoSelecionado);
 
     try {
       const response = await axios.put(`${baseUrl}/${empresaId}`, formData, {
@@ -255,10 +286,17 @@ export default function Empresa() {
 
   const pedidoPutImagens = async () => {
     const formData = new FormData();
-    imagensEmpresa.forEach((imagem) => {
-      formData.append("imagem", imagem.imagem);
-      formData.append("legendaImagem", imagem.legendaImagem);
+    
+    let todasImagens = [];
+    let todasLegendas = [];
+
+    imagensEmpresa?.forEach((imagem) => {
+      todasImagens = [...todasImagens, imagem.imagem];
+      todasLegendas = [...todasLegendas, imagem.legendaImagem];
     });
+
+    todasImagens.forEach((imagem) => formData.append("imagens", imagem));
+    todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
 
     try {
       const response = await axios.put(
@@ -304,6 +342,7 @@ export default function Empresa() {
   useEffect(() => {
     if (atualizarData) {
       pedidoGet();
+      pedidoGetTipoTurismo();
       pedidoGetUsuario();
       setAtualizarData(false);
     }
@@ -323,6 +362,22 @@ export default function Empresa() {
       }
     }
   }, [dataUsuario]);
+
+  useEffect(() => {
+    if (dataTipoTurismo) {
+      const options = dataTipoTurismo.map((tipoturismo) => {
+        return { value: tipoturismo.id, label: tipoturismo.nome };
+      });
+      setTipoTurismoOptions(options);
+
+      if (!options.some((option) => option.value === tipoTurismoSelecionado)) {
+        const turismoPadrao = options.length > 0 ? options[0].value : "";
+
+        settipoTurismoSelecionado(turismoPadrao)
+        setTipoTurismoId(turismoPadrao);
+      }
+    }
+  }, [dataTipoTurismo]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
@@ -351,26 +406,39 @@ export default function Empresa() {
     setUserType(userTypeFromLocalStorage);
   }, []);
 
-  // Estado para armazenar o termo de pesquisa
-  const [termoPesquisa, setTermoPesquisa] = useState("");
+  const filterOptions = (inputValue) => {
+    if (!inputValue) {
+      return usuarioOptions;
+    }
 
-  // Função para filtrar as opções de usuário com base no termo de pesquisa
-  const filtrarUsuarios = () => {
-    return usuarioOptions.filter((option) => {
-      return option.label.toLowerCase().includes(termoPesquisa.toLowerCase());
-    });
+    const searchTermNormalized = inputValue.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+    return usuarioOptions.filter(option =>
+      option.label.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().includes(searchTermNormalized)
+    );
   };
 
-  // Função para lidar com alterações no campo de pesquisa
-  const handlePesquisaChange = (e) => {
-    setTermoPesquisa(e.target.value);
+  const loadOptions = (inputValue, callback) => {
+    callback(filterOptions(inputValue));
+  }
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      borderRadius: '0.375rem', // remove o arredondamento dos cantos
+      borderColor: state.isFocused ? '#DEE2E6' : '#DEE2E6', // cor da borda quando está focado ou não
+      boxShadow: state.isFocused ? '0 0 0 0.2rem rgba(0, 123, 255, 0.25)' : null, // sombra quando está focado
+      '&:hover': {
+        borderColor: state.isFocused ? '#80bdff' : '#ced4da' // cor da borda ao passar o mouse
+      },
+      minHeight: 'calc(2.25rem + 2px)', // ajuste de altura
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? '#007bff' : '#fff', // cor de fundo do item selecionado ou não
+      color: state.isSelected ? '#fff' : '#495057' // cor do texto do item selecionado ou não
+    })
   };
-
-  // Lista de opções de usuário filtradas com base no termo de pesquisa
-  const usuariosFiltrados = filtrarUsuarios();
-
-
-
 
   // if (userType === null) {
   //   return <div>Carregando...</div>;
@@ -489,7 +557,8 @@ export default function Empresa() {
 
 
                 <label>CNPJ:</label>
-                <textarea
+                <input
+                  type="text"
                   className="form-control text-sm"
                   onChange={(e) => setCNPJ(e.target.value)}
                   placeholder="Digite o CNPJ"
@@ -510,44 +579,56 @@ export default function Empresa() {
                   placeholder="Descrição Empresa"
                 />
                 <br />
-
-                <label className="mr-2">Pesquisar Usuário:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={termoPesquisa}
-                  onChange={handlePesquisaChange}
-                  placeholder="Digite para pesquisar usuário..."
-                />
-
+                <label>Tipo:</label>
                 <select
-                  className="form-control text-sm"
-                  value={usuarioSelecionado}
-                  onChange={(e) => setUsuarioSelecionado(e.target.value)}
+                  className="form-control"
+                  value={tipoTurismoSelecionado}
+                  onChange={(e) => settipoTurismoSelecionado(e.target.value)}
                 >
-                  {/* Renderize as opções filtradas */}
-                  {usuariosFiltrados.map((option) => (
+                  {tipoTurismoOptions.map((option) => (
                     <option key={option.value} value={option.value}>
                       {option.label}
                     </option>
                   ))}
                 </select>
-
-
-                {/* <label>Usuario: </label>
                 <br />
-                <select className="form-control text-sm"
+                {/* <label>Usuario: </label> */}
+                {/* <Select className="form-control text-sm"
                   value={usuarioSelecionado}
-                  onChange={(e) => setUsuarioSelecionado(e.target.value)}
-                >
-                  {usuarioOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select> */}
+                  onChange={(option) => setUsuarioSelecionado(option)}
+                  loadOptions={loadOptions}
+                  options={usuarioOptions}
+                  placeholder="Pesquisar empresário "
+                  isClearable
+                  isSearchable
+                  noOptionsMessage={() => {
+                    if (usuarioOptions.length === 0) {
+                      return "Nenhum Empresário cadastrado!";
+                    } else {
+                      return "Nenhuma opção encontrada!";
+                    }
+                  }}
+                /> */}
+                <label>Usuario: </label>
+                <Select
+                  className="text-sm "
+                  value={usuarioSelecionado}
+                  onChange={(option) => setUsuarioSelecionado(option)}
+                  loadOptions={loadOptions}
+                  options={usuarioOptions}
+                  placeholder="Pesquisar Empresário"
+                  isClearable
+                  isSearchable
+                  styles={customStyles} // aplica os estilos personalizados
+                  noOptionsMessage={() => {
+                    if (usuarioOptions.length === 0) {
+                      return "Nenhum Empresário cadastrado!";
+                    } else {
+                      return "Nenhuma opção encontrada!";
+                    }
+                  }}
+                />
                 <br />
-
               </div>
             </div>
 
@@ -699,19 +780,42 @@ export default function Empresa() {
                   value={empresaDescricao}
                 />
                 <br />
-                <label>Usuario: </label>
-                <br />
-                <select className="form-control text-sm"
-                  value={usuarioSelecionado}
-                  onChange={(e) => setUsuarioSelecionado(e.target.value)}
+                <label>Tipo:</label>
+                <select
+                  className="form-control"
+                  value={tipoTurismoSelecionado}
+                  onChange={(e) => settipoTurismoSelecionado(e.target.value)}
                 >
-                  {usuarioOptions.map((option) => (
-                    <option key={option.value} value={option.value} >
+                  {tipoTurismoOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
                       {option.label}
                     </option>
                   ))}
                 </select>
+
                 <br />
+                <label>Usuario: </label>
+                <Select
+                  className="text-sm "
+                  value={usuarioSelecionado}
+                  onChange={(option) => setUsuarioSelecionado(option)}
+                  loadOptions={loadOptions}
+                  options={usuarioOptions}
+                  placeholder="Pesquisar Empresário"
+                  isClearable
+                  isSearchable
+                  styles={customStyles} // aplica os estilos personalizados
+                  noOptionsMessage={() => {
+                    if (usuarioOptions.length === 0) {
+                      return "Nenhum Empresário cadastrado!";
+                    } else {
+                      return "Nenhuma opção encontrada!";
+                    }
+                  }}
+                />
+                <br />
+
+
               </div>
             </div>
 
@@ -824,7 +928,7 @@ export default function Empresa() {
       </Modal>
       <Modal isOpen={modalDeletar}>
         <ModalBody>
-          Confirma a exclusão de empresa "{empresaNome}" ?
+          Confirma a exclusão da notícia "{empresaNome}" ?
         </ModalBody>
         <ModalFooter>
           <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />

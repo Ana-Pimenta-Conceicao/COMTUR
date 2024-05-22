@@ -61,10 +61,13 @@ function Atracao() {
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
-    } else {
-      abrirFecharModalDeletar();
     }
-  };
+    else if (opcao === "Excluir") {
+      abrirFecharModalDeletar();
+    } else {
+      navigate(`/visualizarAtracao/${atracao.id}`);
+    }
+  }
 
   const abrirFecharModalInserir = () => {
     setModalInserir(!modalInserir);

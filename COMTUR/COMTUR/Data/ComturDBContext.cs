@@ -25,13 +25,13 @@ namespace COMTUR.Data
 
         public override int SaveChanges()
         {
-            //RegistrarAuditoria();
+           // RegistrarAuditoria();
             return base.SaveChanges();
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            //RegistrarAuditoria();
+            //RegistrarAuditoria(); 
             return base.SaveChangesAsync(cancellationToken);
         }
 
@@ -126,7 +126,7 @@ namespace COMTUR.Data
 
             //Adicionando TipoTurismo para teste
             modelBuilder.Entity<TipoTurismoModel>().HasData(
-            new TipoTurismoModel { Id = 1, Nome = "Expo" }
+            new TipoTurismoModel { Id = 1, Nome = "Expo", IdUsuario = 4 }
             );
 
             //Adicionando TipoAtracao para teste

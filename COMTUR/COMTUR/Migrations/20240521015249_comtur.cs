@@ -46,20 +46,6 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "tipoturismo",
-                columns: table => new
-                {
-                    tipoturismoid = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    imagemtipoturismo = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tipoturismo", x => x.tipoturismoid);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "usuario",
                 columns: table => new
                 {
@@ -75,6 +61,51 @@ namespace COMTUR.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_usuario", x => x.usuarioid);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "sessao",
+                columns: table => new
+                {
+                    idssessao = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    tokensessao = table.Column<string>(type: "text", nullable: false),
+                    statussessao = table.Column<bool>(type: "boolean", nullable: false),
+                    emailusuario = table.Column<string>(type: "text", nullable: false),
+                    nomeusuario = table.Column<string>(type: "text", nullable: false),
+                    nivelacesso = table.Column<string>(type: "text", nullable: false),
+                    UsuarioModelId = table.Column<int>(type: "integer", nullable: true),
+                    idusuario = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sessao", x => x.idssessao);
+                    table.ForeignKey(
+                        name: "FK_sessao_usuario_UsuarioModelId",
+                        column: x => x.UsuarioModelId,
+                        principalTable: "usuario",
+                        principalColumn: "usuarioid");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tipoturismo",
+                columns: table => new
+                {
+                    tipoturismoid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    imagemtipoturismo = table.Column<string>(type: "text", nullable: true),
+                    usuarioid = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tipoturismo", x => x.tipoturismoid);
+                    table.ForeignKey(
+                        name: "FK_tipoturismo_usuario_usuarioid",
+                        column: x => x.usuarioid,
+                        principalTable: "usuario",
+                        principalColumn: "usuarioid",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -111,30 +142,6 @@ namespace COMTUR.Migrations
                         principalTable: "usuario",
                         principalColumn: "usuarioid",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "sessao",
-                columns: table => new
-                {
-                    idssessao = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    tokensessao = table.Column<string>(type: "text", nullable: false),
-                    statussessao = table.Column<bool>(type: "boolean", nullable: false),
-                    emailusuario = table.Column<string>(type: "text", nullable: false),
-                    nomeusuario = table.Column<string>(type: "text", nullable: false),
-                    nivelacesso = table.Column<string>(type: "text", nullable: false),
-                    UsuarioModelId = table.Column<int>(type: "integer", nullable: true),
-                    idusuario = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_sessao", x => x.idssessao);
-                    table.ForeignKey(
-                        name: "FK_sessao_usuario_UsuarioModelId",
-                        column: x => x.UsuarioModelId,
-                        principalTable: "usuario",
-                        principalColumn: "usuarioid");
                 });
 
             migrationBuilder.CreateTable(
@@ -246,7 +253,8 @@ namespace COMTUR.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     imagem = table.Column<string>(type: "text", nullable: false),
                     legendaimagem = table.Column<string>(type: "text", nullable: false),
-                    idturismo = table.Column<int>(type: "integer", nullable: false)
+                    idturismo = table.Column<int>(type: "integer", nullable: false),
+                    usuarioid = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -256,6 +264,12 @@ namespace COMTUR.Migrations
                         column: x => x.idturismo,
                         principalTable: "turismo",
                         principalColumn: "turismoid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_imagemturismo_usuario_usuarioid",
+                        column: x => x.usuarioid,
+                        principalTable: "usuario",
+                        principalColumn: "usuarioid",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -338,11 +352,6 @@ namespace COMTUR.Migrations
                 values: new object[] { 1, "Show" });
 
             migrationBuilder.InsertData(
-                table: "tipoturismo",
-                columns: new[] { "tipoturismoid", "imagemtipoturismo", "nome" },
-                values: new object[] { 1, null, "Expo" });
-
-            migrationBuilder.InsertData(
                 table: "usuario",
                 columns: new[] { "usuarioid", "emailusuario", "imagemperfilusuario", "nome", "senhausuario", "telefone", "tipousuario" },
                 values: new object[,]
@@ -354,14 +363,19 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "empresa",
-                columns: new[] { "empresaid", "cnpj", "descricao", "endereco", "tipoturismoid", "usuarioid", "nome", "TipoTurismoModelId" },
-                values: new object[] { 1, 123456L, "Ana Rainha o resto NADINHA", "Rua das Maravilhas", 1, 3, "AnaStore", null });
-
-            migrationBuilder.InsertData(
                 table: "noticia",
                 columns: new[] { "noticiaid", "conteudo", "datapublicacao", "horapublicacao", "idturismo", "usuarioid", "subtitulo", "titulo" },
                 values: new object[] { 1, "O fenomeno das redes sociais, AnaStore, agora conta com uma loja fisica", new DateOnly(2024, 5, 15), "10:30", null, 2, "A loja mais divonica agora está em espaço fisíco", "AnaStore finalmente é inaugurada" });
+
+            migrationBuilder.InsertData(
+                table: "tipoturismo",
+                columns: new[] { "tipoturismoid", "usuarioid", "imagemtipoturismo", "nome" },
+                values: new object[] { 1, 4, null, "Expo" });
+
+            migrationBuilder.InsertData(
+                table: "empresa",
+                columns: new[] { "empresaid", "cnpj", "descricao", "endereco", "tipoturismoid", "usuarioid", "nome", "TipoTurismoModelId" },
+                values: new object[] { 1, 123456L, "Ana Rainha o resto NADINHA", "Rua das Maravilhas", 1, 3, "AnaStore", null });
 
             migrationBuilder.InsertData(
                 table: "turismo",
@@ -429,6 +443,11 @@ namespace COMTUR.Migrations
                 column: "idturismo");
 
             migrationBuilder.CreateIndex(
+                name: "IX_imagemturismo_usuarioid",
+                table: "imagemturismo",
+                column: "usuarioid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_noticia_idturismo",
                 table: "noticia",
                 column: "idturismo");
@@ -442,6 +461,11 @@ namespace COMTUR.Migrations
                 name: "IX_sessao_UsuarioModelId",
                 table: "sessao",
                 column: "UsuarioModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tipoturismo_usuarioid",
+                table: "tipoturismo",
+                column: "usuarioid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_turismo_idtipoturismo",

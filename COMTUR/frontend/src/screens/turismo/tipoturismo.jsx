@@ -31,11 +31,20 @@ function TipoTurismo() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [userType, setUserType] = useState(null);
+  const [idUsuario, setIdUsuario] = useState("");
 
   const [tipoturismoSelecionado, setTipoTurismoSelecionado] = useState({
     id: "",
     nome: "",
   });
+
+  useEffect(() => {
+    const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
+    const idTipoUsuarioAPI = localStorage.getItem("id");
+    setUserType(userTypeFromLocalStorage);
+    setIdUsuario(idTipoUsuarioAPI);
+  }, []);
+
 
   const TipoTurismoSet = (tipoturismo, opcao) => {
     setTipoTurismoNome(tipoturismo.nome);
@@ -84,8 +93,9 @@ function TipoTurismo() {
 
   const pedidoPost = async () => {
     delete tipoturismoSelecionado.id;
+
     await axios
-      .post(baseUrl, { nome: tipoturismoNome })
+      .post(baseUrl, { nome: tipoturismoNome, imagem: 'teste', idUsuario: idUsuario })
       .then((response) => {
         setData(data.concat(response.data));
         abrirFecharModalInserir();
@@ -99,7 +109,7 @@ function TipoTurismo() {
     console.log("Id que chegou: ", tipoturismoId);
     try {
       const response = await axios.put(`${baseUrl}/${tipoturismoId}`, {
-        nome: tipoturismoNome,
+        nome: tipoturismoNome, imagem: 'teste', idUsuario: idUsuario
       });
 
       const updatedTipoTurismo = response.data;

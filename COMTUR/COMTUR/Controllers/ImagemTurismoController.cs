@@ -49,7 +49,7 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpPost("{id}/CadastrarImagensTurismo")]
-		public async Task<ActionResult<List<ImagemTurismoModel>>> CadastrarImagensTurismo([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id)
+		public async Task<ActionResult<List<ImagemTurismoModel>>> CadastrarImagensTurismo([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id, [FromForm] int idUsuario)
 		{
 			TurismoModel Turismo = await _TurismoRepositorio.BuscarPorId(id);
 			if (Turismo == null)
@@ -64,7 +64,8 @@ namespace COMTUR.Controllers
 				{
 					IdTurismo = id,
 					Imagem = imagens[i],
-					LegendaImagem = legendas[i]
+					LegendaImagem = legendas[i],
+					IdUsuario = idUsuario
 				};
 
 				await _ImagemTurismoRepositorio.Adicionar(novaImagem);
@@ -85,7 +86,7 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpPut("{id}/AtualizarImagensTurismo")]
-		public async Task<ActionResult<List<ImagemTurismoModel>>> AtualizarImagensTurismo([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id)
+		public async Task<ActionResult<List<ImagemTurismoModel>>> AtualizarImagensTurismo([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id, [FromForm] int idUsuario)
 		{
 			TurismoModel Turismo = await _TurismoRepositorio.BuscarPorId(id);
 			if (Turismo == null)
@@ -120,7 +121,7 @@ namespace COMTUR.Controllers
 				else
 				{
 					// Se a imagem não existe, cadastra uma nova imagem
-					ImagemTurismoModel novaImagem = new ImagemTurismoModel { IdTurismo = id, Imagem = imagem, LegendaImagem = legenda };
+					ImagemTurismoModel novaImagem = new ImagemTurismoModel { IdTurismo = id, Imagem = imagem, LegendaImagem = legenda, IdUsuario = idUsuario };
 					// Insere a nova imagem no banco de dados
 					await _ImagemTurismoRepositorio.Adicionar(novaImagem);
 					imagensTurismo.Add(novaImagem); // Adiciona a nova imagem à lista de imagens relacionadas à atração

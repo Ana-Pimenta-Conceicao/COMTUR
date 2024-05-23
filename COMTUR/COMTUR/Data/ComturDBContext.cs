@@ -136,7 +136,7 @@ namespace COMTUR.Data
 
             //Adicionando Empresa para teste
             modelBuilder.Entity<EmpresaModel>().HasData(
-            new EmpresaModel { Id = 1, Nome = "AnaStore", CNPJ = 123456, Endereco = "Rua das Maravilhas", Descricao = "Ana Rainha o resto NADINHA", IdUsuario = 3, IdTipoTurismo = 1 }
+            new EmpresaModel { Id = 1, Nome = "AnaStore", CNPJ = "12.345.678/9012-34", Endereco = "Rua das Maravilhas", Descricao = "Ana Rainha o resto NADINHA", IdUsuario = 3, IdTipoTurismo = 1 }
             );
 
             //Adicionando Atracao para teste

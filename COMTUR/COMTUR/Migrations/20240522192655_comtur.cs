@@ -115,7 +115,7 @@ namespace COMTUR.Migrations
                     empresaid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    cnpj = table.Column<long>(type: "bigint", nullable: false),
+                    cnpj = table.Column<string>(type: "text", nullable: false),
                     endereco = table.Column<string>(type: "text", nullable: false),
                     descricao = table.Column<string>(type: "text", nullable: false),
                     tipoturismoid = table.Column<int>(type: "integer", nullable: false),
@@ -375,7 +375,7 @@ namespace COMTUR.Migrations
             migrationBuilder.InsertData(
                 table: "empresa",
                 columns: new[] { "empresaid", "cnpj", "descricao", "endereco", "tipoturismoid", "usuarioid", "nome", "TipoTurismoModelId" },
-                values: new object[] { 1, 123456L, "Ana Rainha o resto NADINHA", "Rua das Maravilhas", 1, 3, "AnaStore", null });
+                values: new object[] { 1, "12.345.678/9012-34", "Ana Rainha o resto NADINHA", "Rua das Maravilhas", 1, 3, "AnaStore", null });
 
             migrationBuilder.InsertData(
                 table: "turismo",

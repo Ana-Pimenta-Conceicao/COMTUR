@@ -19,7 +19,7 @@ namespace COMTUR.Models
 		public string Nome { get; set; }
 
 		[Column("cnpj")]
-		public long CNPJ { get; set; }
+		public string CNPJ { get; set; }
 
 		[Column("endereco")]
 		public string Endereco { get; set; }

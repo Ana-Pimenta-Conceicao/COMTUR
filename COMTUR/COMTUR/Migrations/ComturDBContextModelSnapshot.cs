@@ -131,8 +131,9 @@ namespace COMTUR.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("CNPJ")
-                        .HasColumnType("bigint")
+                    b.Property<string>("CNPJ")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("cnpj");
 
                     b.Property<string>("Descricao")
@@ -176,7 +177,7 @@ namespace COMTUR.Migrations
                         new
                         {
                             Id = 1,
-                            CNPJ = 123456L,
+                            CNPJ = "12.345.678/9012-34",
                             Descricao = "Ana Rainha o resto NADINHA",
                             Endereco = "Rua das Maravilhas",
                             IdTipoTurismo = 1,

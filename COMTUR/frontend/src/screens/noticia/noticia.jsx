@@ -771,7 +771,7 @@ export default function Noticia() {
         </Modal>
         <Modal isOpen={modalDeletar}>
           <ModalBody>
-            Confirma a exclusão da notícia "{noticiaTitulo}" ?
+            Confirma a exclusão de "{noticiaTitulo}" ?
           </ModalBody>
           <ModalFooter>
             <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />

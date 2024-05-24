@@ -18,6 +18,7 @@ export default function VisualizarTurismos() {
   const { id } = useParams();
   const [turismo, setTurismo] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  
 
   const baseUrl = "https://localhost:7256/api/Turismo";
 

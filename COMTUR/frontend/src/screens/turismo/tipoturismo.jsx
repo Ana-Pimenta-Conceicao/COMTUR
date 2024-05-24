@@ -10,26 +10,26 @@ import {
 } from "@phosphor-icons/react";
 import Tabela from "../../components/table/tabela";
 import BtnAcao from "../../components/botoes/btnAcao";
+import BtnModais from "../../components/botoes/btnModais";
+import PopupCadastrado from "../../components/popups/popupCadastro";
 
 function TipoTurismo() {
   const baseUrl = "https://localhost:7256/api/TipoTurismo";
 
   const [data, setData] = useState([]);
-
   const [atualizarData, setAtualizarData] = useState(true);
-
+  
   const [modalInserir, setModalInserir] = useState(false);
-
   const [modalEditar, setModalEditar] = useState(false);
-
   const [modalDeletar, setModalDeletar] = useState(false);
 
+  const [modalCadastrado, setModalCadastrado] = useState(false);
+  const [modalExcluido, setModalExcluido] = useState(false);
+  const [modalEditado, setModalEditado] = useState(false);
+  
   const [tipoturismoNome, setTipoTurismoNome] = useState("");
-
   const [tipoturismoId, setTipoTurismoId] = useState("");
-
   const [sidebarOpen, setSidebarOpen] = useState(true);
-
   const [userType, setUserType] = useState(null);
   const [idUsuario, setIdUsuario] = useState("");
 
@@ -45,6 +45,13 @@ function TipoTurismo() {
     setIdUsuario(idTipoUsuarioAPI);
   }, []);
 
+  const toggleModalCadastro = () => {
+    setModalCadastrado(!modalCadastrado);
+  };
+
+  const toggleModalEdita = () => setModalEditado(!modalEditado);
+
+  const toggleModalExclui = () => setModalExcluido(!modalExcluido);
 
   const TipoTurismoSet = (tipoturismo, opcao) => {
     setTipoTurismoNome(tipoturismo.nome);
@@ -99,6 +106,7 @@ function TipoTurismo() {
       .then((response) => {
         setData(data.concat(response.data));
         abrirFecharModalInserir();
+        toggleModalCadastro();
       })
       .catch((error) => {
         console.log(error);
@@ -124,6 +132,8 @@ function TipoTurismo() {
       });
 
       abrirFecharModalEditar();
+      toggleModalEdita();
+
     } catch (error) {
       console.log(error);
     }
@@ -136,6 +146,7 @@ function TipoTurismo() {
         setData(data.filter((tipoturismo) => tipoturismo.id !== response.data));
         atualizarListaTipoTurismo();
         abrirFecharModalDeletar();
+        toggleModalExclui();
       })
       .catch((error) => {
         console.log(error);
@@ -230,22 +241,16 @@ function TipoTurismo() {
               numColunas={4}
             />
             <div className="float-right flex-auto py-6">
-              <button
-                className="text-white bg-yellow-400 hover:bg-yellow-500 
-               rounded-xl text-lg px-3 font-semibold py-1.5 text-center"
-                onClick={() => abrirFecharModalInserir()}
-              >
-                <span className="inline-flex items-center">
-                  <FilePlus className="mr-1" size={24} />
-                  Cadastrar
-                </span>
-              </button>
+            <BtnAcao
+                funcao={() => abrirFecharModalInserir("Cadastrar")}
+                acao="Cadastrar"
+              />
             </div>
           </div>
         </div>
 
         <Modal isOpen={modalInserir}>
-          <ModalHeader>Incluir Tipo Turismo</ModalHeader>
+          <ModalHeader>Cadastrar Tipo Turismo</ModalHeader>
           <ModalBody>
             <div className="form-group">
               <label>Nome: </label>
@@ -253,28 +258,21 @@ function TipoTurismo() {
               <input
                 type="text"
                 className="form-control text-sm"
-                placeholder="Digite o Tipo de Turismo"
+                placeholder="Digite o Nome"
                 onChange={(e) => setTipoTurismoNome(e.target.value)}
               />
               <br />
             </div>
           </ModalBody>
           <ModalFooter>
-            <button
-              className="btn btncadastrarmodal"
-              onClick={() => pedidoPost()}
-            >
-              Cadastrar
-            </button>
-            {"  "}
-            <button
-              className="btn btncancelarmodal"
-              onClick={() => abrirFecharModalInserir()}
-            >
-              Cancelar
-            </button>
+              <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
+              <BtnModais
+                funcao={() => abrirFecharModalInserir()}
+                acao="Cancelar"
+              />            
           </ModalFooter>
         </Modal>
+
         <Modal isOpen={modalEditar}>
           <ModalHeader>Editar Tipo Turismo</ModalHeader>
           <ModalBody>
@@ -300,21 +298,15 @@ function TipoTurismo() {
             </div>
           </ModalBody>
           <ModalFooter>
-            <button
-              className="btn btnmodalverde  text-white"
-              onClick={() => pedidoAtualizar()}
-            >
-              Alterar
-            </button>
-            {"  "}
-            <button
-              className="btn btnmodalcinza  text-white"
-              onClick={() => abrirFecharModalEditar()}
-            >
-              Cancelar
-            </button>
+          <BtnModais funcao={() => pedidoAtualizar()} acao="Editar" />
+              <BtnModais
+                funcao={() => abrirFecharModalEditar()}
+                acao="Cancelar"
+              />
           </ModalFooter>
         </Modal>
+        <PopupCadastrado isOpen={modalCadastrado} toggle={toggleModalCadastro} objeto="Tipo de Turismo" />
+
         <Modal isOpen={modalDeletar}>
           <ModalBody>
             <label>

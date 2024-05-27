@@ -7,24 +7,28 @@ import Tabela from "../../components/table/tabela";
 import BtnAcao from "../../components/botoes/btnAcao";
 import { useNavigate } from "react-router-dom";
 import BtnModaisIMG from "../../components/botoes/btnModais";
+import BtnModais from "../../components/botoes/btnModais";
 import PopupCadastrado from "../../components/popups/popupCadastro";
+import PopupEditado from "../../components/popups/popupEditado";
+import PopupExcluido from "../../components/popups/popupExcluido";
 
 const Turismo = () => {
   const baseUrl = "https://localhost:7256/api/Turismo";
   const baseUrlImagem = "https://localhost:7256/api/ImagemTurismo";
   const baseUrlTipoTurismo = "https://localhost:7256/api/TipoTurismo";
-
   const [data, setData] = useState([]);
   const [atualizarData, setAtualizarData] = useState(true);
   const [dataTipoTurismo, setDataTipoTurismo] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [userType, setUserType] = useState(null);
+
   const [modalCadastrado, setModalCadastrado] = useState(false);
   const [modalExcluido, setModalExcluido] = useState(false);
+  const [modalEditado, setModalEditado] = useState(false);
+
   const [modalInserir, setModalInserir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
-  const [modalEditado, setModalEditado] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [userType, setUserType] = useState(null);
 
   const [turismoNome, setTurismoNome] = useState("");
   const [turismoDescricao, setTurismoDescricao] = useState("");
@@ -41,6 +45,15 @@ const Turismo = () => {
   const [turismoId, setTurismoId] = useState("");
 
   const navigate = useNavigate();
+
+  const toggleModalCadastro = () => {
+    setModalCadastrado(!modalCadastrado);
+  };
+
+  const toggleModalEdita = () => setModalEditado(!modalEditado);
+
+  const toggleModalExclui = () => setModalExcluido(!modalExcluido);
+
 
   const limparDados = () => {
     setTurismoNome("");
@@ -180,17 +193,19 @@ const Turismo = () => {
       });
       setData(data.concat(response.data));
 
-      if (turismoImagem.lenght !== 0) {
+      if (turismoImagem.length !== 0) {
         await pedidoPostImagens(response.data.id);
       }
 
       abrirFecharModalInserir();
       limparDados();
       setAtualizarData(true);
+      toggleModalCadastro(); // Sempre abrir o modal, mesmo que não tenha imagens
     } catch (error) {
       console.log(error);
     }
   };
+
 
   const pedidoPostImagens = async (idTurismo) => {
     const formData = new FormData();
@@ -267,6 +282,7 @@ const Turismo = () => {
       }
 
       setAtualizarData(true);
+      toggleModalEdita();
     } catch (error) {
       console.log(error);
     }
@@ -325,7 +341,7 @@ const Turismo = () => {
         abrirFecharModalDeletar();
         limparDados();
         setAtualizarData(true);
-        abrirModalExcluido();
+        toggleModalExclui();
       })
       .catch((error) => {
         console.log(error);
@@ -392,42 +408,42 @@ const Turismo = () => {
 
   const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((turismo) => {
-        const tipoTurismo = dataTipoTurismo.find(
-          (tipo) => tipo.id === turismo.idTipoTurismo
-        );
-        const tipoTurismoNome = tipoTurismo
-          ? tipoTurismo.nome
-          : "Tipo não encontrado";
-        return {
-          id: turismo.id,
-          nome:
-            turismo.nome.length > 25
-              ? `${turismo.nome.substring(0, 35)}...`
-              : turismo.nome,
-          descricao:
-            turismo.descricao.length > 25
-              ? `${turismo.descricao.substring(0, 35)}...`
-              : turismo.descricao,
-          tipo: tipoTurismoNome,
-          status: "teste",
-          acoes: (
-            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-              <BtnAcao
-                funcao={() => TurismoSet(turismo, "Editar")}
-                acao="Editar"
-              />
-              <BtnAcao
-                funcao={() => TurismoSet(turismo, "Excluir")}
-                acao="Excluir"
-              />
-              <BtnAcao
-                funcao={() => TurismoSet(turismo, "Visualizar")}
-                acao="Visualizar"
-              />
-            </div>
-          ),
-        };
-      })
+      const tipoTurismo = dataTipoTurismo.find(
+        (tipo) => tipo.id === turismo.idTipoTurismo
+      );
+      const tipoTurismoNome = tipoTurismo
+        ? tipoTurismo.nome
+        : "Tipo não encontrado";
+      return {
+        id: turismo.id,
+        nome:
+          turismo.nome.length > 25
+            ? `${turismo.nome.substring(0, 35)}...`
+            : turismo.nome,
+        descricao:
+          turismo.descricao.length > 25
+            ? `${turismo.descricao.substring(0, 35)}...`
+            : turismo.descricao,
+        tipo: tipoTurismoNome,
+        status: "teste",
+        acoes: (
+          <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+            <BtnAcao
+              funcao={() => TurismoSet(turismo, "Editar")}
+              acao="Editar"
+            />
+            <BtnAcao
+              funcao={() => TurismoSet(turismo, "Excluir")}
+              acao="Excluir"
+            />
+            <BtnAcao
+              funcao={() => TurismoSet(turismo, "Visualizar")}
+              acao="Visualizar"
+            />
+          </div>
+        ),
+      };
+    })
     : [];
 
   if (userType === "1" || userType === "3") {
@@ -620,15 +636,19 @@ const Turismo = () => {
                 </div>
               </div>
             </div>
-            <div className="flex justify-between items-center px-[405px] pt-5">
+          </ModalBody>
+          <ModalFooter>
+            <div className="flex justify-between items-center px-[405px] ">
               <BtnModaisIMG funcao={() => pedidoPost()} acao="Cadastrar" />
               <BtnModaisIMG
                 funcao={() => abrirFecharModalInserir()}
                 acao="Cancelar"
               />
             </div>
-          </ModalBody>
+          </ModalFooter>
         </Modal>
+
+        <PopupCadastrado isOpen={modalCadastrado} toggle={toggleModalCadastro} objeto="Turismo" />
         <Modal
           className="modal-xl-gridxl"
           isOpen={modalEditar}
@@ -809,39 +829,34 @@ const Turismo = () => {
                 </div>
               </div>
             </div>
-            <div className="flex justify-between items-center px-[405px] pt-5">
+          </ModalBody>
+          <ModalFooter>
+            
               <BtnModaisIMG funcao={() => pedidoAtualizar()} acao="Editar" />
               <BtnModaisIMG
                 funcao={() => abrirFecharModalEditar()}
                 acao="Cancelar"
               />
-            </div>
-          </ModalBody>
-        </Modal>
-        <PopupCadastrado
-          isOpen={modalCadastrado}
-          toggle={fecharModalCadastrado}
-          objeto="Turismo"
-        />
-        <Modal isOpen={modalDeletar}>
-          <ModalBody>
-            <label> Confirma a exclusão deste turismo: {turismoNome} ?</label>
-          </ModalBody>
-          <ModalFooter>
-            <button
-              className="btn btnmodalverde  text-white"
-              onClick={() => pedidoDeletar()}
-            >
-              Sim
-            </button>
-            <button
-              className="btn btnmodalcinza  text-white"
-              onClick={() => abrirFecharModalDeletar()}
-            >
-              Não
-            </button>
+            
           </ModalFooter>
         </Modal>
+        <PopupEditado isOpen={modalEditado} toggle={toggleModalEdita} objeto="Turismo" />
+
+
+        <Modal isOpen={modalDeletar}>
+          <ModalBody>
+            <label> Confirma a exclusão de "{turismoNome}" ?</label>
+          </ModalBody>
+          <ModalFooter>
+            <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+            <BtnModais
+              funcao={() => abrirFecharModalDeletar()}
+              acao="Cancelar"
+            />
+          </ModalFooter>
+        </Modal>
+
+        <PopupExcluido isOpen={modalExcluido} toggle={toggleModalExclui} objeto="Turismo" />
       </div>
     );
   }

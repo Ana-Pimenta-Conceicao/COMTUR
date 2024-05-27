@@ -1,14 +1,15 @@
 import React from 'react';
-import { Modal, ModalBody } from 'reactstrap'; // Importe o Modal e ModalBody do Reactstrap ou de outra biblioteca que você esteja utilizando
-import { X } from '@phosphor-icons/react'; // Importe os ícones X e Check, ou substitua-os pelos ícones que você está utilizando
+import PropTypes from 'prop-types';
+import { Modal, ModalBody } from 'reactstrap';
+import { X } from '@phosphor-icons/react';
 import Check from '../../assets/iconeCheck';
 
-function PopupCadastrado ({ isOpen, toggle, objeto,  }) {
+function PopupCadastrado({ isOpen, toggle, objeto }) {
   return (
-    <Modal isOpen={isOpen} centered style={{ maxWidth: "450px" }}>
+    <Modal isOpen={isOpen} toggle={toggle} centered style={{ maxWidth: '450px' }}>
       <ModalBody>
         <div className="flex justify-end w-full">
-          <button onClick={toggle}>
+          <button onClick={toggle} aria-label="Fechar">
             <X size={22} />
           </button>
         </div>
@@ -21,6 +22,12 @@ function PopupCadastrado ({ isOpen, toggle, objeto,  }) {
       </ModalBody>
     </Modal>
   );
+}
+
+PopupCadastrado.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  toggle: PropTypes.func.isRequired,
+  objeto: PropTypes.string.isRequired,
 };
 
-export default PopupCadastrado
+export default PopupCadastrado;

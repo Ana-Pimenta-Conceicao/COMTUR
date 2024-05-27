@@ -27,7 +27,7 @@ function Tabela({ object, currentPage, totalPages, goToPage, colunas, numColunas
             {Object.values(item).map((value, colIndex) => (
               <span
                 key={colIndex}
-                className={`flex justify-center items-center border-t-[1px] border-x-[1px] border-gray-100 ${colIndex === 0 ? 'col-span-1' : 'col-span-2'}`}
+                className={`flex justify-center items-center h-[45px] border-b-[1px] border-x-[1px] border-gray-100 ${colIndex === 0 ? 'col-span-1' : 'col-span-2'}`}
               >
                 {value}
               </span>
@@ -52,7 +52,7 @@ function Tabela({ object, currentPage, totalPages, goToPage, colunas, numColunas
       </div>
     );
   } else {
-    return <div>COMtUR</div>;
+    return <div>COMTUR</div>;
   }
 }
 

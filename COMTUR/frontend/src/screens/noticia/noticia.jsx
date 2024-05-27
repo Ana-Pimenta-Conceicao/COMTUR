@@ -369,7 +369,7 @@ export default function Noticia() {
           dataPublicacao: formatarDataParaExibicao(noticia.dataPublicacao),
           status: "teste",
           acoes: (
-            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+            <div className="flex items-center justify-center">
               <BtnAcao
                 funcao={() => NoticiaSet(noticia, "Editar")}
                 acao="Editar"
@@ -771,7 +771,7 @@ export default function Noticia() {
         </Modal>
         <Modal isOpen={modalDeletar}>
           <ModalBody>
-            Confirma a exclusão da notícia "{noticiaTitulo}" ?
+            Confirma a exclusão de "{noticiaTitulo}" ?
           </ModalBody>
           <ModalFooter>
             <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />

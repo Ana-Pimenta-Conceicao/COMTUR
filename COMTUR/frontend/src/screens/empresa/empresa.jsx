@@ -15,6 +15,7 @@ import PopupCadastrado from "../../components/popups/popupCadastro";
 import PopupExcluido from "../../components/popups/popupExcluido";
 import PopupEditado from "../../components/popups/popupEditado";
 import Select from 'react-select';
+import Tabela from "../../components/table/tabela";
 
 export default function Empresa() {
   const baseUrl = "https://localhost:7256/api/Empresa";
@@ -457,88 +458,67 @@ export default function Empresa() {
       })
     };
 
+    const apresentaDados = Array.isArray(currentItems)
+    ? currentItems.map((empresa) => {
+      const tipoTurismo = dataTipoTurismo.find(
+        (tipo) => tipo.id === empresa.idTipoTurismo
+      );
+      const tipoTurismoNome = tipoTurismo
+        ? tipoTurismo.nome
+        : "Tipo não encontrado";
+        return {
+          id: empresa.id,
+          nome: empresa.nome,
+          cnpj: empresa.cnpj,
+          tipo: tipoTurismoNome,
+          status: "teste",
+          acoes: (
+            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+              <BtnAcao
+                funcao={() => EmpresaSet(empresa, "Editar")}
+                acao="Editar"
+              />
+              <BtnAcao
+                funcao={() => EmpresaSet(empresa, "Excluir")}
+                acao="Excluir"
+              />
+              <BtnAcao
+                funcao={() => EmpresaSet(empresa, "Visualizar")}
+                acao="Visualizar"
+              />
+            </div>
+          ),
+        };
+      })
+    : [];
 
-
-    return (
+    if (userType === "1" || userType === "3") {
+      return <Navigate to="/notfound" />;
+    } else {
+      return (
       <div className="home">
         <div className="h-screen flex fixed">
           <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
         </div>
-        <div
-          className="flex-1 container-fluid"
-          style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
-        >
+        <div className="flex-1 container-fluid" style={{ paddingLeft: sidebarOpen ? 200 : 100 }} >
           <NavBarAdm />
+
           <div className="pl-8 pr-8 pt-[20px]">
-            <h1 className="text-3xl font-semibold pb-2">Lista de Empresas</h1>
+            <h1 className="text-3xl font-semibold pb-2">
+              Lista de Empresas
+            </h1>
             <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
-            <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
-              <div className="grid grid-cols-7 w-full bg-[#DFDFDF] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
-                <span className="flex col-span-1 ml-5 items-center">ID</span>
-                <span className="flex col-span-3 justify-center items-center">
-                  Empresa
-                </span>
-                <span className="flex justify-center items-center">CNPJ</span>
-                <span className="flex col-span-2 justify-center items-center">
-                  Ações
-                </span>
-              </div>
-              <ul className="w-full">
-                {currentItems.map((empresa) => (
-                  <React.Fragment key={empresa.id}>
-                    <li className="grid grid-cols-7 w-full bg-[#F5F5F5]">
-                      <span
-                        scope="row"
-                        className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700"
-                      >
-                        {empresa.id}
-                      </span>
-                      <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
-                        {empresa.nome}
-                      </span>
-                      <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
-                        {empresa.cnpj}
-                      </span>
-                      <span className="flex col-span-2 items-center justify-center border-t-[1px] gap-2 border-[#DBDBDB]">
-                        <BtnAcao
-                          funcao={() => EmpresaSet(empresa, "Editar")}
-                          acao="Editar"
-                        />
-                        <BtnAcao
-                          funcao={() => EmpresaSet(empresa, "Excluir")}
-                          acao="Excluir"
-                        />
-                        <BtnAcao
-                          funcao={() => EmpresaSet(empresa, "Visualizar")}
-                          acao="Visualizar"
-                        />
-                      </span>
-                    </li>
-                  </React.Fragment>
-                ))}
-              </ul>
-              <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px] border-[#DBDBDB]">
-                <button className="" onClick={() => goToPage(currentPage - 1)}>
-                  <CaretLeft size={22} className="text-[#DBDBDB]" />
-                </button>
-                <select
-                  className="rounded-sm hover:border-[#DBDBDB] select-none"
-                  value={currentPage}
-                  onChange={(e) => goToPage(Number(e.target.value))}
-                >
-                  {[...Array(totalPages)].map((_, index) => (
-                    <option key={index + 1} value={index + 1}>
-                      {index + 1}
-                    </option>
-                  ))}
-                </select>
-                <button className="" onClick={() => goToPage(currentPage + 1)}>
-                  <CaretRight size={22} className="text-[#DBDBDB]" />
-                </button>
-              </div>
-            </div>
+            <Tabela
+              object={apresentaDados}
+              colunas={["ID", "Nome", "CNPJ", "Segmento", "Status", "Ações"]}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              goToPage={setCurrentPage}
+              formatarData={""}
+              numColunas={6}
+            />
             <div className="float-right flex-auto py-6">
-              <BtnAcao
+            <BtnAcao
                 funcao={() => abrirFecharModalInserir("Cadastrar")}
                 acao="Cadastrar"
               />
@@ -735,26 +715,10 @@ export default function Empresa() {
             </div>
           </ModalBody>
         </Modal>
-        <PopupCadastrado
-          isOpen={modalCadastrado}
-          toggle={fecharModalCadastrado}
-          objeto="Empresa"
-        />
-        <PopupExcluido
-          isOpen={modalExcluido}
-          toggle={fecharModaExcluido}
-          objeto="Empresa"
-        />
-        <PopupEditado
-          isOpen={modalEditado}
-          toggle={fecharModaEditado}
-          objeto="Empresa"
-        />
-        <Modal
-          className="modal-xl-gridxl"
-          isOpen={modalEditar}
-          style={{ maxWidth: "1000px" }}
-        >
+        <PopupCadastrado isOpen={modalCadastrado} toggle={fecharModalCadastrado} objeto="Empresa" />
+        <PopupExcluido isOpen={modalExcluido} toggle={fecharModaExcluido} objeto="Empresa"/>
+        <PopupEditado isOpen={modalEditado} toggle={fecharModaEditado} objeto="Empresa"  />
+        <Modal className="modal-xl-gridxl"  isOpen={modalEditar} style={{ maxWidth: "1000px" }}>
           <ModalHeader>Editar Empresa</ModalHeader>
           <ModalBody>
             <div className="grid grid-cols-2 ">
@@ -931,29 +895,20 @@ export default function Empresa() {
               </div>
             </div>
             <div className="flex justify-between items-center px-[395px] pt-5">
-              <BtnModaisIMG
-                funcao={() => pedidoAtualizar(empresaId)}
-                acao="Editar"
-              />
-              <BtnModaisIMG
-                funcao={() => abrirFecharModalEditar()}
-                acao="Cancelar"
-              />
+              <BtnModaisIMG funcao={() => pedidoAtualizar(empresaId)} acao="Editar" />
+              <BtnModaisIMG funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
             </div>
           </ModalBody>
         </Modal>
         <Modal isOpen={modalDeletar}>
           <ModalBody>
-            Confirma a exclusão da notícia "{empresaNome}" ?
+            Confirma a exclusão da "{empresaNome}" ?
           </ModalBody>
           <ModalFooter>
             <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
-            <BtnModais
-              funcao={() => abrirFecharModalDeletar()}
-              acao="Cancelar"
-            />
+            <BtnModais funcao={() => abrirFecharModalDeletar()}acao="Cancelar" />
           </ModalFooter>
         </Modal>
       </div>
     );
-  }
+  }}

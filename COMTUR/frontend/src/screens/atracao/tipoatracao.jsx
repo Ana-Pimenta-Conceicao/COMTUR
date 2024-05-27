@@ -9,28 +9,29 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import Tabela from "../../components/table/tabela";
 import BtnAcao from "../../components/botoes/btnAcao";
+import BtnModais from "../../components/botoes/btnModais";
+import PopupExcluido from "../../components/popups/popupExcluido";
+import PopupEditado from "../../components/popups/popupEditado";
+import PopupCadastrado from "../../components/popups/popupCadastro";
 
 function TipoAtracao() {
   const baseUrl = "https://localhost:7256/api/TipoAtracao";
 
   const [data, setData] = useState([]);
-
   const [atualizarData, setAtualizarData] = useState(true);
 
   const [modalInserir, setModalInserir] = useState(false);
-
   const [modalEditar, setModalEditar] = useState(false);
-
   const [modalDeletar, setModalDeletar] = useState(false);
 
+  const [modalCadastrado, setModalCadastrado] = useState(false);
+  const [modalExcluido, setModalExcluido] = useState(false);
+  const [modalEditado, setModalEditado] = useState(false);
+
   const [tipoatracaoNome, setTipoAtracaoNome] = useState("");
-
   const [tipoatracaoId, setTipoAtracaoId] = useState("");
-
   const [sidebarOpen, setSidebarOpen] = useState(true);
-
   const [userType, setUserType] = useState(null);
-
   const [tipoatracaoSelecionado, setTipoAtracaoSelecionado] = useState({
     id: "",
     nome: "",
@@ -47,6 +48,10 @@ function TipoAtracao() {
       abrirFecharModalDeletar();
     }
   };
+
+  const toggleModalCadastro = () => setModalCadastrado(!modalCadastrado);
+  const toggleModalEdita = () => setModalEditado(!modalEditado);
+  const toggleModalExclui = () => setModalExcluido(!modalExcluido);
 
   const abrirFecharModalInserir = () => {
     setModalInserir(!modalInserir);
@@ -89,6 +94,7 @@ function TipoAtracao() {
       .then((response) => {
         setData(data.concat(response.data));
         abrirFecharModalInserir();
+        toggleModalCadastro();
       })
       .catch((error) => {
         console.log(error);
@@ -114,6 +120,7 @@ function TipoAtracao() {
       });
 
       abrirFecharModalEditar();
+      toggleModalEdita();
     } catch (error) {
       console.log(error);
     }
@@ -126,6 +133,7 @@ function TipoAtracao() {
         setData(data.filter((tipoatracao) => tipoatracao.id !== response.data));
         atualizarListaTipoAtracao();
         abrirFecharModalDeletar();
+        toggleModalExclui();
       })
       .catch((error) => {
         console.log(error);
@@ -234,7 +242,7 @@ function TipoAtracao() {
       </div>
 
         <Modal isOpen={modalInserir}>
-          <ModalHeader>Incluir Tipo Atração</ModalHeader>
+          <ModalHeader>Cadastrar Tipo de Atração</ModalHeader>
           <ModalBody>
             <div className="form-group">
               <label>Nome: </label>
@@ -248,20 +256,13 @@ function TipoAtracao() {
             </div>
           </ModalBody>
           <ModalFooter>
-            <button className="btn btn-primary" onClick={() => pedidoPost()}>
-              Cadastrar
-            </button>
-            {"  "}
-            <button
-              className="btn btn-danger"
-              onClick={() => abrirFecharModalInserir()}
-            >
-              Cancelar
-            </button>
+          <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
+          <BtnModais funcao={() => abrirFecharModalInserir()} acao="Cancelar" /> 
           </ModalFooter>
         </Modal>
+        <PopupCadastrado isOpen={modalCadastrado} toggle={toggleModalCadastro} objeto="Tipo de Atração" />
         <Modal isOpen={modalEditar}>
-          <ModalHeader>Editar Tipo Atração</ModalHeader>
+          <ModalHeader>Editar Tipo de Atração</ModalHeader>
           <ModalBody>
             <div className="form-group">
               <label>ID: </label>
@@ -285,39 +286,23 @@ function TipoAtracao() {
             </div>
           </ModalBody>
           <ModalFooter>
-            <button
-              className="btn btn-primary"
-              onClick={() => pedidoAtualizar()}
-            >
-              Alterar
-            </button>
-            {"  "}
-            <button
-              className="btn btn-danger"
-              onClick={() => abrirFecharModalEditar()}
-            >
-              Cancelar
-            </button>
+          <BtnModais funcao={() => pedidoAtualizar()} acao="Editar" />
+          <BtnModais funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
           </ModalFooter>
         </Modal>
+        <PopupEditado isOpen={modalEditado} toggle={toggleModalEdita} objeto="Tipo de Atração" />
         <Modal isOpen={modalDeletar}>
           <ModalBody>
             <label>
-              Confirma a exclusão deste tipo Atração : {tipoatracaoNome} ?
+              Confirma a exclusão de "{tipoatracaoNome}" ?
             </label>
           </ModalBody>
           <ModalFooter>
-            <button className="btn btn-primary" onClick={() => pedidoDeletar()}>
-              Sim
-            </button>
-            <button
-              className="btn btn-danger"
-              onClick={() => abrirFecharModalDeletar()}
-            >
-              Não
-            </button>
+          <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+          <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar"/>
           </ModalFooter>
         </Modal>
+        <PopupExcluido isOpen={modalExcluido} toggle={toggleModalExclui} objeto="Tipo de Atração" />
       </div>
     );
   }

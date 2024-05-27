@@ -58,6 +58,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
         { title: "Empresários", link: "/empresario" },
       ],
     },
+    { title: "Empresas", src: "empresa" },
     { title: "Eventos", src: "iconeEventos" },
 
     {

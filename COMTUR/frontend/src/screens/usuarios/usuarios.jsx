@@ -9,22 +9,17 @@ import NavBarAdm from "../../components/admin/navbarAdm";
 import { useNavigate } from "react-router-dom";
 import BtnAcao from "../../components/botoes/btnAcao";
 import Tabela from "../../components/table/tabela";
-import {
-  CaretLeft,
-  CaretRight,
-  Eye,
-  EyeSlash,
-  Trash,
-  FilePlus,
-  Pencil,
-  Funnel,
-} from "@phosphor-icons/react";
+import { Eye, EyeSlash, Funnel } from "@phosphor-icons/react";
+import PopupCadastrado from "../../components/popups/popupCadastro";
+import BtnModais from "../../components/botoes/btnModais";
+import PopupExcluido from "../../components/popups/popupExcluido";
+import PopupEditado from "../../components/popups/popupEditado";
 
 export default function Usuario() {
   const baseUrl = "https://localhost:7256/api/Usuario";
 
   const [data, setData] = useState([]);
-  //estado do filtro 
+  //estado do filtro
   const [filtroTipoUsuario, setFiltroTipoUsuario] = useState("");
   const [userType, setUserType] = useState(null);
   const [atualizarData, setAtualizarData] = useState(true);
@@ -32,6 +27,16 @@ export default function Usuario() {
   const [modalInserir, setModalInserir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
+
+  const [modalCadastrado, setModalCadastrado] = useState(false);
+  const [modalExcluido, setModalExcluido] = useState(false);
+  const [modalEditado, setModalEditado] = useState(false);
+
+  const toggleModalCadastro = () => setModalCadastrado(!modalCadastrado);
+
+  const toggleModalEdita = () => setModalEditado(!modalEditado);
+
+  const toggleModalExclui = () => setModalExcluido(!modalExcluido);
 
   const [nomeUser, setNome] = useState("");
   const [telefoneUser, setTelefone] = useState("");
@@ -153,6 +158,7 @@ export default function Usuario() {
 
       abrirFecharModalInserir();
       limparDados();
+      toggleModalCadastro();
     } catch (error) {
       console.log(error);
     }
@@ -211,6 +217,7 @@ export default function Usuario() {
       });
 
       abrirFecharModalEditar();
+      toggleModalEdita();
       limparDados();
     } catch (error) {
       console.log(error);
@@ -241,6 +248,7 @@ export default function Usuario() {
         setData(newUser);
         atualizarListaUser();
         abrirFecharModalDeletar();
+        toggleModalExclui();
         limparDados();
       })
       .catch((error) => {
@@ -267,7 +275,9 @@ export default function Usuario() {
 
     // Aplicar filtro de tipo de usuário, se selecionado
     if (filtroTipoUsuario !== "") {
-      filteredData = filteredData.filter((user) => user.tipoUsuario === parseInt(filtroTipoUsuario));
+      filteredData = filteredData.filter(
+        (user) => user.tipoUsuario === parseInt(filtroTipoUsuario)
+      );
     }
 
     return filteredData.slice(startIndex, endIndex).map((user) => {
@@ -289,49 +299,49 @@ export default function Usuario() {
     setUserType(userTypeFromLocalStorage);
   }, []);
 
+  const apresentaDados = Array.isArray(currentItems)
+    ? currentItems.map((usuario) => {
+        const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
 
-
-  const apresentaDados = Array.isArray(currentItems) ? currentItems.map((usuario) => {
-    const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
-
-    return {
-      id: usuario.id,
-      nome: usuario.nome,
-      descricao: usuario.emailUsuario,
-      tipoUsuario: tipoUsuarioNome,
-      status: "teste",
-      acoes: (
-        <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-          <BtnAcao
-            funcao={() => UserSet(usuario, "Editar")}
-            acao="Editar"
-          />
-          <BtnAcao
-            funcao={() => UserSet(usuario, "Excluir")}
-            acao="Excluir"
-          />
-          <BtnAcao
-            funcao={() => UserSet(usuario, "Visualizar")}
-            acao="Visualizar"
-          />
-        </div>
-      ),
-    };
-  }) : [];
+        return {
+          id: usuario.id,
+          nome: usuario.nome,
+          descricao: usuario.emailUsuario,
+          tipoUsuario: tipoUsuarioNome,
+          status: "teste",
+          acoes: (
+            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+              <BtnAcao
+                funcao={() => UserSet(usuario, "Editar")}
+                acao="Editar"
+              />
+              <BtnAcao
+                funcao={() => UserSet(usuario, "Excluir")}
+                acao="Excluir"
+              />
+              <BtnAcao
+                funcao={() => UserSet(usuario, "Visualizar")}
+                acao="Visualizar"
+              />
+            </div>
+          ),
+        };
+      })
+    : [];
 
   // Função auxiliar para obter o nome do tipo de usuário com base no enum
   function obterNomeTipoUsuario(tipoUsuario) {
     switch (tipoUsuario) {
       case 1:
-        return 'Usuário';
+        return "Usuário";
       case 2:
-        return 'Funcionário';
+        return "Funcionário";
       case 3:
-        return 'Empresário';
+        return "Empresário";
       case 4:
-        return 'Administrador';
+        return "Administrador";
       default:
-        return 'Tipo não encontrado';
+        return "Tipo não encontrado";
     }
   }
 
@@ -352,28 +362,28 @@ export default function Usuario() {
             <div className="flex justify-between items-center">
               <h1 className="text-3xl font-semibold">Lista de Usuários</h1>
               <div className="inline">
-                <label htmlFor="filtroTipoUsuario" className="mr-2">
-                        
-                </label>
+                <label htmlFor="filtroTipoUsuario" className="mr-2"></label>
                 <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1"><Funnel size={18} /></span>
-                <select
-                  id="filtroTipoUsuario"
-                  className="form-control"
-                  class="form-select" aria-label="Default select example"
-                  value={filtroTipoUsuario}
-                  onChange={handleFiltroTipoUsuarioChange}
-                >
-                  <option value="">Todos</option>
-                  <option value="1">Usuário</option>
-                  <option value="2">Funcionário</option>
-                  <option value="3">Empresário</option>
-                  <option value="4">Administrador</option>
-                </select>
+                  <span class="input-group-text" id="basic-addon1">
+                    <Funnel size={18} />
+                  </span>
+                  <select
+                    id="filtroTipoUsuario"
+                    className="form-control"
+                    class="form-select"
+                    aria-label="Default select example"
+                    value={filtroTipoUsuario}
+                    onChange={handleFiltroTipoUsuarioChange}
+                  >
+                    <option value="">Todos</option>
+                    <option value="1">Usuário</option>
+                    <option value="2">Funcionário</option>
+                    <option value="3">Empresário</option>
+                    <option value="4">Administrador</option>
+                  </select>
                 </div>
               </div>
             </div>
-
 
             <hr className="pb-4 border-[2.5px] border-gray-300" />
             <Tabela
@@ -386,7 +396,6 @@ export default function Usuario() {
             />
 
             <div className="float-right flex-auto py-6">
-              
               <BtnAcao
                 funcao={() => abrirFecharModalInserir("Cadastrar")}
                 acao="Cadastrar"
@@ -468,22 +477,18 @@ export default function Usuario() {
             </div>
           </ModalBody>
           <ModalFooter>
-            <button
-              className="btn bg-yellow-400 text-white hover:bg-yellow-500"
-              onClick={() => pedidoPost()}
-            >
-              Cadastrar
-            </button>
-            {"  "}
-            <button
-              className="btn bg-gray-400 hover:bg-gray-600 text-white"
-              onClick={() => abrirFecharModalInserir()}
-            >
-              Cancelar
-            </button>
+            <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
+            <BtnModais
+              funcao={() => abrirFecharModalInserir()}
+              acao="Cancelar"
+            />
           </ModalFooter>
         </Modal>
-
+        <PopupCadastrado
+          isOpen={modalCadastrado}
+          toggle={toggleModalCadastro}
+          objeto="Usuário"
+        />
         <Modal isOpen={modalEditar}>
           <ModalHeader>Alterar Usuario</ModalHeader>
           <ModalBody>
@@ -606,39 +611,21 @@ export default function Usuario() {
             </div>
           </ModalBody>
           <ModalFooter>
-            <button
-              className="btn bg-yellow-400 text-white hover:bg-yellow-500"
-              onClick={() => pedidoAtualizar()}
-            >
-              Editar
-            </button>
-            {"  "}
-            <button
-              className="btn bg-gray-400 hover:bg-gray-600 text-white"
-              onClick={() => abrirFecharModalEditar()}
-            >
-              Cancelar
-            </button>
+            <BtnModais funcao={() => pedidoAtualizar()} acao="Editar" />
+            <BtnModais funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
+          </ModalFooter>
+        </Modal>
+        <PopupEditado isOpen={modalEditado} toggle={toggleModalEdita} objeto="Usuário" />
+
+        <Modal isOpen={modalDeletar}>
+          <ModalBody>Confirma a exclusão do(a) "{nomeUser}" ?</ModalBody>
+          <ModalFooter>
+          <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+          <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
           </ModalFooter>
         </Modal>
 
-        <Modal isOpen={modalDeletar}>
-          <ModalBody>Confirma a exclusão do Usuario: "{nomeUser}" ?</ModalBody>
-          <ModalFooter>
-            <button
-              className="btn bg-red-800 hover:bg-red-900 text-white"
-              onClick={() => pedidoDeletar()}
-            >
-              Sim
-            </button>
-            <button
-              className="btn bg-gray-400 hover:bg-gray-600 text-white"
-              onClick={() => abrirFecharModalDeletar()}
-            >
-              Não
-            </button>
-          </ModalFooter>
-        </Modal>
+        <PopupExcluido isOpen={modalExcluido} toggle={toggleModalExclui} objeto="Usuário" />
       </div>
     );
   }

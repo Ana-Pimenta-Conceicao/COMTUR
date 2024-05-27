@@ -5,13 +5,12 @@ import "../turismo/index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import SidebarAdm from "../../components/admin/sidebarAdm";
 import NavBarAdm from "../../components/admin/navbarAdm";
-import {
-  FilePlus,
-} from "@phosphor-icons/react";
 import Tabela from "../../components/table/tabela";
 import BtnAcao from "../../components/botoes/btnAcao";
 import BtnModais from "../../components/botoes/btnModais";
 import PopupCadastrado from "../../components/popups/popupCadastro";
+import PopupExcluido from "../../components/popups/popupExcluido";
+import PopupEditado from "../../components/popups/popupEditado";
 
 function TipoTurismo() {
   const baseUrl = "https://localhost:7256/api/TipoTurismo";
@@ -45,12 +44,8 @@ function TipoTurismo() {
     setIdUsuario(idTipoUsuarioAPI);
   }, []);
 
-  const toggleModalCadastro = () => {
-    setModalCadastrado(!modalCadastrado);
-  };
-
+  const toggleModalCadastro = () => setModalCadastrado(!modalCadastrado);
   const toggleModalEdita = () => setModalEditado(!modalEditado);
-
   const toggleModalExclui = () => setModalExcluido(!modalExcluido);
 
   const TipoTurismoSet = (tipoturismo, opcao) => {
@@ -266,13 +261,10 @@ function TipoTurismo() {
           </ModalBody>
           <ModalFooter>
               <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
-              <BtnModais
-                funcao={() => abrirFecharModalInserir()}
-                acao="Cancelar"
-              />            
+              <BtnModais funcao={() => abrirFecharModalInserir()} acao="Cancelar" />            
           </ModalFooter>
         </Modal>
-
+        <PopupCadastrado isOpen={modalCadastrado} toggle={toggleModalCadastro} objeto="Tipo de Turismo" />
         <Modal isOpen={modalEditar}>
           <ModalHeader>Editar Tipo Turismo</ModalHeader>
           <ModalBody>
@@ -299,36 +291,24 @@ function TipoTurismo() {
           </ModalBody>
           <ModalFooter>
           <BtnModais funcao={() => pedidoAtualizar()} acao="Editar" />
-              <BtnModais
-                funcao={() => abrirFecharModalEditar()}
-                acao="Cancelar"
-              />
+          <BtnModais funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
           </ModalFooter>
         </Modal>
-        <PopupCadastrado isOpen={modalCadastrado} toggle={toggleModalCadastro} objeto="Tipo de Turismo" />
+        <PopupEditado isOpen={modalEditado} toggle={toggleModalEdita} objeto="Tipo de Turismo" />
 
         <Modal isOpen={modalDeletar}>
           <ModalBody>
             <label>
-              {" "}
-              Confirma a exclusão deste tipo Turismo : {tipoturismoNome} ?
+              Confirma a exclusão de "{tipoturismoNome}" ?
             </label>
           </ModalBody>
           <ModalFooter>
-            <button
-              className="btn btnmodalverde  text-white"
-              onClick={() => pedidoDeletar()}
-            >
-              Sim
-            </button>
-            <button
-              className="btn btnmodalcinza  text-white"
-              onClick={() => abrirFecharModalDeletar()}
-            >
-              Não
-            </button>
+          <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+          <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar"/>
           </ModalFooter>
         </Modal>
+
+        <PopupExcluido isOpen={modalExcluido} toggle={toggleModalExclui} objeto="Tipo de Turismo" />
       </div>
     );
   }

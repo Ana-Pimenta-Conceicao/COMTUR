@@ -290,7 +290,6 @@ const Turismo = () => {
 
   const pedidoPutImagens = async () => {
     const formData = new FormData();
-    console.log("cheguei chegando bagunçando a zorra toda");
 
     let todasImagens = [];
     let todasLegendas = [];

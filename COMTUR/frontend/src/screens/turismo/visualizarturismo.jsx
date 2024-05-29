@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NavbarUsr from "../../components/user/navbarUsr";
 import FooterUsr from "../../components/user/footerUsr";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import BtnAcao from "../../components/botoes/btnAcao";
 import {
   CaretRight,
@@ -18,6 +18,7 @@ export default function VisualizarTurismos() {
   const { id } = useParams();
   const [turismo, setTurismo] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
 
   const baseUrl = "https://localhost:7256/api/Turismo";
 
@@ -34,17 +35,9 @@ export default function VisualizarTurismos() {
     obterDetalhesTurismo();
   }, [id]);
 
-  const abrirGoogleMaps = (local) => {
-  // Formate o local para a URL do Google Maps
-  const enderecoFormatado = encodeURIComponent(local);
-  
-  // URL do Google Maps com o local como destino
-  const urlGoogleMaps = `https://www.google.com/maps/search/?api=1&query=${enderecoFormatado}`;
-  
-  // Abra o Google Maps em uma nova janela
-  window.open(urlGoogleMaps);
-};
+  console.log(turismo);
 
+ 
 
   const nextSlide = () => {
     if (turismo.imagemTurismo.length > 1) {
@@ -140,19 +133,22 @@ export default function VisualizarTurismos() {
       {turismo && (
         <div className="sm:px-16">
           <div className=" px-4 pb-3 text-[#373636] text-sm sm:text-lg font-base sm:pt-6 pt-0">
-           
             <p className="sm:px-14 text-sm font-light pt-1 text-justify">
               {turismo.descricao}
             </p>
           </div>
 
           <div className="flex flex-row ml-6 gap-0">
-            <button className="flex justify-center items-center w-[30px] h-6 bg-black text-sm text-[#FFD121] rounded-md "
-            onClick={() => abrirGoogleMaps(turismo.local)}>
+            <a href={`https://www.google.com/maps/search/?api=1&query=${turismo.local}`}>
+            <button className="flex justify-center items-center w-[30px] h-6 bg-black text-sm text-[#FFD121] rounded-md " >        
               <MapPinLine size={18} />
             </button>
-            <button className="flex flex-start justify-start items-center w-full h-6 text-xs pl-1 "
-             onClick={() => abrirGoogleMaps(turismo.local)}>
+            </a>
+
+            <button
+              className="flex flex-start justify-start items-center w-full h-6 text-xs pl-1 "
+              onClick={() => abrirGoogleMaps(turismo.local)}
+            >
               {turismo.local}
             </button>
           </div>

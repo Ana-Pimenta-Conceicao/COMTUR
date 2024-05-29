@@ -477,6 +477,8 @@ const Turismo = () => {
                 acao="CadastrarTipo"
                 objeto="Tipo"
               />
+
+
             </div>
           </div>
         </div>

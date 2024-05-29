@@ -209,6 +209,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("idatracao");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer")
+                        .HasColumnName("usuarioid");
+
                     b.Property<string>("Imagem")
                         .IsRequired()
                         .HasColumnType("text")
@@ -222,6 +226,8 @@ namespace COMTUR.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdAtracao");
+
+                    b.HasIndex("IdUsuario");
 
                     b.ToTable("imagematracao");
                 });
@@ -239,6 +245,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("idempresa");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer")
+                        .HasColumnName("usuarioid");
+
                     b.Property<string>("Imagem")
                         .IsRequired()
                         .HasColumnType("text")
@@ -252,6 +262,8 @@ namespace COMTUR.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdEmpresa");
+
+                    b.HasIndex("IdUsuario");
 
                     b.ToTable("imagemempresa");
                 });
@@ -269,6 +281,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("idnoticia");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer")
+                        .HasColumnName("usuarioid");
+
                     b.Property<string>("Imagem")
                         .IsRequired()
                         .HasColumnType("text")
@@ -282,6 +298,8 @@ namespace COMTUR.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdNoticia");
+
+                    b.HasIndex("IdUsuario");
 
                     b.ToTable("imagemnoticia");
                 });
@@ -450,6 +468,10 @@ namespace COMTUR.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer")
+                        .HasColumnName("usuarioid");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -458,12 +480,15 @@ namespace COMTUR.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdUsuario");
+
                     b.ToTable("tipoatracao");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            IdUsuario = 4,
                             Nome = "Show"
                         });
                 });
@@ -755,7 +780,15 @@ namespace COMTUR.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
+                        .WithMany()
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("AtracaoModel");
+
+                    b.Navigation("UsuarioModel");
                 });
 
             modelBuilder.Entity("COMTUR.Models.ImagemEmpresaModel", b =>
@@ -766,7 +799,15 @@ namespace COMTUR.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
+                        .WithMany()
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("EmpresaModel");
+
+                    b.Navigation("UsuarioModel");
                 });
 
             modelBuilder.Entity("COMTUR.Models.ImagemNoticiaModel", b =>
@@ -777,7 +818,15 @@ namespace COMTUR.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
+                        .WithMany()
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("NoticiaModel");
+
+                    b.Navigation("UsuarioModel");
                 });
 
             modelBuilder.Entity("COMTUR.Models.ImagemTurismoModel", b =>
@@ -826,10 +875,21 @@ namespace COMTUR.Migrations
                     b.Navigation("UsuarioModel");
                 });
 
+            modelBuilder.Entity("COMTUR.Models.TipoAtracaoModel", b =>
+                {
+                    b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
+                        .WithMany("TipoAtracao")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UsuarioModel");
+                });
+
             modelBuilder.Entity("COMTUR.Models.TipoTurismoModel", b =>
                 {
                     b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
-                        .WithMany()
+                        .WithMany("TipoTurismo")
                         .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -903,6 +963,10 @@ namespace COMTUR.Migrations
                     b.Navigation("Empresas");
 
                     b.Navigation("Noticia");
+
+                    b.Navigation("TipoAtracao");
+
+                    b.Navigation("TipoTurismo");
 
                     b.Navigation("Turismos");
                 });

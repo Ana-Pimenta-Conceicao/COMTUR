@@ -70,6 +70,17 @@ namespace COMTUR.Controllers
 			return Ok(empresa);
 		}
 
+		[HttpGet("{id}/usuario")]
+		public async Task<ActionResult<EmpresaModel>> BuscarPorIdUsuario(int id)
+		{
+			EmpresaModel empresa = await _empresaRepositorio.GetById(id);
+			if (empresa == null)
+			{
+				return NotFound($"Usuario com ID {id} não encontrada.");
+			}
+			return Ok(empresa);
+		}
+
 		[HttpGet("{id}/imagens")]
 		public async Task<ActionResult<List<string>>> BuscarImagensPorEmpresaId(int empresaId)
 		{

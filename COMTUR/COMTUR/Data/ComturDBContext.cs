@@ -147,7 +147,7 @@ namespace COMTUR.Data
 
 			//Adicionando TipoAtracao para teste
 			modelBuilder.Entity<TipoAtracaoModel>().HasData(
-            new TipoAtracaoModel { Id = 1, Nome = "Show" }
+            new TipoAtracaoModel { Id = 1, Nome = "Show", IdUsuario = 4 }
             );
 
             //Adicionando Empresa para teste

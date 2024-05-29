@@ -11,6 +11,7 @@ namespace COMTUR.Data.Map
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Nome).IsRequired().HasMaxLength(50);
+			builder.HasOne(e => e.UsuarioModel).WithMany().HasForeignKey(e => e.IdUsuario);
 		}
     }
 }

@@ -10,9 +10,10 @@ namespace COMTUR.Data.Map
 		public void Configure(EntityTypeBuilder<ImagemNoticiaModel> builder)
 		{
 			builder.HasKey(x => x.Id);
+			builder.HasOne(e => e.UsuarioModel).WithMany().HasForeignKey(e => e.IdUsuario);
 
-            // Relacionamento da ImagemNoticia com Noticia
-            builder.HasOne(x => x.NoticiaModel)
+			// Relacionamento da ImagemNoticia com Noticia
+			builder.HasOne(x => x.NoticiaModel)
                    .WithMany(n => n.ImagemNoticia)
                    .HasForeignKey(x => x.IdNoticia)
                    .IsRequired();

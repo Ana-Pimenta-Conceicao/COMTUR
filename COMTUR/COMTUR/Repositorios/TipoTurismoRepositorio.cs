@@ -20,6 +20,11 @@ namespace COMTUR.Repositorios
 			return await _dBContext.TipoTurismo.FirstOrDefaultAsync(t => t.Id == id);
 		}
 
+		public async Task<TipoTurismoModel> GetByIdUsuario(int id)
+		{
+			return await _dBContext.TipoTurismo.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+		}
+
 		public async Task<List<TipoTurismoModel>> BuscarTodosTipoTurismo()
 		{
 			return await _dBContext.TipoTurismo.ToListAsync();

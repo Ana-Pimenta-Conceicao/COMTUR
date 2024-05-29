@@ -54,5 +54,13 @@ namespace COMTUR.Models
 		// Relacionamento com atracao para o funcionario/admin
 		[JsonIgnore]
 		public ICollection<AtracaoModel>? Atracao { get; set; }
+
+		// Relacionamento com tipoatracao para o funcionario/admin
+		[JsonIgnore]
+		public ICollection<TipoAtracaoModel>? TipoAtracao { get; set; }
+
+		// Relacionamento com tipoturismo para o funcionario/admin
+		[JsonIgnore]
+		public ICollection<TipoTurismoModel>? TipoTurismo { get; set; }
 	}
 }

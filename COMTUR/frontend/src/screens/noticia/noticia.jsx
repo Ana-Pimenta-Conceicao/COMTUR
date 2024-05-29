@@ -20,12 +20,15 @@ export default function Noticia() {
   const baseUrlImagem = "https://localhost:7256/api/ImagemNoticia";
   const [data, setData] = useState([]);
   const [atualizarData, setAtualizarData] = useState(true);
-  const [modalCadastrado, setModalCadastrado] = useState(false);
-  const [modalExcluido, setModalExcluido] = useState(false);
+  
   const [modalInserir, setModalInserir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
+ 
+  const [modalCadastrado, setModalCadastrado] = useState(false);
+  const [modalExcluido, setModalExcluido] = useState(false);
   const [modalEditado, setModalEditado] = useState(false);
+
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [noticiaTitulo, setNoticiaTitulo] = useState("");
   const [noticiaSubtitulo, setNoticiaSubtitulo] = useState("");
@@ -51,6 +54,11 @@ export default function Noticia() {
     setNoticiaId("");
   };
 
+  const toggleModalCadastro = () => setModalCadastrado(!modalCadastrado);
+
+  const toggleModalEdita = () => setModalEditado(!modalEditado);
+
+  const toggleModalExclui = () => setModalExcluido(!modalExcluido);
   const NoticiaSet = (noticia, opcao) => {
     console.log("Noticia que foi passada: ", noticia);
     setNoticiaId(noticia.id);
@@ -79,30 +87,6 @@ export default function Noticia() {
   const abrirFecharModalInserir = () => {
     modalInserir ? limparDados() : null;
     setModalInserir(!modalInserir);
-  };
-
-  const abrirModalCadastrado = () => {
-    setModalCadastrado(true);
-  };
-
-  const fecharModalCadastrado = () => {
-    setModalCadastrado(false);
-  };
-
-  const abrirModalExcluido = () => {
-    setModalExcluido(true);
-  };
-
-  const fecharModaExcluido = () => {
-    setModalExcluido(false);
-  };
-
-  const abrirModalEditado = () => {
-    setModalEditado(true);
-  };
-
-  const fecharModaEditado = () => {
-    setModalEditado(false);
   };
 
   const abrirFecharModalEditar = async (id) => {
@@ -176,20 +160,22 @@ export default function Noticia() {
     formData.append("horaPublicacao", noticiaHoraPublicacao);
     formData.append("idUsuario", idUsuario);
 
-
     try {
       const response = await axios.post(baseUrl, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-
       setData(data.concat(response.data));
-      await pedidoPostImagens(response.data.id);
+
+      if (imagensNoticia.length !== 0) {
+        await pedidoPostImagens(response.data.id);
+      }
+
       abrirFecharModalInserir();
       limparDados();
       setAtualizarData(true);
-      abrirModalCadastrado();
+      toggleModalCadastro();
     } catch (error) {
       console.log(error);
     }
@@ -202,12 +188,13 @@ export default function Noticia() {
     let todasLegendas = [];
 
     imagensNoticia?.forEach((imagem) => {
-      formData.append(...todasImagens, imagem.imagem);
-      formData.append(...todasLegendas, imagem.legendaImagem);
+      todasImagens = [...todasImagens, imagem.imagem];
+      todasLegendas = [...todasLegendas, imagem.legendaImagem];
     });
 
     todasImagens.forEach((imagem) => formData.append("imagens", imagem));
     todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+    formData.append("idUsuario", idUsuario);
 
     try {
       const response = await axios.post(
@@ -226,6 +213,7 @@ export default function Noticia() {
 
   async function pedidoAtualizar() {
     const formData = new FormData();
+    formData.append("id", noticiaId);
     formData.append("titulo", noticiaTitulo);
     formData.append("subtitulo", noticiaSubtitulo);
     formData.append("conteudo", noticiaConteudo);
@@ -252,10 +240,14 @@ export default function Noticia() {
       });
 
       abrirFecharModalEditar();
-      await pedidoPutImagens();
+
+      if (imagensNoticia.length !== 0) {
+        await pedidoPutImagens();
+      }
+
       limparDados();
       setAtualizarData(true);
-      abrirModalEditado();
+      toggleModalEdita();
     } catch (error) {
       console.log(error);
     }
@@ -267,13 +259,14 @@ export default function Noticia() {
     let todasImagens = [];
     let todasLegendas = [];
 
-    turismoImagem?.forEach((imagem) => {
+    imagensNoticia?.forEach((imagem) => {
       todasImagens = [...todasImagens, imagem.imagem];
       todasLegendas = [...todasLegendas, imagem.legendaImagem];
     });
 
     todasImagens.forEach((imagem) => formData.append("imagens", imagem));
     todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+    formData.append("idUsuario", idUsuario);
 
     console.log(todasImagens);
     console.log(todasLegendas);
@@ -312,7 +305,7 @@ export default function Noticia() {
         abrirFecharModalDeletar();
         limparDados();
         setAtualizarData(true);
-        abrirModalExcluido();
+        toggleModalExclui();
       })
       .catch((error) => {
         console.log(error);
@@ -348,11 +341,7 @@ export default function Noticia() {
     setIdUsuario(idTipoUsuarioAPI);
   }, []);
 
-
-  useEffect(() => {
-    const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
-    setUserType(userTypeFromLocalStorage);
-  }, []);
+ 
 
   const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((noticia) => {
@@ -406,14 +395,7 @@ export default function Noticia() {
             <hr className="pb-4 border-[2.5px] border-gray-300" />
             <Tabela
               object={apresentaDados}
-              colunas={[
-                "ID",
-                "Título",
-                "Subtítulo",
-                "Data",
-                "Status",
-                "Ações"
-              ]}
+              colunas={["ID", "Título", "Subtítulo", "Data", "Status", "Ações"]}
               currentPage={currentPage}
               totalPages={totalPages}
               goToPage={setCurrentPage}
@@ -581,33 +563,16 @@ export default function Noticia() {
             </div>
             <div className="flex justify-between items-center px-[405px] pt-5">
               <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
-              <BtnModais
-                funcao={() => abrirFecharModalInserir()}
-                acao="Cancelar"
-              />
+              <BtnModais funcao={() => abrirFecharModalInserir()} acao="Cancelar" />
             </div>
           </ModalBody>
         </Modal>
-        <PopupCadastrado
-          isOpen={modalCadastrado}
-          toggle={fecharModalCadastrado}
-          objeto="Notícia"
-        />
-        <PopupExcluido
-          isOpen={modalExcluido}
-          toggle={fecharModaExcluido}
-          objeto="Notícia"
-        />
-        <PopupEditado
-          isOpen={modalEditado}
-          toggle={fecharModaEditado}
-          objeto="Notícia"
-        />
-        <Modal
-          className="modal-xl-gridxl"
-          isOpen={modalEditar}
-          style={{ maxWidth: "1000px" }}
-        >
+
+        <PopupCadastrado isOpen={modalCadastrado} toggle={toggleModalCadastro} objeto="Notícia" />
+        <PopupExcluido isOpen={modalExcluido} toggle={toggleModalExclui} objeto="Notícia"/>
+        <PopupEditado isOpen={modalEditado} toggle={toggleModalEdita}  objeto="Notícia"/>
+        
+        <Modal className="modal-xl-gridxl" isOpen={modalEditar} style={{ maxWidth: "1000px" }} >
           <ModalHeader>Editar Noticia</ModalHeader>
           <ModalBody>
             <div className="grid grid-cols-2 ">
@@ -770,9 +735,7 @@ export default function Noticia() {
           </ModalBody>
         </Modal>
         <Modal isOpen={modalDeletar}>
-          <ModalBody>
-            Confirma a exclusão de "{noticiaTitulo}" ?
-          </ModalBody>
+          <ModalBody>Confirma a exclusão de "{noticiaTitulo}" ?</ModalBody>
           <ModalFooter>
             <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
             <BtnModais

@@ -46,14 +46,9 @@ const Turismo = () => {
 
   const navigate = useNavigate();
 
-  const toggleModalCadastro = () => {
-    setModalCadastrado(!modalCadastrado);
-  };
-
+  const toggleModalCadastro = () => setModalCadastrado(!modalCadastrado);
   const toggleModalEdita = () => setModalEditado(!modalEditado);
-
   const toggleModalExclui = () => setModalExcluido(!modalExcluido);
-
 
   const limparDados = () => {
     setTurismoNome("");
@@ -205,7 +200,6 @@ const Turismo = () => {
       console.log(error);
     }
   };
-
 
   const pedidoPostImagens = async (idTurismo) => {
     const formData = new FormData();
@@ -407,42 +401,42 @@ const Turismo = () => {
 
   const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((turismo) => {
-      const tipoTurismo = dataTipoTurismo.find(
-        (tipo) => tipo.id === turismo.idTipoTurismo
-      );
-      const tipoTurismoNome = tipoTurismo
-        ? tipoTurismo.nome
-        : "Tipo não encontrado";
-      return {
-        id: turismo.id,
-        nome:
-          turismo.nome.length > 25
-            ? `${turismo.nome.substring(0, 35)}...`
-            : turismo.nome,
-        descricao:
-          turismo.descricao.length > 25
-            ? `${turismo.descricao.substring(0, 35)}...`
-            : turismo.descricao,
-        tipo: tipoTurismoNome,
-        status: "teste",
-        acoes: (
-          <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-            <BtnAcao
-              funcao={() => TurismoSet(turismo, "Editar")}
-              acao="Editar"
-            />
-            <BtnAcao
-              funcao={() => TurismoSet(turismo, "Excluir")}
-              acao="Excluir"
-            />
-            <BtnAcao
-              funcao={() => TurismoSet(turismo, "Visualizar")}
-              acao="Visualizar"
-            />
-          </div>
-        ),
-      };
-    })
+        const tipoTurismo = dataTipoTurismo.find(
+          (tipo) => tipo.id === turismo.idTipoTurismo
+        );
+        const tipoTurismoNome = tipoTurismo
+          ? tipoTurismo.nome
+          : "Tipo não encontrado";
+        return {
+          id: turismo.id,
+          nome:
+            turismo.nome.length > 25
+              ? `${turismo.nome.substring(0, 35)}...`
+              : turismo.nome,
+          descricao:
+            turismo.descricao.length > 25
+              ? `${turismo.descricao.substring(0, 35)}...`
+              : turismo.descricao,
+          tipo: tipoTurismoNome,
+          status: "teste",
+          acoes: (
+            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+              <BtnAcao
+                funcao={() => TurismoSet(turismo, "Editar")}
+                acao="Editar"
+              />
+              <BtnAcao
+                funcao={() => TurismoSet(turismo, "Excluir")}
+                acao="Excluir"
+              />
+              <BtnAcao
+                funcao={() => TurismoSet(turismo, "Visualizar")}
+                acao="Visualizar"
+              />
+            </div>
+          ),
+        };
+      })
     : [];
 
   if (userType === "1" || userType === "3") {
@@ -476,6 +470,12 @@ const Turismo = () => {
               <BtnAcao
                 funcao={() => abrirFecharModalInserir("Cadastrar")}
                 acao="Cadastrar"
+              />
+
+              <BtnAcao
+                funcao={() => navigate(`/tipoturismo`)}
+                acao="CadastrarTipo"
+                objeto="Tipo"
               />
             </div>
           </div>
@@ -647,7 +647,11 @@ const Turismo = () => {
           </ModalFooter>
         </Modal>
 
-        <PopupCadastrado isOpen={modalCadastrado} toggle={toggleModalCadastro} objeto="Turismo" />
+        <PopupCadastrado
+          isOpen={modalCadastrado}
+          toggle={toggleModalCadastro}
+          objeto="Turismo"
+        />
         <Modal
           className="modal-xl-gridxl"
           isOpen={modalEditar}
@@ -830,17 +834,18 @@ const Turismo = () => {
             </div>
           </ModalBody>
           <ModalFooter>
-            
-              <BtnModaisIMG funcao={() => pedidoAtualizar()} acao="Editar" />
-              <BtnModaisIMG
-                funcao={() => abrirFecharModalEditar()}
-                acao="Cancelar"
-              />
-            
+            <BtnModaisIMG funcao={() => pedidoAtualizar()} acao="Editar" />
+            <BtnModaisIMG
+              funcao={() => abrirFecharModalEditar()}
+              acao="Cancelar"
+            />
           </ModalFooter>
         </Modal>
-        <PopupEditado isOpen={modalEditado} toggle={toggleModalEdita} objeto="Turismo" />
-
+        <PopupEditado
+          isOpen={modalEditado}
+          toggle={toggleModalEdita}
+          objeto="Turismo"
+        />
 
         <Modal isOpen={modalDeletar}>
           <ModalBody>
@@ -855,7 +860,11 @@ const Turismo = () => {
           </ModalFooter>
         </Modal>
 
-        <PopupExcluido isOpen={modalExcluido} toggle={toggleModalExclui} objeto="Turismo" />
+        <PopupExcluido
+          isOpen={modalExcluido}
+          toggle={toggleModalExclui}
+          objeto="Turismo"
+        />
       </div>
     );
   }

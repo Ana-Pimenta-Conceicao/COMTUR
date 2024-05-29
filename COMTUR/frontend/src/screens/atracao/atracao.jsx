@@ -61,13 +61,12 @@ function Atracao() {
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
-    }
-    else if (opcao === "Excluir") {
+    } else if (opcao === "Excluir") {
       abrirFecharModalDeletar();
     } else {
       navigate(`/visualizarAtracao/${atracao.id}`);
     }
-  }
+  };
 
   const abrirFecharModalInserir = () => {
     setModalInserir(!modalInserir);
@@ -257,9 +256,7 @@ function Atracao() {
     }
   };
 
-  const CadastrarNovoTipo = () => {
-    navigate(`/tipoatracao`);
-  };
+ 
 
   const removeImagemByIndex = (indexToRemove) => {
     setImagensAtracao((prevImagens) =>
@@ -413,8 +410,9 @@ function Atracao() {
               />
 
               <BtnAcao
-                funcao={() => CadastrarNovoTipo()}
+                funcao={() => navigate(`/tipoatracao`)}
                 acao="CadastrarTipo"
+                objeto="Tipo"
               />
             </div>
           </div>

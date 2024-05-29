@@ -2,19 +2,7 @@ import React from "react";
 import { tv } from "tailwind-variants";
 import { Pencil, Trash, Eye, FilePlus, Plus, PresentationChart, FileText } from "@phosphor-icons/react";
 
-const Acoes = {
-  "Editar": { icone: Pencil, texto: "Editar" },
-  "Excluir": { icone: Trash, texto: "Excluir" },
-  "Visualizar": { icone: Eye, texto: "Visualizar" },
-  "Publicados": {icone: PresentationChart, texto: "Publicados"},
-  "Cadastrar": { icone: FilePlus, texto: "Cadastrar" },
-  "VisualizarMais": {icone: Plus, texto: "Visualizar Mais"},
-  "CadastrarTipo": {icone: FileText, texto: "Cadastrar Tipo"}
-};
-
-
-
-const BtnAcao = ({ funcao, acao }) => {
+const BtnAcao = ({ funcao, acao, objeto }) => {
   const style = tv({
     base: "inline-flex px-1 py-[6px] text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-[12px] text-center items-center",
     variants: {
@@ -28,11 +16,21 @@ const BtnAcao = ({ funcao, acao }) => {
     }
   });
 
+const Acoes = {
+  "Editar": { icone: Pencil, texto: "Editar" },
+  "Excluir": { icone: Trash, texto: "Excluir" },
+  "Visualizar": { icone: Eye, texto: "Visualizar" },
+  "Publicados": {icone: PresentationChart, texto: "Publicados"},
+  "Cadastrar": { icone: FilePlus, texto: "Cadastrar" },
+  "VisualizarMais": {icone: Plus, texto: "Visualizar Mais"},
+  "CadastrarTipo": {icone: FileText, texto: ""}
+};
+
   const Acao = Acoes[acao];
   if (!Acao) return null;
 
   const Icone = Acao.icone;
-  const Texto = Acao.texto;
+  const Texto = objeto ? `Cadastrar  ${objeto}` : Acao.texto;
 
   const isVisualizarMais = acao === "VisualizarMais";
 

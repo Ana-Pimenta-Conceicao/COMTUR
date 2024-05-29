@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import axios from "axios";
 import "../turismo/index.css";
@@ -17,7 +18,7 @@ function TipoTurismo() {
 
   const [data, setData] = useState([]);
   const [atualizarData, setAtualizarData] = useState(true);
-  
+
   const [modalInserir, setModalInserir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
@@ -25,7 +26,7 @@ function TipoTurismo() {
   const [modalCadastrado, setModalCadastrado] = useState(false);
   const [modalExcluido, setModalExcluido] = useState(false);
   const [modalEditado, setModalEditado] = useState(false);
-  
+
   const [tipoturismoNome, setTipoTurismoNome] = useState("");
   const [tipoturismoId, setTipoTurismoId] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -36,6 +37,8 @@ function TipoTurismo() {
     id: "",
     nome: "",
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
@@ -97,7 +100,11 @@ function TipoTurismo() {
     delete tipoturismoSelecionado.id;
 
     await axios
-      .post(baseUrl, { nome: tipoturismoNome, imagem: 'teste', idUsuario: idUsuario })
+      .post(baseUrl, {
+        nome: tipoturismoNome,
+        imagem: "teste",
+        idUsuario: idUsuario,
+      })
       .then((response) => {
         setData(data.concat(response.data));
         abrirFecharModalInserir();
@@ -112,7 +119,9 @@ function TipoTurismo() {
     console.log("Id que chegou: ", tipoturismoId);
     try {
       const response = await axios.put(`${baseUrl}/${tipoturismoId}`, {
-        nome: tipoturismoNome, imagem: 'teste', idUsuario: idUsuario
+        nome: tipoturismoNome,
+        imagem: "teste",
+        idUsuario: idUsuario,
       });
 
       const updatedTipoTurismo = response.data;
@@ -128,7 +137,6 @@ function TipoTurismo() {
 
       abrirFecharModalEditar();
       toggleModalEdita();
-
     } catch (error) {
       console.log(error);
     }
@@ -236,9 +244,15 @@ function TipoTurismo() {
               numColunas={4}
             />
             <div className="float-right flex-auto py-6">
-            <BtnAcao
+              <BtnAcao
                 funcao={() => abrirFecharModalInserir("Cadastrar")}
                 acao="Cadastrar"
+              />
+
+              <BtnAcao
+                funcao={() => navigate(`/turismo`)}
+                acao="CadastrarTipo"
+                objeto="Turismo"
               />
             </div>
           </div>
@@ -260,11 +274,18 @@ function TipoTurismo() {
             </div>
           </ModalBody>
           <ModalFooter>
-              <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
-              <BtnModais funcao={() => abrirFecharModalInserir()} acao="Cancelar" />            
+            <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
+            <BtnModais
+              funcao={() => abrirFecharModalInserir()}
+              acao="Cancelar"
+            />
           </ModalFooter>
         </Modal>
-        <PopupCadastrado isOpen={modalCadastrado} toggle={toggleModalCadastro} objeto="Tipo de Turismo" />
+        <PopupCadastrado
+          isOpen={modalCadastrado}
+          toggle={toggleModalCadastro}
+          objeto="Tipo de Turismo"
+        />
         <Modal isOpen={modalEditar}>
           <ModalHeader>Editar Tipo Turismo</ModalHeader>
           <ModalBody>
@@ -290,25 +311,37 @@ function TipoTurismo() {
             </div>
           </ModalBody>
           <ModalFooter>
-          <BtnModais funcao={() => pedidoAtualizar()} acao="Editar" />
-          <BtnModais funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
+            <BtnModais funcao={() => pedidoAtualizar()} acao="Editar" />
+            <BtnModais
+              funcao={() => abrirFecharModalEditar()}
+              acao="Cancelar"
+            />
           </ModalFooter>
         </Modal>
-        <PopupEditado isOpen={modalEditado} toggle={toggleModalEdita} objeto="Tipo de Turismo" />
+        <PopupEditado
+          isOpen={modalEditado}
+          toggle={toggleModalEdita}
+          objeto="Tipo de Turismo"
+        />
 
         <Modal isOpen={modalDeletar}>
           <ModalBody>
-            <label>
-              Confirma a exclusão de "{tipoturismoNome}" ?
-            </label>
+            <label>Confirma a exclusão de "{tipoturismoNome}" ?</label>
           </ModalBody>
           <ModalFooter>
-          <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
-          <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar"/>
+            <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+            <BtnModais
+              funcao={() => abrirFecharModalDeletar()}
+              acao="Cancelar"
+            />
           </ModalFooter>
         </Modal>
 
-        <PopupExcluido isOpen={modalExcluido} toggle={toggleModalExclui} objeto="Tipo de Turismo" />
+        <PopupExcluido
+          isOpen={modalExcluido}
+          toggle={toggleModalExclui}
+          objeto="Tipo de Turismo"
+        />
       </div>
     );
   }

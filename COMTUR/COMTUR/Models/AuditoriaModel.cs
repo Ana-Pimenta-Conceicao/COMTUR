@@ -26,13 +26,13 @@ namespace COMTUR.Models
 
         public void ObterData()
         {
-            DateTime data = DateTime.UtcNow;
+            DateTime data = DateTime.Now;
             this.Data = data.ToString("dd/MM/yyyy");
         }
 
         public void ObterHora()
         {
-            DateTime data = DateTime.UtcNow;
+            DateTime data = DateTime.Now;
             this.Hora = data.ToString("HH:mm");
         }
     }

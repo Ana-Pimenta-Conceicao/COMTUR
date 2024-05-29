@@ -63,7 +63,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
 
     {
       title: "Turismos",
-      src: "tipoTurismo",
+      src: "turismo",
       submenu: true,
       submenuItems: [
         { title: "Turismos", link: "/turismo" },

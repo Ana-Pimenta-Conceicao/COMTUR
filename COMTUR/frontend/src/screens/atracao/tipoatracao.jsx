@@ -37,6 +37,8 @@ function TipoAtracao() {
     nome: "",
   });
 
+  const navigate = useNavigate();
+
   const TipoAtracaoSet = (tipoatracao, opcao) => {
     setTipoAtracaoNome(tipoatracao.nome);
     setTipoAtracaoId(tipoatracao.id);
@@ -162,84 +164,78 @@ function TipoAtracao() {
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
 
-  
-
   useEffect(() => {
     const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
     setUserType(userTypeFromLocalStorage);
   }, []);
 
   const apresentaDados = Array.isArray(currentItems)
-  ? currentItems.map((tipoatracao) => {
-      return {
-        id: tipoatracao.id,
-        nome:
-        tipoatracao.nome,
-        status: "teste",
-        acoes: (
-          <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-            <BtnAcao
-              funcao={() => TipoAtracaoSet(tipoatracao, "Editar")}
-              acao="Editar"
-            />
-            <BtnAcao
-              funcao={() => TipoAtracaoSet(tipoatracao, "Excluir")}
-              acao="Excluir"
-            />
-            <BtnAcao
-              funcao={() => TipoAtracaoSet(tipoatracao, "Visualizar")}
-              acao="Visualizar"
-            />
-          </div>
-        ),
-      };
-    })
-  : [];
-
+    ? currentItems.map((tipoatracao) => {
+        return {
+          id: tipoatracao.id,
+          nome: tipoatracao.nome,
+          status: "teste",
+          acoes: (
+            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+              <BtnAcao
+                funcao={() => TipoAtracaoSet(tipoatracao, "Editar")}
+                acao="Editar"
+              />
+              <BtnAcao
+                funcao={() => TipoAtracaoSet(tipoatracao, "Excluir")}
+                acao="Excluir"
+              />
+              <BtnAcao
+                funcao={() => TipoAtracaoSet(tipoatracao, "Visualizar")}
+                acao="Visualizar"
+              />
+            </div>
+          ),
+        };
+      })
+    : [];
 
   if (userType === "1" || userType === "3") {
     return <Navigate to="/notfound" />;
   } else {
     return (
       <div className="home">
-      <div className="h-screen flex fixed">
-        <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
-      </div>
-      <div
-        className="flex-1 container-fluid"
-        style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
-      >
-        <NavBarAdm />
-        <div className="pl-8 pr-8 pt-[20px]">
-          <h1 className="text-3xl font-semibold pb-2">Lista de Tipos de Atrações</h1>
-          <hr className="pb-4 border-[2.5px] border-gray-300" />
-          <Tabela
-            object={apresentaDados}
-            colunas={[
-              "ID",
-              "Nome",
-              "Status",
-              "Ações"
-            ]}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            goToPage={setCurrentPage}
-            numColunas={4}
-          />
-
-          <div className="float-right flex-auto py-6">
-            <BtnAcao
-              funcao={() => VisualizarTodasNoticias()}
-              acao="Publicados"
+        <div className="h-screen flex fixed">
+          <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
+        </div>
+        <div
+          className="flex-1 container-fluid"
+          style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
+        >
+          <NavBarAdm />
+          <div className="pl-8 pr-8 pt-[20px]">
+            <h1 className="text-3xl font-semibold pb-2">
+              Lista de Tipos de Atrações
+            </h1>
+            <hr className="pb-4 border-[2.5px] border-gray-300" />
+            <Tabela
+              object={apresentaDados}
+              colunas={["ID", "Nome", "Status", "Ações"]}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              goToPage={setCurrentPage}
+              numColunas={4}
             />
 
-            <BtnAcao
-              funcao={() => abrirFecharModalInserir("Cadastrar")}
-              acao="Cadastrar"
-            />
+            <div className="float-right flex-auto py-6">
+              <BtnAcao
+                funcao={() => abrirFecharModalInserir("Cadastrar")}
+                acao="Cadastrar"
+              />
+
+              <BtnAcao
+                funcao={() => navigate(`/atracao`)}
+                acao="CadastrarTipo"
+                objeto="Atração"
+              />
+            </div>
           </div>
         </div>
-      </div>
 
         <Modal isOpen={modalInserir}>
           <ModalHeader>Cadastrar Tipo de Atração</ModalHeader>
@@ -256,11 +252,18 @@ function TipoAtracao() {
             </div>
           </ModalBody>
           <ModalFooter>
-          <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
-          <BtnModais funcao={() => abrirFecharModalInserir()} acao="Cancelar" /> 
+            <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
+            <BtnModais
+              funcao={() => abrirFecharModalInserir()}
+              acao="Cancelar"
+            />
           </ModalFooter>
         </Modal>
-        <PopupCadastrado isOpen={modalCadastrado} toggle={toggleModalCadastro} objeto="Tipo de Atração" />
+        <PopupCadastrado
+          isOpen={modalCadastrado}
+          toggle={toggleModalCadastro}
+          objeto="Tipo de Atração"
+        />
         <Modal isOpen={modalEditar}>
           <ModalHeader>Editar Tipo de Atração</ModalHeader>
           <ModalBody>
@@ -286,23 +289,35 @@ function TipoAtracao() {
             </div>
           </ModalBody>
           <ModalFooter>
-          <BtnModais funcao={() => pedidoAtualizar()} acao="Editar" />
-          <BtnModais funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
+            <BtnModais funcao={() => pedidoAtualizar()} acao="Editar" />
+            <BtnModais
+              funcao={() => abrirFecharModalEditar()}
+              acao="Cancelar"
+            />
           </ModalFooter>
         </Modal>
-        <PopupEditado isOpen={modalEditado} toggle={toggleModalEdita} objeto="Tipo de Atração" />
+        <PopupEditado
+          isOpen={modalEditado}
+          toggle={toggleModalEdita}
+          objeto="Tipo de Atração"
+        />
         <Modal isOpen={modalDeletar}>
           <ModalBody>
-            <label>
-              Confirma a exclusão de "{tipoatracaoNome}" ?
-            </label>
+            <label>Confirma a exclusão de "{tipoatracaoNome}" ?</label>
           </ModalBody>
           <ModalFooter>
-          <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
-          <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar"/>
+            <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+            <BtnModais
+              funcao={() => abrirFecharModalDeletar()}
+              acao="Cancelar"
+            />
           </ModalFooter>
         </Modal>
-        <PopupExcluido isOpen={modalExcluido} toggle={toggleModalExclui} objeto="Tipo de Atração" />
+        <PopupExcluido
+          isOpen={modalExcluido}
+          toggle={toggleModalExclui}
+          objeto="Tipo de Atração"
+        />
       </div>
     );
   }

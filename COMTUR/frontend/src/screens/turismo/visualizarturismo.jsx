@@ -12,7 +12,8 @@ import {
   Clock,
   CalendarCheck,
 } from "@phosphor-icons/react";
-import AtracaoEstatica from "../../assets/atracaoEstatica";
+
+import GaleriaAtracao from "../../components/cards/GaleriaAtracao";
 
 export default function VisualizarTurismos() {
   const { id } = useParams();
@@ -173,43 +174,7 @@ export default function VisualizarTurismos() {
               <h2 className="text-[#FFD121] text-base font-bold text-center pb-3">
                 GALERIA DE ATRAÇÕES
               </h2>
-              <div className="flex flex-row w-full justify-between px-8">
-                <div className="flex flex-col bg-white h-[155px]">
-                  <AtracaoEstatica />
-                  <h2 className="text-[12px] px-1 font-semibold pt-2">
-                    NOME DA ATRAÇÃO
-                  </h2>
-                  <h2 className="text-[8px] px-1 font-medium pt-2 pb-2">
-                    Tipo
-                  </h2>
-                  <div className="flex w-full justify-center">
-                    <button
-                      className="border-[#FFD121] border-[1.5px] w-[100px] h-[20px] text-[8px] sm:text-bas text-[#373636]
-                    font-medium hover:bg-black hover:text-white "
-                    >
-                      Leia Mais
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex flex-col bg-white h-[155px]">
-                  <AtracaoEstatica />
-                  <h2 className="text-[12px] px-1 font-semibold pt-2">
-                    NOME DA ATRAÇÃO
-                  </h2>
-                  <h2 className="text-[8px] px-1 font-medium pt-2 pb-2">
-                    Tipo
-                  </h2>
-                  <div className="flex w-full justify-center">
-                    <button
-                      className="border-[#FFD121] border-[1.5px] w-[100px] h-[20px] text-[8px] sm:text-bas text-[#373636]
-                    font-medium hover:bg-black hover:text-white "
-                    >
-                      Leia Mais
-                    </button>
-                  </div>
-                </div>
-              </div>
+            <GaleriaAtracao/> 
             </div>
           </div>
 

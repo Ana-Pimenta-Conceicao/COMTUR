@@ -164,7 +164,14 @@ namespace COMTUR.Data
 			modelBuilder.Entity<AtracaoModel>().HasData(
             new AtracaoModel { Id = 1, Nome = "Ana Castela", Descricao = "Show da Ana Castela", QRCode = "123456", IdTipoAtracao = 1, IdTurismo = 1, IdUsuario = 4 }
             );
-
+            //Adicionando Atracao para teste
+            modelBuilder.Entity<AtracaoModel>().HasData(
+            new AtracaoModel { Id = 3, Nome = "Fernando Lima", Descricao = "Show do Fernando Lima", QRCode = "123456", IdTipoAtracao = 1, IdTurismo = 1, IdUsuario = 4 }
+            );
+            //Adicionando Atracao para teste
+            modelBuilder.Entity<AtracaoModel>().HasData(
+            new AtracaoModel { Id = 2, Nome = "Gustavo Perdido", Descricao = "Show do Gustavo Perdido", QRCode = "123456", IdTipoAtracao = 1, IdTurismo = 1, IdUsuario = 4 }
+            );
             //Adicionando Turismo para teste
             modelBuilder.Entity<TurismoModel>().HasData(
             new TurismoModel { Id = 1, Nome = "Praça da Fonte", Descricao = "Praça da Fonte", Horario = "18:00", QRCode = "123456", Local = "Praça da Fonte", DiaFuncionamento = "Todos os dias", IdUsuario = 2, IdTipoTurismo = 1 }

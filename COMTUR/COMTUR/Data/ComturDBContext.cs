@@ -149,6 +149,11 @@ namespace COMTUR.Data
 			modelBuilder.Entity<TipoAtracaoModel>().HasData(
             new TipoAtracaoModel { Id = 1, Nome = "Show", IdUsuario = 4 }
             );
+            
+            //Adicionando TipoAtracao para teste
+			modelBuilder.Entity<TipoAtracaoModel>().HasData(
+            new TipoAtracaoModel { Id = 2, Nome = "Monumento", IdUsuario = 4 }
+            );
 
             //Adicionando Empresa para teste
             modelBuilder.Entity<EmpresaModel>().HasData(
@@ -171,6 +176,13 @@ namespace COMTUR.Data
             //Adicionando Atracao para teste
             modelBuilder.Entity<AtracaoModel>().HasData(
             new AtracaoModel { Id = 2, Nome = "Gustavo Perdido", Descricao = "Show do Gustavo Perdido", QRCode = "123456", IdTipoAtracao = 1, IdTurismo = 1, IdUsuario = 4 }
+            );
+            //Adicionando Atracao para teste
+            modelBuilder.Entity<AtracaoModel>().HasData(
+            new AtracaoModel { Id = 4, Nome = "Juliana Freitas", Descricao = "Show do Gustavo Perdido", QRCode = "123456", IdTipoAtracao = 2, IdTurismo = 1, IdUsuario = 4 }
+            );//Adicionando Atracaopara teste
+            modelBuilder.Entity<AtracaoModel>().HasData(
+            new AtracaoModel { Id = 5, Nome = "José Louco", Descricao = "Show do Gustavo Perdido", QRCode = "123456", IdTipoAtracao = 2, IdTurismo = 1, IdUsuario = 4 }
             );
             //Adicionando Turismo para teste
             modelBuilder.Entity<TurismoModel>().HasData(

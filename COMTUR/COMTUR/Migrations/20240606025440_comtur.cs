@@ -399,7 +399,11 @@ namespace COMTUR.Migrations
             migrationBuilder.InsertData(
                 table: "tipoatracao",
                 columns: new[] { "tipoatracaoid", "usuarioid", "nome" },
-                values: new object[] { 1, 4, "Show" });
+                values: new object[,]
+                {
+                    { 1, 4, "Show" },
+                    { 2, 4, "Monumento" }
+                });
 
             migrationBuilder.InsertData(
                 table: "tipoturismo",
@@ -432,7 +436,9 @@ namespace COMTUR.Migrations
                 {
                     { 1, "Show da Ana Castela", 1, 1, 4, "Ana Castela", "123456", null },
                     { 2, "Show do Gustavo Perdido", 1, 1, 4, "Gustavo Perdido", "123456", null },
-                    { 3, "Show do Fernando Lima", 1, 1, 4, "Fernando Lima", "123456", null }
+                    { 3, "Show do Fernando Lima", 1, 1, 4, "Fernando Lima", "123456", null },
+                    { 4, "Show do Gustavo Perdido", 2, 1, 4, "Juliana Freitas", "123456", null },
+                    { 5, "Show do Gustavo Perdido", 2, 1, 4, "José Louco", "123456", null }
                 });
 
             migrationBuilder.CreateIndex(

@@ -17,7 +17,12 @@ namespace COMTUR.Repositorios
 			_hostingEnvironment = hostingEnvironment;
 		}
 
-		public async Task<AtracaoModel> BuscarPorId(int id)
+        public async Task<List<AtracaoModel>> BuscarPorTurismo(int idTurismo)
+        {
+            return await _dbContext.Atracao.Where(x => x.IdTurismo == idTurismo).Include(n => n.ImagemAtracao).ToListAsync();
+        }
+
+        public async Task<AtracaoModel> BuscarPorId(int id)
 		{
 			return await _dbContext.Atracao.Include(n => n.ImagemAtracao).FirstOrDefaultAsync(x => x.Id == id);
 		}

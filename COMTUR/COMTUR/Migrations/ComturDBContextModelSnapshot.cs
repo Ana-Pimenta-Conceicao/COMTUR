@@ -83,6 +83,46 @@ namespace COMTUR.Migrations
                             IdUsuario = 4,
                             Nome = "Ana Castela",
                             QRCode = "123456"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Descricao = "Show do Fernando Lima",
+                            IdTipoAtracao = 1,
+                            IdTurismo = 1,
+                            IdUsuario = 4,
+                            Nome = "Fernando Lima",
+                            QRCode = "123456"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Descricao = "Show do Gustavo Perdido",
+                            IdTipoAtracao = 1,
+                            IdTurismo = 1,
+                            IdUsuario = 4,
+                            Nome = "Gustavo Perdido",
+                            QRCode = "123456"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Descricao = "Show do Gustavo Perdido",
+                            IdTipoAtracao = 2,
+                            IdTurismo = 1,
+                            IdUsuario = 4,
+                            Nome = "Juliana Freitas",
+                            QRCode = "123456"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Descricao = "Show do Gustavo Perdido",
+                            IdTipoAtracao = 2,
+                            IdTurismo = 1,
+                            IdUsuario = 4,
+                            Nome = "José Louco",
+                            QRCode = "123456"
                         });
                 });
 
@@ -490,6 +530,12 @@ namespace COMTUR.Migrations
                             Id = 1,
                             IdUsuario = 4,
                             Nome = "Show"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IdUsuario = 4,
+                            Nome = "Monumento"
                         });
                 });
 

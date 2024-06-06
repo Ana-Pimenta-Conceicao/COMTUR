@@ -1,13 +1,12 @@
 import { Eye, EyeSlash, ArrowLeft } from "@phosphor-icons/react";
 import logoComturSF from "../../assets/logoSF.svg";
 import comturBranco from "../../assets/comturBranco.svg";
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import InputMask from "react-input-mask";
 import axios from "axios";
 
 export default function Login() {
-
   const navigate = useNavigate();
   const baseUrl = "https://localhost:7256/api/Login";
 
@@ -36,7 +35,7 @@ export default function Login() {
       case 4: //adm
         return "/home";
       default:
-        return "/login"
+        return "/login";
     }
   };
 
@@ -63,8 +62,8 @@ export default function Login() {
         localStorage.setItem("nome", response.data.message.nome);
         localStorage.setItem("id", response.data.message.id);
 
-        console.log(localStorage.getItem("token"))
-        console.log(localStorage.getItem("id"))
+        console.log(localStorage.getItem("token"));
+        console.log(localStorage.getItem("id"));
         navigate(determinarRota(response.data.message.tipoUsuario));
       } else {
         console.log(3);
@@ -79,9 +78,12 @@ export default function Login() {
   return (
     <div className="bg-black w-full min-h-screen">
       <div className="flex flex-col md:flex-row w-full h-full">
-        <div className="flex flex-row text-lg text-white pt-4 pl-2" onClick={() => {
-          navigate(`/`)
-        }}>
+        <div
+          className="flex flex-row text-lg text-white pt-4 pl-2"
+          onClick={() => {
+            navigate(`/`);
+          }}
+        >
           <ArrowLeft className="mr-3" size={26} />
           Voltar
         </div>
@@ -89,17 +91,19 @@ export default function Login() {
           <img
             src={comturBranco}
             alt="Comtur Branco"
-            className="sm:hidden block w-[180px]"
+            className="lg:hidden w-[180px]"
           />
 
           <div className="flex flex-row justify-center items-center w-full  md:w-auto h-full mt-3 sm:ml-40">
-
             {/* <div className={` ${showSignupForm ? 'hidden sm:w-full' : 'sm:w-full'}`}> */}
-            <div className={`flex flex-col ${showSignupForm ? 'hidden sm:w-full' : ' sm:flex'}`}>
-
+            <div
+              className={`flex flex-col md:flex-col ${
+                showSignupForm ? "hidden sm:w-full" : " sm:flex"
+              }`}
+            >
               {!showSignupForm && (
                 <div className="w-full">
-                  <div className=" bg-white sm:mr-24 sm:w-[450px] w-[300px] h-[480px] ml-2 sm:ml-24 mt-4 rounded-2xl">
+                  <div className=" bg-white sm:mr-24  w-[300px] lg:w-[400px] h-[480px] ml-2  mt-4 rounded-2xl">
                     <div className="">
                       <h1 className="text-xl font-light pl-4 pt-4 tracking-normal">
                         Bem Vindo de Volta!
@@ -124,7 +128,10 @@ export default function Login() {
                           onChange={(e) => setEmail(e.target.value)}
                         />
                         <br />
-                        <label htmlFor="password" className="font-semibold pt-4">
+                        <label
+                          htmlFor="password"
+                          className="font-semibold pt-4"
+                        >
                           Senha:
                         </label>
                         <br />
@@ -144,7 +151,11 @@ export default function Login() {
                             type="button"
                             onClick={togglePasswordVisibility}
                           >
-                            {showPassword ? <EyeSlash size={32} /> : <Eye size={30} />}
+                            {showPassword ? (
+                              <EyeSlash size={32} />
+                            ) : (
+                              <Eye size={30} />
+                            )}
                           </button>
                         </div>
                       </div>
@@ -163,7 +174,9 @@ export default function Login() {
                       </div>
 
                       <div className="flex flex-col items-center pt-2 sm:text-lg text-sm">
-                        <h2 className="text-gray-500">Ainda não tem uma conta?</h2>
+                        <h2 className="text-gray-500">
+                          Ainda não tem uma conta?
+                        </h2>
 
                         <button
                           className="uppercase underline font-bold text-black text-lg w-full h-[50px] rounded-md"
@@ -180,14 +193,13 @@ export default function Login() {
             {/* <div className="flex flex-row w-full justify-center items-center">
               <div className=" w-full md:w-auto h-screen justify-center items-center"></div> */}
             {!showSignupForm && (
-              <img
-                src={logoComturSF}
-                alt="Logo"
-                className={`logo-image sm:ml-32  w-[450px] cursor-pointer duration-500 ${isRotated ? "rotate-[360deg]" : ""} hidden sm:block`}
-                onClick={rotateLogo}
-              />
-            )}
-
+  <img
+    src={logoComturSF}
+    alt="Logo"
+    className={`logo-image lg:ml-32 w-[450px] cursor-pointer duration-500 ${isRotated ? "rotate-[360deg]" : ""} hidden md:block`}
+    onClick={rotateLogo}
+  />
+)}
           </div>
 
           {/* Divisão entre os forms */}
@@ -198,13 +210,18 @@ export default function Login() {
               <img
                 src={logoComturSF}
                 alt="Logo"
-                className={`logo-image sm:ml-32  w-[450px] cursor-pointer duration-500 ${isRotated ? "rotate-[360deg]" : ""} hidden sm:block`}
+                className={`logo-image sm:ml-32  w-[450px] cursor-pointer duration-500 ${
+                  isRotated ? "rotate-[360deg]" : ""
+                } hidden sm:block`}
                 onClick={rotateLogo}
               />
             )}
 
-            <div className={`flex flex-col ${showSignupForm ? 'sm:flex' : 'hidden sm:w-full'}`}>
-
+            <div
+              className={`flex flex-col ${
+                showSignupForm ? "sm:flex" : "hidden sm:w-full"
+              }`}
+            >
               {/* Formulário de cadastro */}
               {showSignupForm && (
                 <div className="flex w-full">
@@ -261,7 +278,10 @@ export default function Login() {
                           onChange={(e) => setEmail(e.target.value)}
                         />
                         <br />
-                        <label htmlFor="password" className="font-semibold pt-2">
+                        <label
+                          htmlFor="password"
+                          className="font-semibold pt-2"
+                        >
                           Senha:
                         </label>
                         <br />
@@ -288,7 +308,10 @@ export default function Login() {
                             )}
                           </button>
 
-                          <label htmlFor="password" className="font-semibold pt-2">
+                          <label
+                            htmlFor="password"
+                            className="font-semibold pt-2"
+                          >
                             Confirme sua Senha:
                           </label>
                           <br />

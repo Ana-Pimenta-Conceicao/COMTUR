@@ -5,8 +5,8 @@ function atracaoEstatica() {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="150"
-      height="80"
+      width="220"
+      height="200"
       fill="none"
       viewBox="0 0 150 80"
     >

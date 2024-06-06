@@ -3,7 +3,7 @@ import axios from "axios";
 import NavbarUsr from "../../components/user/navbarUsr";
 import FooterUsr from "../../components/user/footerUsr";
 import { useParams, useNavigate } from "react-router-dom";
-import { CaretRight, CaretLeft } from "@phosphor-icons/react";
+import { CaretRight, CaretLeft, Star } from "@phosphor-icons/react";
 import React from "react";
 import Estrela from "../../assets/estrela";
 import Estrelasemcor from "../../assets/Estrelasemcor";
@@ -62,6 +62,8 @@ export default function VisualizarEmpresa() {
     }
     return (
         <div>
+
+            
             <NavbarUsr />
             <div className="flex flex-col px-4 sm:pl-24 sm:pr-24">
                 <h1 className="text-[#373636] mb-3 text-lg font-extrabold pt-4 sm:pt-14 sm:px-16 sm:text-4xl">
@@ -115,16 +117,13 @@ export default function VisualizarEmpresa() {
                         <div className="row mb-3 flex justify-between">
                             <div className="flex flex-col">
                                 <div class="d-flex justify-content-between mt-2">
-                                    <div class="flex items-center">
-                                        <Estrela />
-                                        <Estrela />
-                                        <Estrela />
-                                        <Estrela />
-                                        <Estrelasemcor />
-                                        <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">44</p>
-                                        <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">Avaliações</p>
+                                    <div className="flex flex-row w-full justify-start items-center text-[#FFD121]">
+                                        <Star size={20} /> <Star size={20} />
+                                        <Star size={20} />
+                                        <Star size={20} />
+                                        <Star size={20} />
+                                        <h3 className="text-gray-800 text-xs pl-2">14 avaliações</h3>
                                     </div>
-
                                 </div>
                             </div>
                             <div class="container d-flex align-items-center mt-6">
@@ -238,52 +237,50 @@ export default function VisualizarEmpresa() {
                     </div>
 
                 </div>
+
+                
             </div>
+
+        
 
 
             <FooterUsr />
             <Modal isOpen={modalAvaliacao}>
-                <div class="position-absolute top-0 end-0 mr-4 m-3 "><Comtur /> </div>
                 <ModalBody>
-                    <div class="flex items-center m-3">
-                        <div className="w-10 h-10 mr-2 rounded-full" >
+                   <div className="m-2">
+                    <div class="flex items-center mb-2">
+                        <div className="w-10 h-10 mr-2 rounded-full">
                             <Xadrez />
                         </div>
                         <div class="font-medium text-gray-500 ml-1">
                             <p>@User</p>
                         </div>
+                        <div class="ml-auto"><Comtur /></div>
                     </div>
-                    <div className="flex flex-col items-center justify-center">
-                        <h1 className="m-2 text-gray-500">Faça uma avaliação!</h1>
-                        <div className="flex items-center">
-                            <svg className="w-8 h-8 mx-3 text-yellow-300 m-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                            </svg>
-                            <svg className="w-8 h-8 mx-3 text-yellow-300 m-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                            </svg>
-                            <svg className="w-8 h-8 mx-3 text-yellow-300 m-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                            </svg>
-                            <svg className="w-8 h-8 mx-3 text-yellow-300 m-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                            </svg>
-                            <svg className="w-8 h-8 mx-3 text-gray-300 dark:text-gray-500 m-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                            </svg>
+                    <div className="flex flex-col items-center justify-center mb-8">
+                        <h1 className="m-2 text-black">Faça uma avaliação!</h1>
+                        <h2 className="m-2 text-gray-500">Compartilhe sua experiência para ajudar outras pessoas</h2>
+                        <div className="flex items-center mt-2">
+                            <div className="flex flex-row w-full justify-start items-center text-[#FFD121]">
+                                <Star size={30} /> <Star size={30} />
+                                <Star size={30} />
+                                <Star size={30} />
+                                <Star size={30} />
+                            </div>
                         </div>
                     </div>
 
-                    <div className="flex justify-end mt-10">
-                        <button className="btn btnavaliar bg-yellow-400 rounded-md m-1">
+                    <div className="flex justify-end">
+                        <button className="btn btnavaliar bg-yellow-400 rounded-md mr-1">
                             Avaliar
                         </button>
                         <button
-                            className="btn btncancelarmodal m-1"
+                            className="btn btncancelarmodal"
                             onClick={() => abrirFecharModalAvaliacao()}
                         >
                             Cancelar
                         </button>
+                    </div>
                     </div>
 
                 </ModalBody>

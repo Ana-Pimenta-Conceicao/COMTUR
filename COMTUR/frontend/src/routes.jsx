@@ -44,7 +44,6 @@ const AppRoutes = () => {
                 <Route path="/todasnoticias" element={<TodasNoticias/>} />
                 <Route path="/login" element={ <Login/> } />
                 <Route path="/notfound" element={<NotFound/>} />
-                <Route path="/empresa" element={<Empresa/>}/>
                 <Route path="/visualizarTurismo/:id" element={<VisualizarTurismos/>}/>
                 <Route path="/visualizarEmpresa/:id" element={<VisualizarEmpresa/>}/>
 
@@ -60,7 +59,7 @@ const AppRoutes = () => {
                 <Route path="/homeEmpresario" element={<ProtectedRoute element={<HomeEmpresario/>} /> } />
                 <Route path="/turismo" element={<ProtectedRoute element={<Turismo/>} /> } />
                 <Route path="/visualizaratracao/:id" element={<VisualizarAtracao/>} />
-            
+                <Route path="/empresa" element={<ProtectedRoute element={<Empresa/>}/> } />
 
                 <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
             </Routes>

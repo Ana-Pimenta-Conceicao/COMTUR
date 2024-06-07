@@ -87,28 +87,19 @@ export default function Login() {
           <ArrowLeft className="mr-3" size={26} />
           Voltar
         </div>
-        <div className="flex flex-col pt-5 justify-center items-center">
-          <img
-            src={comturBranco}
-            alt="Comtur Branco"
-            className="lg:hidden w-[180px]"
-          />
-
-          <div className="flex flex-row justify-center items-center w-full  md:w-auto h-full mt-3 sm:ml-40">
-            {/* <div className={` ${showSignupForm ? 'hidden sm:w-full' : 'sm:w-full'}`}> */}
-            <div
-              className={`flex flex-col md:flex-col ${
-                showSignupForm ? "hidden sm:w-full" : " sm:flex"
-              }`}
-            >
+        {/* aqui */}
+        <div className="flex flex-col w-full pt-5 justify-center lg:justify-start items-center">
+          <img src={comturBranco} alt="Comtur Branco" className="lg:hidden w-[180px]" />
+          <div className="flex flex-row justify-center lg:justify-start  items-center w-full sm:ml-9 h-full mt-3">
+            <div className={`flex flex-col md:flex-col ${showSignupForm ? "hidden sm:w-full" : " sm:flex" }`} >
               {!showSignupForm && (
-                <div className="w-full">
-                  <div className=" bg-white sm:mr-24  w-[300px] lg:w-[400px] h-[480px] ml-2  mt-4 rounded-2xl">
+                <div className="w-full ">
+                  <div className=" bg-white sm:mr-24  w-[300px] lg:w-[400px] 2xl:w-[500px] h-[480px] 2xl:h-[550px]  mt-4 rounded-2xl">
                     <div className="">
-                      <h1 className="text-xl font-light pl-4 pt-4 tracking-normal">
+                      <h1 className="text-xl 2xl:text-3xl font-light pl-4 pt-4 tracking-normal">
                         Bem Vindo de Volta!
                       </h1>
-                      <h1 className="text-2xl font-semibold pl-4 pt-3 tracking-wide">
+                      <h1 className="text-2xl 2xl:text-4xl font-semibold pl-4 pt-3 tracking-wide">
                         Efetuar Login
                       </h1>
                       <div className="pl-5 pr-5 pt-1">
@@ -193,13 +184,13 @@ export default function Login() {
             {/* <div className="flex flex-row w-full justify-center items-center">
               <div className=" w-full md:w-auto h-screen justify-center items-center"></div> */}
             {!showSignupForm && (
-  <img
-    src={logoComturSF}
-    alt="Logo"
-    className={`logo-image lg:ml-32 w-[450px] cursor-pointer duration-500 ${isRotated ? "rotate-[360deg]" : ""} hidden md:block`}
-    onClick={rotateLogo}
-  />
-)}
+              <img
+                src={logoComturSF}
+                alt="Logo"
+                className={`flex justify-center w-[450px] cursor-pointer duration-500 ${isRotated ? "rotate-[360deg]" : ""} hidden md:block`}
+                onClick={rotateLogo}
+              />
+            )}
           </div>
 
           {/* Divisão entre os forms */}
@@ -210,17 +201,15 @@ export default function Login() {
               <img
                 src={logoComturSF}
                 alt="Logo"
-                className={`logo-image sm:ml-32  w-[450px] cursor-pointer duration-500 ${
-                  isRotated ? "rotate-[360deg]" : ""
-                } hidden sm:block`}
+                className={`logo-image sm:ml-32  w-[450px] cursor-pointer duration-500 ${isRotated ? "rotate-[360deg]" : ""
+                  } hidden sm:block`}
                 onClick={rotateLogo}
               />
             )}
 
             <div
-              className={`flex flex-col ${
-                showSignupForm ? "sm:flex" : "hidden sm:w-full"
-              }`}
+              className={`flex flex-col ${showSignupForm ? "sm:flex" : "hidden sm:w-full"
+                }`}
             >
               {/* Formulário de cadastro */}
               {showSignupForm && (

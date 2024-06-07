@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Importação corrigida
 import { CaretRight } from "@phosphor-icons/react";
 import Login from "../../assets/login.png";
 import axios from "axios";
@@ -7,6 +7,7 @@ import axios from "axios";
 const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
   const [submenuOpen, setSubmenuOpen] = useState({});
   const [userName, setUserName] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Buscar o nome do usuário do localStorage ao montar o componente
@@ -42,11 +43,12 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
     }
 
     // Redirecionar o usuário para a página de login
+    navigate("/login");
   };
 
   const Menus = [
     { title: "Início", src: "Home", gap: true },
-    { title: "Perfil", src: "perfil" },
+    { title: "Perfil", src: "perfil", id: localStorage.getItem("id") },
     {
       title: "Usuários",
       src: "usuario",
@@ -71,15 +73,15 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
       ],
     },
     { title: "Notícias", src: "Noticia" },
-   
-    { 
-      title: "Atrações", 
+
+    {
+      title: "Atrações",
       src: "Atracao",
       submenu: true,
       submenuItems: [
         { title: "Atrações", link: "/atracao" },
         { title: "Tipos de Atrações", link: "/tipoatracao" },
-      ], 
+      ],
     },
     { title: "Dashboard", src: "iconeDashboard" },
   ];
@@ -121,16 +123,44 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
         </div>
         <ul className="pt-6" style={{ padding: 0, position: "relative" }}>
           {Menus.map((Menu, index) => (
-            <>
-              <li
-                key={index}
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 w-full
-              ${Menu.gap ? "mt-9" : "mt-2"} ${
-                  Menu.src === 1 && "bg-light-white"
-                } `}
+            <li
+              key={index}
+              className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 w-full
+    ${Menu.gap ? "mt-9" : "mt-2"} ${Menu.src === 1 && "bg-light-white"} `}
+            >
+              {Menu.title !== "Perfil" && (
+              <Link
+                to={`/${Menu.src.toLowerCase()}`}
+                className="flex w-full text-inherit"
               >
+                <div className="flex items-center w-full">
+                  <img src={`../src/assets/${Menu.src}.png`} />
+                  <span
+                    className={`flex ${
+                      !open && "hidden"
+                    } origin-left duration-200 pl-2 w-full`}
+                    onClick={() => toggleSubmenu(index)}
+                  >
+                    {Menu.title}
+                  </span>
+                  {Menu.submenu && open && (
+                    <CaretRight
+                      size={15}
+                      onClick={() => toggleSubmenu(index)}
+                      className={`inline-flex ${
+                        open && "ml-[60px]"
+                      } justify-end w-full ${
+                        submenuOpen[index] ? "rotate-90" : ""
+                      } `}
+                    />
+                  )}
+                </div>
+              </Link>
+              )}
+              {/* Renderizar apenas uma ocorrência do link para o perfil */}
+              {Menu.title === "Perfil" && (
                 <Link
-                  to={`/${Menu.src.toLowerCase()}`}
+                  to={`/perfil/${localStorage.getItem("id")}`}
                   className="flex w-full text-inherit"
                 >
                   <div className="flex items-center w-full">
@@ -156,21 +186,9 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
                     )}
                   </div>
                 </Link>
-              </li>
-
-              {Menu.submenu && submenuOpen[index] && open && (
-                <ul>
-                  {Menu.submenuItems.map((submenuItem, subIndex) => (
-                    <li
-                      key={subIndex}
-                      className={`flex rounded-md p-2 cursor-pointer ml-7 hover:bg-light-white text-gray-300 text-xs items-center gap-x-4`}
-                    >
-                      <Link to={submenuItem.link}>{submenuItem.title}</Link>
-                    </li>
-                  ))}
-                </ul>
               )}
-            </>
+              {/* Fim da renderização do link para o perfil */}
+            </li>
           ))}
         </ul>
         <Link to="/login" onClick={handleLogout}>

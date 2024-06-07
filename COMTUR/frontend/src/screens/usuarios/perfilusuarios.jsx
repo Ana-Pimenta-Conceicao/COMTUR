@@ -3,20 +3,20 @@ import axios from "axios";
 import SidebarAdm from "../../components/admin/sidebarAdm";
 import NavBarAdm from "../../components/admin/navbarAdm";
 import { useParams } from "react-router-dom";
+import { Camera } from "@phosphor-icons/react";
 
 export default function VisualizarPerfil() {
   const { id } = useParams();
   const [usuario, setUsuario] = useState(null);
   const [tipoUsuario, setTipoUsuario] = useState("");
   const baseUrl = "https://localhost:7256/api/Usuario";
-  const [sidebarOpen, setSidebarOpen] = useState(true); 
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  
   useEffect(() => {
     // Função para buscar os detalhes do usuário pelo ID
     const buscarUsuario = async () => {
       try {
-        const response = await axios.get( baseUrl + `/${id}`);
+        const response = await axios.get(baseUrl + `/${id}`);
         setUsuario(response.data);
         console.log("Tipo de usuário recebido:", response.data.tipoUsuario);
         setTipoUsuario(response.data.tipoUsuario);
@@ -31,7 +31,7 @@ export default function VisualizarPerfil() {
   if (!usuario) {
     return <p>Carregando...</p>;
   }
- 
+
   return (
     <div className="home">
       <div className="h-screen flex fixed">
@@ -44,22 +44,31 @@ export default function VisualizarPerfil() {
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[20px]">
           <h1 className="text-2xl font-semibold pb-2">
-            Perfil do Usuário: {usuario.nome}
+            Bem Vindo, {usuario.nome}!
           </h1>
           <hr className="pb-[30px] border-[2.5px] border-[#DBDBDB]" />
         </div>
         <div className="grid grid-cols-4 justify-center">
-          <div className="pl-28 col-span-1 justify-center ">
-            <div className="relative rounded-full">
-              <img
-                className="flex w-40 h-40 rounded-full cursor-pointer"
-                src={usuario.imagemPerfilUsuario}
-                alt="Imagem do usuário"
-              />
+          <div className="pl-28 col-span-1 justify-center">
+            <div className="relative rounded-full ">
+              {usuario.imagemPerfilUsuario ? (
+                <img
+                  className="flex w-[200px] h-[200px] rounded-full cursor-pointer"
+                  src={usuario.imagemPerfilUsuario}
+                  alt="Imagem do usuário"
+                />
+              ) : (
+                <div
+                  className="flex justify-center items-center w-[225px] h-[225px] rounded-full bg-[#FFD121] text-gray-700"
+                  title="Imagem não disponível"
+                >
+                  <Camera size={80} />
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="flex flex-col col-span-3 pl-20 form-group ">
+          <div className="flex flex-col col-span-3 pl-20 form-group">
             <label className="text-sm font-semibold">ID: </label>
             <input
               type="text"

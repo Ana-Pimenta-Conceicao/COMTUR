@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240606025440_comtur")]
-    partial class comtur
+    [Migration("20240607194805_teste")]
+    partial class teste
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -682,6 +682,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("emailusuario");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("integer")
+                        .HasColumnName("idusuario");
+
                     b.Property<string>("ImagemPerfilUsuario")
                         .HasColumnType("text")
                         .HasColumnName("imagemperfilusuario");
@@ -715,6 +719,7 @@ namespace COMTUR.Migrations
                         {
                             Id = 1,
                             EmailUsuario = "usuario@gmail.com",
+                            IdUsuario = 0,
                             Nome = "Usuário",
                             SenhaUsuario = "123456",
                             Telefone = "(11) 11111-1111",
@@ -724,6 +729,7 @@ namespace COMTUR.Migrations
                         {
                             Id = 2,
                             EmailUsuario = "funcionario@gmail.com",
+                            IdUsuario = 0,
                             Nome = "Funcionário",
                             SenhaUsuario = "123456",
                             Telefone = "(22) 22222-2222",
@@ -733,6 +739,7 @@ namespace COMTUR.Migrations
                         {
                             Id = 3,
                             EmailUsuario = "empresario@gmail.com",
+                            IdUsuario = 0,
                             Nome = "Empresário",
                             SenhaUsuario = "123456",
                             Telefone = "(33) 33333-3333",
@@ -742,6 +749,7 @@ namespace COMTUR.Migrations
                         {
                             Id = 4,
                             EmailUsuario = "administrador@gmail.com",
+                            IdUsuario = 0,
                             Nome = "Administrador",
                             SenhaUsuario = "123456",
                             Telefone = "(44) 44444-4444",
@@ -751,6 +759,7 @@ namespace COMTUR.Migrations
                         {
                             Id = 5,
                             EmailUsuario = "ana@gmail.com",
+                            IdUsuario = 0,
                             Nome = "Ana",
                             SenhaUsuario = "123456",
                             Telefone = "(55) 5555-5555",
@@ -760,6 +769,7 @@ namespace COMTUR.Migrations
                         {
                             Id = 6,
                             EmailUsuario = "atendimento@lojatropicale.com.br",
+                            IdUsuario = 0,
                             Nome = "Tropicale",
                             SenhaUsuario = "123456",
                             Telefone = "(17) 3632-0117",

@@ -15,7 +15,7 @@ import BtnModais from "../../components/botoes/btnModais";
 import PopupExcluido from "../../components/popups/popupExcluido";
 import PopupEditado from "../../components/popups/popupEditado";
 
-export default function UsuarioComum() {
+export default function Empresario() {
   const baseUrl = "https://localhost:7256/api/Usuario";
 
   const [data, setData] = useState([]);
@@ -47,6 +47,8 @@ export default function UsuarioComum() {
   const [idUser, setId] = useState("");
   const [editImage, setEditImage] = useState(false); // Estado para controlar se a imagem está sendo editada
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [idUsuario, setIdUsuario] = useState("");
+  
 
   const navigate = useNavigate();
 
@@ -132,7 +134,8 @@ export default function UsuarioComum() {
     formData.append("telefone", telefoneUser);
     formData.append("emailUsuario", emailUser);
     formData.append("senhaUsuario", senhaUser);
-    formData.append("tipoUsuario", userType);
+    formData.append("tipoUsuario", 3);
+    formData.append("idUsuario", idUsuario);
 
     // Verificar se o campo de imagem está vazio
     if (imagemUser instanceof File) {
@@ -188,7 +191,8 @@ export default function UsuarioComum() {
     formData.append("telefone", telefoneUser);
     formData.append("emailUsuario", emailUser);
     formData.append("senhaUsuario", senhaUser);
-    formData.append("tipoUsuario", userType);
+    formData.append("tipoUsuario", 3);
+    formData.append("idUsuario", idUsuario);
 
     if (imagemUser instanceof File) {
       // Converter a imagem para base64 antes de enviar
@@ -296,11 +300,15 @@ export default function UsuarioComum() {
 
   useEffect(() => {
     const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
+    const idTipoUsuarioAPI = localStorage.getItem("id");
     setUserType(userTypeFromLocalStorage);
-  }, []);
+    setIdUsuario(idTipoUsuarioAPI);
+  }, []);   
 
   const apresentaDados = Array.isArray(currentItems)
-    ? currentItems.map((usuario) => {
+  ? currentItems
+      .filter((usuario) => usuario.tipoUsuario === 3) // Filtrar apenas os usuários com tipo de usuário igual a 2
+      .map((usuario) => {
         const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
 
         return {
@@ -327,7 +335,8 @@ export default function UsuarioComum() {
           ),
         };
       })
-    : [];
+  : [];
+
 
   // Função auxiliar para obter o nome do tipo de usuário com base no enum
   function obterNomeTipoUsuario(tipoUsuario) {
@@ -360,29 +369,7 @@ export default function UsuarioComum() {
           <NavBarAdm />
           <div className="pl-8 pr-8 pt-[20px]">
             <div className="flex justify-between items-center">
-              <h1 className="text-3xl font-semibold">Lista de Usuários</h1>
-              <div className="inline">
-                <label htmlFor="filtroTipoUsuario" className="mr-2"></label>
-                <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1">
-                    <Funnel size={18} />
-                  </span>
-                  <select
-                    id="filtroTipoUsuario"
-                    className="form-control"
-                    class="form-select"
-                    aria-label="Default select example"
-                    value={filtroTipoUsuario}
-                    onChange={handleFiltroTipoUsuarioChange}
-                  >
-                    <option value="">Todos</option>
-                    <option value="1">Usuário</option>
-                    <option value="2">Funcionário</option>
-                    <option value="3">Empresário</option>
-                    <option value="4">Administrador</option>
-                  </select>
-                </div>
-              </div>
+              <h1 className="text-3xl font-semibold">Lista de Empresários</h1>
             </div>
 
             <hr className="pb-4 border-[2.5px] border-gray-300" />
@@ -405,7 +392,7 @@ export default function UsuarioComum() {
         </div>
 
         <Modal isOpen={modalInserir}>
-          <ModalHeader>Cadastrar Usuario</ModalHeader>
+          <ModalHeader>Cadastrar Empresário</ModalHeader>
           <ModalBody>
             <div className="form-group">
               <label>Nome: </label>
@@ -466,10 +453,7 @@ export default function UsuarioComum() {
                   value={userType}
                   onChange={handleUserTypeChange}
                 >
-                  <option value={4}>Admistrador</option>
-                  <option value={3}>Empresário</option>
-                  <option value={2}>Funcionário</option>
-                  <option value={1}>Usuário</option>
+                 <option value={3}>Empresário</option>
                 </select>
               </div>
 
@@ -487,10 +471,10 @@ export default function UsuarioComum() {
         <PopupCadastrado
           isOpen={modalCadastrado}
           toggle={toggleModalCadastro}
-          objeto="Usuário"
+          objeto="Empresário"
         />
         <Modal isOpen={modalEditar}>
-          <ModalHeader>Alterar Usuario</ModalHeader>
+          <ModalHeader>Alterar Empresário</ModalHeader>
           <ModalBody>
             <div className="form-group">
               <label>ID: </label>
@@ -559,10 +543,7 @@ export default function UsuarioComum() {
                   value={userType}
                   onChange={handleUserTypeChange}
                 >
-                  <option value={4}>Admistrador</option>
                   <option value={3}>Empresário</option>
-                  <option value={2}>Funcionário</option>
-                  <option value={1}>Usuário</option>
                 </select>
               </div>
 
@@ -612,20 +593,34 @@ export default function UsuarioComum() {
           </ModalBody>
           <ModalFooter>
             <BtnModais funcao={() => pedidoAtualizar()} acao="Editar" />
-            <BtnModais funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
+            <BtnModais
+              funcao={() => abrirFecharModalEditar()}
+              acao="Cancelar"
+            />
           </ModalFooter>
         </Modal>
-        <PopupEditado isOpen={modalEditado} toggle={toggleModalEdita} objeto="Usuário" />
+        <PopupEditado
+          isOpen={modalEditado}
+          toggle={toggleModalEdita}
+          objeto="Empresário"
+        />
 
         <Modal isOpen={modalDeletar}>
           <ModalBody>Confirma a exclusão do(a) "{nomeUser}" ?</ModalBody>
           <ModalFooter>
-          <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
-          <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
+            <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+            <BtnModais
+              funcao={() => abrirFecharModalDeletar()}
+              acao="Cancelar"
+            />
           </ModalFooter>
         </Modal>
 
-        <PopupExcluido isOpen={modalExcluido} toggle={toggleModalExclui} objeto="Usuário" />
+        <PopupExcluido
+          isOpen={modalExcluido}
+          toggle={toggleModalExclui}
+          objeto="Empresário"
+        />
       </div>
     );
   }

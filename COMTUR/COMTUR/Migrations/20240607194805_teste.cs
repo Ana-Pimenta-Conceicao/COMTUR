@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class comtur : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,6 +38,7 @@ namespace COMTUR.Migrations
                 {
                     usuarioid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    idusuario = table.Column<int>(type: "integer", nullable: false),
                     nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     telefone = table.Column<string>(type: "text", nullable: false),
                     emailusuario = table.Column<string>(type: "text", nullable: false),
@@ -376,15 +377,15 @@ namespace COMTUR.Migrations
 
             migrationBuilder.InsertData(
                 table: "usuario",
-                columns: new[] { "usuarioid", "emailusuario", "imagemperfilusuario", "nome", "senhausuario", "telefone", "tipousuario" },
+                columns: new[] { "usuarioid", "emailusuario", "idusuario", "imagemperfilusuario", "nome", "senhausuario", "telefone", "tipousuario" },
                 values: new object[,]
                 {
-                    { 1, "usuario@gmail.com", null, "Usuário", "123456", "(11) 11111-1111", 1 },
-                    { 2, "funcionario@gmail.com", null, "Funcionário", "123456", "(22) 22222-2222", 2 },
-                    { 3, "empresario@gmail.com", null, "Empresário", "123456", "(33) 33333-3333", 3 },
-                    { 4, "administrador@gmail.com", null, "Administrador", "123456", "(44) 44444-4444", 4 },
-                    { 5, "ana@gmail.com", null, "Ana", "123456", "(55) 5555-5555", 3 },
-                    { 6, "atendimento@lojatropicale.com.br", null, "Tropicale", "123456", "(17) 3632-0117", 3 }
+                    { 1, "usuario@gmail.com", 0, null, "Usuário", "123456", "(11) 11111-1111", 1 },
+                    { 2, "funcionario@gmail.com", 0, null, "Funcionário", "123456", "(22) 22222-2222", 2 },
+                    { 3, "empresario@gmail.com", 0, null, "Empresário", "123456", "(33) 33333-3333", 3 },
+                    { 4, "administrador@gmail.com", 0, null, "Administrador", "123456", "(44) 44444-4444", 4 },
+                    { 5, "ana@gmail.com", 0, null, "Ana", "123456", "(55) 5555-5555", 3 },
+                    { 6, "atendimento@lojatropicale.com.br", 0, null, "Tropicale", "123456", "(17) 3632-0117", 3 }
                 });
 
             migrationBuilder.InsertData(

@@ -10,6 +10,10 @@ import Inicio from "./screens/inicio/inicio";
 import TipoUsuario from "./screens/tipousuario/tipousuario";
 import PerfilAdministrador from "./screens/administrador/perfilAdministrador";
 import Usuario from "./screens/usuarios/usuarios";
+import Funcionario from "./screens/usuarios/funcionario";
+import Administrador from "./screens/usuarios/administrador";
+import UsuarioComum from "./screens/usuarios/usuarioComum";
+import Empresario from "./screens/usuarios/empresario";
 import Login from "./screens/login/login";
 import TipoAtracao from "./screens/atracao/tipoatracao";
 import TodasNoticias from "./screens/noticia/todasNoticias";
@@ -55,6 +59,10 @@ const AppRoutes = () => {
                 <Route path="/tipousuario" element={<ProtectedRoute element={<TipoUsuario/>} />}/>
                 <Route path="/perfiladministrador/:id" element={<ProtectedRoute element={<PerfilAdministrador/> } />}/>
                 <Route path="/usuario" element={<ProtectedRoute element={ <Usuario/> } />}/>
+                <Route path="/funcionario" element={<ProtectedRoute element={ <Funcionario/> } />}/>
+                <Route path="/administrador" element={<ProtectedRoute element={ <Administrador/> } />}/>
+                <Route path="/usuariocomum" element={<ProtectedRoute element={ <UsuarioComum/> } />}/>
+                <Route path="/empresario" element={<ProtectedRoute element={ <Empresario/> } />}/>
                 <Route path="/perfilUsuario/:id" element={<ProtectedRoute element={ <PerfilUsuario/> } />}/>
                 <Route path="/homeEmpresario" element={<ProtectedRoute element={<HomeEmpresario/>} /> } />
                 <Route path="/turismo" element={<ProtectedRoute element={<Turismo/>} /> } />

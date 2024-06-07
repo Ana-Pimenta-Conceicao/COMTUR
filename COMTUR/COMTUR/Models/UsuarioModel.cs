@@ -14,7 +14,10 @@ namespace COMTUR.Models
 		[Column("usuarioid")]
 		public int Id { get; set; }
 
-		[Column("nome")]
+        [Column("idusuario")]
+        public int IdUsuario { get; set; }
+
+        [Column("nome")]
 		public string Nome { get; set; }
 
 		[Column("telefone")]

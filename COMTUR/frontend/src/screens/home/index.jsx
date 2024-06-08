@@ -34,6 +34,7 @@ const Home = () => {
           <NavbarAdm />
           <div className="cont-home pl-[50px]">
             <h1 className="text-2xl font-semibold">Bem Vindo, {userName || "Usuário"}!</h1>
+            <hr className="pb-4 border-[2.5px] border-gray-300" />
             <div className="flex">
               <CardHome />
             </div>

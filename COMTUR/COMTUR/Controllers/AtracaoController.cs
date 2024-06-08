@@ -24,7 +24,7 @@ namespace COMTUR.Controllers
 			_imagemAtracaoRepositorio = imagemAtracaoRepositorio;
 		}
 
-		[HttpGet("porTipoStatus/{tipoStatus}")]
+		/*[HttpGet("porTipoStatus/{tipoStatus}")]
 		public async Task<ActionResult<IEnumerable<AtracaoModel>>> GetAtracaoPorTipo(int tipoStatus)
 		{
 			var atracao = await _atracaoRepositorio.ListarPorTipoStatus(tipoStatus);
@@ -35,7 +35,7 @@ namespace COMTUR.Controllers
 			}
 
 			return Ok(atracao);
-		}
+		}*/
 
 		[HttpPost("{atracaoId}/imagens")]
 		public IActionResult AdicionarImagem(int atracaoId, [FromForm] ImagemAtracaoModel imagem)
@@ -52,13 +52,42 @@ namespace COMTUR.Controllers
 			return Ok(atracao);
 		}
 
-		[HttpGet("{id}")]
+        [HttpGet("{idTurismo}/AtracoesRelacionadas")]
+        public async Task<ActionResult<List<AtracaoModel>>> BuscarPorTurismo(int idTurismo)
+        {
+            List<AtracaoModel> atracao = await _atracaoRepositorio.BuscarPorTurismo(idTurismo);
+            return Ok(atracao);
+        }
+
+        [HttpGet("{id}")]
 		public async Task<ActionResult<AtracaoModel>> BuscarPorId(int id)
 		{
 			AtracaoModel atracao = await _atracaoRepositorio.BuscarPorId(id);
 			if (atracao == null)
 			{
 				return NotFound($"Atração com ID {id} não encontrada.");
+			}
+			return Ok(atracao);
+		}
+
+		[HttpGet("{id}/turismo")]
+		public async Task<ActionResult<AtracaoModel>> BuscarPorIdTurismo(int id)
+		{
+			AtracaoModel atracao = await _atracaoRepositorio.GetByIdTurismo(id);
+			if (atracao == null)
+			{
+				return NotFound($"Turismo com ID {id} não encontrada.");
+			}
+			return Ok(atracao);
+		}
+
+		[HttpGet("{id}/usuario")]
+		public async Task<ActionResult<AtracaoModel>> BuscarPorIdUsuario(int id)
+		{
+			AtracaoModel atracao = await _atracaoRepositorio.GetByIdUsuario(id);
+			if (atracao == null)
+			{
+				return NotFound($"Usuario com ID {id} não encontrada.");
 			}
 			return Ok(atracao);
 		}

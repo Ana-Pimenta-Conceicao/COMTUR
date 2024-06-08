@@ -14,9 +14,26 @@ public class TipoTurismoModel
 	[Key]
 	[Column("tipoturismoid")]
 	public int Id { get; set; }
+
     [Column("nome")]
     public string Nome { get; set; }
 
+	[Column("imagemtipoturismo")]
+	public string? Imagem { get; set; }
+
+	// relação com Empresa
 	[JsonIgnore]
-	public ICollection<AnuncioModel>? Anuncios { get; set; }
+	public ICollection<EmpresaModel>? Empresa { get; set; }
+
+	// relação com Turismo
+	[JsonIgnore]
+	public ICollection<TurismoModel>? Turismo { get; set; }
+
+    [JsonIgnore]
+    public UsuarioModel? UsuarioModel { get; set; }
+
+    [Column("usuarioid")]
+    [ForeignKey("usuarioid")]
+    public int IdUsuario { get; set; }
+
 }

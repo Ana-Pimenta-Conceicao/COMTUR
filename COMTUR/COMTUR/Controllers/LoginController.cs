@@ -50,7 +50,7 @@ namespace COMTUR.Controllers
                     _dbContext.Sessao.Add(sessao); // Ou _sessaoRepositorio.Adicionar(sessao);
                     await _dbContext.SaveChangesAsync(); // Ou _sessaoRepositorio.SalvarAsync();
 
-                    return Ok(new { autentication = true, message = new { tokenUsuario = token, tipoUsuario = UsuarioModel.TipoUsuario, nome = UsuarioModel.Nome } });
+                    return Ok(new { autentication = true, message = new { tokenUsuario = token, tipoUsuario = UsuarioModel.TipoUsuario, nome = UsuarioModel.Nome, id = UsuarioModel.Id } });
                 }
             }
 

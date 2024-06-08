@@ -33,24 +33,30 @@ namespace COMTUR.Repositorios
 		{
 			return await _dbContext.Empresa.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
-		public async Task<List<EmpresaModel>> ListarPorTipoStatus(int tipoStatus)
+
+		/*public async Task<List<EmpresaModel>> ListarPorTipoStatus(int tipoStatus)
 		{
 			return await _dbContext.Empresa
 				.Where(x => (int)x.TipoStatus == tipoStatus)
 				.ToListAsync();
+		}*/
+
+		public async Task<EmpresaModel> GetByIdTipoTurismo(int id)
+		{
+			return await _dbContext.Empresa.Include(objeto => objeto.TipoTurismoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
 
 		public async Task<List<EmpresaModel>> BuscarEmpresa()
 		{
-			return await _dbContext.Empresa.ToListAsync();
+			return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).ToListAsync();
 		}
 
 		public async Task<EmpresaModel> Adicionar(EmpresaModel empresaModel)
 		{
-			if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
+			/*if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
 			{
 				throw new ArgumentException("Tipo de status inválido");
-			}
+			}*/
 
 			await _dbContext.Empresa.AddAsync(empresaModel);
 			await _dbContext.SaveChangesAsync();
@@ -62,10 +68,10 @@ namespace COMTUR.Repositorios
 		{
 			EmpresaModel empresaPorId = await BuscarPorId(id);
 
-			if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
+			/*if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
 			{
 				throw new ArgumentException("Tipo de status inválido");
-			}
+			}*/
 
 			if (empresaPorId == null)
 			{
@@ -76,12 +82,12 @@ namespace COMTUR.Repositorios
 			empresaPorId.Nome = empresaModel.Nome;
 			empresaPorId.CNPJ = empresaModel.CNPJ;
 			empresaPorId.Endereco = empresaModel.Endereco;
-			empresaPorId.Imagem = empresaModel.Imagem;
-			empresaPorId.LegendaImagem = empresaModel.LegendaImagem;
 			empresaPorId.Descricao = empresaModel.Descricao;
-			empresaPorId.TipoStatus = empresaModel.TipoStatus;
+            empresaPorId.IdUsuario = empresaModel.IdUsuario;
+			empresaPorId.IdTipoTurismo = empresaModel.IdTipoTurismo;
+            //empresaPorId.TipoStatus = empresaModel.TipoStatus;
 
-			_dbContext.Empresa.Update(empresaPorId);
+            _dbContext.Empresa.Update(empresaPorId);
 			await _dbContext.SaveChangesAsync();
 
 			return empresaPorId;

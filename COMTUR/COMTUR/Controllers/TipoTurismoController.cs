@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using COMTUR.Models;
 using COMTUR.Repositorios.Interfaces;
+using COMTUR.Repositorios;
 
 namespace COMTUR.Controllers
 {
@@ -32,6 +33,17 @@ namespace COMTUR.Controllers
 				TipoTurismoModel tipo = await _tipoTurismoRepositorio.BuscarPorId(id);
 				return Ok(tipo);
 			}
+		}
+
+		[HttpGet("{id}/usuario")]
+		public async Task<ActionResult<TurismoModel>> BuscarPorIdUsuario(int id)
+		{
+			TipoTurismoModel tipo = await _tipoTurismoRepositorio.GetByIdUsuario(id);
+			if (tipo == null)
+			{
+				return NotFound($"Usuario com ID {id} não encontrada.");
+			}
+			return Ok(tipo);
 		}
 
 		[HttpPost]

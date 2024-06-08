@@ -48,7 +48,7 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpPost("{id}/CadastrarImagensEmpresa")]
-		public async Task<ActionResult<List<ImagemEmpresaModel>>> CadastrarImagensEmpresa([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id)
+		public async Task<ActionResult<List<ImagemEmpresaModel>>> CadastrarImagensEmpresa([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id, [FromForm] int idUsuario)
 		{
 			EmpresaModel empresa = await _EmpresaRepositorio.BuscarPorId(id);
 			if (empresa == null)
@@ -63,7 +63,8 @@ namespace COMTUR.Controllers
 				{
 					IdEmpresa = id,
 					Imagem = imagens[i],
-					LegendaImagem = legendas[i]
+					LegendaImagem = legendas[i],
+					IdUsuario = idUsuario
 				};
 
 				await _ImagemEmpresaRepositorio.Adicionar(novaImagem);

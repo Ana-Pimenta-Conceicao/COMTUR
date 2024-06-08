@@ -110,7 +110,7 @@ namespace COMTUR
 			// Dependência: ImagemNoticia
 			services.AddScoped<IImagemNoticiaRepositorio, ImagemNoticiaRepositorio>();
 			// Dependência: Noticia
-			services.AddScoped<INoticiaRepository, NoticiaRepository>();
+			services.AddScoped<INoticiaRepositorio, NoticiaRepositorio>();
 			// Dependência: TipoAtração
 			services.AddScoped<ITipoAtracaoRepositorio, TipoAtracaoRepositorio>();
 			// Dependência: TipoTurismo
@@ -121,10 +121,10 @@ namespace COMTUR
 			services.AddScoped<IImagemEmpresaRepositorio, ImagemEmpresaRepositorio>();
 			// Dependência: ImagemTurismo
 			services.AddScoped<IImagemTurismoRepositorio, ImagemTurismoRepositorio>();
-			// Dependência: Anuncio
-			services.AddScoped<IAnuncioRepositorio, AnuncioRepositorio>();
 			// Dependência: Sessão
 			services.AddScoped<ISessaoRepositorio, SessaoRepositorio>();
+			// Dependência: Turismo
+			services.AddScoped<ITurismoRepositorio, TurismoRepositorio>();
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -6,6 +6,7 @@ namespace COMTUR.Repositorios.Interfaces
 	{
 		Task<List<ImagemEmpresaModel>> BuscarImagemEmpresa();
 		Task<ImagemEmpresaModel> GetById(int id);
+		Task<ImagemEmpresaModel> GetByIdUsuario(int id);
 		Task<ImagemEmpresaModel> BuscarPorId(int id);
 		Task<ImagemEmpresaModel> Adicionar(ImagemEmpresaModel imagemEmpresa);
 		Task<ImagemEmpresaModel> Atualizar(ImagemEmpresaModel imagemEmpresa, int id);

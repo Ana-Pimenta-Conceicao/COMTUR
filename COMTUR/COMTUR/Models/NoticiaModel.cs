@@ -28,16 +28,32 @@ namespace COMTUR.Models
         public DateOnly DataPublicacao { get; set; }
 
 
-        [Column("horaPublicacao")]
+        [Column("horapublicacao")]
         public string HoraPublicacao { get; set; }
 
 		// Mapear o campo tipoStatus como enum
-		[Column("tipoStatus")]
+		/*[Column("tipostatus")]
 		[EnumDataType(typeof(TipoStatus))]
-		public TipoStatus TipoStatus { get; set; }
+		public TipoStatus TipoStatus { get; set; }*/
 
 		// relação com ImagemNoticia
 		public ICollection<ImagemNoticiaModel>? ImagemNoticia { get; set; }
 
-    }
+		// relação com funcionario/admin
+		[JsonIgnore]
+		public UsuarioModel? UsuarioModel { get; set; }
+
+		[Column("usuarioid")]
+		[ForeignKey("usuarioid")]
+		public int IdUsuario { get; set; }
+
+		// relaçao com Turismo
+		[JsonIgnore]
+		public TurismoModel? TurismoModel { get; set; }
+
+		[Column("idturismo")]
+		[ForeignKey("idturismo")]
+		public int? IdTurismo { get; set; }
+
+	}
 }

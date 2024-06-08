@@ -300,34 +300,48 @@ export default function UsuarioComum() {
   }, []);
 
   const apresentaDados = Array.isArray(currentItems)
-    ? currentItems.map((usuario) => {
-        const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
+  ? currentItems.map((usuario) => {
+      const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
 
-        return {
-          id: usuario.id,
-          nome: usuario.nome,
-          descricao: usuario.emailUsuario,
-          tipoUsuario: tipoUsuarioNome,
-          status: "teste",
-          acoes: (
-            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-              <BtnAcao
-                funcao={() => UserSet(usuario, "Editar")}
-                acao="Editar"
-              />
-              <BtnAcao
-                funcao={() => UserSet(usuario, "Excluir")}
-                acao="Excluir"
-              />
-              <BtnAcao
-                funcao={() => UserSet(usuario, "Visualizar")}
-                acao="Visualizar"
-              />
-            </div>
-          ),
-        };
-      })
-    : [];
+      const nome = usuario.nome && typeof usuario.nome === 'string'
+        ? (usuario.nome.length > 20 
+          ? `${usuario.nome.slice(0, 15)}...` 
+          : usuario.nome)
+        : '';
+
+      const descricao = usuario.emailUsuario && typeof usuario.emailUsuario === 'string'
+        ? (usuario.emailUsuario.length > 20 
+          ? `${usuario.emailUsuario.slice(0, 20)}...` 
+          : usuario.emailUsuario)
+        : '';
+
+      return {
+        id: usuario.id,
+        nome: nome,
+        descricao: descricao,
+        tipoUsuario: tipoUsuarioNome,
+        status: "teste",
+        acoes: (
+          <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+            <BtnAcao
+              funcao={() => UserSet(usuario, "Editar")}
+              acao="Editar"
+            />
+            <BtnAcao
+              funcao={() => UserSet(usuario, "Excluir")}
+              acao="Excluir"
+            />
+            <BtnAcao
+              funcao={() => UserSet(usuario, "Visualizar")}
+              acao="Visualizar"
+            />
+          </div>
+        ),
+      };
+    })
+  : [];
+
+
 
   // Função auxiliar para obter o nome do tipo de usuário com base no enum
   function obterNomeTipoUsuario(tipoUsuario) {
@@ -358,7 +372,7 @@ export default function UsuarioComum() {
           style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
         >
           <NavBarAdm />
-          <div className="pl-8 pr-8 pt-[20px]">
+          <div className="pl-8 pr-8 pt-[0px]">
             <div className="flex justify-between items-center">
               <h1 className="text-3xl font-semibold">Lista de Usuários</h1>
               <div className="inline">

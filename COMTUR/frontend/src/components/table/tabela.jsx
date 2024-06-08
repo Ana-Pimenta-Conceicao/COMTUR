@@ -1,6 +1,7 @@
 import React from "react";
 import Paginacao from "./Paginacao";
 
+
 function Tabela({ object, currentPage, totalPages, goToPage, colunas, numColunas }) {
   const renderTableHeader = (columns, numColumns) => {
     const colSpan = numColumns === 6 ? "grid-cols-11" : "grid-cols-7";

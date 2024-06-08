@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NavbarUsr from "../../components/user/navbarUsr";
-import FooterUsr from "../../components/user/footerUsr";
+import NavbarUsr from "../../components/user/navbarUsr.jsx";
+import FooterUsr from "../../components/user/footerUsr.jsx";
 import { useParams, useNavigate } from "react-router-dom";
-import BtnAcao from "../../components/botoes/btnAcao";
+import BtnAcao from "../../components/botoes/btnAcao.jsx";
 import {
   CaretRight,
   CaretLeft,

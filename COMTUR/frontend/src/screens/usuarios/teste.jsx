@@ -1,5 +1,5 @@
-import SidebarAdm from "../../components/sidebarAdm";
-import NavBarAdm from "../../components/navbarAdm";
+import SidebarAdm from "../../components/sidebarAdm.jsx";
+import NavBarAdm from "../../components/navbarAdm.jsx";
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";

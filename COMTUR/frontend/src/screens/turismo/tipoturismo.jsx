@@ -4,14 +4,14 @@ import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import axios from "axios";
 import "../turismo/index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SidebarAdm from "../../components/admin/sidebarAdm";
-import NavBarAdm from "../../components/admin/navbarAdm";
-import Tabela from "../../components/table/tabela";
-import BtnAcao from "../../components/botoes/btnAcao";
-import BtnModais from "../../components/botoes/btnModais";
-import PopupCadastrado from "../../components/popups/popupCadastro";
-import PopupExcluido from "../../components/popups/popupExcluido";
-import PopupEditado from "../../components/popups/popupEditado";
+import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
+import NavBarAdm from "../../components/admin/navbarAdm.jsx";
+import Tabela from "../../components/table/tabela.jsx";
+import BtnAcao from "../../components/botoes/btnAcao.jsx";
+import BtnModais from "../../components/botoes/btnModais.jsx";
+import PopupCadastrado from "../../components/popups/popupCadastro.jsx";
+import PopupExcluido from "../../components/popups/popupExcluido.jsx";
+import PopupEditado from "../../components/popups/popupEditado.jsx";
 
 function TipoTurismo() {
   const baseUrl = "https://localhost:7256/api/TipoTurismo";

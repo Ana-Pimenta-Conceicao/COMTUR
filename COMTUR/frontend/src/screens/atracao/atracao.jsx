@@ -1,11 +1,11 @@
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
-import SidebarAdm from "../../components/admin/sidebarAdm";
-import NavBarAdm from "../../components/admin/navbarAdm";
+import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
+import NavBarAdm from "../../components/admin/navbarAdm.jsx";
 import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
-import Tabela from "../../components/table/tabela";
-import BtnAcao from "../../components/botoes/btnAcao";
+import Tabela from "../../components/table/tabela.jsx";
+import BtnAcao from "../../components/botoes/btnAcao.jsx";
 import { Navigate, useNavigate } from "react-router-dom";
 
 function Atracao() {

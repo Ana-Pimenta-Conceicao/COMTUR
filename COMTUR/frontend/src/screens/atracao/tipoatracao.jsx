@@ -1,18 +1,18 @@
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
-import SidebarAdm from "../../components/admin/sidebarAdm";
-import NavBarAdm from "../../components/admin/navbarAdm";
+import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
+import NavBarAdm from "../../components/admin/navbarAdm.jsx";
 import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
 import { Navigate, useNavigate } from "react-router-dom";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
-import Tabela from "../../components/table/tabela";
-import BtnAcao from "../../components/botoes/btnAcao";
-import BtnModais from "../../components/botoes/btnModais";
-import PopupExcluido from "../../components/popups/popupExcluido";
-import PopupEditado from "../../components/popups/popupEditado";
-import PopupCadastrado from "../../components/popups/popupCadastro";
+import Tabela from "../../components/table/tabela.jsx";
+import BtnAcao from "../../components/botoes/btnAcao.jsx";
+import BtnModais from "../../components/botoes/btnModais.jsx";
+import PopupExcluido from "../../components/popups/popupExcluido.jsx";
+import PopupEditado from "../../components/popups/popupEditado.jsx";
+import PopupCadastrado from "../../components/popups/popupCadastro.jsx";
 
 function TipoAtracao() {
   const baseUrl = "https://localhost:7256/api/TipoAtracao";

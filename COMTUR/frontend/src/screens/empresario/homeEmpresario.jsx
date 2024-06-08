@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import SidebarEmp from "../../components/empresario/sidebarEmp";
+import SidebarEmp from "../../components/empresario/sidebarEmp.jsx";
 import { Navigate } from "react-router-dom";
-import NavbarAdm from "../../components/admin/navbarAdm";
-import CardDashboard from "../../components/cards/cardDashboard";
+import NavbarAdm from "../../components/admin/navbarAdm.jsx";
+import CardDashboard from "../../components/cards/cardDashboard.jsx";
 import { Cursor, Star, ThumbsUp } from "@phosphor-icons/react";
-import TabelaDashboard from "../../components/table/tabelaDashboard";
+import TabelaDashboard from "../../components/table/tabelaDashboard.jsx";
 
 const HomeEmpresario = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);

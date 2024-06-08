@@ -1,5 +1,5 @@
 import React from "react";
-import Paginacao from "./Paginacao";
+import Paginacao from "./paginacao.jsx";
 
 
 function Tabela({ object, currentPage, totalPages, goToPage, colunas, numColunas }) {

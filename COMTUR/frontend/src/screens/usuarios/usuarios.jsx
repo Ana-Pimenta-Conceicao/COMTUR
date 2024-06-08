@@ -4,16 +4,16 @@ import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import InputMask from "react-input-mask";
-import SidebarAdm from "../../components/admin/sidebarAdm";
-import NavBarAdm from "../../components/admin/navbarAdm";
+import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
+import NavBarAdm from "../../components/admin/navbarAdm.jsx";
 import { useNavigate } from "react-router-dom";
-import BtnAcao from "../../components/botoes/btnAcao";
-import Tabela from "../../components/table/tabela";
+import BtnAcao from "../../components/botoes/btnAcao.jsx";
+import Tabela from "../../components/table/tabela.jsx";
 import { Eye, EyeSlash, Funnel } from "@phosphor-icons/react";
-import PopupCadastrado from "../../components/popups/popupCadastro";
-import BtnModais from "../../components/botoes/btnModais";
-import PopupExcluido from "../../components/popups/popupExcluido";
-import PopupEditado from "../../components/popups/popupEditado";
+import PopupCadastrado from "../../components/popups/popupCadastro.jsx";
+import BtnModais from "../../components/botoes/btnModais.jsx";
+import PopupExcluido from "../../components/popups/popupExcluido.jsx";
+import PopupEditado from "../../components/popups/popupEditado.jsx";
 
 export default function UsuarioComum() {
   const baseUrl = "https://localhost:7256/api/Usuario";

@@ -4,16 +4,16 @@ import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import InputMask from "react-input-mask";
-import BtnAcao from "../../components/botoes/btnAcao";
-import BtnModais from "../../components/botoes/btnModais";
-import BtnModaisIMG from "../../components/botoes/btnModaisIMG";
-import SidebarAdm from "../../components/admin/sidebarAdm";
-import NavBarAdm from "../../components/admin/navbarAdm";
+import BtnAcao from "../../components/botoes/btnAcao.jsx";
+import BtnModais from "../../components/botoes/btnModais.jsx";
+import BtnModaisIMG from "../../components/botoes/btnModaisIMG.jsx";
+import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
+import NavBarAdm from "../../components/admin/navbarAdm.jsx";
 import { Navigate, useNavigate } from "react-router-dom";
-import PopupCadastrado from "../../components/popups/popupCadastro";
-import PopupExcluido from "../../components/popups/popupExcluido";
-import PopupEditado from "../../components/popups/popupEditado";
-import Tabela from "../../components/table/tabela";
+import PopupCadastrado from "../../components/popups/popupCadastro.jsx";
+import PopupExcluido from "../../components/popups/popupExcluido.jsx";
+import PopupEditado from "../../components/popups/popupEditado.jsx";
+import Tabela from "../../components/table/tabela.jsx";
 
 export default function Noticia() {
   const baseUrl = "https://localhost:7256/api/Noticia";

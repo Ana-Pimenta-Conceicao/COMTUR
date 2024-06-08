@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import axios from "axios";
-import SidebarAdm from "../../components/admin/sidebarAdm";
-import NavBarAdm from "../../components/admin/navbarAdm";
-import Tabela from "../../components/table/tabela";
-import BtnAcao from "../../components/botoes/btnAcao";
+import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
+import NavBarAdm from "../../components/admin/navbarAdm.jsx";
+import Tabela from "../../components/table/tabela.jsx";
+import BtnAcao from "../../components/botoes/btnAcao.jsx";
 import { useNavigate } from "react-router-dom";
-import BtnModaisIMG from "../../components/botoes/btnModais";
-import BtnModais from "../../components/botoes/btnModais";
-import PopupCadastrado from "../../components/popups/popupCadastro";
-import PopupEditado from "../../components/popups/popupEditado";
-import PopupExcluido from "../../components/popups/popupExcluido";
+import BtnModaisIMG from "../../components/botoes/btnModais.jsx";
+import BtnModais from "../../components/botoes/btnModais.jsx";
+import PopupCadastrado from "../../components/popups/popupCadastro.jsx";
+import PopupEditado from "../../components/popups/popupEditado.jsx";
+import PopupExcluido from "../../components/popups/popupExcluido.jsx";
 
 const Turismo = () => {
   const baseUrl = "https://localhost:7256/api/Turismo";

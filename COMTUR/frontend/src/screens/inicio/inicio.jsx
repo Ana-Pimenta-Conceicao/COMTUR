@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import NavbarUsr from "../../components/user/navbarUsr";
-import FooterUsr from "../../components/user/footerUsr";
+import NavbarUsr from "../../components/user/navbarUsr.jsx";
+import FooterUsr from "../../components/user/footerUsr.jsx";
 import "../inicio/inicio.css"
 import { CaretRight, CaretLeft } from "@phosphor-icons/react";
 

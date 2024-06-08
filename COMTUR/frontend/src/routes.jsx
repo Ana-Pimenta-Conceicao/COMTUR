@@ -4,7 +4,7 @@ import Noticia from './screens/noticia/noticia.jsx';
 import VisualizarNoticia from './screens/noticia/visualizarNoticia.jsx';
 import Home from "./screens/home/index.jsx";
 import Empresa from "./screens/empresa/empresa.jsx"; 
-import TipoTurismo from "./screens/turismo/tipoTurismo.jsx";
+import TipoTurismo from "./screens/turismo/tipoturismo.jsx";
 import Atracao from "./screens/atracao/atracao.jsx";
 import Inicio from "./screens/inicio/inicio.jsx";
 import TipoUsuario from "./screens/tipousuario/tipousuario.jsx";

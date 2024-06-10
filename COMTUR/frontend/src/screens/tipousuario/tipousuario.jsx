@@ -1,9 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react"
 import "bootstrap/dist/css/bootstrap.min.css";
-import SidebarAdm from "../../components/admin/sidebarAdm";
-import NavBarAdm from "../../components/admin/navbarAdm";
-import CardTipoUsuario from "../../components/cards/cardTipoUsuario";
+import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
+import NavBarAdm from "../../components/admin/navbarAdm.jsx";
+import CardTipoUsuario from "../../components/cards/cardTipoUsuario.jsx";
 
 export default function TipoUsuario() {
     const [sidebarOpen, setSidebarOpen] = useState(true);

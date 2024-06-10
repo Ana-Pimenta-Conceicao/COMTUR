@@ -29,7 +29,7 @@ namespace COMTUR.Controllers
             return Ok(usuarios);
         }
 
-		[HttpGet("porTipoStatus/{tipoStatus}")]
+		/*[HttpGet("porTipoStatus/{tipoStatus}")]
 		public async Task<ActionResult<IEnumerable<UsuarioModel>>> GetUsuarioPorTipo(int tipoStatus)
 		{
 			var usuarios = await _UsuarioRepositorio.ListarPorTipoStatus(tipoStatus);
@@ -40,7 +40,7 @@ namespace COMTUR.Controllers
 			}
 
 			return Ok(usuarios);
-		}
+		}*/
 
 		[HttpGet]
 		public async Task<ActionResult<List<UsuarioModel>>> BuscarUsuario()

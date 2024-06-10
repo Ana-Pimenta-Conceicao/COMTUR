@@ -19,24 +19,26 @@ namespace COMTUR.Models
 		public string Nome { get; set; }
 
 		[Column("cnpj")]
-		public long CNPJ { get; set; }
+		public string CNPJ { get; set; }
 
 		[Column("endereco")]
 		public string Endereco { get; set; }
 
-		[Column("imagem")]
-		public string? Imagem { get; set; }
-
-		[Column("legendaImagem")]
-		public string LegendaImagem { get; set; }
-
 		[Column("descricao")]
 		public string Descricao { get; set; }
 
+		// Relacionamento com tipoTurismo e Empresa
+		[JsonIgnore]
+		public TipoTurismoModel? TipoTurismoModel { get; set; }
+
+		[Column("tipoturismoid")]
+		[ForeignKey("tipoturismoid")]
+		public int IdTipoTurismo { get; set; }
+
 		// Mapear o campo tipoStatus como enum
-		[Column("tipoStatus")]
+		/*[Column("tipostatus")]
 		[EnumDataType(typeof(TipoStatus))]
-		public TipoStatus TipoStatus { get; set; }
+		public TipoStatus TipoStatus { get; set; }*/
 
 		// relação com empresario
 		[JsonIgnore]
@@ -48,9 +50,6 @@ namespace COMTUR.Models
 
 		// relação com ImagemEmpresa
 		public ICollection<ImagemEmpresaModel>? ImagemEmpresa { get; set; }
-
-		// relação com Anuncio
-		public ICollection<AnuncioModel>? AnuncioEmpresa { get; set; }
 
 	}
 }

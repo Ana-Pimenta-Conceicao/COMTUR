@@ -1,7 +1,4 @@
-﻿using COMTUR.Models.Enum;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -25,22 +22,36 @@ public class AtracaoModel
 	public string QRCode { get; set; }
 
 	// Mapear o campo tipoStatus como enum
-	[Column("tipoStatus")]
+	/*[Column("tipostatus")]
 	[EnumDataType(typeof(TipoStatus))]
-	public TipoStatus TipoStatus { get; set; }
-
-	[Column("imagemPerfilUsuario")]
-	public string? ImagemPerfilUsuario { get; set; }
+	public TipoStatus TipoStatus { get; set; }*/
 
 	// relaçao com TipoAtracao
 	[JsonIgnore]
 	public TipoAtracaoModel? TipoAtracaoModel { get; set; }
 
+	[Column("idtipoatracao")]
 	[ForeignKey("idtipoatracao")]
 	public int IdTipoAtracao { get; set; }
 
 	// relaçao com ImagemAtracao
 	public ICollection<ImagemAtracaoModel>? ImagemAtracao { get; set; }
+
+	// relaçao com Turismo
+	[JsonIgnore]
+	public TurismoModel? TurismoModel { get; set; }
+
+	[Column("idturismo")]
+	[ForeignKey("idturismo")]
+	public int IdTurismo { get; set; }
+
+	// relação com funcionario/admin
+	[JsonIgnore]
+	public UsuarioModel? UsuarioModel { get; set; }
+
+	[Column("usuarioid")]
+	[ForeignKey("usuarioid")]
+	public int IdUsuario { get; set; }
 
 }
 

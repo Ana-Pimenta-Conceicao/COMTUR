@@ -14,13 +14,21 @@ namespace COMTUR.Models
 		[Column("imagem")]
 		public string Imagem { get; set; }
 
-		[Column("legendaImagem")]
+		[Column("legendaimagem")]
 		public string LegendaImagem { get; set; }
 
 		[JsonIgnore]
 		public AtracaoModel AtracaoModel { get; set; }
 
+		[Column("idatracao")]
 		[ForeignKey("idatracao")]
 		public int IdAtracao { get; set; }
+
+		[JsonIgnore]
+		public UsuarioModel? UsuarioModel { get; set; }
+
+		[Column("usuarioid")]
+		[ForeignKey("usuarioid")]
+		public int IdUsuario { get; set; }
 	}
 }

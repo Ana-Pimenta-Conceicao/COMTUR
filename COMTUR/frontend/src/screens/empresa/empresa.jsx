@@ -4,23 +4,29 @@ import { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import InputMask from "react-input-mask";
-import BtnAcao from "../../components/botoes/btnAcao";
-import BtnModais from "../../components/botoes/btnModais";
-import BtnModaisIMG from "../../components/botoes/btnModaisIMG";
-import SidebarAdm from "../../components/admin/sidebarAdm";
-import NavBarAdm from "../../components/admin/navbarAdm";
+import BtnAcao from "../../components/botoes/btnAcao.jsx";
+import BtnModais from "../../components/botoes/btnModais.jsx";
+import BtnModaisIMG from "../../components/botoes/btnModaisIMG.jsx";
+import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
+import NavBarAdm from "../../components/admin/navbarAdm.jsx";
 import { Navigate, useNavigate } from "react-router-dom";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
-import PopupCadastrado from "../../components/popups/popupCadastro";
-import PopupExcluido from "../../components/popups/popupExcluido";
-import PopupEditado from "../../components/popups/popupEditado";
+import PopupCadastrado from "../../components/popups/popupCadastro.jsx";
+import PopupExcluido from "../../components/popups/popupExcluido.jsx";
+import PopupEditado from "../../components/popups/popupEditado.jsx";
+import Select from 'react-select';
+import Tabela from "../../components/table/tabela.jsx";
 
 export default function Empresa() {
   const baseUrl = "https://localhost:7256/api/Empresa";
   const baseUrlImagem = "https://localhost:7256/api/ImagemEmpresa";
+  const baseUrlUsuario = "https://localhost:7256/api/Usuario";
+  const baseUrlTipoTurismo = "https://localhost:7256/api/TipoTurismo";
 
   const [data, setData] = useState([]);
   const [atualizarData, setAtualizarData] = useState(true);
+  const [dataUsuario, setDataUsuario] = useState([])
+  const [dataTipoTurismo, setDataTipoTurismo] = useState([]);
 
   const [modalCadastrado, setModalCadastrado] = useState(false);
   const [modalExcluido, setModalExcluido] = useState(false);
@@ -39,6 +45,13 @@ export default function Empresa() {
   const [empresaDescricao, setDescricao] = useState([]);
   const [empresaId, setEmpresaId] = useState("");
   const [userType, setUserType] = useState(null);
+  const [usuarioId, setUsuarioId] = useState("");
+  const [tipoturismoId, setTipoTurismoId] = useState("");
+  const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
+  const [usuarioOptions, setUsuarioOptions] = useState([]);
+  const [tipoTurismoSelecionado, settipoTurismoSelecionado] = useState(null);
+  const [tipoTurismoOptions, setTipoTurismoOptions] = useState([]);
+
 
   const navigate = useNavigate();
 
@@ -54,14 +67,18 @@ export default function Empresa() {
 
   const EmpresaSet = (empresa, opcao) => {
     console.log("Empresa que foi passada: ", empresa);
-    setEmpresaId(empresa.id);
+    setEmpresaId(parseInt(empresa.id));
     setNome(empresa.nome);
     setCNPJ(empresa.cnpj);
     setEndereco(empresa.endereco);
     setDescricao(empresa.descricao);
     setEmpresaLegendaImagem(empresa.legendaImagem);
     setImagensEmpresa(empresa.imagemEmpresa);
-    console.log(empresa.imagemEmpresa);
+    setUsuarioId(empresa.idUsuario);
+    setTipoTurismoId(empresa.idTipoTurismo);
+
+    setUsuarioSelecionado(usuarioOptions.find(opcao => opcao.value === empresa.idUsuario));
+    settipoTurismoSelecionado(empresa.idTipoTurismo);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar(/*empresa.id*/);
@@ -115,6 +132,19 @@ export default function Empresa() {
     setModalDeletar(!modalDeletar);
   };
 
+  const pedidoGetTipoTurismo = async () => {
+    await axios
+      .get(baseUrlTipoTurismo)
+      .then((response) => {
+        setDataTipoTurismo(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+
+
   const pedidoGet = async () => {
     await axios
       .get(baseUrl)
@@ -147,14 +177,26 @@ export default function Empresa() {
     reader.readAsDataURL(imageFile);
   }
 
+  const pedidoGetUsuario = async () => {
+    await axios.get(baseUrlUsuario)
+      .then(response => {
+
+        setDataUsuario(response.data);
+      }).catch(error => {
+        console.log(error);
+      })
+  }
+
   const pedidoPost = async () => {
     const formData = new FormData();
     formData.append("nome", empresaNome);
     formData.append("cnpj", empresaCNPJ);
     formData.append("endereco", empresaEndereco);
-    formData.append("imagem", imagensEmpresa);
-    formData.append("legendaImagem", empresaLegendaImagem);
     formData.append("descricao", empresaDescricao);
+    formData.append("idtipoturismo", tipoTurismoSelecionado);
+    formData.append("idUsuario", parseInt(usuarioSelecionado.value));
+
+    console.log(tipoTurismoSelecionado);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -164,7 +206,9 @@ export default function Empresa() {
       });
 
       setData(data.concat(response.data));
-      await pedidoPostImagens(response.data.id);
+
+      if (imagensEmpresa.length !== 0) await pedidoPostImagens(response.data.id);
+
       abrirFecharModalInserir();
       limparDados();
       setAtualizarData(true);
@@ -176,10 +220,17 @@ export default function Empresa() {
 
   const pedidoPostImagens = async (idEmpresa) => {
     const formData = new FormData();
-    imagensEmpresa.forEach((imagem) => {
-      formData.append("imagem", imagem.imagem);
-      formData.append("legendaImagem", imagem.legendaImagem);
+
+    let todasImagens = [];
+    let todasLegendas = [];
+
+    imagensEmpresa?.forEach((imagem) => {
+      todasImagens = [...todasImagens, imagem.imagem];
+      todasLegendas = [...todasLegendas, imagem.legendaImagem];
     });
+
+    todasImagens.forEach((imagem) => formData.append("imagens", imagem));
+    todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
 
     try {
       const response = await axios.post(
@@ -198,12 +249,13 @@ export default function Empresa() {
 
   async function pedidoAtualizar() {
     const formData = new FormData();
+    formData.append("id", empresaId);
     formData.append("nome", empresaNome);
     formData.append("cnpj", empresaCNPJ);
     formData.append("endereco", empresaEndereco);
-    formData.append("imagem", imagensEmpresa);
-    formData.append("legendaImagem", empresaLegendaImagem);
     formData.append("descricao", empresaDescricao);
+    formData.append("idUsuario", parseInt(usuarioSelecionado.value));
+    formData.append("idtipoturismo", tipoTurismoSelecionado);
 
     try {
       const response = await axios.put(`${baseUrl}/${empresaId}`, formData, {
@@ -235,10 +287,17 @@ export default function Empresa() {
 
   const pedidoPutImagens = async () => {
     const formData = new FormData();
-    imagensEmpresa.forEach((imagem) => {
-      formData.append("imagem", imagem.imagem);
-      formData.append("legendaImagem", imagem.legendaImagem);
+
+    let todasImagens = [];
+    let todasLegendas = [];
+
+    imagensEmpresa?.forEach((imagem) => {
+      todasImagens = [...todasImagens, imagem.imagem];
+      todasLegendas = [...todasLegendas, imagem.legendaImagem];
     });
+
+    todasImagens.forEach((imagem) => formData.append("imagens", imagem));
+    todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
 
     try {
       const response = await axios.put(
@@ -284,9 +343,42 @@ export default function Empresa() {
   useEffect(() => {
     if (atualizarData) {
       pedidoGet();
+      pedidoGetTipoTurismo();
+      pedidoGetUsuario();
       setAtualizarData(false);
     }
   }, [atualizarData]);
+
+  useEffect(() => {
+    if (dataUsuario) {
+      const options = dataUsuario
+        .filter((usuario) => usuario.tipoUsuario === 3)
+        .map((usuario) => ({ value: usuario.id, label: usuario.nome }));
+
+      setUsuarioOptions(options);
+
+      if (options.length > 0) {
+        setUsuarioSelecionado(options[0].value);
+        setUsuarioId(options[0].value);
+      }
+    }
+  }, [dataUsuario]);
+
+  useEffect(() => {
+    if (dataTipoTurismo) {
+      const options = dataTipoTurismo.map((tipoturismo) => {
+        return { value: tipoturismo.id, label: tipoturismo.nome };
+      });
+      setTipoTurismoOptions(options);
+
+      if (!options.some((option) => option.value === tipoTurismoSelecionado)) {
+        const turismoPadrao = options.length > 0 ? options[0].value : "";
+
+        settipoTurismoSelecionado(turismoPadrao)
+        setTipoTurismoId(turismoPadrao);
+      }
+    }
+  }, [dataTipoTurismo]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
@@ -315,96 +407,118 @@ export default function Empresa() {
     setUserType(userTypeFromLocalStorage);
   }, []);
 
-  // if (userType === null) {
-  //   return <div>Carregando...</div>;
-  // } else if (userType === "1" || userType === "3") {
-  //   return <Navigate to="/notfound" />;
-  // } else {
-    return (
+  const filterOptions = (inputValue) => {
+    if (!inputValue) {
+      return usuarioOptions;
+    }
+
+    const searchTermNormalized = inputValue.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+    return usuarioOptions.filter(option =>
+      option.label.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().includes(searchTermNormalized)
+    );
+  };
+
+  const loadOptions = (inputValue, callback) => {
+    callback(filterOptions(inputValue));
+  }
+
+    const customStyles = {
+      control: (provided, state) => ({
+        ...provided,
+        borderRadius: '0.375rem', // remove o arredondamento dos cantos
+        borderColor: state.isFocused ? '#DEE2E6' : '#DEE2E6', // cor da borda quando está focado ou não
+        boxShadow: state.isFocused ? '0 0 0 0.2rem rgba(0, 123, 255, 0.25)' : null, // sombra quando está focado
+        '&:hover': {
+          borderColor: state.isFocused ? '#80bdff' : '#ced4da' // cor da borda ao passar o mouse
+        },
+        minHeight: 'calc(2.25rem + 2px)', // ajuste de altura
+        fontFamily: 'inherit', // herda a fonte do elemento pai
+        fontSize: '0.875rem', // text-sm do Tailwind
+        lineHeight: '1.25rem', // line height correspondente do Tailwind
+        paddingLeft: '2px', // padding-left ajustado
+        paddingRight: '8px', // padding-right ajustado
+        color: '#7D7F82' // cor do texto
+      }),
+      singleValue: (provided) => ({
+        ...provided,
+        color: '#7D7F82' // cor do texto selecionado
+      }),
+      placeholder: (provided) => ({
+        ...provided,
+        color: '#7D7F82' // cor do texto do placeholder
+      }),
+      option: (provided, state) => ({
+        ...provided,
+        backgroundColor: state.isSelected ? '#007bff' : '#fff', // cor de fundo do item selecionado ou não
+        color: state.isSelected ? '#fff' : '#495057', // cor do texto do item selecionado ou não
+        fontFamily: 'inherit', // herda a fonte do elemento pai
+        fontSize: '0.875rem', // text-sm do Tailwind
+        lineHeight: '1.25rem' // line height correspondente do Tailwind
+      })
+    };
+
+    const apresentaDados = Array.isArray(currentItems)
+    ? currentItems.map((empresa) => {
+      const tipoTurismo = dataTipoTurismo.find(
+        (tipo) => tipo.id === empresa.idTipoTurismo
+      );
+      const tipoTurismoNome = tipoTurismo
+        ? tipoTurismo.nome
+        : "Tipo não encontrado";
+        return {
+          id: empresa.id,
+          nome: empresa.nome,
+          cnpj: empresa.cnpj,
+          tipo: tipoTurismoNome,
+          status: "teste",
+          acoes: (
+            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+              <BtnAcao
+                funcao={() => EmpresaSet(empresa, "Editar")}
+                acao="Editar"
+              />
+              <BtnAcao
+                funcao={() => EmpresaSet(empresa, "Excluir")}
+                acao="Excluir"
+              />
+              <BtnAcao
+                funcao={() => EmpresaSet(empresa, "Visualizar")}
+                acao="Visualizar"
+              />
+            </div>
+          ),
+        };
+      })
+    : [];
+
+    if (userType === "1" || userType === "3") {
+      return <Navigate to="/notfound" />;
+    } else {
+      return (
       <div className="home">
         <div className="h-screen flex fixed">
           <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
         </div>
-        <div
-          className="flex-1 container-fluid"
-          style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
-        >
+        <div className="flex-1 container-fluid" style={{ paddingLeft: sidebarOpen ? 200 : 100 }} >
           <NavBarAdm />
-          <div className="pl-8 pr-8 pt-[20px]">
-            <h1 className="text-3xl font-semibold pb-2">Lista de Notícias</h1>
-            <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
-            <div className="w-full rounded-[10px]  border-[#DBDBDB] ">
-              <div className="grid grid-cols-7 w-full bg-[#DFDFDF] rounded-t-[8px] h-10 items-center text-base font-semibold text-black">
-                <span className="flex col-span-1 ml-5 items-center">ID</span>
-                <span className="flex col-span-3 justify-center items-center">
-                  Empresa
-                </span>
-                <span className="flex justify-center items-center">CNPJ</span>
-                <span className="flex col-span-2 justify-center items-center">
-                  Ações
-                </span>
-              </div>
-              <ul className="w-full">
-                {currentItems.map((empresa) => (
-                  <React.Fragment key={empresa.id}>
-                    <li className="grid grid-cols-7 w-full bg-[#F5F5F5]">
-                      <span
-                        scope="row"
-                        className="flex pl-5 border-r-[1px] border-t-[1px] border-[#DBDBDB] pt-[12px] pb-[12px] text-gray-700"
-                      >
-                        {empresa.id}
-                      </span>
-                      <span className="flex col-span-3 justify-left items-center pl-2 border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700 ">
-                        {empresa.nome}
-                      </span>
-                      <span className="flex justify-center items-center border-t-[1px] border-r-[1px] border-[#DBDBDB] text-gray-700">
-                        {empresa.cnpj}
-                      </span>
-                      <span className="flex col-span-2 items-center justify-center border-t-[1px] gap-2 border-[#DBDBDB]">
-                        <BtnAcao
-                          funcao={() => EmpresaSet(empresa, "Editar")}
-                          acao="Editar"
-                        />
-                        <BtnAcao
-                          funcao={() => EmpresaSet(empresa, "Excluir")}
-                          acao="Excluir"
-                        />
-                        <BtnAcao
-                          funcao={() => EmpresaSet(empresa, "Visualizar")}
-                          acao="Visualizar"
-                        />
-                      </span>
-                    </li>
-                  </React.Fragment>
-                ))}
-              </ul>
-              <div className="pt-4 pb-4 flex justify-center gap-2 border-t-[1px] border-[#DBDBDB]">
-                <button className="" onClick={() => goToPage(currentPage - 1)}>
-                  <CaretLeft size={22} className="text-[#DBDBDB]" />
-                </button>
-                <select
-                  className="rounded-sm hover:border-[#DBDBDB] select-none"
-                  value={currentPage}
-                  onChange={(e) => goToPage(Number(e.target.value))}
-                >
-                  {[...Array(totalPages)].map((_, index) => (
-                    <option key={index + 1} value={index + 1}>
-                      {index + 1}
-                    </option>
-                  ))}
-                </select>
-                <button className="" onClick={() => goToPage(currentPage + 1)}>
-                  <CaretRight size={22} className="text-[#DBDBDB]" />
-                </button>
-              </div>
-            </div>
-            <div className="float-right flex-auto py-6">
-              <BtnAcao
-                funcao={() => VisualizarTodasEmpresas()}
-                acao="Publicados"
-              />
 
-              <BtnAcao
+          <div className="pl-8 pr-8 pt-[20px]">
+            <h1 className="text-3xl font-semibold pb-2">
+              Lista de Empresas
+            </h1>
+            <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
+            <Tabela
+              object={apresentaDados}
+              colunas={["ID", "Nome", "CNPJ", "Segmento", "Status", "Ações"]}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              goToPage={setCurrentPage}
+              formatarData={""}
+              numColunas={6}
+            />
+            <div className="float-right flex-auto py-6">
+            <BtnAcao
                 funcao={() => abrirFecharModalInserir("Cadastrar")}
                 acao="Cadastrar"
               />
@@ -430,11 +544,16 @@ export default function Empresa() {
                   />
                   <br />
 
-                  <label>CNPJ:</label>
-                  <textarea
+                  <label htmlFor="empresaCNPJ">CNPJ:</label>
+                  <InputMask
+                    mask="99.999.999/9999-99"
+                    maskPlaceholder="99.999.999/9999-99"
+                    type="text"
                     className="form-control text-sm"
+                    id="empresaCNPJ"
                     onChange={(e) => setCNPJ(e.target.value)}
-                    placeholder="Digite o CNPJ"
+                    placeholder="Digite apenas números"
+                    value={empresaCNPJ}
                   />
                   <br />
 
@@ -452,7 +571,56 @@ export default function Empresa() {
                     placeholder="Descrição Empresa"
                   />
                   <br />
-
+                  <label>Tipo:</label>
+                  <select
+                    className="form-control"
+                    value={tipoTurismoSelecionado}
+                    onChange={(e) => settipoTurismoSelecionado(e.target.value)}
+                  >
+                    {tipoTurismoOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <br />
+                  {/* <label>Usuario: </label> */}
+                  {/* <Select className="form-control text-sm"
+                  value={usuarioSelecionado}
+                  onChange={(option) => setUsuarioSelecionado(option)}
+                  loadOptions={loadOptions}
+                  options={usuarioOptions}
+                  placeholder="Pesquisar empresário "
+                  isClearable
+                  isSearchable
+                  noOptionsMessage={() => {
+                    if (usuarioOptions.length === 0) {
+                      return "Nenhum Empresário cadastrado!";
+                    } else {
+                      return "Nenhuma opção encontrada!";
+                    }
+                  }}
+                /> */}
+                  <label>Usuario: </label>
+                  <Select
+                    className="text-sm "
+                    value={usuarioSelecionado}
+                    onChange={(option) => setUsuarioSelecionado(option)}
+                    loadOptions={loadOptions}
+                    options={usuarioOptions}
+                    placeholder="Pesquisar Empresário"
+                    isClearable
+                    isSearchable
+                    styles={customStyles} // aplica os estilos personalizados
+                    noOptionsMessage={() => {
+                      if (usuarioOptions.length === 0) {
+                        return "Nenhum Empresário cadastrado!";
+                      } else {
+                        return "Nenhuma opção encontrada!";
+                      }
+                    }}
+                  />
+                  <br />
                 </div>
               </div>
 
@@ -547,26 +715,10 @@ export default function Empresa() {
             </div>
           </ModalBody>
         </Modal>
-        <PopupCadastrado
-          isOpen={modalCadastrado}
-          toggle={fecharModalCadastrado}
-          objeto="Empresa"
-        />
-        <PopupExcluido
-          isOpen={modalExcluido}
-          toggle={fecharModaExcluido}
-          objeto="Empresa"
-        />
-        <PopupEditado
-          isOpen={modalEditado}
-          toggle={fecharModaEditado}
-          objeto="Empresa"
-        />
-        <Modal
-          className="modal-xl-gridxl"
-          isOpen={modalEditar}
-          style={{ maxWidth: "1000px" }}
-        >
+        <PopupCadastrado isOpen={modalCadastrado} toggle={fecharModalCadastrado} objeto="Empresa" />
+        <PopupExcluido isOpen={modalExcluido} toggle={fecharModaExcluido} objeto="Empresa"/>
+        <PopupEditado isOpen={modalEditado} toggle={fecharModaEditado} objeto="Empresa"  />
+        <Modal className="modal-xl-gridxl"  isOpen={modalEditar} style={{ maxWidth: "1000px" }}>
           <ModalHeader>Editar Empresa</ModalHeader>
           <ModalBody>
             <div className="grid grid-cols-2 ">
@@ -580,11 +732,15 @@ export default function Empresa() {
                     value={empresaNome}
                   />
                   <br />
-                  <label>CNPJ:</label>
-                  <textarea
-                    className="form-control  text-sm"
-                    name="empresaCNPJ"
+                  <label htmlFor="empresaCNPJ">CNPJ:</label>
+                  <InputMask
+                    mask="99.999.999/9999-99"
+                    maskPlaceholder="99.999.999/9999-99"
+                    type="text"
+                    className="form-control text-sm"
+                    id="empresaCNPJ"
                     onChange={(e) => setCNPJ(e.target.value)}
+                    placeholder="Digite apenas números"
                     value={empresaCNPJ}
                   />
                   <br />
@@ -604,6 +760,42 @@ export default function Empresa() {
                     value={empresaDescricao}
                   />
                   <br />
+                  <label>Tipo:</label>
+                  <select
+                    className="form-control"
+                    value={tipoTurismoSelecionado}
+                    onChange={(e) => settipoTurismoSelecionado(e.target.value)}
+                  >
+                    {tipoTurismoOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+
+                  <br />
+                  <label>Usuario: </label>
+                  <Select
+                    className="text-sm "
+                    value={usuarioSelecionado}
+                    onChange={(option) => setUsuarioSelecionado(option)}
+                    loadOptions={loadOptions}
+                    options={usuarioOptions}
+                    placeholder="Pesquisar Empresário"
+                    isClearable
+                    isSearchable
+                    styles={customStyles} // aplica os estilos personalizados
+                    noOptionsMessage={() => {
+                      if (usuarioOptions.length === 0) {
+                        return "Nenhum Empresário cadastrado!";
+                      } else {
+                        return "Nenhuma opção encontrada!";
+                      }
+                    }}
+                  />
+                  <br />
+
+
                 </div>
               </div>
 
@@ -703,30 +895,20 @@ export default function Empresa() {
               </div>
             </div>
             <div className="flex justify-between items-center px-[395px] pt-5">
-              <BtnModaisIMG
-                funcao={() => pedidoAtualizar(empresaId)}
-                acao="Editar"
-              />
-              <BtnModaisIMG
-                funcao={() => abrirFecharModalEditar()}
-                acao="Cancelar"
-              />
+              <BtnModaisIMG funcao={() => pedidoAtualizar(empresaId)} acao="Editar" />
+              <BtnModaisIMG funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
             </div>
           </ModalBody>
         </Modal>
         <Modal isOpen={modalDeletar}>
           <ModalBody>
-            Confirma a exclusão da notícia "{empresaNome}" ?
+            Confirma a exclusão da "{empresaNome}" ?
           </ModalBody>
           <ModalFooter>
             <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
-            <BtnModais
-              funcao={() => abrirFecharModalDeletar()}
-              acao="Cancelar"
-            />
+            <BtnModais funcao={() => abrirFecharModalDeletar()}acao="Cancelar" />
           </ModalFooter>
         </Modal>
       </div>
     );
-  }
-
+  }}

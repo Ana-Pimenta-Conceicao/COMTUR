@@ -21,12 +21,17 @@ namespace COMTUR.Repositorios
             return await _dbContext.ImagemNoticia.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<ImagemNoticiaModel> GetById(int id)
+        public async Task<ImagemNoticiaModel> GetByIdNoticia(int id)
         {
             return await _dbContext.ImagemNoticia.Include(objeto => objeto.NoticiaModel).Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<List<ImagemNoticiaModel>> BuscarImagemNoticia()
+		public async Task<ImagemNoticiaModel> GetByIdUsuario(int id)
+		{
+			return await _dbContext.ImagemNoticia.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+		}
+
+		public async Task<List<ImagemNoticiaModel>> BuscarImagemNoticia()
         {
             return await _dbContext.ImagemNoticia.ToListAsync();
         }
@@ -79,5 +84,5 @@ namespace COMTUR.Repositorios
             await _dbContext.SaveChangesAsync();
             return true;
         }
-    }
+	}
 }

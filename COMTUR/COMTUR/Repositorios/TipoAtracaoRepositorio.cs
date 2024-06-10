@@ -18,6 +18,11 @@ namespace COMTUR.Repositorios
 			return await _dbContext.TipoAtracao.FirstOrDefaultAsync(x => x.Id == id);
 		}
 
+		public async Task<TipoAtracaoModel> GetByIdUsuario(int id)
+		{
+			return await _dbContext.TipoAtracao.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+		}
+
 		public async Task<List<TipoAtracaoModel>> BuscarTipoAtracao()
 		{
 			return await _dbContext.TipoAtracao.ToListAsync();

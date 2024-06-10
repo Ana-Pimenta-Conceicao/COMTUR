@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SidebarAdm from "../../components/admin/sidebarAdm";
-import NavbarAdm from "../../components/admin/navbarAdm";
-import CardHome from "../../components/cards/cardHome";
+import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
+import NavbarAdm from "../../components/admin/navbarAdm.jsx";
+import CardHome from "../../components/cards/cardHome.jsx";
 import { Navigate } from 'react-router-dom';
 
 const Home = () => {
@@ -34,6 +34,7 @@ const Home = () => {
           <NavbarAdm />
           <div className="cont-home pl-[50px]">
             <h1 className="text-2xl font-semibold">Bem Vindo, {userName || "Usuário"}!</h1>
+            <hr className="pb-4 border-[2.5px] border-gray-300" />
             <div className="flex">
               <CardHome />
             </div>

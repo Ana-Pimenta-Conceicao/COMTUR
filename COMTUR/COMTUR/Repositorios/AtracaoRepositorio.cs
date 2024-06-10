@@ -17,14 +17,29 @@ namespace COMTUR.Repositorios
 			_hostingEnvironment = hostingEnvironment;
 		}
 
-		public async Task<AtracaoModel> BuscarPorId(int id)
+        public async Task<List<AtracaoModel>> BuscarPorTurismo(int idTurismo)
+        {
+            return await _dbContext.Atracao.Where(x => x.IdTurismo == idTurismo).Include(n => n.ImagemAtracao).ToListAsync();
+        }
+
+        public async Task<AtracaoModel> BuscarPorId(int id)
 		{
 			return await _dbContext.Atracao.Include(n => n.ImagemAtracao).FirstOrDefaultAsync(x => x.Id == id);
 		}
 
-		public async Task<AtracaoModel> GetById(int id)
+		public async Task<AtracaoModel> GetByIdTipoAtracao(int id)
 		{
 			return await _dbContext.Atracao.Include(objeto => objeto.TipoAtracaoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+		}
+
+		public async Task<AtracaoModel> GetByIdTurismo(int id)
+		{
+			return await _dbContext.Atracao.Include(objeto => objeto.TurismoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+		}
+
+		public async Task<AtracaoModel> GetByIdUsuario(int id)
+		{
+			return await _dbContext.Atracao.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
 
 		public async Task<List<AtracaoModel>> BuscarAtracao()
@@ -32,19 +47,19 @@ namespace COMTUR.Repositorios
 			return await _dbContext.Atracao.Include(n => n.ImagemAtracao).ToListAsync();
 		}
 
-		public async Task<List<AtracaoModel>> ListarPorTipoStatus(int tipoStatus)
+		/*public async Task<List<AtracaoModel>> ListarPorTipoStatus(int tipoStatus)
 		{
 			return await _dbContext.Atracao
 				.Where(x => (int)x.TipoStatus == tipoStatus)
 				.ToListAsync();
-		}
+		}*/
 
 		public async Task<AtracaoModel> Adicionar(AtracaoModel atracao)
 		{
-			if (!Enum.IsDefined(typeof(TipoStatus), atracao.TipoStatus))
+			/*if (!Enum.IsDefined(typeof(TipoStatus), atracao.TipoStatus))
 			{
 				throw new ArgumentException("Tipo de status inválido");
-			}
+			}*/
 
 			await _dbContext.Atracao.AddAsync(atracao);
 			await _dbContext.SaveChangesAsync();
@@ -54,28 +69,30 @@ namespace COMTUR.Repositorios
 
 		public async Task<AtracaoModel> Atualizar(AtracaoModel atracao, int id)
 		{
-			AtracaoModel AtracaoPorId = await BuscarPorId(id);
+			AtracaoModel atracaoPorId = await BuscarPorId(id);
 
-			if (AtracaoPorId == null)
+			if (atracaoPorId == null)
 			{
 				throw new Exception($"Atração para o ID: {id} nao foi encontrado no banco de dados. ");
 			}
 
-			if (!Enum.IsDefined(typeof(TipoStatus), atracao.TipoStatus))
+			/*if (!Enum.IsDefined(typeof(TipoStatus), atracao.TipoStatus))
 			{
 				throw new ArgumentException("Tipo de status inválido");
-			}
+			}*/
 
-			AtracaoPorId.Id = atracao.Id;
-			AtracaoPorId.Nome = atracao.Nome;
-			AtracaoPorId.Descricao = atracao.Descricao;
-			AtracaoPorId.QRCode = atracao.QRCode;
-			AtracaoPorId.TipoStatus = atracao.TipoStatus; 
+			atracaoPorId.Id = atracao.Id;
+			atracaoPorId.Nome = atracao.Nome;
+			atracaoPorId.Descricao = atracao.Descricao;
+			atracaoPorId.QRCode = atracao.QRCode;
+            atracaoPorId.IdTipoAtracao = atracao.IdTipoAtracao;
+			atracaoPorId.IdUsuario = atracao.IdUsuario;
+            //AtracaoPorId.TipoStatus = atracao.TipoStatus; 
 
-			_dbContext.Atracao.Update(AtracaoPorId);
+            _dbContext.Atracao.Update(atracaoPorId);
 			await _dbContext.SaveChangesAsync();
 
-			return AtracaoPorId;
+			return atracaoPorId;
 		}
 
 		public async Task<bool> Apagar(int id)

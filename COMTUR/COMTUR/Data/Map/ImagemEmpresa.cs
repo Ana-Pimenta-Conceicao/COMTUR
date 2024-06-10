@@ -10,6 +10,7 @@ namespace COMTUR.Data.Map
 		public void Configure(EntityTypeBuilder<ImagemEmpresaModel> builder)
 		{
 			builder.HasKey(x => x.Id);
+			builder.HasOne(e => e.UsuarioModel).WithMany().HasForeignKey(e => e.IdUsuario);
 
 			// Relacionamento da ImagemEmpresa com Empresa
 			builder.HasOne(x => x.EmpresaModel)

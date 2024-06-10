@@ -12,12 +12,12 @@ namespace COMTUR.Controllers
     public class ImagemNoticiaController : ControllerBase
     {
         private readonly IImagemNoticiaRepositorio _ImagemNoticiaRepositorio;
-        private readonly INoticiaRepository _NoticiaRepository;
+        private readonly INoticiaRepositorio _NoticiaRepositorio;
 
-        public ImagemNoticiaController(IImagemNoticiaRepositorio ImagemNoticiaRepositorio, INoticiaRepository NoticiaRepository)
+        public ImagemNoticiaController(IImagemNoticiaRepositorio ImagemNoticiaRepositorio, INoticiaRepositorio NoticiaRepositorio)
         {
             _ImagemNoticiaRepositorio = ImagemNoticiaRepositorio;
-            _NoticiaRepository = NoticiaRepository;
+            _NoticiaRepositorio = NoticiaRepositorio;
         }
 
         [HttpGet]
@@ -48,9 +48,9 @@ namespace COMTUR.Controllers
         }
 
         [HttpPost("{id}/CadastrarImagensNoticia")]
-        public async Task<ActionResult<List<ImagemNoticiaModel>>> CadastrarImagensNoticia([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id)
+        public async Task<ActionResult<List<ImagemNoticiaModel>>> CadastrarImagensNoticia([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id, [FromForm] int idUsuario)
         {
-            NoticiaModel noticia = await _NoticiaRepository.BuscarPorId(id);
+            NoticiaModel noticia = await _NoticiaRepositorio.BuscarPorId(id);
             if (noticia == null)
             {
                 return NotFound($"Notícia com ID {id} não encontrada!");
@@ -62,9 +62,10 @@ namespace COMTUR.Controllers
                 ImagemNoticiaModel novaImagem = new ImagemNoticiaModel()
                 {
                     IdNoticia = id,
-                    Imagem = imagens[i],
-                    LegendaImagem = legendas[i]
-                };
+					Imagem = imagens[i],
+					LegendaImagem = legendas[i],
+					IdUsuario = idUsuario
+				};
 
                 await _ImagemNoticiaRepositorio.Adicionar(novaImagem);
                 imagensNoticiaModel.Add(novaImagem);
@@ -86,14 +87,14 @@ namespace COMTUR.Controllers
         [HttpPut("{id}/AtualizarImagensNoticia")]
         public async Task<ActionResult<List<ImagemNoticiaModel>>> AtualizarImagensNoticia([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id)
         {
-            NoticiaModel noticia = await _NoticiaRepository.BuscarPorId(id);
+            NoticiaModel noticia = await _NoticiaRepositorio.BuscarPorId(id);
             if (noticia == null)
             {
                 return NotFound($"Notícia com ID {id} não encontrada!");
             }
 
             // Busca as imagens relacionadas à notícia no banco de dados
-            List<ImagemNoticiaModel> imagensNoticia = await _NoticiaRepository.BuscarImagensPorNoticiaId(id);
+            List<ImagemNoticiaModel> imagensNoticia = await _NoticiaRepositorio.BuscarImagensPorNoticiaId(id);
 
             List<ImagemNoticiaModel> imagensAtualizadas = new List<ImagemNoticiaModel>();
 

@@ -1,14 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import NavbarUsr from "../../components/user/navbarUsr";
-import FooterUsr from "../../components/user/footerUsr";
+import { useNavigate, useParams } from 'react-router-dom';
+import NavbarUsr from "../../components/user/navbarUsr.jsx";
+import FooterUsr from "../../components/user/footerUsr.jsx";
 import "../inicio/inicio.css"
+import { CaretRight, CaretLeft } from "@phosphor-icons/react";
+
 
 function Inicio() {
     const [outrasNoticias, setOutrasNoticias] = useState([]);
+    const [atualizarData, setAtualizarData] = useState(true);
+    const [turismo, setTurismo] = useState([]);
     const navigate = useNavigate();
     const baseUrl = "https://localhost:7256/api/Noticia";
+
+    const { id } = useParams();
+    const baseUrlTurismo = "https://localhost:7256/api/Turismo";
+    const [currentTurismoIndex, setCurrentTurismoIndex] = useState(0);
+
+    const pedidoGet = async () => {
+        try {
+            const response = await axios.get(baseUrlTurismo);
+            console.log('API response:', response.data);
+            setTurismo(response.data);
+        } catch (error) {
+            console.log('API error:', error);
+        }
+    };
+
+    function formatarDataParaExibicao(data) {
+        const partes = data.split("-");
+        if (partes.length === 3) {
+            const [ano, mes, dia] = partes;
+            return `${dia}/${mes}/${ano}`;
+        }
+        return data; // Retorna a data original se não estiver no formato esperado
+    }
+
+    useEffect(() => {
+        if (atualizarData) {
+            console.log('useEffect executed'); // Log para verificar se o useEffect está sendo executado
+            pedidoGet();
+            setAtualizarData(false);
+        }
+    }, [atualizarData]);
 
     useEffect(() => {
         const obterOutrasNoticias = async () => {
@@ -23,74 +58,66 @@ function Inicio() {
         obterOutrasNoticias();
     }, []);
 
-    function formatarDataParaExibicao(data) {
-        const partes = data.split("-");
-        if (partes.length === 3) {
-            const [ano, mes, dia] = partes;
-            return `${dia}/${mes}/${ano}`;
-        }
-        return data; // Retorna a data original se não estiver no formato esperado
-    }
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentTurismoIndex(prevIndex =>
+                prevIndex === turismo.length - 1 ? 0 : prevIndex + 1
+            );
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [turismo]);
 
     return (
-
         <div className="">
             <NavbarUsr />
-
-
-
             <link rel="preconnect" href="https://fonts.googleapis.com" />
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
             <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
-
-
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
             <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
 
+            <div className="container-fluid p-0 ">
+                <div className="bg-black">
 
-            {/* Conteudo site user */}
+                    {turismo.length > 0 && (
+                        <div className="flex relative items-center bg-black">
+                            {turismo.length > 0 && (
+                                <div
+                                    className={`absolute inset-0 w-full h-full bg-cover bg-center opacity-50`}
+                                    style={{
+                                        backgroundImage: `url(${turismo[currentTurismoIndex].imagemTurismo[0].imagem})`,
+                                    }}
+                                />
+                            )}
+                            {turismo.length > 0 && (
+                                <div
+                                    className={`relative flex flex-col w-full h-[200px] sm:h-[400px] lg:h-[500px] mb-8 gap-2 z-10`}
+                                >
+                                    <h3 className="flex justify-center items-end uppercase h-28 sm:h-60 gap-0 text-xl sm:text-2xl text-slate-50 font-bold  text-center">
+                                        {turismo[currentTurismoIndex].nome}
+                                    </h3>
+                                    <button className="mx-32 sm:mx-[550px] py-1 border-3 rounded-sm border-[#FFD121] text-xs sm:text-2xl font-medium text-slate-50 bg-transparent hover:bg-[#FFD121] transition-colors duration-300">
+                                        Leia Mais
+                                    </button>
+                                </div>
+                            )}
+                        </div>
 
-            <div className="container-fluid p-0">
-
-                <div id="carouselExampleIndicators" class="carousel slide">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                    </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="./src/assets/carrossel01.png" class="d-block w-100" alt="..." />
-                        </div>
-                        <div class="carousel-item">
-                            <img src="./src/assets/carrossel02.png" class="d-block w-100" alt="..." />
-                        </div>
-                        <div class="carousel-item">
-                            <img src="./src/assets/carrossel03.png" class="d-block w-100" alt="..." />
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+                    )}
                 </div>
 
-
-
-                <div class="container-xxl py-5">
+                <div class="container-xxl pb-5 pt-3">
                     <div class="container">
                         <div class="row g-5 align-items-center">
                             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                                 <p class="section-title bg-white text-start text-black pe-3">VENHA CONHECER</p>
-                                <h1 class="mb-4">Poucas razões pelas quais as pessoas nos visitam!</h1>
-                                <p class="mb-4">Mesmo ZoOpOlis sendo uma cidade destinada à preservação de animais e biomas, nós, seres humanos, conseguimos andar e observar como eles vivem. Não mais uma experiência de um zoológico comum, mas uma verdadeira voltinha na savana.</p>
-                                <p><i class="fa fa-check text-black me-3"></i>Segurança aos turistas</p>
-                                <p><i class="fa fa-check text-black me-3"></i>Preservação de espécies em extinção</p>
-                                <p><i class="fa fa-check text-black me-3"></i>Reserva sustentável</p>
+                                <h1 class="mb-4">Sejam Bem Vindos ao Comtur!</h1>
+                                <p class="mb-4">Mais do que um guia. Uma experiência turística e moderna! Mergulhe em uma experiência única, onde a modernidade se encontra com a criatividade para revelar o melhor da nossa cidade</p>
+                                <p><i class="fa fa-check text-black me-3"></i>Explore Pontos Turísticos e Atrações</p>
+                                <p><i class="fa fa-check text-black me-3"></i>Descubra Eventos Imperdíveis</p>
+                                <p><i class="fa fa-check text-black me-3"></i>Mantenha-se Atualizado </p>
+                                
                                 <a class="btn btnmais rounded-pill py-3 px-5 mt-3" href="">Explorar</a>
                             </div>
                             <div class="col-lg-6">
@@ -138,8 +165,7 @@ function Inicio() {
                             </div>
                         </div>
                     </div>
-
-                </div>
+                    </div>
 
                 <div className="inline-flex items-center justify-center w-full p-4">
                     <hr className="w-full h-1 my-6 opacity-100 bg-[#FFD121] border-0 rounded" />

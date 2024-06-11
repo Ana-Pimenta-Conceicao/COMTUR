@@ -51,7 +51,7 @@ export default function Empresa() {
   const [usuarioOptions, setUsuarioOptions] = useState([]);
   const [tipoTurismoSelecionado, settipoTurismoSelecionado] = useState(null);
   const [tipoTurismoOptions, setTipoTurismoOptions] = useState([]);
-
+  const [idUsuario, setIdUsuario] = useState("");
 
   const navigate = useNavigate();
 
@@ -195,7 +195,7 @@ export default function Empresa() {
     formData.append("descricao", empresaDescricao);
     formData.append("idtipoturismo", tipoTurismoSelecionado);
     formData.append("idUsuario", parseInt(usuarioSelecionado.value));
-
+    formData.append("idUsuario", idUsuario);
     console.log(tipoTurismoSelecionado);
 
     try {
@@ -231,6 +231,8 @@ export default function Empresa() {
 
     todasImagens.forEach((imagem) => formData.append("imagens", imagem));
     todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+    console.log(idUsuario);
+    formData.append("idUsuario",idUsuario);
 
     try {
       const response = await axios.post(
@@ -256,6 +258,7 @@ export default function Empresa() {
     formData.append("descricao", empresaDescricao);
     formData.append("idUsuario", parseInt(usuarioSelecionado.value));
     formData.append("idtipoturismo", tipoTurismoSelecionado);
+    formData.append("idUsuario", idUsuario);
 
     try {
       const response = await axios.put(`${baseUrl}/${empresaId}`, formData, {
@@ -298,6 +301,10 @@ export default function Empresa() {
 
     todasImagens.forEach((imagem) => formData.append("imagens", imagem));
     todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+    formData.append("idUsuario", idUsuario);
+
+    console.log(todasImagens);
+    console.log(todasLegendas);
 
     try {
       const response = await axios.put(
@@ -404,7 +411,9 @@ export default function Empresa() {
 
   useEffect(() => {
     const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
+    const idTipoUsuarioAPI = localStorage.getItem("id");
     setUserType(userTypeFromLocalStorage);
+    setIdUsuario(idTipoUsuarioAPI);
   }, []);
 
   const filterOptions = (inputValue) => {

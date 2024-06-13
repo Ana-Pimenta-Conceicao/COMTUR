@@ -6,6 +6,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Tabela from "../../components/table/tabela.jsx";
 import BtnAcao from "../../components/botoes/btnAcao.jsx";
+import Select from 'react-select';
 import { Navigate, useNavigate } from "react-router-dom";
 
 function Atracao() {
@@ -13,7 +14,9 @@ function Atracao() {
   const baseUrlTipoAtracao = "https://localhost:7256/api/TipoAtracao";
   const baseUrlImagem = "https://localhost:7256/api/ImagemAtracao";
   const baseUrlTurismo = "https://localhost:7256/api/Turismo";
+  const baseUrlUsuario = "https://localhost:7256/api/Usuario";
   const [userType, setUserType] = useState(null);
+  const [dataUsuario, setDataUsuario] = useState([])
   const [data, setData] = useState([]);
   const [dataTipoAtracao, setDataTipoAtracao] = useState([]);
   const [dataTurismo, setDataTurismo] = useState([]);
@@ -29,6 +32,8 @@ function Atracao() {
   const [atracaoId, setAtracaoId] = useState("");
   const [imagensAtracao, setImagensAtracao] = useState([]);
   const [turismoId, setTurismoId] = useState("");
+
+  const [idUsuario, setIdUsuario] = useState("");
   const [atracaoLegendaImagem, setAtracaoLegendaImagem] = useState([]);
 
   const [tipoAtracaoSelecionada, setTipoAtracaoSelecionada] = useState(null);
@@ -55,7 +60,7 @@ function Atracao() {
     setAtracaoQrCode(atracao.qrCode);
     setTipoAtracaoId(atracao.tipoatracaoId);
     setTurismoId(atracao.turismoId);
-
+   
     setImagensAtracao(atracao.imagemAtracao);
     console.log(atracao.imagemAtracao);
 
@@ -112,6 +117,8 @@ function Atracao() {
     reader.readAsDataURL(imageFile);
   }
 
+
+
   const pedidoGetTipoAtracao = async () => {
     await axios
       .get(baseUrlTipoAtracao)
@@ -152,7 +159,8 @@ function Atracao() {
     formData.append("qrCode", atracaoQrCode);
     formData.append("idtipoatracao", tipoAtracaoSelecionada);
     formData.append("idturismo", turismoSelecionado);
-
+    formData.append("idUsuario", idUsuario);
+    
     try {
       const response = await axios.post(baseUrl, formData, {
         headers: {
@@ -160,7 +168,9 @@ function Atracao() {
         },
       });
       setData(data.concat(response.data));
-      await pedidoPostImagens(response.data.id);
+      if (imagensAtracao.length !== 0) {
+        await pedidoPostImagens(response.data.id);
+      }
       abrirFecharModalInserir();
       limparDados();
       setAtualizarData(true);
@@ -170,12 +180,20 @@ function Atracao() {
   };
 
   const pedidoPostImagens = async (idAtracao) => {
-    if (imagensAtracao) {
       const formData = new FormData();
+
+      let todasImagens = [];
+      let todasLegendas = [];
+
       imagensAtracao?.forEach((imagem) => {
-        formData.append("imagens", imagem.imagem);
-        formData.append("legendas", imagem.legendaImagem);
+        todasImagens = [...todasImagens, imagem.imagem];
+        todasLegendas = [...todasLegendas, imagem.legendaImagem];
       });
+
+      todasImagens.forEach((imagem) => formData.append("imagens", imagem));
+      todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+      console.log(idUsuario);
+      formData.append("idUsuario",idUsuario);
 
       try {
         const response = await axios.post(
@@ -190,7 +208,6 @@ function Atracao() {
       } catch (error) {
         console.log(error);
       }
-    }
   };
 
   async function pedidoAtualizar() {
@@ -201,6 +218,7 @@ function Atracao() {
     formData.append("qrCode", atracaoQrCode);
     formData.append("idtipoatracao", tipoAtracaoSelecionada);
     formData.append("idturismo", turismoSelecionado);
+    formData.append("idUsuario", idUsuario);
 
     try {
       const response = await axios.put(`${baseUrl}/${atracaoId}`, formData, {
@@ -231,12 +249,19 @@ function Atracao() {
   }
 
   const pedidoPutImagens = async () => {
-    if (imagensAtracao) {
       const formData = new FormData();
+
+      let todasImagens = [];
+      let todasLegendas = [];
+
       imagensAtracao.forEach((imagem) => {
-        formData.append("imagens", imagem.imagem);
-        formData.append("legendas", imagem.legendaImagem);
+      todasImagens = [...todasImagens, imagem.imagem];
+      todasLegendas = [...todasLegendas, imagem.legendaImagem];
       });
+
+      todasImagens.forEach((imagem) => formData.append("imagens", imagem));
+      todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+      formData.append("idUsuario", idUsuario);
 
       try {
         const response = await axios.put(
@@ -253,7 +278,6 @@ function Atracao() {
       } catch (error) {
         console.log(error);
       }
-    }
   };
 
  
@@ -285,6 +309,8 @@ function Atracao() {
       setAtualizarData(false);
     }
   }, [atualizarData]);
+
+
 
   useEffect(() => {
     if (dataTipoAtracao) {
@@ -337,8 +363,52 @@ function Atracao() {
 
   useEffect(() => {
     const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
+    const idTipoUsuarioAPI = localStorage.getItem("id");
     setUserType(userTypeFromLocalStorage);
+    setIdUsuario(idTipoUsuarioAPI);
   }, []);
+
+
+
+
+
+  const loadOptions = (inputValue, callback) => {
+    callback(filterOptions(inputValue));
+  }
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      borderRadius: '0.375rem', // remove o arredondamento dos cantos
+      borderColor: state.isFocused ? '#DEE2E6' : '#DEE2E6', // cor da borda quando está focado ou não
+      boxShadow: state.isFocused ? '0 0 0 0.2rem rgba(0, 123, 255, 0.25)' : null, // sombra quando está focado
+      '&:hover': {
+        borderColor: state.isFocused ? '#80bdff' : '#ced4da' // cor da borda ao passar o mouse
+      },
+      minHeight: 'calc(2.25rem + 2px)', // ajuste de altura
+      fontFamily: 'inherit', // herda a fonte do elemento pai
+      fontSize: '0.875rem', // text-sm do Tailwind
+      lineHeight: '1.25rem', // line height correspondente do Tailwind
+      paddingLeft: '2px', // padding-left ajustado
+      paddingRight: '8px', // padding-right ajustado
+      color: '#7D7F82' // cor do texto
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: '#7D7F82' // cor do texto selecionado
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: '#7D7F82' // cor do texto do placeholder
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? '#007bff' : '#fff', // cor de fundo do item selecionado ou não
+      color: state.isSelected ? '#fff' : '#495057', // cor do texto do item selecionado ou não
+      fontFamily: 'inherit', // herda a fonte do elemento pai
+      fontSize: '0.875rem', // text-sm do Tailwind
+      lineHeight: '1.25rem' // line height correspondente do Tailwind
+    })
+  };
 
   const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((atracao) => {
@@ -375,9 +445,10 @@ function Atracao() {
       })
     : [];
 
-  if (userType === "1" || userType === "3") {
-    return <Navigate to="/notfound" />;
-  } else {
+    if (userType === "1" || userType === "3") {
+      return <Navigate to="/notfound" />;
+    } else {
+    
     return (
       <div className="home">
         <div className="h-screen flex fixed">
@@ -422,7 +493,7 @@ function Atracao() {
           isOpen={modalInserir}
           style={{ maxWidth: "1000px" }}
         >
-          <ModalHeader>Incluir Tipo Atração</ModalHeader>
+          <ModalHeader>Incluir Atração</ModalHeader>
           <ModalBody>
             <div className="grid grid-cols-2 ">
               <div className="form-group">
@@ -479,6 +550,7 @@ function Atracao() {
                     ))}
                   </select>
                   <br />
+   
                 </div>
               </div>
               <div className="flex flex-col col-span-1 pl-4  border-l-[1px]">
@@ -632,6 +704,7 @@ function Atracao() {
                     ))}
                   </select>
                   <br />
+        
                 </div>
               </div>
 
@@ -775,7 +848,7 @@ function Atracao() {
         </Modal>
       </div>
     );
-  }
+ }
 }
 
 export default Atracao;

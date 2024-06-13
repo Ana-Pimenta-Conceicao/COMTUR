@@ -311,10 +311,22 @@ export default function Administrador() {
       .map((usuario) => {
         const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
 
-        return {
-          id: usuario.id,
-          nome: usuario.nome,
-          descricao: usuario.emailUsuario,
+        const nome = usuario.nome && typeof usuario.nome === 'string'
+        ? (usuario.nome.length > 20 
+          ? `${usuario.nome.slice(0, 15)}...` 
+          : usuario.nome)
+        : '';
+
+      const descricao = usuario.emailUsuario && typeof usuario.emailUsuario === 'string'
+        ? (usuario.emailUsuario.length > 20 
+          ? `${usuario.emailUsuario.slice(0, 20)}...` 
+          : usuario.emailUsuario)
+        : '';
+
+      return {
+        id: usuario.id,
+        nome: nome,
+        descricao: descricao,
           tipoUsuario: tipoUsuarioNome,
           status: "teste",
           acoes: (

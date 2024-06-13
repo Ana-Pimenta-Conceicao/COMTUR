@@ -219,6 +219,7 @@ export default function Noticia() {
     formData.append("conteudo", noticiaConteudo);
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
+    formData.append("imagem", imagensNoticia);
     formData.append("idUsuario", idUsuario);
 
     try {
@@ -245,7 +246,6 @@ export default function Noticia() {
         await pedidoPutImagens();
       }
 
-      limparDados();
       setAtualizarData(true);
       toggleModalEdita();
     } catch (error) {

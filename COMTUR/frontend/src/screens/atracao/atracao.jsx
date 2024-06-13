@@ -25,6 +25,9 @@ function Atracao() {
   const [modalInserir, setModalInserir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
+  const [modalCadastrado, setModalCadastrado] = useState(false);
+  const [modalExcluido, setModalExcluido] = useState(false);
+  const [modalEditado, setModalEditado] = useState(false);
   const [atracaoNome, setAtracaoNome] = useState("");
   const [atracaoDescricao, setAtracaoDescricao] = useState("");
   const [atracaoQrCode, setAtracaoQrCode] = useState("");
@@ -41,7 +44,12 @@ function Atracao() {
   const [turismoSelecionado, setTurismoSelecionado] = useState(null);
   const [turismoOptions, setTurismoOptions] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
   const navigate = useNavigate();
+
+  const toggleModalCadastro = () => setModalCadastrado(!modalCadastrado);
+  const toggleModalEdita = () => setModalEditado(!modalEditado);
+  const toggleModalExclui = () => setModalExcluido(!modalExcluido);
 
   const limparDados = () => {
     setAtracaoNome("");
@@ -60,9 +68,8 @@ function Atracao() {
     setAtracaoQrCode(atracao.qrCode);
     setTipoAtracaoId(atracao.tipoatracaoId);
     setTurismoId(atracao.turismoId);
-   
+
     setImagensAtracao(atracao.imagemAtracao);
-    console.log(atracao.imagemAtracao);
 
     if (opcao === "Editar") {
       abrirFecharModalEditar();
@@ -160,7 +167,7 @@ function Atracao() {
     formData.append("idtipoatracao", tipoAtracaoSelecionada);
     formData.append("idturismo", turismoSelecionado);
     formData.append("idUsuario", idUsuario);
-    
+
     try {
       const response = await axios.post(baseUrl, formData, {
         headers: {
@@ -174,40 +181,41 @@ function Atracao() {
       abrirFecharModalInserir();
       limparDados();
       setAtualizarData(true);
+      toggleModalCadastro();
     } catch (error) {
       console.log(error);
     }
   };
 
   const pedidoPostImagens = async (idAtracao) => {
-      const formData = new FormData();
+    const formData = new FormData();
 
-      let todasImagens = [];
-      let todasLegendas = [];
+    let todasImagens = [];
+    let todasLegendas = [];
 
-      imagensAtracao?.forEach((imagem) => {
-        todasImagens = [...todasImagens, imagem.imagem];
-        todasLegendas = [...todasLegendas, imagem.legendaImagem];
-      });
+    imagensAtracao?.forEach((imagem) => {
+      todasImagens = [...todasImagens, imagem.imagem];
+      todasLegendas = [...todasLegendas, imagem.legendaImagem];
+    });
 
-      todasImagens.forEach((imagem) => formData.append("imagens", imagem));
-      todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
-      console.log(idUsuario);
-      formData.append("idUsuario",idUsuario);
+    todasImagens.forEach((imagem) => formData.append("imagens", imagem));
+    todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+    console.log(idUsuario);
+    formData.append("idUsuario", idUsuario);
 
-      try {
-        const response = await axios.post(
-          baseUrlImagem + `/${idAtracao}/CadastrarImagensAtracao`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      const response = await axios.post(
+        baseUrlImagem + `/${idAtracao}/CadastrarImagensAtracao`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   async function pedidoAtualizar() {
@@ -219,6 +227,7 @@ function Atracao() {
     formData.append("idtipoatracao", tipoAtracaoSelecionada);
     formData.append("idturismo", turismoSelecionado);
     formData.append("idUsuario", idUsuario);
+    formData.append("imagem", imagensAtracao);
 
     try {
       const response = await axios.put(`${baseUrl}/${atracaoId}`, formData, {
@@ -226,8 +235,6 @@ function Atracao() {
           "Content-Type": "multipart/form-data",
         },
       });
-
-      console.log(response.data.idTipoAtracao);
 
       const updatedAtracao = response.data;
 
@@ -240,47 +247,51 @@ function Atracao() {
         });
       });
 
+      if (imagensAtracao.lenght !== 0) {
+        await pedidoPutImagens();
+      }
+
       abrirFecharModalEditar();
-      await pedidoPutImagens();
       setAtualizarData(true);
+      toggleModalEdita();
     } catch (error) {
       console.log(error);
     }
   }
 
   const pedidoPutImagens = async () => {
-      const formData = new FormData();
+    const formData = new FormData();
 
-      let todasImagens = [];
-      let todasLegendas = [];
+    let todasImagens = [];
+    let todasLegendas = [];
 
-      imagensAtracao.forEach((imagem) => {
+    imagensAtracao.forEach((imagem) => {
       todasImagens = [...todasImagens, imagem.imagem];
       todasLegendas = [...todasLegendas, imagem.legendaImagem];
-      });
+    });
 
-      todasImagens.forEach((imagem) => formData.append("imagens", imagem));
-      todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
-      formData.append("idUsuario", idUsuario);
+    todasImagens.forEach((imagem) => formData.append("imagens", imagem));
+    todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+    formData.append("idUsuario", idUsuario);
 
-      try {
-        const response = await axios.put(
-          baseUrlImagem + `/${atracaoId}/AtualizarImagensAtracao`, // Correção aqui
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+    try {
+      const response = await axios.put(
+        baseUrlImagem + `/${atracaoId}/AtualizarImagensAtracao`, // Correção aqui
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
- 
+
 
   const removeImagemByIndex = (indexToRemove) => {
     setImagensAtracao((prevImagens) =>
@@ -412,43 +423,43 @@ function Atracao() {
 
   const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((atracao) => {
-        const tipoAtracao = dataTipoAtracao.find(
-          (tipo) => tipo.id === atracao.idTipoAtracao
-        );
-        const tipoAtracaoNome = tipoAtracao
-          ? tipoAtracao.nome
-          : "Tipo não encontrado";
+      const tipoAtracao = dataTipoAtracao.find(
+        (tipo) => tipo.id === atracao.idTipoAtracao
+      );
+      const tipoAtracaoNome = tipoAtracao
+        ? tipoAtracao.nome
+        : "Tipo não encontrado";
 
-        return {
-          id: atracao.id,
-          nome: atracao.nome,
-          tipoAtracao: tipoAtracaoNome,
-          descricao: atracao.descricao,
-          status: "teste",
-          acoes: (
-            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-              <BtnAcao
-                funcao={() => AtracaoSet(atracao, "Editar")}
-                acao="Editar"
-              />
-              <BtnAcao
-                funcao={() => AtracaoSet(atracao, "Excluir")}
-                acao="Excluir"
-              />
-              <BtnAcao
-                funcao={() => AtracaoSet(atracao, "Visualizar")}
-                acao="Visualizar"
-              />
-            </div>
-          ),
-        };
-      })
+      return {
+        id: atracao.id,
+        nome: atracao.nome,
+        tipoAtracao: tipoAtracaoNome,
+        descricao: atracao.descricao,
+        status: "teste",
+        acoes: (
+          <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+            <BtnAcao
+              funcao={() => AtracaoSet(atracao, "Editar")}
+              acao="Editar"
+            />
+            <BtnAcao
+              funcao={() => AtracaoSet(atracao, "Excluir")}
+              acao="Excluir"
+            />
+            <BtnAcao
+              funcao={() => AtracaoSet(atracao, "Visualizar")}
+              acao="Visualizar"
+            />
+          </div>
+        ),
+      };
+    })
     : [];
 
-    if (userType === "1" || userType === "3") {
-      return <Navigate to="/notfound" />;
-    } else {
-    
+  if (userType === "1" || userType === "3") {
+    return <Navigate to="/notfound" />;
+  } else {
+
     return (
       <div className="home">
         <div className="h-screen flex fixed">
@@ -550,7 +561,7 @@ function Atracao() {
                     ))}
                   </select>
                   <br />
-   
+
                 </div>
               </div>
               <div className="flex flex-col col-span-1 pl-4  border-l-[1px]">
@@ -704,7 +715,7 @@ function Atracao() {
                     ))}
                   </select>
                   <br />
-        
+
                 </div>
               </div>
 
@@ -848,7 +859,7 @@ function Atracao() {
         </Modal>
       </div>
     );
- }
+  }
 }
 
 export default Atracao;

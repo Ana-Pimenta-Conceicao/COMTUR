@@ -5,10 +5,17 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import InputMask from "react-input-mask";
 import axios from "axios";
+import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
+import "bootstrap/dist/css/bootstrap.min.css"; // Adicione esta linha para importar o componente Modal
+import PopupCadLogin from "../../components/popups/popupCadLogin.jsx";
+
 
 export default function Login() {
   const navigate = useNavigate();
   const baseUrl = "https://localhost:7256/api/Login";
+  const baseUrlUsr = "https://localhost:7256/api/Usuario";
+
+  const [data, setData] = useState([]);
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -16,14 +23,25 @@ export default function Login() {
   const [showSignupForm, setShowSignupForm] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isRotated, setIsRotated] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Novo estado para modal
+
+  const [nomeUser, setNome] = useState("");
+  const [telefoneUser, setTelefone] = useState("");
+  const [tipoUsuario, setTipoUsuario] = useState("");
+  const [imagemUser, setImagemUser] = useState("");
+  const [idUser, setId] = useState("");
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  
+
+  const toggleModalCadastro = () => setModalCadastrado(!modalCadastrado);
 
   const rotateLogo = () => {
     setIsRotated(!isRotated);
   };
+
   const determinarRota = (tipoUsuario) => {
     switch (tipoUsuario) {
       case 1: //usuario comum
@@ -36,6 +54,57 @@ export default function Login() {
         return "/home";
       default:
         return "/login";
+    }
+  };
+
+  const limparDados = () => {
+    setNome("");
+    setTelefone("");
+    setEmail("");
+    setSenha("");
+    setTipoUsuario("");
+    setImagemUser("");
+    setId("");
+  };
+
+  const validateEmail = (email) => {
+    // Expressão regular para validar e-mails
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValidEmail = regex.test(email);
+    if (!isValidEmail) {
+      alert("Por favor, insira um e-mail válido.");
+      // Você também pode definir uma mensagem de erro no estado, se preferir
+      // setErrorMessage("Por favor, insira um e-mail válido.");
+    }
+  };
+
+  const [modalCadastrado, setModalCadastrado] = useState(false);
+
+  const pedidoPost = async () => {
+    const formData = new FormData();
+    formData.append("nome", nomeUser);
+    formData.append("telefone", telefoneUser);
+    formData.append("emailUsuario", email);
+    formData.append("senhaUsuario", senha);
+    formData.append("tipoUsuario", 1);
+    formData.append("idUsuario", 0);
+
+    try {
+      const response = await axios.post(baseUrlUsr, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const newUser = response.data;
+      setData([...data, newUser]);
+
+      toggleModalCadastro();
+      limparDados();
+      setShowSignupForm(false); // Oculta o formulário de cadastro
+
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -87,11 +156,10 @@ export default function Login() {
           <ArrowLeft className="mr-3" size={26} />
           Voltar
         </div>
-        {/* aqui */}
         <div className="flex flex-col w-full pt-5 justify-center lg:justify-start items-center">
           <img src={comturBranco} alt="Comtur Branco" className="md:hidden w-[180px]" />
           <div className="flex flex-row justify-center lg:justify-start  items-center w-full sm:ml-9 h-full mt-3">
-            <div className={`flex flex-col md:flex-col ${showSignupForm ? "hidden sm:w-full" : " sm:flex" }`} >
+            <div className={`flex flex-col md:flex-col ${showSignupForm ? "hidden sm:w-full" : " sm:flex"}`} >
               {!showSignupForm && (
                 <div className="w-full ">
                   <div className=" bg-white sm:mr-24  w-[300px] lg:w-[400px] 2xl:w-[500px] h-[480px] 2xl:h-[550px]  mt-4 rounded-2xl">
@@ -179,8 +247,6 @@ export default function Login() {
                 </div>
               )}
             </div>
-            {/* <div className="flex flex-row w-full justify-center items-center">
-              <div className=" w-full md:w-auto h-screen justify-center items-center"></div> */}
             {!showSignupForm && (
               <img
                 src={logoComturSF}
@@ -191,10 +257,7 @@ export default function Login() {
             )}
           </div>
 
-          {/* Divisão entre os forms */}
-
           <div className="flex flex-row justify-center items-center w-full  md:w-auto h-full  sm:ml-40">
-            {/* Adicionada condição para exibir ou ocultar o formulário de cadastro */}
             {showSignupForm && (
               <img
                 src={logoComturSF}
@@ -209,7 +272,6 @@ export default function Login() {
               className={`flex flex-col ${showSignupForm ? "sm:flex" : "hidden sm:w-full"
                 }`}
             >
-              {/* Formulário de cadastro */}
               {showSignupForm && (
                 <div className="flex w-full">
                   <div className="flex bg-white sm:mr-24 sm:w-[450px] w-[300px] h-[600px] ml-2 sm:ml-24 mt-4 rounded-2xl">
@@ -221,50 +283,39 @@ export default function Login() {
                         Efetuar Cadastro
                       </h1>
                       <div className="pl-5 pr-5 pt-1">
-                        <label htmlFor="email" className="font-semibold pt-2">
-                          Nome Completo:
-                        </label>
+                        <label className="font-semibold pt-2"
+                        >Nome: </label>
                         <br />
                         <input
-                          id="email"
+                          type="text "
                           className="border-1 pl-3 rounded-md w-full h-[40px]"
-                          type="email"
-                          name="email"
-                          placeholder="Digite seu nome"
-                          required
-                          aria-required="true"
-                          aria-label="E-mail obrigatório"
-                          onChange={(e) => setEmail(e.target.value)}
+                          onChange={(e) => setNome(e.target.value)}
+                          placeholder="Digite o nome "
                         />
-                        <br />
 
-                        <label className="font-semibold pt-2">Telefone:</label>
+                        <label className="font-semibold pt-2"
+                        >Telefone:</label>
                         <br />
                         <InputMask
                           mask="(99) 99999-9999"
                           maskPlaceholder="(99) 99999-9999"
                           type="text "
                           className="border-1 pl-3 rounded-md w-full h-[40px]"
-                          // onChange={(e) => setTelefone(e.target.value)}
+                          onChange={(e) => setTelefone(e.target.value)}
                           placeholder="Digite apenas números"
                         />
-                        <br />
-                        <label htmlFor="email" className="font-semibold pt-2">
-                          E-mail:
-                        </label>
+
+                        <label className="font-semibold pt-2"
+                        >Email:</label>
                         <br />
                         <input
-                          id="email"
+                          type="text "
                           className="border-1 pl-3 rounded-md w-full h-[40px]"
-                          type="email"
-                          name="email"
-                          placeholder="Digite seu email"
-                          required
-                          aria-required="true"
-                          aria-label="E-mail obrigatório"
                           onChange={(e) => setEmail(e.target.value)}
+                          onBlur={(e) => validateEmail(e.target.value)}
+                          placeholder="Exemplo: email@gmail.com"
                         />
-                        <br />
+
                         <label
                           htmlFor="password"
                           className="font-semibold pt-2"
@@ -274,7 +325,7 @@ export default function Login() {
                         <br />
                         <div className="flex flex-row input-group w-full rounded-md">
                           <input
-                            id="password"
+                            id="passwords"
                             type={showPassword ? "text" : "password"}
                             className="border-1 pl-3 rounded-md w-[80%]  h-[40px]"
                             placeholder="Digite a senha"
@@ -331,7 +382,7 @@ export default function Login() {
                       <div className="flex flex-col w-full justify-center pt-4 px-4">
                         <button
                           className="text-white text-lg bg-black w-full h-[50px] rounded-md"
-                          onClick={(e) => cadastro()}
+                          onClick={(e) => pedidoPost()}
                         >
                           Cadastrar
                         </button>
@@ -355,6 +406,12 @@ export default function Login() {
           </div>
         </div>
       </div>
+      <PopupCadLogin
+        isOpen={modalCadastrado}
+        toggle={toggleModalCadastro}
+      />
     </div>
+
+
   );
 }

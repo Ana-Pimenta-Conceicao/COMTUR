@@ -427,40 +427,29 @@ function Atracao() {
     })
   };
 
-  const apresentaDados = Array.isArray(currentItems)
-    ? currentItems.map((atracao) => {
-      const tipoAtracao = dataTipoAtracao.find(
-        (tipo) => tipo.id === atracao.idTipoAtracao
-      );
-      const tipoAtracaoNome = tipoAtracao
-        ? tipoAtracao.nome
-        : "Tipo não encontrado";
+  const apresentaDados = Array.isArray(currentItems) ? currentItems.map((atracao) => {
+    const tipoAtracao = dataTipoAtracao.find((tipo) => tipo.id === atracao.idTipoAtracao);
+    const tipoAtracaoNome = tipoAtracao ? tipoAtracao.nome : "Tipo não encontrado";
 
-      return {
+    const nome = atracao.nome && typeof atracao.nome === 'string' ? (atracao.nome.length > 20 ? `${atracao.nome.slice(0, 20)}...` : atracao.nome) : '';
+    const descricao = atracao.descricao && typeof atracao.descricao === 'string' ? (atracao.descricao.length > 20 ? `${atracao.descricao.slice(0, 20)}...` : atracao.descricao) : '';
+
+    return {
         id: atracao.id,
-        nome: atracao.nome,
+        nome: nome,
         tipoAtracao: tipoAtracaoNome,
-        descricao: atracao.descricao,
+        descricao: descricao,
         status: "teste",
         acoes: (
-          <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-            <BtnAcao
-              funcao={() => AtracaoSet(atracao, "Editar")}
-              acao="Editar"
-            />
-            <BtnAcao
-              funcao={() => AtracaoSet(atracao, "Excluir")}
-              acao="Excluir"
-            />
-            <BtnAcao
-              funcao={() => AtracaoSet(atracao, "Visualizar")}
-              acao="Visualizar"
-            />
-          </div>
+            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+                <BtnAcao funcao={() => AtracaoSet(atracao, "Editar")} acao="Editar" />
+                <BtnAcao funcao={() => AtracaoSet(atracao, "Excluir")} acao="Excluir" />
+                <BtnAcao funcao={() => AtracaoSet(atracao, "Visualizar")} acao="Visualizar" />
+            </div>
         ),
-      };
-    })
-    : [];
+    };
+}) : [];
+
 
   if (userType === "1" || userType === "3") {
     return <Navigate to="/notfound" />;
@@ -525,8 +514,7 @@ function Atracao() {
                   <br />
                   <label>Descrição: </label>
                   <br />
-                  <input
-                    type="text"
+                  <textarea
                     className="form-control"
                     onChange={(e) => setAtracaoDescricao(e.target.value)}
                   />
@@ -688,8 +676,7 @@ function Atracao() {
                   <br />
                   <label>Descrição: </label>
                   <br />
-                  <input
-                    type="text"
+                  <textarea
                     className="form-control"
                     onChange={(e) => setAtracaoDescricao(e.target.value)}
                     value={atracaoDescricao}

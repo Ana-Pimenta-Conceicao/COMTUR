@@ -99,7 +99,7 @@ namespace COMTUR.Controllers
 		[HttpPut("{id}")]
 		public async Task<ActionResult<EmpresaModel>> Atualizar([FromForm] EmpresaModel empresaModel, int id)
 		{
-			empresaModel.Id = id;
+	;
 			EmpresaModel empresa = await _empresaRepositorio.Atualizar(empresaModel, id);
 
 			return Ok(empresa);

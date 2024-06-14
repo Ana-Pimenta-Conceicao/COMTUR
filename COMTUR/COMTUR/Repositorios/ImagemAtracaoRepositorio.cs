@@ -8,7 +8,6 @@ namespace COMTUR.Repositorios
 	public class ImagemAtracaoRepositorio : IImagemAtracaoRepositorio
 	{
 		private readonly ComturDBContext _dbContext;
-
 		private readonly IWebHostEnvironment _hostingEnvironment;
 		public ImagemAtracaoRepositorio(ComturDBContext dbContext, IWebHostEnvironment webHostEnvironment)
 		{

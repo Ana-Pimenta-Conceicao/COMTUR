@@ -256,6 +256,7 @@ export default function Empresa() {
     formData.append("cnpj", empresaCNPJ);
     formData.append("endereco", empresaEndereco);
     formData.append("descricao", empresaDescricao);
+    formData.append("imagemEmpresa", imagensEmpresa);
     formData.append("idUsuario", parseInt(usuarioSelecionado.value));
     formData.append("idtipoturismo", tipoTurismoSelecionado);
     formData.append("idUsuario", idUsuario);
@@ -278,8 +279,11 @@ export default function Empresa() {
         });
       });
 
+      if (imagensEmpresa.lenght !== 0) {
+        await pedidoPutImagens();
+      }
+
       abrirFecharModalEditar();
-      await pedidoPutImagens();
       limparDados();
       setAtualizarData(true);
       abrirModalEditado();

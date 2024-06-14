@@ -8,6 +8,11 @@ import Tabela from "../../components/table/tabela.jsx";
 import BtnAcao from "../../components/botoes/btnAcao.jsx";
 import Select from 'react-select';
 import { Navigate, useNavigate } from "react-router-dom";
+import BtnModaisIMG from "../../components/botoes/btnModaisIMG.jsx";
+import BtnModais from "../../components/botoes/btnModais.jsx"
+import PopupEditado from "../../components/popups/popupEditado.jsx";
+import PopupCadastrado from "../../components/popups/popupCadastro.jsx";
+import PopupExcluido from "../../components/popups/popupExcluido.jsx";
 
 function Atracao() {
   const baseUrl = "https://localhost:7256/api/Atracao";
@@ -306,6 +311,7 @@ function Atracao() {
         setData(data.filter((atracao) => atracao.id !== response.data));
         atualizarListaAtracao();
         abrirFecharModalDeletar();
+        toggleModalExclui();
       })
       .catch((error) => {
         console.log(error);
@@ -648,21 +654,18 @@ function Atracao() {
             </div>
           </ModalBody>
           <ModalFooter>
-            <button
-              className="btn btncadastrarmodal"
-              onClick={() => pedidoPost()}
-            >
-              Cadastrar
-            </button>
-            {"  "}
-            <button
-              className="btn btncancelarmodal"
-              onClick={() => abrirFecharModalInserir()}
-            >
-              Cancelar
-            </button>
+            <BtnModaisIMG funcao={() => pedidoPost()} acao="Cadastrar" />
+            <BtnModaisIMG funcao={() => abrirFecharModalInserir()} acao="Cancelar" />
+
           </ModalFooter>
         </Modal>
+
+
+        <PopupCadastrado
+          isOpen={modalCadastrado}
+          toggle={toggleModalCadastro}
+          objeto="Atração"
+        />
 
         <Modal
           className="modal-xl-gridxl"
@@ -822,41 +825,31 @@ function Atracao() {
             </div>
           </ModalBody>
           <ModalFooter>
-            <button
-              className="btn btnmodalverde"
-              onClick={() => pedidoAtualizar(atracaoId)}
-            >
-              Alterar
-            </button>
-            {"  "}
-            <button
-              className="btn btnmodalcinza"
-              onClick={() => abrirFecharModalEditar()}
-            >
-              Cancelar
-            </button>
+          <BtnModaisIMG funcao={() => pedidoAtualizar()} acao="Editar" />
+            <BtnModaisIMG funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
+          
           </ModalFooter>
         </Modal>
-
+        <PopupEditado
+          isOpen={modalEditado}
+          toggle={toggleModalEdita}
+          objeto="Atração"
+        />
         <Modal isOpen={modalDeletar}>
           <ModalBody>
             <label>Confirma a exclusão desta Atração : {atracaoNome} ?</label>
           </ModalBody>
           <ModalFooter>
-            <button
-              className="btn btnmodalverde"
-              onClick={() => pedidoDeletar()}
-            >
-              Sim
-            </button>
-            <button
-              className="btn btnmodalcinza"
-              onClick={() => abrirFecharModalDeletar()}
-            >
-              Não
-            </button>
+          <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+          <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
           </ModalFooter>
         </Modal>
+
+        <PopupExcluido
+          isOpen={modalExcluido}
+          toggle={toggleModalExclui}
+          objeto="Atração"
+        />
       </div>
     );
   }

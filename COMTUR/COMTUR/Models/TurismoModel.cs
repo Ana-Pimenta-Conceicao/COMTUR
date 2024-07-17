@@ -61,5 +61,8 @@ namespace COMTUR.Models
 		// relação com Noticia
 		[JsonIgnore]
 		public ICollection<NoticiaModel>? Noticia { get; set; }
+
+		// relaçao com Avaliacao
+		public ICollection<AvaliacaoModel>? Avaliacao { get; set; }
 	}
 }

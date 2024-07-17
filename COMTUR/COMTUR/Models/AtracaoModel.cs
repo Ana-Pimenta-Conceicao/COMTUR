@@ -53,5 +53,8 @@ public class AtracaoModel
 	[ForeignKey("usuarioid")]
 	public int IdUsuario { get; set; }
 
+	// relaçao com Avaliacao
+	public ICollection<AvaliacaoModel>? Avaliacao { get; set; }
+
 }
 

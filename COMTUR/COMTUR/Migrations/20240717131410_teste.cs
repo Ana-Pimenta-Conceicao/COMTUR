@@ -320,6 +320,54 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "avaliacao",
+                columns: table => new
+                {
+                    avaliacaoid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    notaAvaliacao = table.Column<string>(type: "text", nullable: false),
+                    dataAvaliacao = table.Column<DateOnly>(type: "date", nullable: false),
+                    comentarioAvaliacao = table.Column<string>(type: "text", nullable: false),
+                    idturismo = table.Column<int>(type: "integer", nullable: false),
+                    idatracao = table.Column<int>(type: "integer", nullable: false),
+                    usuarioid = table.Column<int>(type: "integer", nullable: false),
+                    AtracaoModelId = table.Column<int>(type: "integer", nullable: true),
+                    TurismoModelId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_avaliacao", x => x.avaliacaoid);
+                    table.ForeignKey(
+                        name: "FK_avaliacao_atracao_AtracaoModelId",
+                        column: x => x.AtracaoModelId,
+                        principalTable: "atracao",
+                        principalColumn: "atracaoid");
+                    table.ForeignKey(
+                        name: "FK_avaliacao_atracao_idatracao",
+                        column: x => x.idatracao,
+                        principalTable: "atracao",
+                        principalColumn: "atracaoid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_avaliacao_turismo_TurismoModelId",
+                        column: x => x.TurismoModelId,
+                        principalTable: "turismo",
+                        principalColumn: "turismoid");
+                    table.ForeignKey(
+                        name: "FK_avaliacao_turismo_idturismo",
+                        column: x => x.idturismo,
+                        principalTable: "turismo",
+                        principalColumn: "turismoid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_avaliacao_usuario_usuarioid",
+                        column: x => x.usuarioid,
+                        principalTable: "usuario",
+                        principalColumn: "usuarioid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "imagematracao",
                 columns: table => new
                 {
@@ -473,6 +521,11 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "avaliacao",
+                columns: new[] { "avaliacaoid", "AtracaoModelId", "comentarioAvaliacao", "dataAvaliacao", "idatracao", "idturismo", "usuarioid", "notaAvaliacao", "TurismoModelId" },
+                values: new object[] { 1, null, "Excelente show!!", new DateOnly(2024, 7, 17), 2, 2, 1, "4", null });
+
+            migrationBuilder.InsertData(
                 table: "imagematracao",
                 columns: new[] { "imagematracaoid", "idatracao", "usuarioid", "imagem", "legendaimagem" },
                 values: new object[,]
@@ -501,6 +554,31 @@ namespace COMTUR.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_atracao_usuarioid",
                 table: "atracao",
+                column: "usuarioid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_avaliacao_AtracaoModelId",
+                table: "avaliacao",
+                column: "AtracaoModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_avaliacao_idatracao",
+                table: "avaliacao",
+                column: "idatracao");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_avaliacao_idturismo",
+                table: "avaliacao",
+                column: "idturismo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_avaliacao_TurismoModelId",
+                table: "avaliacao",
+                column: "TurismoModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_avaliacao_usuarioid",
+                table: "avaliacao",
                 column: "usuarioid");
 
             migrationBuilder.CreateIndex(
@@ -604,6 +682,9 @@ namespace COMTUR.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Auditoria");
+
+            migrationBuilder.DropTable(
+                name: "avaliacao");
 
             migrationBuilder.DropTable(
                 name: "imagematracao");

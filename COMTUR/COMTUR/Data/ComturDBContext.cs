@@ -22,8 +22,9 @@ namespace COMTUR.Data
         public DbSet<SessaoModel> Sessao { get; set; }
         public DbSet<TurismoModel> Turismo { get; set; }
         public DbSet<AuditoriaModel> Auditoria { get; set; }
+		public DbSet<AvaliacaoModel> Avaliacao { get; set; }
 
-        public override int SaveChanges()
+		public override int SaveChanges()
         {
            RegistrarAuditoria();
             return base.SaveChanges();
@@ -113,8 +114,9 @@ namespace COMTUR.Data
             modelBuilder.ApplyConfiguration(new ImagemTurismoMap());
             modelBuilder.ApplyConfiguration(new SessaoMap());
             modelBuilder.ApplyConfiguration(new TurismoMap());
+			modelBuilder.ApplyConfiguration(new AvaliacaoMap());
 
-            base.OnModelCreating(modelBuilder);
+			base.OnModelCreating(modelBuilder);
 
             //Adicionando Tipos de Usuario para teste
             modelBuilder.Entity<UsuarioModel>().HasData(
@@ -128,6 +130,11 @@ namespace COMTUR.Data
 			modelBuilder.Entity<UsuarioModel>().HasData(
 			new UsuarioModel { Id = 5, Nome = "Ana", Telefone = "(55) 5555-5555", EmailUsuario = "ana@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Empresario },
 			new UsuarioModel { Id = 6, Nome = "Tropicale", Telefone = "(17) 3632-0117", EmailUsuario = "atendimento@lojatropicale.com.br", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Empresario }
+			);
+
+			//Adicionando Avaliacao para teste
+			modelBuilder.Entity<AvaliacaoModel>().HasData(
+			new AvaliacaoModel { Id = 1, Nota = "4", DataAvaliacao = new DateOnly(2024, 7, 17), Comentario = "Excelente show!!", IdAtracao = 2, IdTurismo = 2, IdUsuario = 1 }
 			);
 
 			//Adicionando TipoTurismo para teste

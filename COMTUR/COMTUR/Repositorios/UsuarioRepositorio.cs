@@ -23,12 +23,12 @@ namespace COMTUR.Repositorios
 			return await _dbContext.Usuario.Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
 
-        public async Task<UsuarioModel> BuscarPorEmail(string email)
-        {
-            return await _dbContext.Usuario.Where(x => x.EmailUsuario.ToUpper() == email.ToUpper()).FirstOrDefaultAsync();
-        }
+		public async Task<UsuarioModel> BuscarPorEmail(string email)
+		{
+			return await _dbContext.Usuario.Where(x => x.EmailUsuario.ToUpper() == email.ToUpper()).FirstOrDefaultAsync();
+		}
 
-        public async Task<List<UsuarioModel>> BuscarUsuario()
+		public async Task<List<UsuarioModel>> BuscarUsuario()
 		{
 			return await _dbContext.Usuario.ToListAsync();
 		}
@@ -88,7 +88,7 @@ namespace COMTUR.Repositorios
 			usuarioPorId.SenhaUsuario = usuarioModel.SenhaUsuario;
 			usuarioPorId.ImagemPerfilUsuario = usuarioModel.ImagemPerfilUsuario;
 			usuarioPorId.TipoUsuario = usuarioModel.TipoUsuario; // Atualizar o tipo de usuário
-			//usuarioPorId.TipoStatus = usuarioModel.TipoStatus; // Atualizar o tipo de status
+																 //usuarioPorId.TipoStatus = usuarioModel.TipoStatus; // Atualizar o tipo de status
 
 			_dbContext.Usuario.Update(usuarioPorId);
 			await _dbContext.SaveChangesAsync();

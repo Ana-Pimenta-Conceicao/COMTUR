@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using COMTUR.Repositorios.Interfaces;
 using COMTUR.Repositorios;
+using Azure;
+using COMTUR.Models.Enum;
+using COMTUR.Models.StatusState;
+using Response = COMTUR.Models.StatusState.Response;
 
 namespace COMTUR.Controllers
 {
@@ -12,10 +16,12 @@ namespace COMTUR.Controllers
 	public class TipoAtracaoController : ControllerBase
 	{
 		private readonly ITipoAtracaoRepositorio _TipoAtracaoRepositorio;
+		private readonly Response _response;
 
 		public TipoAtracaoController(ITipoAtracaoRepositorio TipoAtracaoRepositorio)
 		{
 			_TipoAtracaoRepositorio = TipoAtracaoRepositorio;
+			_response = new Response();
 		}
 
 		[HttpGet]
@@ -65,6 +71,86 @@ namespace COMTUR.Controllers
 		{
 			bool apagado = await _TipoAtracaoRepositorio.Apagar(id);
 			return Ok(apagado);
+		}
+
+		[HttpPut("{id:int}/Ativar")]
+		public async Task<ActionResult<TipoAtracaoModel>> Activity(int id)
+		{
+			try
+			{
+				var tipoAtracaoModel = await _TipoAtracaoRepositorio.BuscarPorId(id);
+				if (tipoAtracaoModel == null)
+				{
+					_response.SetNotFound();
+					_response.Message = "Tipo Atracao não encontrado!";
+					_response.Data = new { errorId = "Tipo Atracao não encontrado!" };
+					return NotFound(_response);
+				}
+				else if (tipoAtracaoModel.Status == TipoStatus.Aprovado)
+				{
+					_response.SetSuccess();
+					_response.Message = "O Tipo Atracao já está " + tipoAtracaoModel.GetState().ToLower() + ".";
+					_response.Data = tipoAtracaoModel;
+					return Ok(_response);
+				}
+				else
+				{
+					tipoAtracaoModel.Approved();
+					await _TipoAtracaoRepositorio.Atualizar(tipoAtracaoModel, id);
+
+					_response.SetSuccess();
+					_response.Message = "Tipo Atracao " + tipoAtracaoModel.GetState().ToLower() + " com sucesso.";
+					_response.Data = tipoAtracaoModel;
+					return Ok(_response);
+				}
+			}
+			catch (Exception ex)
+			{
+				_response.SetError();
+				_response.Message = "Não foi possível ativar o Tipo Atracao!";
+				_response.Data = new { ErrorMessage = ex.Message, StackTrace = ex.StackTrace ?? "No stack trace available!" };
+				return StatusCode(StatusCodes.Status500InternalServerError, _response);
+			}
+		}
+
+		[HttpPut("{id:int}/Desativar")]
+		public async Task<ActionResult<TipoAtracaoModel>> Desactivity(int id)
+		{
+			try
+			{
+				var tipoAtracaoModel = await _TipoAtracaoRepositorio.BuscarPorId(id);
+				if (tipoAtracaoModel is null)
+				{
+					_response.SetNotFound();
+					_response.Message = "Tipo Atracao não encontrado!";
+					_response.Data = new { errorId = "Tipo Atracao não encontrado!" };
+					return NotFound(_response);
+				}
+				else if (tipoAtracaoModel.Status == TipoStatus.Aprovado)
+				{
+					_response.SetSuccess();
+					_response.Message = "O Tipo Atracao já está " + tipoAtracaoModel.GetState().ToLower() + ".";
+					_response.Data = tipoAtracaoModel;
+					return Ok(_response);
+				}
+				else
+				{
+					tipoAtracaoModel.Approved();
+					await _TipoAtracaoRepositorio.Atualizar(tipoAtracaoModel, id);
+
+					_response.SetSuccess();
+					_response.Message = "Tipo Atracao " + tipoAtracaoModel.GetState().ToLower() + " com sucesso.";
+					_response.Data = tipoAtracaoModel;
+					return Ok(_response);
+				}
+			}
+			catch (Exception ex)
+			{
+				_response.SetError();
+				_response.Message = "Não foi possível desativar o Tipo Atracao!";
+				_response.Data = new { ErrorMessage = ex.Message, StackTrace = ex.StackTrace ?? "No stack trace available!" };
+				return StatusCode(StatusCodes.Status500InternalServerError, _response);
+			}
 		}
 	}
 }

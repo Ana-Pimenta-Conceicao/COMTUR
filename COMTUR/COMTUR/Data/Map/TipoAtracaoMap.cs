@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace COMTUR.Data.Map
 {
@@ -11,7 +12,8 @@ namespace COMTUR.Data.Map
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Nome).IsRequired().HasMaxLength(50);
-			builder.HasOne(e => e.UsuarioModel).WithMany().HasForeignKey(e => e.IdUsuario);
+            builder.HasOne(e => e.UsuarioModel).WithMany().HasForeignKey(e => e.IdUsuario);
+			builder.Property(ta => ta.Status).IsRequired();
 		}
     }
 }

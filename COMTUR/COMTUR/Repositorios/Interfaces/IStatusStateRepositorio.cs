@@ -6,9 +6,10 @@ namespace COMTUR.Repositorios.Interfaces
 	public interface IStatusStateRepositorio
 	{
 		string State { get; }
-		bool CanEdit();
-		bool CanRelate();
-		bool CanToRemove();
+		bool CanInactive();
+		bool CanAnalyzing();
+		bool CanApproved();
+		bool CanDisapproved();
 	}
 
 	public static class IStatusStateRepositorioExtensions
@@ -20,7 +21,7 @@ namespace COMTUR.Repositorios.Interfaces
 				TipoStatus.Aprovado => new AprovadoState(),
 				TipoStatus.Reprovado => new ReprovadoState(), 
 				TipoStatus.Analisando => new AnalisandoState(),
-				TipoStatus.Inativo => new InativoState(),
+				TipoStatus.Desativado => new DesativadoState(),
 				_ => new AprovadoState()
 			};
 		}
@@ -31,22 +32,28 @@ namespace COMTUR.Repositorios.Interfaces
 			return statusState.State;
 		}
 
-		public static bool CanEdit(TipoStatus status)
+		public static bool CanInactive(TipoStatus status)
 		{
 			IStatusStateRepositorio statusState = CreateState(status);
-			return statusState.CanEdit();
+			return statusState.CanInactive();
 		}
 
-		public static bool CanRelate(TipoStatus status)
+		public static bool CanAnalyzing(TipoStatus status)
 		{
 			IStatusStateRepositorio statusState = CreateState(status);
-			return statusState.CanRelate();
+			return statusState.CanAnalyzing();
 		}
 
-		public static bool CanRemove(TipoStatus status)
+		public static bool CanApproved(TipoStatus status)
 		{
 			IStatusStateRepositorio statusState = CreateState(status);
-			return statusState.CanToRemove();
+			return statusState.CanApproved();
+		}
+
+		public static bool CanDisapproved(TipoStatus status)
+		{
+			IStatusStateRepositorio statusState = CreateState(status);
+			return statusState.CanDisapproved();
 		}
 	}
 }

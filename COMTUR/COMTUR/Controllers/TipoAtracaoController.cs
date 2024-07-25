@@ -52,6 +52,7 @@ namespace COMTUR.Controllers
 		[HttpPost]
 		public async Task<ActionResult<TipoAtracaoModel>> Cadastrar([FromBody] TipoAtracaoModel tipoAtracaoModel)
 		{
+			tipoAtracaoModel.Analyzing();
 			TipoAtracaoModel tipoAtracao = await _TipoAtracaoRepositorio.Adicionar(tipoAtracaoModel);
 
 			return Ok(tipoAtracao);
@@ -73,83 +74,99 @@ namespace COMTUR.Controllers
 			return Ok(apagado);
 		}
 
-		[HttpPut("{id:int}/Ativar")]
+		[HttpPut("{id:int}/Aprovar")]
 		public async Task<ActionResult<TipoAtracaoModel>> Activity(int id)
 		{
-			try
+			var tipoAtracaoModel = await _TipoAtracaoRepositorio.BuscarPorId(id); // Busca o Tipoatracao que tem o id informado
+			if (tipoAtracaoModel == null) // Verifica se ele existe
 			{
-				var tipoAtracaoModel = await _TipoAtracaoRepositorio.BuscarPorId(id);
-				if (tipoAtracaoModel == null)
-				{
-					_response.SetNotFound();
-					_response.Message = "Tipo Atracao não encontrado!";
-					_response.Data = new { errorId = "Tipo Atracao não encontrado!" };
-					return NotFound(_response);
-				}
-				else if (tipoAtracaoModel.Status == TipoStatus.Aprovado)
-				{
-					_response.SetSuccess();
-					_response.Message = "O Tipo Atracao já está " + tipoAtracaoModel.GetState().ToLower() + ".";
-					_response.Data = tipoAtracaoModel;
-					return Ok(_response);
-				}
-				else
-				{
-					tipoAtracaoModel.Approved();
-					await _TipoAtracaoRepositorio.Atualizar(tipoAtracaoModel, id);
-
-					_response.SetSuccess();
-					_response.Message = "Tipo Atracao " + tipoAtracaoModel.GetState().ToLower() + " com sucesso.";
-					_response.Data = tipoAtracaoModel;
-					return Ok(_response);
-				}
+				return NotFound("Tipo Atração não encontrado!"); // Retorna que não foi encontrado (not found)
 			}
-			catch (Exception ex)
+
+			if (tipoAtracaoModel.CanApproved()) // Se ele pode ser aprovado
 			{
-				_response.SetError();
-				_response.Message = "Não foi possível ativar o Tipo Atracao!";
-				_response.Data = new { ErrorMessage = ex.Message, StackTrace = ex.StackTrace ?? "No stack trace available!" };
-				return StatusCode(StatusCodes.Status500InternalServerError, _response);
+				tipoAtracaoModel.Approved(); // Muda seu estado para Aprovado
+				await _TipoAtracaoRepositorio.Atualizar(tipoAtracaoModel, id); // Salva as alterações
+
+				return Ok(tipoAtracaoModel); // Retorna que a operação foi bem-sucedida (ok)
+			}
+			else
+			{
+				return tipoAtracaoModel.GetState() == "Aprovado" ? // Se ele já está Aprovado
+					BadRequest("O Tipo Atração já está " + tipoAtracaoModel.GetState() + "!") : // Retorna que ele já está aprovado
+					BadRequest("O Tipo Atração não pode ser Aprovado porque está " + tipoAtracaoModel.GetState() + "!"); // Retorna que não é possível aprovar por causa do seu status atual
 			}
 		}
 
 		[HttpPut("{id:int}/Desativar")]
 		public async Task<ActionResult<TipoAtracaoModel>> Desactivity(int id)
 		{
-			try
+			var tipoAtracaoModel = await _TipoAtracaoRepositorio.BuscarPorId(id);
+			if (tipoAtracaoModel == null)
 			{
-				var tipoAtracaoModel = await _TipoAtracaoRepositorio.BuscarPorId(id);
-				if (tipoAtracaoModel is null)
-				{
-					_response.SetNotFound();
-					_response.Message = "Tipo Atracao não encontrado!";
-					_response.Data = new { errorId = "Tipo Atracao não encontrado!" };
-					return NotFound(_response);
-				}
-				else if (tipoAtracaoModel.Status == TipoStatus.Aprovado)
-				{
-					_response.SetSuccess();
-					_response.Message = "O Tipo Atracao já está " + tipoAtracaoModel.GetState().ToLower() + ".";
-					_response.Data = tipoAtracaoModel;
-					return Ok(_response);
-				}
-				else
-				{
-					tipoAtracaoModel.Approved();
-					await _TipoAtracaoRepositorio.Atualizar(tipoAtracaoModel, id);
-
-					_response.SetSuccess();
-					_response.Message = "Tipo Atracao " + tipoAtracaoModel.GetState().ToLower() + " com sucesso.";
-					_response.Data = tipoAtracaoModel;
-					return Ok(_response);
-				}
+				return NotFound("Tipo Atração não encontrado!");
 			}
-			catch (Exception ex)
+
+			if (tipoAtracaoModel.CanInactive())
 			{
-				_response.SetError();
-				_response.Message = "Não foi possível desativar o Tipo Atracao!";
-				_response.Data = new { ErrorMessage = ex.Message, StackTrace = ex.StackTrace ?? "No stack trace available!" };
-				return StatusCode(StatusCodes.Status500InternalServerError, _response);
+				tipoAtracaoModel.Inactive();
+				await _TipoAtracaoRepositorio.Atualizar(tipoAtracaoModel, id);
+
+				return Ok(tipoAtracaoModel);
+			}
+			else
+			{
+				return tipoAtracaoModel.GetState() == "Desativado" ?
+					BadRequest("O Tipo Atração já está " + tipoAtracaoModel.GetState() + "!") : 
+					BadRequest("O Tipo Atração não pode ser Desativado porque está " + tipoAtracaoModel.GetState() + "!");
+			}
+		}
+
+		[HttpPut("{id:int}/EmAnalise")]
+		public async Task<ActionResult<TipoAtracaoModel>> Analyzing(int id)
+		{
+			var tipoAtracaoModel = await _TipoAtracaoRepositorio.BuscarPorId(id);
+			if (tipoAtracaoModel == null)
+			{
+				return NotFound("Tipo Atração não encontrado!");
+			}
+
+			if (tipoAtracaoModel.CanAnalyzing())
+			{
+				tipoAtracaoModel.Analyzing();
+				await _TipoAtracaoRepositorio.Atualizar(tipoAtracaoModel, id);
+
+				return Ok(tipoAtracaoModel);
+			}
+			else
+			{
+				return tipoAtracaoModel.GetState() == "em Análise" ?
+					BadRequest("O Tipo Atração já está " + tipoAtracaoModel.GetState() + "!") :
+					BadRequest("O Tipo Atração não pode ser colocado em Análise porque está " + tipoAtracaoModel.GetState() + "!");
+			}
+		}
+
+		[HttpPut("{id:int}/Reprovar")]
+		public async Task<ActionResult<TipoAtracaoModel>> Disapproved(int id)
+		{
+			var tipoAtracaoModel = await _TipoAtracaoRepositorio.BuscarPorId(id);
+			if (tipoAtracaoModel == null)
+			{
+				return NotFound("Tipo Atração não encontrado!");
+			}
+
+			if (tipoAtracaoModel.CanDisapproved())
+			{
+				tipoAtracaoModel.Disapproved();
+				await _TipoAtracaoRepositorio.Atualizar(tipoAtracaoModel, id);
+
+				return Ok(tipoAtracaoModel);
+			}
+			else
+			{
+				return tipoAtracaoModel.GetState() == "Reprovado" ?
+					BadRequest("O Tipo Atração já está " + tipoAtracaoModel.GetState() + "!") :
+					BadRequest("O Tipo Atração não pode ser Reprovado porque está " + tipoAtracaoModel.GetState() + "!");
 			}
 		}
 	}

@@ -4,9 +4,11 @@ namespace COMTUR.Models.StatusState
 {
 	public class AnalisandoState : IStatusStateRepositorio
 	{
-		public string State { get; } = "Analisando";
-		public bool CanEdit() => false;
-		public bool CanRelate() => false;
-		public bool CanToRemove() => false;
+		public string State { get; } = "em Análise";
+
+		public bool CanInactive() => false; // Analizando -X Desativado
+		public bool CanAnalyzing() => false; // Analizando -X Analizando
+		public bool CanApproved() => true; // Analizando -> Aprovado
+		public bool CanDisapproved() => true; // Analizando -> Reprovado
 	}
 }

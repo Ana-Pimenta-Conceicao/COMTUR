@@ -154,16 +154,17 @@ namespace COMTUR.Data
 
 			//Adicionando TipoAtracao para teste
 			modelBuilder.Entity<TipoAtracaoModel>().HasData(
-            new TipoAtracaoModel { Id = 1, Nome = "Show", IdUsuario = 4 }
-            );
-            
-            //Adicionando TipoAtracao para teste
-			modelBuilder.Entity<TipoAtracaoModel>().HasData(
-            new TipoAtracaoModel { Id = 2, Nome = "Monumento", IdUsuario = 4 }
+            new TipoAtracaoModel { Id = 1, Nome = "Show", IdUsuario = 4, Status = TipoStatus.Analisando }
             );
 
-            //Adicionando Empresa para teste
-            modelBuilder.Entity<EmpresaModel>().HasData(
+            //Adicionando TipoAtracao para teste
+            modelBuilder.Entity<TipoAtracaoModel>().HasData(
+            new TipoAtracaoModel { Id = 2, Nome = "Monumento", IdUsuario = 4, Status = TipoStatus.Analisando }
+            );
+
+
+			//Adicionando Empresa para teste
+			modelBuilder.Entity<EmpresaModel>().HasData(
             new EmpresaModel { Id = 1, Nome = "AnaStore", CNPJ = "12.345.678/9012-34", Endereco = "Rua Ana Carolina, 0902 - Jardim Aana, Jales - SP, 15700-123", Descricao = "Em AnaStore, acreditamos que cada pessoa tem sua própria história para contar, e é por isso que oferecemos uma seleção cuidadosamente analisada de roupas e acessórios que abraçam uma variedade de estilos, desde o casual chic até o elegante e sofisticado. Nossas coleções são atualizadas regularmente para garantir que nossos clientes sempre encontrem algo novo e empolgante a cada visita.", IdUsuario = 5, IdTipoTurismo = 2 }
             );
 

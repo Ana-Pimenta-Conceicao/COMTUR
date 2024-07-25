@@ -39,7 +39,8 @@ public class TipoAtracaoModel
 	public void Analyzing() => Status = StatusEnumExtensions.Analyzing();
 
 	public string GetState() => IStatusStateRepositorioExtensions.GetState(this.Status);
-	public bool CanEdit() => IStatusStateRepositorioExtensions.CanEdit(this.Status);
-	public bool CanRelate() => IStatusStateRepositorioExtensions.CanRelate(this.Status);
-	public bool CanRemove() => IStatusStateRepositorioExtensions.CanRemove(this.Status);
+	public bool CanInactive() => IStatusStateRepositorioExtensions.CanInactive(this.Status);
+	public bool CanAnalyzing() => IStatusStateRepositorioExtensions.CanAnalyzing(this.Status);
+	public bool CanApproved() => IStatusStateRepositorioExtensions.CanApproved(this.Status);
+	public bool CanDisapproved() => IStatusStateRepositorioExtensions.CanDisapproved(this.Status);
 }

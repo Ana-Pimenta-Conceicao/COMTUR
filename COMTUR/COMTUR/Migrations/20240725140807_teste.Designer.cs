@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240717131410_teste")]
+    [Migration("20240725140807_teste")]
     partial class teste
     {
         /// <inheritdoc />
@@ -667,6 +667,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("nome");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("statustipoatracao");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdUsuario");
@@ -678,13 +682,15 @@ namespace COMTUR.Migrations
                         {
                             Id = 1,
                             IdUsuario = 4,
-                            Nome = "Show"
+                            Nome = "Show",
+                            Status = 1
                         },
                         new
                         {
                             Id = 2,
                             IdUsuario = 4,
-                            Nome = "Monumento"
+                            Nome = "Monumento",
+                            Status = 1
                         });
                 });
 

@@ -82,7 +82,8 @@ namespace COMTUR.Migrations
                     tipoatracaoid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    usuarioid = table.Column<int>(type: "integer", nullable: false)
+                    usuarioid = table.Column<int>(type: "integer", nullable: false),
+                    statustipoatracao = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -447,11 +448,11 @@ namespace COMTUR.Migrations
 
             migrationBuilder.InsertData(
                 table: "tipoatracao",
-                columns: new[] { "tipoatracaoid", "usuarioid", "nome" },
+                columns: new[] { "tipoatracaoid", "usuarioid", "nome", "statustipoatracao" },
                 values: new object[,]
                 {
-                    { 1, 4, "Show" },
-                    { 2, 4, "Monumento" }
+                    { 1, 4, "Show", 1 },
+                    { 2, 4, "Monumento", 1 }
                 });
 
             migrationBuilder.InsertData(

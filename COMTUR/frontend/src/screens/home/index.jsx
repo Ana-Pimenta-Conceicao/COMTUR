@@ -30,7 +30,7 @@ const Home = () => {
         <div className="h-screen flex fixed">
           <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} nomeUsuario={localStorage.getItem("nome")} />
         </div>
-        <div className={`flex-1  ${sidebarOpen ? "ml-[200px]" : "ml-[100px]"}  `}>
+        <div className={`flex-1  ${sidebarOpen ? "ml-[200px]" : "ml-[100px]"} w-fit`}>
           <NavbarAdm />
           <div className="cont-home pl-[50px]">
             <h1 className="text-2xl font-semibold">Bem Vindo, {userName || "Usuário"}!</h1>

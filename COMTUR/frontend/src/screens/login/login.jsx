@@ -2,11 +2,10 @@ import { Eye, EyeSlash, ArrowLeft } from "@phosphor-icons/react";
 import logoComturSF from "../../assets/logoSF.svg";
 import comturBranco from "../../assets/comturBranco.svg";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import InputMask from "react-input-mask";
 import axios from "axios";
-import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
-import "bootstrap/dist/css/bootstrap.min.css"; // Adicione esta linha para importar o componente Modal
+import "bootstrap/dist/css/bootstrap.min.css"; 
 import PopupCadLogin from "../../components/popups/popupCadLogin.jsx";
 
 
@@ -23,7 +22,7 @@ export default function Login() {
   const [showSignupForm, setShowSignupForm] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isRotated, setIsRotated] = useState(false);
-  const [showModal, setShowModal] = useState(false); // Novo estado para modal
+  const [showModal, setShowModal] = useState(false);
 
   const [nomeUser, setNome] = useState("");
   const [telefoneUser, setTelefone] = useState("");
@@ -31,10 +30,13 @@ export default function Login() {
   const [imagemUser, setImagemUser] = useState("");
   const [idUser, setId] = useState("");
 
+  const loginButtonRef = useRef(null);
+  const cadastroButtonRef = useRef(null);
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  
+
 
   const toggleModalCadastro = () => setModalCadastrado(!modalCadastrado);
 
@@ -144,11 +146,29 @@ export default function Login() {
     }
   };
 
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter") {
+        if (showSignupForm) {
+          cadastroButtonRef.current.click();
+        } else {
+          loginButtonRef.current.click();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [showSignupForm]);
+
   return (
-    <div className="bg-black w-full min-h-screen">
-      <div className="flex flex-col md:flex-row w-full h-full">
+    <div className="flex justify-center md:items-center bg-black w-full min-h-screen">
+      <div className="absolute left-0 top-0">
         <div
-          className="flex flex-row text-lg text-white pt-4 pl-2"
+          className="relative flex text-lg text-white pt-4 pl-2 items-center cursor-pointer"
           onClick={() => {
             navigate(`/`);
           }}
@@ -156,9 +176,11 @@ export default function Login() {
           <ArrowLeft className="mr-3" size={26} />
           Voltar
         </div>
-        <div className="flex flex-col w-full pt-5 justify-center lg:justify-start items-center">
+      </div>
+      <div className="flex flex-col md:flex-row w-fit mt-[70px] md:mt-0">
+        <div className="flex flex-col w-full justify-center lg:justify-start items-center">
           <img src={comturBranco} alt="Comtur Branco" className="md:hidden w-[180px]" />
-          <div className="flex flex-row justify-center lg:justify-start  items-center w-full sm:ml-9 h-full mt-3">
+          <div className="flex flex-row justify-center lg:justify-start items-center w-full sm:ml-9 h-full">
             <div className={`flex flex-col md:flex-col ${showSignupForm ? "hidden sm:w-full" : " sm:flex"}`} >
               {!showSignupForm && (
                 <div className="w-full ">
@@ -206,7 +228,7 @@ export default function Login() {
                             onChange={(e) => setSenha(e.target.value)}
                           />
                           <button
-                            className="btn flex w-[20%] h-[40px] justify-center bg-white text-black  border-y-[#DBDBDB] border-r-[#DBDBDB] hover:text-[#FFD121] "
+                            className="btn flex w-[20%] h-[40px] justify-center bg-white text-black  border-y-[#DBDBDB] border-r-[#DBDBDB] hover:text-[#FFD121]"
                             type="button"
                             onClick={togglePasswordVisibility}
                           >
@@ -223,6 +245,7 @@ export default function Login() {
 
                       <div className="flex flex-col w-full justify-center pt-4 px-4">
                         <button
+                          ref={loginButtonRef}
                           className="text-white 2xl:text-2xl text-lg bg-black w-full h-[50px] rounded-md"
                           onClick={(e) => login()}
                         >
@@ -257,13 +280,12 @@ export default function Login() {
             )}
           </div>
 
-          <div className="flex flex-row justify-center items-center w-full  md:w-auto h-full  sm:ml-40">
+          <div className="flex flex-row justify-center lg:justify-start  items-center w-full sm:ml-9 h-full">
             {showSignupForm && (
               <img
                 src={logoComturSF}
                 alt="Logo"
-                className={`logo-image sm:ml-32  w-[450px] cursor-pointer duration-500 ${isRotated ? "rotate-[360deg]" : ""
-                  } hidden sm:block`}
+                className={`logo-image w-[500px] 2xl:w-[600px] cursor-pointer duration-500 ${isRotated ? "rotate-[360deg]" : ""} hidden md:block`}
                 onClick={rotateLogo}
               />
             )}
@@ -381,6 +403,7 @@ export default function Login() {
 
                       <div className="flex flex-col w-full justify-center pt-4 px-4">
                         <button
+                          ref={cadastroButtonRef}
                           className="text-white text-lg bg-black w-full h-[50px] rounded-md"
                           onClick={(e) => pedidoPost()}
                         >
@@ -411,7 +434,5 @@ export default function Login() {
         toggle={toggleModalCadastro}
       />
     </div>
-
-
   );
 }

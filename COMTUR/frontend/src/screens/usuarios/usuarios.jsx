@@ -377,7 +377,7 @@ export default function UsuarioComum() {
               <h1 className="text-3xl font-semibold">Lista de Usuários</h1>
               <div className="inline">
                 <label htmlFor="filtroTipoUsuario" className="mr-2"></label>
-                <div class="input-group mb-3">
+                <div class="input-group mb-1">
                   <span class="input-group-text" id="basic-addon1">
                     <Funnel size={18} />
                   </span>

@@ -56,7 +56,7 @@ namespace COMTUR.Repositorios
 
             // Atualiza a propriedade Imagem
             imagemNoticiaPorId.Imagem = imagemNoticia.Imagem;
-            imagemNoticiaPorId.LegendaImagem = imagemNoticia.LegendaImagem;
+            
 
             // Verifica se o ID da notícia associada foi alterado
             if (imagemNoticiaPorId.IdNoticia != imagemNoticia.IdNoticia)

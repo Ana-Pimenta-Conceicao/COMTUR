@@ -85,7 +85,7 @@ namespace COMTUR.Controllers
         }
 
         [HttpPut("{id}/AtualizarImagensNoticia")]
-        public async Task<ActionResult<List<ImagemNoticiaModel>>> AtualizarImagensNoticia([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id)
+        public async Task<ActionResult<List<ImagemNoticiaModel>>> AtualizarImagensNoticia([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id, [FromForm] int idUsuario)
         {
             NoticiaModel noticia = await _NoticiaRepositorio.BuscarPorId(id);
             if (noticia == null)
@@ -120,7 +120,7 @@ namespace COMTUR.Controllers
                 else
                 {
                     // Se a imagem não existe, cadastra uma nova imagem
-                    ImagemNoticiaModel novaImagem = new ImagemNoticiaModel { IdNoticia = id, Imagem = imagem, LegendaImagem = legenda };
+                    ImagemNoticiaModel novaImagem = new ImagemNoticiaModel { IdNoticia = id, Imagem = imagem, LegendaImagem = legenda, IdUsuario = idUsuario };
                     // Insere a nova imagem no banco de dados
                     await _ImagemNoticiaRepositorio.Adicionar(novaImagem);
                     imagensNoticia.Add(novaImagem); // Adiciona a nova imagem à lista de imagens relacionadas à notícia

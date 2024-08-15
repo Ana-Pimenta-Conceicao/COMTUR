@@ -48,7 +48,7 @@ export default function Funcionario() {
   const [editImage, setEditImage] = useState(false); // Estado para controlar se a imagem está sendo editada
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [idUsuario, setIdUsuario] = useState("");
-  
+
 
   const navigate = useNavigate();
 
@@ -303,18 +303,29 @@ export default function Funcionario() {
     const idTipoUsuarioAPI = localStorage.getItem("id");
     setUserType(userTypeFromLocalStorage);
     setIdUsuario(idTipoUsuarioAPI);
-  }, []);   
+  }, []);
 
   const apresentaDados = Array.isArray(currentItems)
-  ? currentItems
+    ? currentItems
       .filter((usuario) => usuario.tipoUsuario === 2) // Filtrar apenas os usuários com tipo de usuário igual a 2
       .map((usuario) => {
         const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
+        const nome = usuario.nome && typeof usuario.nome === 'string'
+          ? (usuario.nome.length > 20
+            ? `${usuario.nome.slice(0, 15)}...`
+            : usuario.nome)
+          : '';
+
+        const descricao = usuario.emailUsuario && typeof usuario.emailUsuario === 'string'
+          ? (usuario.emailUsuario.length > 20
+            ? `${usuario.emailUsuario.slice(0, 20)}...`
+            : usuario.emailUsuario)
+          : '';
 
         return {
           id: usuario.id,
-          nome: usuario.nome,
-          descricao: usuario.emailUsuario,
+          nome: nome,
+          descricao: descricao,
           tipoUsuario: tipoUsuarioNome,
           status: "teste",
           acoes: (
@@ -335,7 +346,7 @@ export default function Funcionario() {
           ),
         };
       })
-  : [];
+    : [];
 
 
   // Função auxiliar para obter o nome do tipo de usuário com base no enum

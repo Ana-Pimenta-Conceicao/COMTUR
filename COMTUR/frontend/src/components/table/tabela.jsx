@@ -1,7 +1,6 @@
 import React from "react";
 import Paginacao from "./paginacao.jsx";
 
-
 function Tabela({ object, currentPage, totalPages, goToPage, colunas, numColunas }) {
   const renderTableHeader = (columns, numColumns) => {
     const colSpan = numColumns === 6 ? "grid-cols-11" : "grid-cols-7";
@@ -17,7 +16,6 @@ function Tabela({ object, currentPage, totalPages, goToPage, colunas, numColunas
     );
   };
 
-  // Função para renderizar o corpo da tabela
   const renderTableBody = (data, numColumns) => {
     const colSpan = numColumns === 6 ? "grid-cols-11" : "grid-cols-7";
 
@@ -39,17 +37,18 @@ function Tabela({ object, currentPage, totalPages, goToPage, colunas, numColunas
     );
   };
 
-  // Renderização principal
   if (numColunas === 6 || numColunas === 4) {
     return (
-      <div className="w-full rounded-[10px]">
-        {renderTableHeader(colunas, numColunas)}
-        {renderTableBody(object, numColunas)}
-        <Paginacao
-          currentPage={currentPage}
-          totalPages={totalPages}
-          goToPage={goToPage}
-        />
+      <div className="w-full overflow-x-auto">
+        <div className="min-w-[800px] max-w-full">
+          {renderTableHeader(colunas, numColunas)}
+          {renderTableBody(object, numColunas)}
+          <Paginacao
+            currentPage={currentPage}
+            totalPages={totalPages}
+            goToPage={goToPage}
+          />
+        </div>
       </div>
     );
   } else {

@@ -86,7 +86,7 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpPut("{id}/AtualizarImagensAtracao")]
-		public async Task<ActionResult<List<ImagemAtracaoModel>>> AtualizarImagensAtracao([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id)
+		public async Task<ActionResult<List<ImagemAtracaoModel>>> AtualizarImagensAtracao([FromForm] List<string> imagens, [FromForm] List<string> legendas, int id, [FromForm] int idUsuario)
 		{
 			AtracaoModel Atracao = await _AtracaoRepositorio.BuscarPorId(id);
 			if (Atracao == null)
@@ -121,7 +121,7 @@ namespace COMTUR.Controllers
 				else
 				{
 					// Se a imagem não existe, cadastra uma nova imagem
-					ImagemAtracaoModel novaImagem = new ImagemAtracaoModel { IdAtracao = id, Imagem = imagem, LegendaImagem = legenda };
+					ImagemAtracaoModel novaImagem = new ImagemAtracaoModel { IdAtracao = id, Imagem = imagem, LegendaImagem = legenda, IdUsuario = idUsuario };
 					// Insere a nova imagem no banco de dados
 					await _ImagemAtracaoRepositorio.Adicionar(novaImagem);
 					imagensAtracao.Add(novaImagem); // Adiciona a nova imagem à lista de imagens relacionadas à atração

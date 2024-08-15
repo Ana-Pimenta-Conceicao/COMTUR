@@ -219,6 +219,7 @@ export default function Noticia() {
     formData.append("conteudo", noticiaConteudo);
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
+    formData.append("imagem", imagensNoticia);
     formData.append("idUsuario", idUsuario);
 
     try {
@@ -245,7 +246,6 @@ export default function Noticia() {
         await pedidoPutImagens();
       }
 
-      limparDados();
       setAtualizarData(true);
       toggleModalEdita();
     } catch (error) {
@@ -345,16 +345,25 @@ export default function Noticia() {
 
   const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((noticia) => {
+
+     
+        const titulo = noticia.titulo && typeof noticia.titulo === 'string'
+          ? (noticia.titulo.length > 20
+            ? `${noticia.titulo.slice(0, 20)}...`
+            : noticia.titulo)
+          : '';
+
+          const subtitulo = noticia.subtitulo && typeof noticia.subtitulo === 'string'
+          ? (noticia.subtitulo.length > 20
+            ? `${noticia.subtitulo.slice(0, 20)}...`
+            : noticia.subtitulo)
+          : '';
+
+        
         return {
           id: noticia.id,
-          titulo:
-            noticia.titulo.length > 25
-              ? `${noticia.titulo.substring(0, 35)}...`
-              : noticia.titulo,
-          subtitulo:
-            noticia.subtitulo.length > 25
-              ? `${noticia.subtitulo.substring(0, 35)}...`
-              : noticia.subtitulo,
+          titulo: titulo,
+          subtitulo: subtitulo,
           dataPublicacao: formatarDataParaExibicao(noticia.dataPublicacao),
           status: "teste",
           acoes: (

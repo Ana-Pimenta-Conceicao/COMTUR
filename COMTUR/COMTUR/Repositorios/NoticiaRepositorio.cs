@@ -65,9 +65,9 @@ namespace COMTUR.Repositorios
             return noticiaModel;
         }
 
-        public async Task<NoticiaModel> Atualizar(NoticiaModel noticiaDto, int id)
+        public async Task<NoticiaModel> Atualizar(NoticiaModel NoticiaModel, int id)
         {
-            var noticiaPorId = await BuscarPorId(id);
+            NoticiaModel noticiaPorId = await BuscarPorId(id);
 
             if (noticiaPorId == null)
             {
@@ -75,11 +75,11 @@ namespace COMTUR.Repositorios
             }
 
             // Atribui os valores do DTO para a entidade NoticiaModel
-            noticiaPorId.Titulo = noticiaDto.Titulo;
-            noticiaPorId.Subtitulo = noticiaDto.Subtitulo;
-            noticiaPorId.Conteudo = noticiaDto.Conteudo;
-            noticiaPorId.DataPublicacao = noticiaDto.DataPublicacao;
-            noticiaPorId.HoraPublicacao = noticiaDto.HoraPublicacao;
+            noticiaPorId.Titulo = NoticiaModel.Titulo;
+            noticiaPorId.Subtitulo = NoticiaModel.Subtitulo;
+            noticiaPorId.Conteudo = NoticiaModel.Conteudo;
+            noticiaPorId.DataPublicacao = NoticiaModel.DataPublicacao;
+            noticiaPorId.HoraPublicacao = NoticiaModel.HoraPublicacao;
 			//noticiaPorId.TipoStatus = noticiaDto.TipoStatus;
 
 

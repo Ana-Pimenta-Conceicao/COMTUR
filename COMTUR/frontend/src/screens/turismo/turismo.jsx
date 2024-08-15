@@ -855,10 +855,7 @@ const Turismo = () => {
           </ModalBody>
           <ModalFooter>
             <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
-            <BtnModais
-              funcao={() => abrirFecharModalDeletar()}
-              acao="Cancelar"
-            />
+            <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
           </ModalFooter>
         </Modal>
 

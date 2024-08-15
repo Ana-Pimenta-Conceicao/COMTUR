@@ -58,6 +58,8 @@ function Inicio() {
         obterOutrasNoticias();
     }, []);
 
+
+
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentTurismoIndex(prevIndex =>
@@ -67,6 +69,8 @@ function Inicio() {
 
         return () => clearInterval(interval);
     }, [turismo]);
+
+    console.log(turismo)
 
     return (
         <div className="">
@@ -97,7 +101,8 @@ function Inicio() {
                                     <h3 className="flex justify-center items-end uppercase h-28 sm:h-60 gap-0 text-xl sm:text-2xl text-slate-50 font-bold  text-center">
                                         {turismo[currentTurismoIndex].nome}
                                     </h3>
-                                    <button className="mx-32 sm:mx-[550px] py-1 border-3 rounded-sm border-[#FFD121] text-xs sm:text-2xl font-medium text-slate-50 bg-transparent hover:bg-[#FFD121] transition-colors duration-300">
+                                    <button className="mx-32 sm:mx-[550px] py-1 border-3 rounded-sm border-[#FFD121] text-xs sm:text-2xl font-medium text-slate-50 bg-transparent hover:bg-[#FFD121] transition-colors duration-300"
+                                    onClick={() => { navigate(`/visualizarTurismo/${turismo[currentTurismoIndex].id}`) }}>
                                         Leia Mais
                                     </button>
                                 </div>
@@ -146,8 +151,8 @@ function Inicio() {
                                                 <div class="d-flex justify-content-center">
                                                     <img class="img-fluid mb-4" src="./src/assets/animal.png" alt="" />
                                                 </div>
-                                                <h1 class="display-6" data-toggle="counter-up">8.000</h1>
-                                                <span class="fs-5 fw-semi-bold text-black">Total de animais</span>
+                                                <h1 class="display-6" data-toggle="counter-up">586 km</h1>
+                                                <span class="fs-5 fw-semi-bold text-black">da cidade de São Paulo</span>
                                             </div>
                                         </div>
                                         <div class="col-sm-6 wow fadeIn">
@@ -259,7 +264,7 @@ function Inicio() {
                 <div className="inline-flex items-center justify-center w-full mt-5">
                     <hr className="w-full h-1 my-6 opacity-100 bg-[#FFD121] border-0 rounded" />
                     <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">
-                        <h1 className="text-[#373636] sm:text-2xl text-sm font-bold sm:pl-6 pl-3">EVENTOS</h1>
+                        <h1 className="text-[#373636] sm:text-2xl text-sm font-bold ">NOTÍCIAS</h1>
                     </div>
                 </div>
 

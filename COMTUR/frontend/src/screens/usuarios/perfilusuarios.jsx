@@ -102,9 +102,9 @@ export default function VisualizarPerfil() {
         <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
       </div>
       <div
-          className="flex-1 container-fluid"
-          style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
-        >
+        className="flex-1 container-fluid"
+        style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
+      >
         <NavBarAdm />
         <div className="pl-8 pr-8 pt-[20px]">
           <h1 className="text-2xl font-semibold pb-2">
@@ -113,7 +113,7 @@ export default function VisualizarPerfil() {
           <hr className="pb-[30px] border-[2.5px] border-[#DBDBDB]" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-5 justify-center">
-          <div className="flex flex-col justify-center items-center lg:items-start lg:pl-28 col-span-2">
+          <div className="flex flex-col justify-center items-center lg:items-start lg:pl-28 col-span-2 max-w-[500px]">
             <div className="flex relative justify-center sm:justify-center w-full">
               {imagemUser ? (
                 <img
@@ -128,8 +128,10 @@ export default function VisualizarPerfil() {
                   title="Imagem não disponível"
                 />
               )}
-              <div className="absolute flex justify-center items-center cursor-pointer bottom-1 right-[80px] w-[50px] h-[50px] text-[#FFD121] bg-black border-2 border-white dark:border-gray-800 rounded-full"
-                onClick={handleImageClick}>
+              <div
+                className="absolute flex justify-center items-center cursor-pointer translate-x-[70px] translate-y-[150px] w-[50px] h-[50px] text-[#FFD121] bg-black border-2 border-white dark:border-gray-800 rounded-full"
+                onClick={handleImageClick}
+              >
                 <Camera size={28} />
                 <div>
                   <input
@@ -141,6 +143,7 @@ export default function VisualizarPerfil() {
                 </div>
               </div>
             </div>
+
             <div className="flex flex-col justify-center w-full px-5">
               <h2 className="flex pt-2 justify-center lg:justify-start text-lg font-bold pb-2">
                 {usuario.nome}
@@ -209,7 +212,7 @@ export default function VisualizarPerfil() {
                 onClick={togglePasswordVisibility}
               >
                 {showPassword ? <EyeSlash size={16} /> : <Eye size={16} />}
-              </button> 
+              </button>
             </div>
             <label className="text-sm font-semibold mt-2">Tipo de Usuário:</label>
             <input

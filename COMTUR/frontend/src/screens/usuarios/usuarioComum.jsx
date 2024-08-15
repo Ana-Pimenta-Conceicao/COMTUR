@@ -310,15 +310,23 @@ export default function Usuario() {
       .filter((usuario) => usuario.tipoUsuario === 1) // Filtrar apenas os usuários com tipo de usuário igual a 2
       .map((usuario) => {
         const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
+
+        const descricao = usuario.emailUsuario && typeof usuario.emailUsuario === 'string'
+        ? (usuario.emailUsuario.length > 20 
+          ? `${usuario.emailUsuario.slice(0, 20)}...` 
+          : usuario.emailUsuario)
+        : '';
+
+        const nome = usuario.nome && typeof usuario.nome === 'string'
+        ? (usuario.nome.length > 20 
+          ? `${usuario.nome.slice(0, 15)}...` 
+          : usuario.nome)
+        : '';
+        
         return {
           id: usuario.id,
-          nome: 
-          usuario.nome.length > 20
-          ? `${usuario.nome.slice(0, 15)}...`
-          : usuario.nome,
-          descricao: usuario.emailUsuario.length > 20
-          ? `${usuario.email.slice(0, 15)}...`
-          : usuario.email,
+          nome: nome,
+          descricao: descricao,
           tipoUsuario: tipoUsuarioNome,
           status: "teste",
           acoes: (

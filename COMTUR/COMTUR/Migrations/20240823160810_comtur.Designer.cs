@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20240822163317_comtur")]
+    [Migration("20240823160810_comtur")]
     partial class comtur
     {
         /// <inheritdoc />

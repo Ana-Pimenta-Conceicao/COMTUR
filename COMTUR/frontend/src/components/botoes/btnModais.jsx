@@ -5,7 +5,8 @@ const Acoes = {
     "Editar": { texto: "Editar" },
     "Excluir": { texto: "Excluir" },
     "Cancelar": { texto: "Cancelar" },
-    "Cadastrar": { texto: "Cadastrar" }
+    "Cadastrar": { texto: "Cadastrar" },
+    "Confirmar": {texto: "Confirmar"}
 };
 
 const BtnModaisIMG = ({ funcao, acao }) => {
@@ -15,6 +16,7 @@ const BtnModaisIMG = ({ funcao, acao }) => {
             Editar: "bg-[#0F766E] px-[20px] py-[8px] hover:bg-teal-900 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800",
             Cancelar: "bg-gray-400 px-[12px] py-[8px]  hover:bg-gray-600 ml-2",
             Cadastrar: "bg-[#FFD121] px-[10px] py-[8px] hover:bg-[#E8BA0B]",
+            Confirmar: "bg-[#FFD121] px-[10px] py-[8px] hover:bg-[#E8BA0B]",
             Excluir: "bg-[#D30000]  px-[10px] py-[8px]  hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
         }
     });

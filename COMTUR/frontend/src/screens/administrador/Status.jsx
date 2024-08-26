@@ -14,23 +14,23 @@ function Status() {
   const [data, setData] = useState([]);
   const [atualizarData, setAtualizarData] = useState(true);
 
-  const [tipoatracaoNome, setTipoAtracaoNome] = useState("");
-  const [tipoatracaoId, setTipoAtracaoId] = useState("");
+  // const [tipoatracaoNome, setTipoAtracaoNome] = useState("");
+  // const [tipoatracaoId, setTipoAtracaoId] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [userType, setUserType] = useState(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const TipoAtracaoSet = (tipoatracao, opcao) => {
-    setTipoAtracaoNome(tipoatracao.nome);
-    setTipoAtracaoId(tipoatracao.id);
+  // const TipoAtracaoSet = (tipoatracao, opcao) => {
+  //   setTipoAtracaoNome(tipoatracao.nome);
+  //   setTipoAtracaoId(tipoatracao.id);
 
-    if (opcao === "Editar") {
-      abrirFecharModalEditar();
-    } else {
-      abrirFecharModalDeletar();
-    }
-  };
+  //   if (opcao === "Editar") {
+  //     abrirFecharModalEditar();
+  //   } else {
+  //     abrirFecharModalDeletar();
+  //   }
+  // };
 
   const pedidoGet = async () => {
     try {
@@ -41,13 +41,7 @@ function Status() {
     }
   };
 
-  useEffect(() => {
-    if (atualizarData) {
-      pedidoGet();
-      setAtualizarData(false);
-    }
-  }, [atualizarData]);
-
+  
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const totalItems = data.length;
@@ -98,22 +92,28 @@ function Status() {
           case '4': // Desativado
             url = `${baseUrl}/${id}/Desativar`;
             break;
-          default:
-            console.error('Status desconhecido:', newStatus);
-            return;
-        }
-      
-        try {
-          await axios.put(url); // Envia a requisição PUT para o endpoint correto
-          setAtualizarData(true); // Força a atualização da lista
-        } catch (error) {
-          console.error("Erro ao atualizar o status:", error);
-        }
-      };
-      
-
-  if (userType === "1" || userType === "3") {
-    return <Navigate to="/notfound" />;
+            default:
+              console.error('Status desconhecido:', newStatus);
+              return;
+            }
+            
+            try {
+              await axios.put(url); // Envia a requisição PUT para o endpoint correto
+              setAtualizarData(true); // Força a atualização da lista
+            } catch (error) {
+              console.error("Erro ao atualizar o status:", error);
+            }
+          };
+          useEffect(() => {
+            if (atualizarData) {
+              pedidoGet();
+              setAtualizarData(false);
+            }
+          }, [atualizarData]);
+          
+          
+          if (userType === "1" || userType === "3") {
+            return <Navigate to="/notfound" />;
   } else {
     return (
       <div className="home">

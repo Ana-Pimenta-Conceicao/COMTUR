@@ -1,4 +1,4 @@
-﻿using COMTUR.Repositorios.Interfaces;
+﻿  using COMTUR.Repositorios.Interfaces;
 
 namespace COMTUR.Models.StatusState
 {

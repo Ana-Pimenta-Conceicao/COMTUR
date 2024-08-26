@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Modal, ModalBody, ModalFooter, ModalHeader, Button } from "reactstrap";
+import { Modal, ModalBody, ModalFooter } from "reactstrap";
 import { CaretDown } from "@phosphor-icons/react";
 import BtnModais from "../../components/botoes/btnModais.jsx";
 
 const StatusDropdown = ({ currentStatus, onUpdateStatus }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(currentStatus);
+  const [pendingStatus, setPendingStatus] = useState(null); // Status que será confirmado
   const [modalOpen, setModalOpen] = useState(false);
 
   const statusOptions = {
@@ -23,16 +24,24 @@ const StatusDropdown = ({ currentStatus, onUpdateStatus }) => {
   };
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-  const toggleModal = () => setModalOpen(!modalOpen);
+  const closeDropdown = () => setDropdownOpen(false);
 
   const handleStatusChange = (newStatus) => {
-    setSelectedStatus(newStatus);
-    toggleModal(); // Abre a modal de confirmação
+    setPendingStatus(newStatus);
+    closeDropdown(); // Fecha o dropdown após seleção
+    setModalOpen(true); // Abre a modal de confirmação
   };
 
   const confirmStatusChange = () => {
-    onUpdateStatus(selectedStatus);
-    toggleModal(); // Fecha a modal após confirmar
+    setSelectedStatus(pendingStatus);
+    onUpdateStatus(pendingStatus);
+    setModalOpen(false); // Fecha a modal após confirmar
+    setPendingStatus(null); // Limpa o status pendente
+  };
+
+  const cancelStatusChange = () => {
+    setPendingStatus(null); // Limpa o status pendente
+    setModalOpen(false); // Fecha a modal
   };
 
   return (
@@ -57,14 +66,14 @@ const StatusDropdown = ({ currentStatus, onUpdateStatus }) => {
         </div>
       )}
 
-      <Modal isOpen={modalOpen} toggle={toggleModal}>
+      <Modal isOpen={modalOpen} toggle={cancelStatusChange}>
         <ModalBody>
           Tem certeza de que deseja alterar o status para{" "}
-          {statusOptions[selectedStatus]}?
+          {statusOptions[pendingStatus]}?
         </ModalBody>
         <ModalFooter>
           <BtnModais funcao={confirmStatusChange} acao="Confirmar" />
-          <BtnModais funcao={toggleModal} acao="Cancelar" />
+          <BtnModais funcao={cancelStatusChange} acao="Cancelar" />
         </ModalFooter>
       </Modal>
     </div>

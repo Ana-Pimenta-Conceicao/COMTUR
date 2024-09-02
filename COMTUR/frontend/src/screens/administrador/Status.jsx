@@ -1,9 +1,8 @@
-import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
 import NavBarAdm from "../../components/admin/navbarAdm.jsx";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Tabela from "../../components/table/tabela.jsx";
 import StatusDropdown from "../../components/admin/statusDropdown.jsx";
 
@@ -18,6 +17,7 @@ function Status() {
   const [userType, setUserType] = useState(null);
   const [loading, setLoading] = useState(true); // Estado de carregamento
 
+
   const pedidoGet = async () => {
     try {
       const response = await axios.get(baseUrl);
@@ -26,6 +26,14 @@ function Status() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+ 
+
+  const navigate = useNavigate();
+
+  const handleRowClick = (id) => {
+    navigate(`/visualizarTipoAtracao/${id}`);
   };
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,12 +64,13 @@ function Status() {
       // Fetching auditoria and usuario info for each item
       for (const item of currentItems) {
         if (!auditoriaInfo[item.id]) {
-          await fetchAuditoria(item.id, "TipoAtracao");
+          await fetchAuditoria(item.id, "TipoAtracao");  // Passando o nome da entidade "TipoAtracao"
         }
         if (item.idUsuario && !usuarioInfo[item.idUsuario]) {
           await fetchUsuario(item.idUsuario);
         }
       }
+
 
       setLoading(false); // Indica que o carregamento foi concluído
     };
@@ -79,9 +88,13 @@ function Status() {
         [id]: response.data,
       }));
     } catch (error) {
-      console.error("Erro ao buscar auditoria:", error);
+      console.error("Erro ao buscar auditoria:", error.response ? error.response.data : error.message);
+      console.log(`Fetching URL: ${urlAuditoria}`);
     }
   };
+
+
+
 
   const fetchUsuario = async (id) => {
     try {
@@ -171,7 +184,9 @@ function Status() {
               totalPages={totalPages}
               goToPage={setCurrentPage}
               numColunas={6}
+              onRowClick={handleRowClick} // Passando a função de clique
             />
+
           </div>
         </div>
       </div>

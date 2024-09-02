@@ -21,6 +21,7 @@ import HomeEmpresario from "./screens/empresario/homeEmpresario.jsx";
 import Turismo from "./screens/turismo/turismo.jsx";
 import VisualizarTurismos from "./screens/turismo/visualizarturismo.jsx";
 import VisualizarAtracao from "./screens/atracao/visualizarAtracao.jsx";
+import VisualizarTipoAtracao from "./screens/atracao/visualizarTipoAtracao.jsx";
 import VisualizarEmpresa from "./screens/empresa/visualizarEmpresa.jsx";
 import VisualizarPerfil from "./screens/usuarios/perfilusuarios.jsx";
 import Status from "./screens/administrador/Status.jsx"
@@ -70,6 +71,7 @@ const AppRoutes = () => {
                 <Route path="/homeEmpresario" element={<ProtectedRoute element={<HomeEmpresario/>} /> } />
                 <Route path="/turismo" element={<ProtectedRoute element={<Turismo/>} /> } />
                 <Route path="/visualizaratracao/:id" element={<VisualizarAtracao/>} />
+                <Route path="/visualizartipoatracao/:id" element={<VisualizarTipoAtracao/>} />
                 <Route path="/empresa" element={<ProtectedRoute element={<Empresa/>}/> } />
                 <Route path="/status" element={<ProtectedRoute element={<Status/>}/> } />
                 <Route path="/home" element={<ProtectedRoute element={<Home />} />} />

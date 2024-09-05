@@ -53,18 +53,19 @@ const StatusDropdown = ({ currentStatus, onUpdateStatus }) => {
         {statusOptions[selectedStatus]} <CaretDown size={20} className="ml-2" />
       </div>
       {dropdownOpen && (
-        <div className="absolute bg-white border border-gray-200 rounded-md mt-2 shadow-lg z-10">
+        <div className="fixed bg-white border border-gray-200 rounded-md mt-2 shadow-lg z-50 max-h-20 overflow-y-auto">
           {Object.entries(statusOptions).map(([value, label]) => (
             <div
               key={value}
               onClick={() => handleStatusChange(value)}
-              className={`px-4 py-2 cursor-pointer hover:bg-gray-100 text-gray-700`}
+              className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-gray-700"
             >
               {label}
             </div>
           ))}
         </div>
       )}
+
 
       <Modal isOpen={modalOpen} toggle={cancelStatusChange}>
         <ModalBody>

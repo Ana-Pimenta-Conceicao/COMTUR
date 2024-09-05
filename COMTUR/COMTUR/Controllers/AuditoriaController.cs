@@ -38,5 +38,23 @@ namespace COMTUR.Controllers
 
             return Ok(resultado);
         }
+
+        [HttpGet("historico-modificacoes/{id}/{entidade}")]
+        public IActionResult GetHistoricoModificacoes(int id, string entidade)
+        {
+            var auditorias = _context.Auditoria
+                .Where(a => a.NomeEntidade == entidade && (a.ValoresAntigos.Contains($"\"Id\":{id}") || a.NovosValores.Contains($"\"Id\":{id}")))
+                .OrderBy(a => a.Data)
+                .ThenBy(a => a.Hora)
+                .ToList();
+
+            if (auditorias == null || !auditorias.Any())
+            {
+                return NotFound("Nenhum histórico de auditoria encontrado para o ID fornecido.");
+            }
+
+            return Ok(auditorias);
+        }
+
     }
 }

@@ -27,6 +27,7 @@ import VisualizarPerfil from "./screens/usuarios/perfilusuarios.jsx";
 import Status from "./screens/administrador/Status.jsx"
 import TodasEmpresas from "./screens/empresa/todasEmpresas.jsx";
 import TodosTurismos from "./screens/turismo/todosTurismos.jsx";
+import TodosEventos from "./screens/turismo/todosEventos.jsx";
 
 
 const isUserLoggedIn = () => {
@@ -56,6 +57,7 @@ const AppRoutes = () => {
                 <Route path="/visualizarEmpresa/:id" element={<VisualizarEmpresa/>}/>
                 <Route path="/todasempresas" element={<TodasEmpresas/>} />
                 <Route path="/todosTurismos" element={<TodosTurismos/>} />
+                <Route path="/todoseventos" element={<TodosEventos/>} />
 
                 {/* <Route path="/home"  element={ <Home />} /> */}
                 <Route path="/noticia" element={<ProtectedRoute element={ <Noticia /> } />}/>

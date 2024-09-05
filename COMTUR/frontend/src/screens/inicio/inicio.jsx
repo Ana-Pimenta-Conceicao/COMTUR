@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import NavbarUsr from "../../components/user/navbarUsr.jsx";
 import FooterUsr from "../../components/user/footerUsr.jsx";
 import "../inicio/inicio.css"
@@ -207,13 +207,14 @@ function Inicio() {
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-lg-3 col-md-6 espacocard">
                             <div class="team-item rounded p-0 d-flex flex-column align-items-center">
                                 <div className="card cardconteudo">
                                     <img class="img-fluid" src="./src/assets/cardalimentacao.png" alt="" />
                                     <div class="justify-content-center">
                                         <div class="d-grid gap-2">
-                                            <button class="btn btncard font-medium">Alimentação</button>
+                                            <button class="btn btncard font-medium" >Alimentação</button>
                                         </div>
                                     </div>
                                 </div>
@@ -221,8 +222,9 @@ function Inicio() {
                         </div>
                     </div>
 
+                    
                     <div class="row g-4 m-0 justify-content-center">
-                        <div class="col-lg-3 col-md-6 espacocard">
+                        <Link to="/todosEventos" class="col-lg-3 col-md-6 espacocard">
                             <div class="team-item rounded p-0 d-flex flex-column align-items-center">
                                 <div className="card cardconteudo">
                                     <img class="img-fluid" src="./src/assets/cardeventos.png" alt="" />
@@ -233,8 +235,9 @@ function Inicio() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 espacocard">
+                        </Link>
+                        <Link to="" class="col-lg-3 col-md-6 espacocard">
+                            {/* passe a class da div para o link e apague a */}
                             <div class="team-item rounded p-0 d-flex flex-column align-items-center">
                                 <div className="card cardconteudo">
                                     <img class="img-fluid" src="./src/assets/cardrural.png" alt="" />
@@ -245,8 +248,9 @@ function Inicio() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 espacocard">
+                        
+                        </Link>
+                        <Link to="" class="col-lg-3 col-md-6 espacocard">
                             <div class="team-item rounded p-0 d-flex flex-column align-items-center">
                                 <div className="card cardconteudo">
                                     <img class="img-fluid" src="./src/assets/cardcultura.png" alt="" />
@@ -257,7 +261,7 @@ function Inicio() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 </div>
 

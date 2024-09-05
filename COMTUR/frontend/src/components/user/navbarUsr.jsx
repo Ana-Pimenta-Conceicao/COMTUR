@@ -52,9 +52,9 @@ const NavbarUsr = () => {
       <div className="collapse navbar-collapse" id="navbarCollapse">
         <div className="navbar-nav ms-auto p-4 p-lg-0">
           <a href="" className="nav-item nav-link active text-white" onClick={() => { navigate(`/`); }}>Início</a>
-          <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/#`); }}>Turismo</a>
-          <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/#`); }}>Eventos</a>
-          <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/#`); }}>Empresas</a>
+          <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todosTurismos`); }}>Turismo</a>
+          <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todosEventos`); }}>Eventos</a>
+          <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todasEmpresas`); }}>Empresas</a>
           <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todasNoticias`); }}>Noticias</a>
           <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/login`); }}>Login</a>
         </div>

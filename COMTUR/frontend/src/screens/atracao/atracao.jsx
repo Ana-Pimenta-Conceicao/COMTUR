@@ -478,7 +478,7 @@ function Atracao() {
               numColunas={6}
             />
 
-            <div className="float-right flex-auto py-6">
+            <div className="inline-flex float-right py-6">
               <BtnAcao funcao={""} acao="Publicados" />
 
               <BtnAcao

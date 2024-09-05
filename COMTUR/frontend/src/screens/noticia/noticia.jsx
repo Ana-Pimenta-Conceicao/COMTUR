@@ -345,8 +345,6 @@ export default function Noticia() {
 
   const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((noticia) => {
-
-     
         const titulo = noticia.titulo && typeof noticia.titulo === 'string'
           ? (noticia.titulo.length > 20
             ? `${noticia.titulo.slice(0, 20)}...`
@@ -358,8 +356,6 @@ export default function Noticia() {
             ? `${noticia.subtitulo.slice(0, 20)}...`
             : noticia.subtitulo)
           : '';
-
-        
         return {
           id: noticia.id,
           titulo: titulo,
@@ -412,7 +408,7 @@ export default function Noticia() {
               numColunas={6}
             />
 
-            <div className="float-right flex-auto py-6">
+            <div className="inline-flex float-right py-6 bg-red-400">
               <BtnAcao
                 funcao={() => VisualizarTodasNoticias()}
                 acao="Publicados"

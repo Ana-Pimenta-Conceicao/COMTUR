@@ -47,6 +47,16 @@ export default function TodasEmpresas() {
     return tipo ? tipo.nome : "Tipo não encontrado";
   };
 
+  // Obter tipos de turismo que têm empresas associadas
+  const tiposComEmpresas = new Set(
+    outrasEmpresas.map((empresa) => empresa.idTipoTurismo)
+  );
+
+  // Filtrar tipos de turismo para mostrar apenas aqueles que têm empresas associadas
+  const tiposTurismoFiltrados = tiposTurismo.filter((tipo) =>
+    tiposComEmpresas.has(tipo.id)
+  );
+
   return (
     <div>
       <NavbarUsr />
@@ -72,7 +82,7 @@ export default function TodasEmpresas() {
                   onChange={(e) => setTipoTurismoSelecionado(e.target.value)}
                 >
                   <option value="">Tipo Empresa</option>
-                  {tiposTurismo.map((tipo) => (
+                  {tiposTurismoFiltrados.map((tipo) => (
                     <option key={tipo.id} value={tipo.id}>
                       {tipo.nome}
                     </option>
@@ -103,8 +113,6 @@ export default function TodasEmpresas() {
                 .map((outraEmpresa) => (
                   <div key={outraEmpresa.id} className="pb-3 px-4">
                     <div className="grid grid-cols-2 h-[140px] sm:h-[300px] border-2 border-[#DBDBDB]">
-
-                      
                       {outraEmpresa.imagemEmpresa[0] && (
                         <img
                           src={outraEmpresa.imagemEmpresa[0]?.imagem}

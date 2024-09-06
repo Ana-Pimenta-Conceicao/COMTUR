@@ -13,7 +13,9 @@ const GaleriaAtracao = (identi) => {
   useEffect(() => {
     const obterAtracoesRelacionadas = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/Atracao/${parseInt(identi.identi)}/AtracoesRelacionadas`);
+        const response = await axios.get(
+          `${baseUrl}/Atracao/${parseInt(identi.identi)}/AtracoesRelacionadas`
+        );
         setAtracoes(response.data);
       } catch (error) {
         console.error("Erro ao buscar atração:", error);
@@ -34,11 +36,11 @@ const GaleriaAtracao = (identi) => {
   }, [identi]);
 
   const prevSlide = () => {
-    setCurrentSlide(prev => (prev === 0 ? atracoes.length - 1 : prev - 1));
+    setCurrentSlide((prev) => (prev === 0 ? atracoes.length - 1 : prev - 1));
   };
 
   const nextSlide = () => {
-    setCurrentSlide(prev => (prev === atracoes.length - 1 ? 0 : prev + 1));
+    setCurrentSlide((prev) => (prev === atracoes.length - 1 ? 0 : prev + 1));
   };
 
   const getVisibleItemsCount = useCallback(() => {
@@ -53,7 +55,8 @@ const GaleriaAtracao = (identi) => {
   const visibleItemsCount = getVisibleItemsCount();
 
   const startItemIndex = currentSlide;
-  const endItemIndex = (startItemIndex + visibleItemsCount - 1) % atracoes.length;
+  const endItemIndex =
+    (startItemIndex + visibleItemsCount - 1) % atracoes.length;
 
   const visibleAtracoes = [];
 
@@ -80,19 +83,35 @@ const GaleriaAtracao = (identi) => {
         </button>
       )}
       <div className="flex flex-wrap justify-center gap-4 sm:gap-8 md:gap-12">
-        {visibleAtracoes.map((atracao, index) => (
-          <div
-            key={index}
-            className={`flex flex-col items-center justify-center bg-white w-60 h-60 rounded-md p-4 transition-transform transform ${index === 0 ? "translate-x-0" : ""
-              }`}
-          >
-            <h2 className="text-base font-semibold">{tiposAtracao.find(tipoAtracao => tipoAtracao.id === atracao.idTipoAtracao)?.nome || "Tipo Atração não encontrada"}</h2>
-            <h2 className="text-sm font-semibold">{atracao.nome}</h2>
-            <button className="mt-2 px-4 py-1 border-2 border-[#FFD121] text-xs font-medium text-[#373636] bg-transparent hover:bg-[#FFD121] transition-colors duration-300 rounded-sm">
-              Leia Mais
-            </button>
-          </div>
-        ))}
+        {visibleAtracoes.map((atracao, index) => {
+          const imagemUrl = atracao.imagemAtracao[0]?.imagem; // Assumindo que a primeira imagem é a que você quer usar
+          return (
+            <div className="relative flex flex-col items-center justify-center w-60 h-[200px] rounded-md overflow-hidden">
+              <div
+                key={index}
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style={{
+                  backgroundImage: `url(${imagemUrl})`,
+                  opacity: 0.2,
+                }}
+              ></div>
+              <div className="relative flex flex-col items-center justify-center h-full p-4">
+                <h2 className="text-base font-semibold text-white">
+                  {tiposAtracao.find(
+                    (tipoAtracao) => tipoAtracao.id === atracao.idTipoAtracao
+                  )?.nome || "Tipo Atração não encontrada"}
+                </h2>
+                <h2 className="text-sm font-semibold text-white">
+                  {atracao.nome}
+                </h2>
+                <button className="mt-2 px-4 py-1 border-2 border-[#FFD121] text-xs font-medium text-white hover:bg-[#FFD121] transition-colors duration-300 rounded-sm"
+                onClick={() => {navigate(`/visualizarAtracao/${atracao.id}`)}}>
+                  Leia Mais
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
       {atracoes.length > 0 && (
         <button className="text-[#FFD121] hover:text-white" onClick={nextSlide}>

@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import NavbarUsr from "../../components/user/navbarUsr.jsx";
 import FooterUsr from "../../components/user/footerUsr.jsx";
 import "../inicio/inicio.css"
-import { CaretRight, CaretLeft } from "@phosphor-icons/react";
+
 
 
 function Inicio() {
@@ -123,7 +123,7 @@ function Inicio() {
                                 <p><i class="fa fa-check text-black me-3"></i>Descubra Eventos Imperdíveis</p>
                                 <p><i class="fa fa-check text-black me-3"></i>Mantenha-se Atualizado </p>
                                 
-                                <a class="btn btnmais rounded-pill py-3 px-5 mt-3" href="">Explorar</a>
+                                <button class="btn btnmais rounded-pill py-3 px-5 mt-3" onClick={() => {navigate(`/todosTurismos`)}}>Explorar</button>
                             </div>
                             <div class="col-lg-6">
                                 <div class="rounded overflow-hidden">

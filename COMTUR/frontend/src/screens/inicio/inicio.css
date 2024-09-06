@@ -16,14 +16,16 @@
     font-weight: 600 !important;
 }
 
-.btncard{
+.btncard {
     border-radius: 0;
     background-color: #FFD121 !important;
-    
+
 }
-.retanguloamarelo{
+
+.retanguloamarelo {
     background-color: #FFD121 !important;
 }
+
 /********** Template CSS **********/
 :root {
     --primary: #FFD121;
@@ -107,7 +109,7 @@
         position: relative;
         min-height: 450px;
     }
-    
+
     #header-carousel .carousel-item img {
         position: absolute;
         width: 100%;
@@ -286,12 +288,34 @@
 .text-center h1 {
     font-family: 'Libre Baskerville', serif;
 }
-.btnmais{
+
+.btnmais {
     background-color: #ffd121;
+    color: #373636;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
 }
-.espacocard{
+
+.btnmais:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+.btnmais:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.espacocard {
     background-color: none;
 }
-.cardconteudo{
+
+.cardconteudo {
     border: none;
 }

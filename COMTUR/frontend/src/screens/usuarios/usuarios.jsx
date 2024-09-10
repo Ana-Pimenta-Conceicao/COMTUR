@@ -480,7 +480,7 @@ export default function UsuarioComum() {
                   value={userType}
                   onChange={handleUserTypeChange}
                 >
-                  <option value={4}>Admistrador</option>
+                  <option value={4}>Administrador</option>
                   <option value={3}>Empresário</option>
                   <option value={2}>Funcionário</option>
                   <option value={1}>Usuário</option>
@@ -573,7 +573,7 @@ export default function UsuarioComum() {
                   value={userType}
                   onChange={handleUserTypeChange}
                 >
-                  <option value={4}>Admistrador</option>
+                  <option value={4}>Administrador</option>
                   <option value={3}>Empresário</option>
                   <option value={2}>Funcionário</option>
                   <option value={1}>Usuário</option>

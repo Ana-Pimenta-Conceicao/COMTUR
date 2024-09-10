@@ -408,7 +408,7 @@ export default function Noticia() {
               numColunas={6}
             />
 
-            <div className="inline-flex float-right py-6 bg-red-400">
+            <div className="inline-flex float-right py-6 ">
               <BtnAcao
                 funcao={() => VisualizarTodasNoticias()}
                 acao="Publicados"

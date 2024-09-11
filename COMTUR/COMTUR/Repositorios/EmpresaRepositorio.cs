@@ -51,7 +51,12 @@ namespace COMTUR.Repositorios
 			return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).ToListAsync();
 		}
 
-		public async Task<EmpresaModel> Adicionar(EmpresaModel empresaModel)
+        public async Task<List<EmpresaModel>> BuscarPorIdUsuario(int idUsuario)
+        {
+            return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).Where(empresa => empresa.IdUsuario == idUsuario).ToListAsync();
+        }
+
+        public async Task<EmpresaModel> Adicionar(EmpresaModel empresaModel)
 		{
 			/*if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
 			{

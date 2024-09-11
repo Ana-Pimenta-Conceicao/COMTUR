@@ -5,7 +5,8 @@ namespace COMTUR.Repositorios.Interfaces
 	public interface IEmpresaRepositorio
 	{
 		Task<List<EmpresaModel>> BuscarEmpresa();
-		Task<EmpresaModel> BuscarPorId(int id);
+		Task<List<EmpresaModel>> BuscarPorIdUsuario(int idUsuario);
+        Task<EmpresaModel> BuscarPorId(int id);
 		Task<EmpresaModel> GetById(int id);
 		Task<EmpresaModel> GetByIdTipoTurismo(int id);
 		Task<EmpresaModel> Adicionar(EmpresaModel empresaModel);

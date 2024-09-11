@@ -40,10 +40,10 @@ const SidebarEmp = ({ setOpen, open, nomeUsuario }) => {
   };
 
   const Menus = [
-    { title: "Dashboard", src: "Dashboard", gap: true },
+    { title: "Dashboard", src: "homeEmpresario" },
     { title: "Perfil", src: "perfil" },
     { title: "Avisos", src: "avisos" },
-    { title: "Empresas", src: "empresa" },
+    { title: "Empresas", src: "empresaEmp" },
     { title: "Anúncios", src: "anuncio" },
   ];
 

@@ -10,12 +10,7 @@ namespace COMTUR.Data.Map
 		{
 
 			builder.HasKey(x => x.Id);
-
-			// Relacionamento da Avaliacao com Atracao
-			builder.HasOne(x => x.AtracaoModel).WithMany().HasForeignKey(x => x.IdAtracao);
-
-			// Relacionamento da Avaliacao com Turismo
-			builder.HasOne(x => x.TurismoModel).WithMany().HasForeignKey(x => x.IdTurismo);
+			builder.Property(ta => ta.Status).IsRequired();
 
 			// Relacionamento da Avaliacao com funcionario/admin
 			builder.HasOne(e => e.UsuarioModel).WithMany(u => u.Avaliacao).HasForeignKey(e => e.IdUsuario);

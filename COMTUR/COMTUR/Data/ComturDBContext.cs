@@ -215,24 +215,19 @@ namespace COMTUR.Data
 			new UsuarioModel { Id = 6, Nome = "Tropicale", Telefone = "(17) 3632-0117", EmailUsuario = "atendimento@lojatropicale.com.br", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Empresario }
 			);
 
-			//Adicionando Avaliacao para teste
-			modelBuilder.Entity<AvaliacaoModel>().HasData(
-			new AvaliacaoModel { Id = 1, Nota = "4", DataAvaliacao = new DateOnly(2024, 7, 17), Comentario = "Excelente show!!", IdAtracao = 2, IdTurismo = 2, IdUsuario = 1 }
-			);
-
 			//Adicionando TipoTurismo para teste
 			modelBuilder.Entity<TipoTurismoModel>().HasData(
-            new TipoTurismoModel { Id = 1, Nome = "Expo", IdUsuario = 4 }
+            new TipoTurismoModel { Id = 1, Nome = "Expo", IdUsuario = 4, Status = TipoStatus.Analisando }
             );
 
 			//Adicionando TipoTurismo para teste
 			modelBuilder.Entity<TipoTurismoModel>().HasData(
-			new TipoTurismoModel { Id = 2, Nome = "Varejo", IdUsuario = 4 }
+			new TipoTurismoModel { Id = 2, Nome = "Varejo", IdUsuario = 4, Status = TipoStatus.Analisando }
 			);
 
 			//Adicionando TipoTurismo para teste
 			modelBuilder.Entity<TipoTurismoModel>().HasData(
-			new TipoTurismoModel { Id = 3, Nome = "Alimento", IdUsuario = 4 }
+			new TipoTurismoModel { Id = 3, Nome = "Alimento", IdUsuario = 4, Status = TipoStatus.Analisando }
 			);
 
 			//Adicionando TipoAtracao para teste
@@ -248,7 +243,7 @@ namespace COMTUR.Data
 
 			//Adicionando Empresa para teste
 			modelBuilder.Entity<EmpresaModel>().HasData(
-            new EmpresaModel { Id = 1, Nome = "AnaStore", CNPJ = "12.345.678/9012-34", Endereco = "Rua Ana Carolina, 0902 - Jardim Aana, Jales - SP, 15700-123", Descricao = "Em AnaStore, acreditamos que cada pessoa tem sua própria história para contar, e é por isso que oferecemos uma seleção cuidadosamente analisada de roupas e acessórios que abraçam uma variedade de estilos, desde o casual chic até o elegante e sofisticado. Nossas coleções são atualizadas regularmente para garantir que nossos clientes sempre encontrem algo novo e empolgante a cada visita.", IdUsuario = 5, IdTipoTurismo = 2 }
+            new EmpresaModel { Id = 1, Nome = "AnaStore", CNPJ = "12.345.678/9012-34", Endereco = "Rua Ana Carolina, 0902 - Jardim Ana, Jales - SP, 15700-123", Descricao = "Em AnaStore, acreditamos que cada pessoa tem sua própria história para contar, e é por isso que oferecemos uma seleção cuidadosamente analisada de roupas e acessórios que abraçam uma variedade de estilos, desde o casual chic até o elegante e sofisticado. Nossas coleções são atualizadas regularmente para garantir que nossos clientes sempre encontrem algo novo e empolgante a cada visita.", IdUsuario = 5, IdTipoTurismo = 2 }
             );
 
 			//Adicionando Empresa para teste
@@ -281,23 +276,33 @@ namespace COMTUR.Data
 
 			//Adicionando Atracao para teste
 			modelBuilder.Entity<AtracaoModel>().HasData(
-            new AtracaoModel { Id = 1, Nome = "Ana Castela", Descricao = "Show da Ana Castela", QRCode = "123456", IdTipoAtracao = 1, IdTurismo = 2, IdUsuario = 4 }
+            new AtracaoModel { Id = 1, Nome = "Ana Castela", Descricao = "Show da Ana Castela", QRCode = "123456", IdTipoAtracao = 1, IdTurismo = 2, IdUsuario = 4, Status = TipoStatus.Analisando }
             );
 
             //Adicionando Atracao para teste
             modelBuilder.Entity<AtracaoModel>().HasData(
-            new AtracaoModel { Id = 2, Nome = "Luan Santana", Descricao = "Show do Luan Santana", QRCode = "123456", IdTipoAtracao = 1, IdTurismo = 2, IdUsuario = 4 }
+            new AtracaoModel { Id = 2, Nome = "Luan Santana", Descricao = "Show do Luan Santana", QRCode = "123456", IdTipoAtracao = 1, IdTurismo = 2, IdUsuario = 4, Status = TipoStatus.Analisando }
             );
 
             //Adicionando Atracao para teste
             modelBuilder.Entity<AtracaoModel>().HasData(
-            new AtracaoModel { Id = 3, Nome = "Fonte Iluminada", Descricao = "Fonte iluminada que, agora, tem jatos d’água direto do chão", QRCode = "123456", IdTipoAtracao = 2, IdTurismo = 1, IdUsuario = 4 }
+            new AtracaoModel { Id = 3, Nome = "Fonte Iluminada", Descricao = "Fonte iluminada que, agora, tem jatos d’água direto do chão", QRCode = "123456", IdTipoAtracao = 2, IdTurismo = 1, IdUsuario = 4, Status = TipoStatus.Analisando }
             );
 
             //Adicionando Atracao para teste
             modelBuilder.Entity<AtracaoModel>().HasData(
-            new AtracaoModel { Id = 4, Nome = "Palco", Descricao = "Palco para shows na praça", QRCode = "123456", IdTipoAtracao = 2, IdTurismo = 1, IdUsuario = 4 }
+            new AtracaoModel { Id = 4, Nome = "Palco", Descricao = "Palco para shows na praça", QRCode = "123456", IdTipoAtracao = 2, IdTurismo = 1, IdUsuario = 4, Status = TipoStatus.Analisando }
             );
+
+			//Adicionando Avaliacao para teste
+			modelBuilder.Entity<AvaliacaoModel>().HasData(
+			new AvaliacaoModel { Id = 2, Nota = "5", DataAvaliacao = new DateOnly(2024, 9, 11), Comentario = "Amei o show!", IdAtracao = 2, IdUsuario = 1, Status = TipoStatus.Analisando }
+			);
+
+			//Adicionando Avaliacao para teste
+			modelBuilder.Entity<AvaliacaoModel>().HasData(
+			new AvaliacaoModel { Id = 1, Nota = "4", DataAvaliacao = new DateOnly(2024, 7, 17), Comentario = "Excelente show!!", IdAtracao = 1, IdUsuario = 1, Status = TipoStatus.Analisando }
+			);
 
 			//Adicionando Imagem Atracao para teste
 			modelBuilder.Entity<ImagemAtracaoModel>().HasData(

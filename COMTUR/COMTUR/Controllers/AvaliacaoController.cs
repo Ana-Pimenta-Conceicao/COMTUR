@@ -87,5 +87,101 @@ namespace COMTUR.Controllers
 			bool apagado = await _AvaliacaoRepositorio.Apagar(id);
 			return Ok(apagado);
 		}
+
+		[HttpPut("{id:int}/Aprovar")]
+		public async Task<ActionResult<AvaliacaoModel>> Activity(int id)
+		{
+			var AvaliacaoModel = await _AvaliacaoRepositorio.BuscarPorId(id); // Busca a Avaliacao que tem o id informado
+			if (AvaliacaoModel == null) // Verifica se ela existe
+			{
+				return NotFound("Avaliacao não encontrado!"); // Retorna que não foi encontrado (not found)
+			}
+
+			if (AvaliacaoModel.CanApproved()) // Se ela pode ser aprovado
+			{
+				AvaliacaoModel.Approved(); // Muda seu estado para Aprovado
+				await _AvaliacaoRepositorio.Atualizar(AvaliacaoModel, id); // Salva as alterações
+
+				return Ok(AvaliacaoModel); // Retorna que a operação foi bem-sucedida (ok)
+			}
+			else
+			{
+				return AvaliacaoModel.GetState() == "Aprovado" ? // Se ela já está Aprovado
+					BadRequest("A Avaliacao já está " + AvaliacaoModel.GetState() + "!") : // Retorna que ela já está aprovado
+					BadRequest("A Avaliacao não pode ser Aprovado porque está " + AvaliacaoModel.GetState() + "!"); // Retorna que não é possível aprovar por causa do seu status atual
+			}
+		}
+
+		[HttpPut("{id:int}/Desativar")]
+		public async Task<ActionResult<AvaliacaoModel>> Desactivity(int id)
+		{
+			var AvaliacaoModel = await _AvaliacaoRepositorio.BuscarPorId(id);
+			if (AvaliacaoModel == null)
+			{
+				return NotFound("Avaliacao não encontrado!");
+			}
+
+			if (AvaliacaoModel.CanInactive())
+			{
+				AvaliacaoModel.Inactive();
+				await _AvaliacaoRepositorio.Atualizar(AvaliacaoModel, id);
+
+				return Ok(AvaliacaoModel);
+			}
+			else
+			{
+				return AvaliacaoModel.GetState() == "Desativado" ?
+					BadRequest("A Avaliacao já está " + AvaliacaoModel.GetState() + "!") :
+					BadRequest("A Avaliacao não pode ser Desativado porque está " + AvaliacaoModel.GetState() + "!");
+			}
+		}
+
+		[HttpPut("{id:int}/EmAnalise")]
+		public async Task<ActionResult<AvaliacaoModel>> Analyzing(int id)
+		{
+			var AvaliacaoModel = await _AvaliacaoRepositorio.BuscarPorId(id);
+			if (AvaliacaoModel == null)
+			{
+				return NotFound("Avaliacao não encontrado!");
+			}
+
+			if (AvaliacaoModel.CanAnalyzing())
+			{
+				AvaliacaoModel.Analyzing();
+				await _AvaliacaoRepositorio.Atualizar(AvaliacaoModel, id);
+
+				return Ok(AvaliacaoModel);
+			}
+			else
+			{
+				return AvaliacaoModel.GetState() == "em Análise" ?
+					BadRequest("A Avaliacao já está " + AvaliacaoModel.GetState() + "!") :
+					BadRequest("A Avaliacao não pode ser colocado em Análise porque está " + AvaliacaoModel.GetState() + "!");
+			}
+		}
+
+		[HttpPut("{id:int}/Reprovar")]
+		public async Task<ActionResult<AvaliacaoModel>> Disapproved(int id)
+		{
+			var AvaliacaoModel = await _AvaliacaoRepositorio.BuscarPorId(id);
+			if (AvaliacaoModel == null)
+			{
+				return NotFound("Avaliacao não encontrado!");
+			}
+
+			if (AvaliacaoModel.CanDisapproved())
+			{
+				AvaliacaoModel.Disapproved();
+				await _AvaliacaoRepositorio.Atualizar(AvaliacaoModel, id);
+
+				return Ok(AvaliacaoModel);
+			}
+			else
+			{
+				return AvaliacaoModel.GetState() == "Reprovado" ?
+					BadRequest("A Avaliacao já está " + AvaliacaoModel.GetState() + "!") :
+					BadRequest("A Avaliacao não pode ser Reprovado porque está " + AvaliacaoModel.GetState() + "!");
+			}
+		}
 	}
 }

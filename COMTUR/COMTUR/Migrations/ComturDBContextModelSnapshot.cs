@@ -58,6 +58,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("qrcode");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("statusatracao");
+
                     b.Property<int?>("TipoAtracaoModelId")
                         .HasColumnType("integer");
 
@@ -82,7 +86,8 @@ namespace COMTUR.Migrations
                             IdTurismo = 2,
                             IdUsuario = 4,
                             Nome = "Ana Castela",
-                            QRCode = "123456"
+                            QRCode = "123456",
+                            Status = 1
                         },
                         new
                         {
@@ -92,7 +97,8 @@ namespace COMTUR.Migrations
                             IdTurismo = 2,
                             IdUsuario = 4,
                             Nome = "Luan Santana",
-                            QRCode = "123456"
+                            QRCode = "123456",
+                            Status = 1
                         },
                         new
                         {
@@ -102,7 +108,8 @@ namespace COMTUR.Migrations
                             IdTurismo = 1,
                             IdUsuario = 4,
                             Nome = "Fonte Iluminada",
-                            QRCode = "123456"
+                            QRCode = "123456",
+                            Status = 1
                         },
                         new
                         {
@@ -112,7 +119,8 @@ namespace COMTUR.Migrations
                             IdTurismo = 1,
                             IdUsuario = 4,
                             Nome = "Palco",
-                            QRCode = "123456"
+                            QRCode = "123456",
+                            Status = 1
                         });
                 });
 
@@ -190,16 +198,16 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("notaAvaliacao");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("statusavaliacao");
+
                     b.Property<int?>("TurismoModelId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AtracaoModelId");
-
-                    b.HasIndex("IdAtracao");
-
-                    b.HasIndex("IdTurismo");
 
                     b.HasIndex("IdUsuario");
 
@@ -210,13 +218,25 @@ namespace COMTUR.Migrations
                     b.HasData(
                         new
                         {
+                            Id = 2,
+                            Comentario = "Amei o show!",
+                            DataAvaliacao = new DateOnly(2024, 9, 11),
+                            IdAtracao = 2,
+                            IdTurismo = 0,
+                            IdUsuario = 1,
+                            Nota = "5",
+                            Status = 1
+                        },
+                        new
+                        {
                             Id = 1,
                             Comentario = "Excelente show!!",
                             DataAvaliacao = new DateOnly(2024, 7, 17),
-                            IdAtracao = 2,
-                            IdTurismo = 2,
+                            IdAtracao = 1,
+                            IdTurismo = 0,
                             IdUsuario = 1,
-                            Nota = "4"
+                            Nota = "4",
+                            Status = 1
                         });
                 });
 
@@ -277,7 +297,7 @@ namespace COMTUR.Migrations
                             Id = 1,
                             CNPJ = "12.345.678/9012-34",
                             Descricao = "Em AnaStore, acreditamos que cada pessoa tem sua própria história para contar, e é por isso que oferecemos uma seleção cuidadosamente analisada de roupas e acessórios que abraçam uma variedade de estilos, desde o casual chic até o elegante e sofisticado. Nossas coleções são atualizadas regularmente para garantir que nossos clientes sempre encontrem algo novo e empolgante a cada visita.",
-                            Endereco = "Rua Ana Carolina, 0902 - Jardim Aana, Jales - SP, 15700-123",
+                            Endereco = "Rua Ana Carolina, 0902 - Jardim Ana, Jales - SP, 15700-123",
                             IdTipoTurismo = 2,
                             IdUsuario = 5,
                             Nome = "AnaStore"
@@ -714,6 +734,10 @@ namespace COMTUR.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("nome");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("statusturismo");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdUsuario");
@@ -725,19 +749,22 @@ namespace COMTUR.Migrations
                         {
                             Id = 1,
                             IdUsuario = 4,
-                            Nome = "Expo"
+                            Nome = "Expo",
+                            Status = 1
                         },
                         new
                         {
                             Id = 2,
                             IdUsuario = 4,
-                            Nome = "Varejo"
+                            Nome = "Varejo",
+                            Status = 1
                         },
                         new
                         {
                             Id = 3,
                             IdUsuario = 4,
-                            Nome = "Alimento"
+                            Nome = "Alimento",
+                            Status = 1
                         });
                 });
 
@@ -971,21 +998,9 @@ namespace COMTUR.Migrations
 
             modelBuilder.Entity("COMTUR.Models.AvaliacaoModel", b =>
                 {
-                    b.HasOne("COMTUR.Models.AtracaoModel", null)
+                    b.HasOne("COMTUR.Models.AtracaoModel", "AtracaoModel")
                         .WithMany("Avaliacao")
                         .HasForeignKey("AtracaoModelId");
-
-                    b.HasOne("COMTUR.Models.AtracaoModel", "AtracaoModel")
-                        .WithMany()
-                        .HasForeignKey("IdAtracao")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("COMTUR.Models.TurismoModel", "TurismoModel")
-                        .WithMany()
-                        .HasForeignKey("IdTurismo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
                         .WithMany("Avaliacao")
@@ -993,7 +1008,7 @@ namespace COMTUR.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("COMTUR.Models.TurismoModel", null)
+                    b.HasOne("COMTUR.Models.TurismoModel", "TurismoModel")
                         .WithMany("Avaliacao")
                         .HasForeignKey("TurismoModelId");
 

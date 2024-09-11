@@ -28,6 +28,7 @@ import Status from "./screens/administrador/Status.jsx"
 import TodasEmpresas from "./screens/empresa/todasEmpresas.jsx";
 import TodosTurismos from "./screens/turismo/todosTurismos.jsx";
 import TodosEventos from "./screens/turismo/todosEventos.jsx";
+import Evento from "./screens/turismo/evento.jsx";
 
 
 const isUserLoggedIn = () => {
@@ -73,6 +74,7 @@ const AppRoutes = () => {
                 <Route path="/perfil/:id" element={<ProtectedRoute element={ <VisualizarPerfil/> } />}/>
                 <Route path="/homeEmpresario" element={<ProtectedRoute element={<HomeEmpresario/>} /> } />
                 <Route path="/turismo" element={<ProtectedRoute element={<Turismo/>} /> } />
+                <Route path="/evento" element={<ProtectedRoute element={<Evento/>} /> } />
                 <Route path="/visualizaratracao/:id" element={<VisualizarAtracao/>} />
                 <Route path="/visualizartipoatracao/:id" element={<VisualizarTipoAtracao/>} />
                 <Route path="/empresa" element={<ProtectedRoute element={<Empresa/>}/> } />

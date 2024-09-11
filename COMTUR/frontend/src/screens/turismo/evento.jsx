@@ -12,7 +12,7 @@ import PopupCadastrado from "../../components/popups/popupCadastro.jsx";
 import PopupEditado from "../../components/popups/popupEditado.jsx";
 import PopupExcluido from "../../components/popups/popupExcluido.jsx";
 
-const Turismo = () => {
+const Evento = () => {
   const baseUrl = "https://localhost:7256/api/Turismo";
   const baseUrlImagem = "https://localhost:7256/api/ImagemTurismo";
   const baseUrlTipoTurismo = "https://localhost:7256/api/TipoTurismo";
@@ -178,7 +178,7 @@ const Turismo = () => {
     formData.append("local", turismoLocal);
     formData.append("diaFuncionamento", turismoDias);
     formData.append("idUsuario", idUsuario);
-    formData.append("idTipoTurismo", turismoTipoSelecionado);
+    formData.append("idTipoTurismo", 4);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -249,7 +249,7 @@ const Turismo = () => {
     formData.append("local", turismoLocal);
     formData.append("diaFuncionamento", turismoDias);
     formData.append("idUsuario", idUsuario);
-    formData.append("idTipoTurismo", turismoTipoSelecionado);
+    formData.append("idTipoTurismo", 4);
 
     try {
       const response = await axios.put(`${baseUrl}/${turismoId}`, formData, {
@@ -389,7 +389,9 @@ const Turismo = () => {
   }, []);
 
   const apresentaDados = Array.isArray(currentItems)
-    ? currentItems.map((turismo) => {
+  ? currentItems
+      .filter(turismo => turismo.idTipoTurismo === 4) 
+      .map((turismo) => {
         const tipoTurismo = dataTipoTurismo.find(
           (tipo) => tipo.id === turismo.idTipoTurismo
         );
@@ -426,7 +428,7 @@ const Turismo = () => {
           ),
         };
       })
-    : [];
+  : [];
 
   if (userType === "1" || userType === "3") {
     return <Navigate to="/notfound" />;
@@ -442,7 +444,7 @@ const Turismo = () => {
         >
           <NavBarAdm />
           <div className="pl-8 pr-8 pt-[20px]">
-            <h1 className="text-3xl font-semibold pb-2">Lista de Turismos</h1>
+            <h1 className="text-3xl font-semibold pb-2">Lista de Eventos</h1>
             <hr className="pb-4 border-[2.5px] border-gray-300" />
             <Tabela
               object={apresentaDados}
@@ -477,7 +479,7 @@ const Turismo = () => {
           isOpen={modalInserir}
           style={{ maxWidth: "1000px" }}
         >
-          <ModalHeader className="">Cadastrar Turismo</ModalHeader>
+          <ModalHeader className="">Cadastrar Evento</ModalHeader>
           <ModalBody className="">
             <div className="grid grid-cols-2 ">
               <div className="form-group  ">
@@ -529,20 +531,6 @@ const Turismo = () => {
                     onChange={(e) => setTurismoDias(e.target.value)}
                     placeholder="Digite o Dia de Funcionamento"
                   />
-                  <br />
-                  <label>Tipo de Turismo: </label>
-                  <br />
-                  <select
-                    className="form-control"
-                    value={turismoTipoSelecionado}
-                    onChange={(e) => setTurismoTipoSelecionado(e.target.value)}
-                  >
-                    {turismoTipoOpcao.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
                   <br />
                 </div>
               </div>
@@ -641,14 +629,14 @@ const Turismo = () => {
         <PopupCadastrado
           isOpen={modalCadastrado}
           toggle={toggleModalCadastro}
-          objeto="Turismo"
+          objeto="Evento"
         />
         <Modal
           className="modal-xl-gridxl"
           isOpen={modalEditar}
           style={{ maxWidth: "1000px" }}
         >
-          <ModalHeader className="">Editar Turismo</ModalHeader>
+          <ModalHeader className="">Editar Evento</ModalHeader>
           <ModalBody className="">
             <div className="grid grid-cols-2 ">
               <div className="form-group  ">
@@ -706,20 +694,6 @@ const Turismo = () => {
                     placeholder="Digite o Dia de Funcionamento"
                     value={turismoDias}
                   />
-                  <br />
-                  <label>Tipo de Turismo: </label>
-                  <br />
-                  <select
-                    className="form-control"
-                    value={turismoTipoSelecionado}
-                    onChange={(e) => setTurismoTipoSelecionado(e.target.value)}
-                  >
-                    {turismoTipoOpcao.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
                   <br />
                 </div>
               </div>
@@ -835,7 +809,7 @@ const Turismo = () => {
         <PopupEditado
           isOpen={modalEditado}
           toggle={toggleModalEdita}
-          objeto="Turismo"
+          objeto="Evento"
         />
 
         <Modal isOpen={modalDeletar}>
@@ -851,11 +825,11 @@ const Turismo = () => {
         <PopupExcluido
           isOpen={modalExcluido}
           toggle={toggleModalExclui}
-          objeto="Turismo"
+          objeto="Evento"
         />
       </div>
     );
   }
 };
 
-export default Turismo;
+export default Evento;

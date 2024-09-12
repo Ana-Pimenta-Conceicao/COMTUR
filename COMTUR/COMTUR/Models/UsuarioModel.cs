@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using COMTUR.Models.Enum;
 using System.Text.Json.Serialization;
+using COMTUR.Repositorios.Interfaces;
 
 namespace COMTUR.Models
 {
@@ -14,10 +15,10 @@ namespace COMTUR.Models
 		[Column("usuarioid")]
 		public int Id { get; set; }
 
-        [Column("idusuario")]
-        public int IdUsuario { get; set; }
+		[Column("idusuario")]
+		public int IdUsuario { get; set; }
 
-        [Column("nome")]
+		[Column("nome")]
 		public string Nome { get; set; }
 
 		[Column("telefone")]
@@ -34,17 +35,12 @@ namespace COMTUR.Models
 		[EnumDataType(typeof(TipoUsuario))]
 		public TipoUsuario TipoUsuario { get; set; }
 
-		// Mapear o campo tipoStatus como enum
-		/*[Column("tipostatus")]
-		[EnumDataType(typeof(TipoStatus))]
-		public TipoStatus TipoStatus { get; set; }*/
-
 		[Column("imagemperfilusuario")]
 		public string? ImagemPerfilUsuario { get; set; }
 
 		// Relacionamento com empresa para o empresário
-        [JsonIgnore]
-        public ICollection<EmpresaModel>? Empresas { get; set; }
+		[JsonIgnore]
+		public ICollection<EmpresaModel>? Empresas { get; set; }
 
 		// Relacionamento com noticia para o funcionario
 		[JsonIgnore]
@@ -69,5 +65,19 @@ namespace COMTUR.Models
 		// Relacionamento com avaliacao para o usuario
 		[JsonIgnore]
 		public ICollection<AvaliacaoModel>? Avaliacao { get; set; }
+
+		[Column("statustipoatracao")]
+		public TipoStatus Status { get; set; }
+		public void Approved() => Status = StatusEnumExtensions.Approved();
+		public void Inactive() => Status = StatusEnumExtensions.Inactive();
+		public void Disapproved() => Status = StatusEnumExtensions.Disapproved();
+		public void Analyzing() => Status = StatusEnumExtensions.Analyzing();
+
+		public string GetState() => IStatusStateRepositorioExtensions.GetState(this.Status);
+		public bool CanInactive() => IStatusStateRepositorioExtensions.CanInactive(this.Status);
+		public bool CanAnalyzing() => IStatusStateRepositorioExtensions.CanAnalyzing(this.Status);
+		public bool CanApproved() => IStatusStateRepositorioExtensions.CanApproved(this.Status);
+		public bool CanDisapproved() => IStatusStateRepositorioExtensions.CanDisapproved(this.Status);
+
 	}
 }

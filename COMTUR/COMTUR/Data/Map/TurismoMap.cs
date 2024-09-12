@@ -10,6 +10,7 @@ namespace COMTUR.Data.Map
 		{
 			builder.HasKey(x => x.Id);
 			builder.Property(x => x.Nome).IsRequired().HasMaxLength(50);
+			builder.Property(ta => ta.Status).IsRequired();
 
 			// Relacionamento da Turismo com funcionario/admin
 			builder.HasOne(e => e.UsuarioModel).WithMany(u => u.Turismos).HasForeignKey(e => e.IdUsuario);

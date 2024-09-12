@@ -1,4 +1,5 @@
 ﻿using COMTUR.Models.Enum;
+using COMTUR.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
@@ -35,21 +36,30 @@ namespace COMTUR.Models
 		[ForeignKey("tipoturismoid")]
 		public int IdTipoTurismo { get; set; }
 
-		// Mapear o campo tipoStatus como enum
-		/*[Column("tipostatus")]
-		[EnumDataType(typeof(TipoStatus))]
-		public TipoStatus TipoStatus { get; set; }*/
-
 		// relação com empresario
 		[JsonIgnore]
         public UsuarioModel? UsuarioModel { get; set; }
+
+		// relação com ImagemEmpresa
+		public ICollection<ImagemEmpresaModel>? ImagemEmpresa { get; set; }
 
 		[Column("usuarioid")]
 		[ForeignKey("usuarioid")]
 		public int IdUsuario { get; set; }
 
-		// relação com ImagemEmpresa
-		public ICollection<ImagemEmpresaModel>? ImagemEmpresa { get; set; }
+		[Column("statusatracao")]
+		public TipoStatus Status { get; set; }
+
+		public void Approved() => Status = StatusEnumExtensions.Approved();
+		public void Inactive() => Status = StatusEnumExtensions.Inactive();
+		public void Disapproved() => Status = StatusEnumExtensions.Disapproved();
+		public void Analyzing() => Status = StatusEnumExtensions.Analyzing();
+
+		public string GetState() => IStatusStateRepositorioExtensions.GetState(this.Status);
+		public bool CanInactive() => IStatusStateRepositorioExtensions.CanInactive(this.Status);
+		public bool CanAnalyzing() => IStatusStateRepositorioExtensions.CanAnalyzing(this.Status);
+		public bool CanApproved() => IStatusStateRepositorioExtensions.CanApproved(this.Status);
+		public bool CanDisapproved() => IStatusStateRepositorioExtensions.CanDisapproved(this.Status);
 
 	}
 }

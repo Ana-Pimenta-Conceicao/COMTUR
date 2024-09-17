@@ -24,19 +24,6 @@ namespace COMTUR.Controllers
 			_imagemTurismoRepositorio = imagemTurismoRepositorio;
 		}
 
-		/*[HttpGet("porTipoStatus/{tipoStatus}")]
-		public async Task<ActionResult<IEnumerable<TurismoModel>>> GetTurismoPorTipo(int tipoStatus)
-		{
-			var Turismo = await _TurismoRepositorio.ListarPorTipoStatus(tipoStatus);
-
-			if (Turismo == null)
-			{
-				return NotFound();
-			}
-
-			return Ok(Turismo);
-		}*/
-
 		[HttpPost("{turismoId}/imagens")]
 		public IActionResult AdicionarImagem(int TurismoId, [FromForm] ImagemTurismoModel imagem)
 		{
@@ -104,6 +91,102 @@ namespace COMTUR.Controllers
 			bool apagado = await _TurismoRepositorio.Apagar(id);
 
 			return Ok(apagado);
+		}
+
+		[HttpPut("{id:int}/Aprovar")]
+		public async Task<ActionResult<TurismoModel>> Activity(int id)
+		{
+			var turismoModel = await _TurismoRepositorio.BuscarPorId(id); // Busca o Turismo que tem o id informado
+			if (turismoModel == null) // Verifica se ele existe
+			{
+				return NotFound("Turismo não encontrado!"); // Retorna que não foi encontrado (not found)
+			}
+
+			if (turismoModel.CanApproved()) // Se ele pode ser aprovado
+			{
+				turismoModel.Approved(); // Muda seu estado para Aprovado
+				await _TurismoRepositorio.Atualizar(turismoModel, id); // Salva as alterações
+
+				return Ok(turismoModel); // Retorna que a operação foi bem-sucedida (ok)
+			}
+			else
+			{
+				return turismoModel.GetState() == "Aprovado" ? // Se ele já está Aprovado
+					BadRequest("Turismo já está " + turismoModel.GetState() + "!") : // Retorna que ele já está aprovado
+					BadRequest("Turismo não pode ser Aprovado porque está " + turismoModel.GetState() + "!"); // Retorna que não é possível aprovar por causa do seu status atual
+			}
+		}
+
+		[HttpPut("{id:int}/Desativar")]
+		public async Task<ActionResult<TurismoModel>> Desactivity(int id)
+		{
+			var turismoModel = await _TurismoRepositorio.BuscarPorId(id);
+			if (turismoModel == null)
+			{
+				return NotFound("Turismo não encontrado!");
+			}
+
+			if (turismoModel.CanInactive())
+			{
+				turismoModel.Inactive();
+				await _TurismoRepositorio.Atualizar(turismoModel, id);
+
+				return Ok(turismoModel);
+			}
+			else
+			{
+				return turismoModel.GetState() == "Desativado" ?
+					BadRequest("Turismo já está " + turismoModel.GetState() + "!") :
+					BadRequest("Turismo não pode ser Desativado porque está " + turismoModel.GetState() + "!");
+			}
+		}
+
+		[HttpPut("{id:int}/EmAnalise")]
+		public async Task<ActionResult<TurismoModel>> Analyzing(int id)
+		{
+			var turismoModel = await _TurismoRepositorio.BuscarPorId(id);
+			if (turismoModel == null)
+			{
+				return NotFound("Turismo não encontrado!");
+			}
+
+			if (turismoModel.CanAnalyzing())
+			{
+				turismoModel.Analyzing();
+				await _TurismoRepositorio.Atualizar(turismoModel, id);
+
+				return Ok(turismoModel);
+			}
+			else
+			{
+				return turismoModel.GetState() == "em Análise" ?
+					BadRequest("Turismo já está " + turismoModel.GetState() + "!") :
+					BadRequest("Turismo não pode ser colocado em Análise porque está " + turismoModel.GetState() + "!");
+			}
+		}
+
+		[HttpPut("{id:int}/Reprovar")]
+		public async Task<ActionResult<TurismoModel>> Disapproved(int id)
+		{
+			var turismoModel = await _TurismoRepositorio.BuscarPorId(id);
+			if (turismoModel == null)
+			{
+				return NotFound("Turismo não encontrado!");
+			}
+
+			if (turismoModel.CanDisapproved())
+			{
+				turismoModel.Disapproved();
+				await _TurismoRepositorio.Atualizar(turismoModel, id);
+
+				return Ok(turismoModel);
+			}
+			else
+			{
+				return turismoModel.GetState() == "Reprovado" ?
+					BadRequest("Turismo já está " + turismoModel.GetState() + "!") :
+					BadRequest("Turismo não pode ser Reprovado porque está " + turismoModel.GetState() + "!");
+			}
 		}
 	}
 }

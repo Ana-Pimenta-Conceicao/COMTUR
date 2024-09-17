@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-
+using COMTUR.Models.Enum;
+using COMTUR.Repositorios.Interfaces;
 
 namespace COMTUR.Models
 {
@@ -29,11 +30,6 @@ namespace COMTUR.Models
 
 		[Column("diafuncionamento")]
 		public string DiaFuncionamento { get; set; }
-
-		// Mapear o campo tipoStatus como enum
-		/*[Column("tipostatus")]
-		[EnumDataType(typeof(TipoStatus))]
-		public TipoStatus TipoStatus { get; set; }*/
 
 		// relação com funcionario/admin
 		[JsonIgnore]
@@ -64,5 +60,19 @@ namespace COMTUR.Models
 
 		// relaçao com Avaliacao
 		public ICollection<AvaliacaoModel>? Avaliacao { get; set; }
+
+		[Column("statustipoatracao")]
+		public TipoStatus Status { get; set; }
+
+		public void Approved() => Status = StatusEnumExtensions.Approved();
+		public void Inactive() => Status = StatusEnumExtensions.Inactive();
+		public void Disapproved() => Status = StatusEnumExtensions.Disapproved();
+		public void Analyzing() => Status = StatusEnumExtensions.Analyzing();
+
+		public string GetState() => IStatusStateRepositorioExtensions.GetState(this.Status);
+		public bool CanInactive() => IStatusStateRepositorioExtensions.CanInactive(this.Status);
+		public bool CanAnalyzing() => IStatusStateRepositorioExtensions.CanAnalyzing(this.Status);
+		public bool CanApproved() => IStatusStateRepositorioExtensions.CanApproved(this.Status);
+		public bool CanDisapproved() => IStatusStateRepositorioExtensions.CanDisapproved(this.Status);
 	}
 }

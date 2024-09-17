@@ -10,6 +10,7 @@ namespace COMTUR.Data.Map
 		{
 			builder.HasKey(x => x.Id);
 			builder.Property(x => x.Nome).IsRequired().HasMaxLength(50);
+			builder.Property(ta => ta.Status).IsRequired();
 
 			// Relacionamento Usuario com Atracao
 			builder.HasMany(x => x.Atracao).WithOne(x => x.UsuarioModel).OnDelete(DeleteBehavior.Cascade);

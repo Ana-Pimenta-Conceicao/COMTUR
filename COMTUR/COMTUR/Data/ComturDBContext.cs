@@ -203,16 +203,16 @@ namespace COMTUR.Data
 
             //Adicionando Tipos de Usuario para teste
             modelBuilder.Entity<UsuarioModel>().HasData(
-            new UsuarioModel { Id = 1, Nome = "Gabriela Usuária", Telefone = "(11) 11111-1111", EmailUsuario = "gabriela@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Usuario },
-            new UsuarioModel { Id = 2, Nome = "Ana Vitória Funcionária", Telefone = "(22) 22222-2222", EmailUsuario = "anav@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Funcionario },
-            new UsuarioModel { Id = 3, Nome = "Thaysa Empresaria", Telefone = "(33) 33333-3333", EmailUsuario = "thaysa@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Empresario },
-            new UsuarioModel { Id = 4, Nome = "Nabila Administradora", Telefone = "(44) 44444-4444", EmailUsuario = "nabila@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Administrador }
+            new UsuarioModel { Id = 1, Nome = "Gabriela Usuária", Telefone = "(11) 11111-1111", EmailUsuario = "gabriela@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Usuario, Status = TipoStatus.Aprovado },
+            new UsuarioModel { Id = 2, Nome = "Ana Vitória Funcionária", Telefone = "(22) 22222-2222", EmailUsuario = "anav@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Funcionario, Status = TipoStatus.Aprovado },
+            new UsuarioModel { Id = 3, Nome = "Thaysa Empresaria", Telefone = "(33) 33333-3333", EmailUsuario = "thaysa@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Empresario, Status = TipoStatus.Aprovado },
+            new UsuarioModel { Id = 4, Nome = "Nabila Administradora", Telefone = "(44) 44444-4444", EmailUsuario = "nabila@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Administrador, Status = TipoStatus.Aprovado }
             );
 
 			//Adicionando Empresarios para teste
 			modelBuilder.Entity<UsuarioModel>().HasData(
-			new UsuarioModel { Id = 5, Nome = "Ana", Telefone = "(55) 5555-5555", EmailUsuario = "ana@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Empresario },
-			new UsuarioModel { Id = 6, Nome = "Tropicale", Telefone = "(17) 3632-0117", EmailUsuario = "atendimento@lojatropicale.com.br", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Empresario }
+			new UsuarioModel { Id = 5, Nome = "Ana", Telefone = "(55) 5555-5555", EmailUsuario = "ana@gmail.com", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Empresario, Status = TipoStatus.Aprovado },
+			new UsuarioModel { Id = 6, Nome = "Tropicale", Telefone = "(17) 3632-0117", EmailUsuario = "atendimento@lojatropicale.com.br", SenhaUsuario = "123456", TipoUsuario = TipoUsuario.Empresario, Status = TipoStatus.Aprovado }
 			);
 
 			//Adicionando TipoTurismo para teste
@@ -223,11 +223,16 @@ namespace COMTUR.Data
 			//Adicionando TipoTurismo para teste
 			modelBuilder.Entity<TipoTurismoModel>().HasData(
 			new TipoTurismoModel { Id = 2, Nome = "Varejo", IdUsuario = 4, Status = TipoStatus.Analisando }
-			);
+            );
+
+            //Adicionando TipoTurismo para teste
+            modelBuilder.Entity<TipoTurismoModel>().HasData(
+            new TipoTurismoModel { Id = 3, Nome = "Alimento", IdUsuario = 4, Status = TipoStatus.Analisando }
+            );
 
 			//Adicionando TipoTurismo para teste
 			modelBuilder.Entity<TipoTurismoModel>().HasData(
-			new TipoTurismoModel { Id = 3, Nome = "Alimento", IdUsuario = 4, Status = TipoStatus.Analisando }
+			new TipoTurismoModel { Id = 4, Nome = "Evento", IdUsuario = 4, Status = TipoStatus.Analisando }
 			);
 
 			//Adicionando TipoAtracao para teste
@@ -241,14 +246,14 @@ namespace COMTUR.Data
             );
 
 
-			//Adicionando Empresa para teste
-			modelBuilder.Entity<EmpresaModel>().HasData(
-            new EmpresaModel { Id = 1, Nome = "AnaStore", CNPJ = "12.345.678/9012-34", Endereco = "Rua Ana Carolina, 0902 - Jardim Ana, Jales - SP, 15700-123", Descricao = "Em AnaStore, acreditamos que cada pessoa tem sua própria história para contar, e é por isso que oferecemos uma seleção cuidadosamente analisada de roupas e acessórios que abraçam uma variedade de estilos, desde o casual chic até o elegante e sofisticado. Nossas coleções são atualizadas regularmente para garantir que nossos clientes sempre encontrem algo novo e empolgante a cada visita.", IdUsuario = 5, IdTipoTurismo = 2 }
+            //Adicionando Empresa para teste
+            modelBuilder.Entity<EmpresaModel>().HasData(
+            new EmpresaModel { Id = 1, Nome = "AnaStore", CNPJ = "12.345.678/9012-34", Endereco = "Rua Ana Carolina, 0902 - Jardim Ana, Jales - SP, 15700-123", Descricao = "Em AnaStore, acreditamos que cada pessoa tem sua própria história para contar, e é por isso que oferecemos uma seleção cuidadosamente analisada de roupas e acessórios que abraçam uma variedade de estilos, desde o casual chic até o elegante e sofisticado. Nossas coleções são atualizadas regularmente para garantir que nossos clientes sempre encontrem algo novo e empolgante a cada visita.", IdUsuario = 5, IdTipoTurismo = 2, Status = TipoStatus.Analisando }
             );
 
 			//Adicionando Empresa para teste
 			modelBuilder.Entity<EmpresaModel>().HasData(
-			new EmpresaModel { Id = 2, Nome = "Tropicale Brasil Sorvetes", CNPJ = " 30.475.124/0001-94 ", Endereco = "Rua Prof. Rubião Meira, 4120 - Jardim Paulista, Jales - SP, 15700-426", Descricao = "A Tropicale oferece uma experiência única ao priorizar a qualidade em todas as etapas, desde a seleção dos ingredientes até o armazenamento dos sorvetes. Equipada com tecnologia de ponta, proporciona um ambiente acolhedor para famílias e amigos desfrutarem momentos especiais juntos. O cardápio diversificado inclui sorvetes de massa, picolés de fruta e ao leite, picolés gourmet e opções sem lactose.", IdUsuario = 6, IdTipoTurismo = 3 }
+			new EmpresaModel { Id = 2, Nome = "Tropicale Brasil Sorvetes", CNPJ = " 30.475.124/0001-94 ", Endereco = "Rua Prof. Rubião Meira, 4120 - Jardim Paulista, Jales - SP, 15700-426", Descricao = "A Tropicale oferece uma experiência única ao priorizar a qualidade em todas as etapas, desde a seleção dos ingredientes até o armazenamento dos sorvetes. Equipada com tecnologia de ponta, proporciona um ambiente acolhedor para famílias e amigos desfrutarem momentos especiais juntos. O cardápio diversificado inclui sorvetes de massa, picolés de fruta e ao leite, picolés gourmet e opções sem lactose.", IdUsuario = 6, IdTipoTurismo = 3, Status = TipoStatus.Analisando }
 			);
 
 			//Adicionando Imagem Empresa para teste
@@ -359,12 +364,12 @@ namespace COMTUR.Data
 
 			//Adicionando Turismo para teste
 			modelBuilder.Entity<TurismoModel>().HasData(
-            new TurismoModel { Id = 1, Nome = "Praça da Fonte", Descricao = "Praça da Fonte", Horario = "18:00", QRCode = "123456", Local = "Praça da Fonte", DiaFuncionamento = "Todos os dias", IdUsuario = 2, IdTipoTurismo = 1 }
+            new TurismoModel { Id = 1, Nome = "Praça da Fonte", Descricao = "Praça da Fonte", Horario = "18:00", QRCode = "123456", Local = "Praça da Fonte", DiaFuncionamento = "Todos os dias", IdUsuario = 2, IdTipoTurismo = 1, Status = TipoStatus.Analisando }
             );
 
 			//Adicionando Turismo para teste
 			modelBuilder.Entity<TurismoModel>().HasData(
-			new TurismoModel { Id = 2, Nome = "Expo Jales", Descricao = "Praça da Fonte", Horario = "18:00", QRCode = "123456", Local = "Praça da Fonte", DiaFuncionamento = "Todos os dias", IdUsuario = 2, IdTipoTurismo = 1 }
+			new TurismoModel { Id = 2, Nome = "Expo Jales", Descricao = "Praça da Fonte", Horario = "18:00", QRCode = "123456", Local = "Praça da Fonte", DiaFuncionamento = "Todos os dias", IdUsuario = 2, IdTipoTurismo = 1, Status = TipoStatus.Analisando }
 			);
 
 			//Adicionando Imagem Turismo para teste
@@ -427,12 +432,12 @@ namespace COMTUR.Data
 
             //Adicionando noticia para teste
             modelBuilder.Entity<NoticiaModel>().HasData(
-            new NoticiaModel { Id = 1, Titulo = "Grande Inauguração da AnaStore: Uma Celebração de Estilo e Elegância!", Subtitulo = "A cidade de Jales recebeu hoje um novo marco na indústria da moda com a inauguração triunfante da AnaStore, uma loja que promete revolucionar o cenário fashion local.", Conteudo = "Hoje, a cidade de Jales testemunhou um marco na cena da moda local com a grandiosa inauguração da AnaStore, a mais recente empreitada da renomada empresária Ana Carolina. Situada no coração da área comercial, a loja promete revolucionar o estilo dos moradores locais com suas coleções exclusivas e uma abordagem única para moda e estilo.\r\n\r\nCom uma cerimônia de inauguração repleta de glamour e entusiasmo, a Sra. Ana Carolina expressou sua gratidão pela calorosa recepção que a comunidade de Jales ofereceu à sua mais recente iniciativa empresarial. \"A AnaStore não é apenas uma loja de roupas, é um espaço onde a moda encontra a expressão pessoal. Queremos ser mais do que apenas uma opção de compras, queremos ser uma fonte de inspiração para todos aqueles que desejam expressar sua individualidade através do estilo\", afirmou a visionária empresária.\r\n\r\nOs clientes que compareceram ao evento de inauguração foram recebidos com um desfile de moda exclusivo, apresentando as últimas tendências e peças selecionadas cuidadosamente pela equipe da AnaStore. De vestuário casual a trajes de gala, a loja oferece uma ampla variedade de opções para atender a todos os gostos e ocasiões.\r\n\r\nAlém de oferecer uma experiência de compra excepcional, a AnaStore também se compromete com a sustentabilidade ambiental e social. \"Estamos empenhados em promover práticas comerciais éticas e sustentáveis, desde a escolha dos materiais até as condições de trabalho em nossas fábricas parceiras. Queremos que nossos clientes se sintam bem não apenas com suas escolhas de moda, mas também com o impacto positivo que estão causando no mundo\", ressaltou Ana Carolina.\r\n\r\nA AnaStore já se destaca como um destino imperdível para os amantes da moda em Jales, e sua inauguração promete ser apenas o começo de uma jornada emocionante rumo ao sucesso e à inovação na indústria da moda local. ", DataPublicacao = new DateOnly(2024, 5, 15), HoraPublicacao = "10:30", IdUsuario = 2 }
+            new NoticiaModel { Id = 1, Titulo = "Grande Inauguração da AnaStore: Uma Celebração de Estilo e Elegância!", Subtitulo = "A cidade de Jales recebeu hoje um novo marco na indústria da moda com a inauguração triunfante da AnaStore, uma loja que promete revolucionar o cenário fashion local.", Conteudo = "Hoje, a cidade de Jales testemunhou um marco na cena da moda local com a grandiosa inauguração da AnaStore, a mais recente empreitada da renomada empresária Ana Carolina. Situada no coração da área comercial, a loja promete revolucionar o estilo dos moradores locais com suas coleções exclusivas e uma abordagem única para moda e estilo.\r\n\r\nCom uma cerimônia de inauguração repleta de glamour e entusiasmo, a Sra. Ana Carolina expressou sua gratidão pela calorosa recepção que a comunidade de Jales ofereceu à sua mais recente iniciativa empresarial. \"A AnaStore não é apenas uma loja de roupas, é um espaço onde a moda encontra a expressão pessoal. Queremos ser mais do que apenas uma opção de compras, queremos ser uma fonte de inspiração para todos aqueles que desejam expressar sua individualidade através do estilo\", afirmou a visionária empresária.\r\n\r\nOs clientes que compareceram ao evento de inauguração foram recebidos com um desfile de moda exclusivo, apresentando as últimas tendências e peças selecionadas cuidadosamente pela equipe da AnaStore. De vestuário casual a trajes de gala, a loja oferece uma ampla variedade de opções para atender a todos os gostos e ocasiões.\r\n\r\nAlém de oferecer uma experiência de compra excepcional, a AnaStore também se compromete com a sustentabilidade ambiental e social. \"Estamos empenhados em promover práticas comerciais éticas e sustentáveis, desde a escolha dos materiais até as condições de trabalho em nossas fábricas parceiras. Queremos que nossos clientes se sintam bem não apenas com suas escolhas de moda, mas também com o impacto positivo que estão causando no mundo\", ressaltou Ana Carolina.\r\n\r\nA AnaStore já se destaca como um destino imperdível para os amantes da moda em Jales, e sua inauguração promete ser apenas o começo de uma jornada emocionante rumo ao sucesso e à inovação na indústria da moda local. ", DataPublicacao = new DateOnly(2024, 5, 15), HoraPublicacao = "10:30", IdUsuario = 2, Status = TipoStatus.Analisando }
             );
 
 			//Adicionando noticia para teste
 			modelBuilder.Entity<NoticiaModel>().HasData(
-			new NoticiaModel { Id = 2, Titulo = "Tropicale Lança Novo Sabor chamado Laravi: Uma Explosão Cítrica de Sabor!", Subtitulo = "Combinando a refrescância da laranja com a suavidade do sorvete, \"Laravi\" promete ser uma verdadeira explosão cítrica de sabor que cativará os paladares de todos.", Conteudo = "Os aficionados por sorvete têm motivos para comemorar com o mais recente lançamento da Tropicale, uma das principais marcas de sorvetes do país. Hoje, a empresa revelou seu mais novo sabor de dar água na boca: \"Laravi\", uma deliciosa combinação de frescor e doçura inspirada na laranja.\r\n\r\nCom a chegada do verão, a Tropicale decidiu elevar a experiência dos consumidores com uma criação que captura o sabor vibrante e refrescante da fruta cítrica favorita de muitos. O sabor \"Laravi\" promete oferecer uma explosão de sabor a cada colherada, combinando o suculento aroma da laranja com a suavidade e cremosidade característica dos sorvetes da marca.\r\n\r\nEm uma entrevista exclusiva, o diretor de desenvolvimento de produtos da Tropicale, Carlos Mendes, compartilhou insights sobre a inspiração por trás do novo sabor. \"Queríamos criar algo verdadeiramente único que despertasse a nostalgia do verão e proporcionasse uma experiência memorável aos nossos clientes. O 'Laravi' é uma homenagem à simplicidade e à autenticidade da laranja, e estamos confiantes de que será um sucesso entre os amantes de sorvete de todas as idades\", afirmou Mendes.\r\n\r\nAlém de seu irresistível sabor, o \"Laravi\" também se destaca por sua composição de alta qualidade, feita com ingredientes naturais e frescos. A Tropicale reiterou seu compromisso com a excelência e a inovação, garantindo que cada porção de sorvete seja uma experiência verdadeiramente indulgente e satisfatória.\r\n\r\nO lançamento do sabor \"Laravi\" já está gerando grande expectativa entre os consumidores, que mal podem esperar para experimentar essa nova criação da Tropicale. Com sua promessa de refrescar os dias quentes de verão com uma explosão de sabor, o \"Laravi\" está pronto para se tornar o novo favorito entre os apreciadores de sorvete em todo o país.", DataPublicacao = new DateOnly(2024, 5, 27), HoraPublicacao = "08:30", IdUsuario = 2 }
+			new NoticiaModel { Id = 2, Titulo = "Tropicale Lança Novo Sabor chamado Laravi: Uma Explosão Cítrica de Sabor!", Subtitulo = "Combinando a refrescância da laranja com a suavidade do sorvete, \"Laravi\" promete ser uma verdadeira explosão cítrica de sabor que cativará os paladares de todos.", Conteudo = "Os aficionados por sorvete têm motivos para comemorar com o mais recente lançamento da Tropicale, uma das principais marcas de sorvetes do país. Hoje, a empresa revelou seu mais novo sabor de dar água na boca: \"Laravi\", uma deliciosa combinação de frescor e doçura inspirada na laranja.\r\n\r\nCom a chegada do verão, a Tropicale decidiu elevar a experiência dos consumidores com uma criação que captura o sabor vibrante e refrescante da fruta cítrica favorita de muitos. O sabor \"Laravi\" promete oferecer uma explosão de sabor a cada colherada, combinando o suculento aroma da laranja com a suavidade e cremosidade característica dos sorvetes da marca.\r\n\r\nEm uma entrevista exclusiva, o diretor de desenvolvimento de produtos da Tropicale, Carlos Mendes, compartilhou insights sobre a inspiração por trás do novo sabor. \"Queríamos criar algo verdadeiramente único que despertasse a nostalgia do verão e proporcionasse uma experiência memorável aos nossos clientes. O 'Laravi' é uma homenagem à simplicidade e à autenticidade da laranja, e estamos confiantes de que será um sucesso entre os amantes de sorvete de todas as idades\", afirmou Mendes.\r\n\r\nAlém de seu irresistível sabor, o \"Laravi\" também se destaca por sua composição de alta qualidade, feita com ingredientes naturais e frescos. A Tropicale reiterou seu compromisso com a excelência e a inovação, garantindo que cada porção de sorvete seja uma experiência verdadeiramente indulgente e satisfatória.\r\n\r\nO lançamento do sabor \"Laravi\" já está gerando grande expectativa entre os consumidores, que mal podem esperar para experimentar essa nova criação da Tropicale. Com sua promessa de refrescar os dias quentes de verão com uma explosão de sabor, o \"Laravi\" está pronto para se tornar o novo favorito entre os apreciadores de sorvete em todo o país.", DataPublicacao = new DateOnly(2024, 5, 27), HoraPublicacao = "08:30", IdUsuario = 2, Status = TipoStatus.Analisando}
 			);
 
 			//Adicionando Imagem noticia para teste

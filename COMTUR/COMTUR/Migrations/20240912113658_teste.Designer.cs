@@ -3,6 +3,7 @@ using System;
 using COMTUR.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    partial class ComturDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240912113658_teste")]
+    partial class teste
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,16 +184,9 @@ namespace COMTUR.Migrations
                         .HasColumnType("date")
                         .HasColumnName("dataAvaliacao");
 
-                    b.Property<int?>("EmpresaModelId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("IdAtracao")
                         .HasColumnType("integer")
                         .HasColumnName("idatracao");
-
-                    b.Property<int>("IdEmpresa")
-                        .HasColumnType("integer")
-                        .HasColumnName("empresaid");
 
                     b.Property<int>("IdTurismo")
                         .HasColumnType("integer")
@@ -216,8 +212,6 @@ namespace COMTUR.Migrations
 
                     b.HasIndex("AtracaoModelId");
 
-                    b.HasIndex("EmpresaModelId");
-
                     b.HasIndex("IdUsuario");
 
                     b.HasIndex("TurismoModelId");
@@ -231,7 +225,6 @@ namespace COMTUR.Migrations
                             Comentario = "Amei o show!",
                             DataAvaliacao = new DateOnly(2024, 9, 11),
                             IdAtracao = 2,
-                            IdEmpresa = 0,
                             IdTurismo = 0,
                             IdUsuario = 1,
                             Nota = "5",
@@ -240,26 +233,13 @@ namespace COMTUR.Migrations
                         new
                         {
                             Id = 1,
-                            Comentario = "Excelente show!",
+                            Comentario = "Excelente show!!",
                             DataAvaliacao = new DateOnly(2024, 7, 17),
                             IdAtracao = 1,
-                            IdEmpresa = 0,
                             IdTurismo = 0,
                             IdUsuario = 1,
                             Nota = "4",
                             Status = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Comentario = "Loja incrível!",
-                            DataAvaliacao = new DateOnly(2024, 9, 17),
-                            IdAtracao = 0,
-                            IdEmpresa = 1,
-                            IdTurismo = 0,
-                            IdUsuario = 1,
-                            Nota = "5",
-                            Status = 2
                         });
                 });
 
@@ -1060,10 +1040,6 @@ namespace COMTUR.Migrations
                         .WithMany("Avaliacao")
                         .HasForeignKey("AtracaoModelId");
 
-                    b.HasOne("COMTUR.Models.EmpresaModel", "EmpresaModel")
-                        .WithMany("Avaliacao")
-                        .HasForeignKey("EmpresaModelId");
-
                     b.HasOne("COMTUR.Models.UsuarioModel", "UsuarioModel")
                         .WithMany("Avaliacao")
                         .HasForeignKey("IdUsuario")
@@ -1075,8 +1051,6 @@ namespace COMTUR.Migrations
                         .HasForeignKey("TurismoModelId");
 
                     b.Navigation("AtracaoModel");
-
-                    b.Navigation("EmpresaModel");
 
                     b.Navigation("TurismoModel");
 
@@ -1263,8 +1237,6 @@ namespace COMTUR.Migrations
 
             modelBuilder.Entity("COMTUR.Models.EmpresaModel", b =>
                 {
-                    b.Navigation("Avaliacao");
-
                     b.Navigation("ImagemEmpresa");
                 });
 

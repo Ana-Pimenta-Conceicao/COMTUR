@@ -18,6 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20240911173839_comtur.cs" />
+    <Compile Remove="Migrations\20240911173839_comtur.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
     <PackageReference Include="IdentityModel" Version="6.2.0" />

@@ -49,6 +49,16 @@ namespace COMTUR.Models
 		[ForeignKey("usuarioid")]
 		public int IdUsuario { get; set; }
 
+
+		// relação com empresa
+		[JsonIgnore]
+		public EmpresaModel? EmpresaModel { get; set; }
+
+		[Column("empresaid")]
+		[ForeignKey("empresaid")]
+		public int IdEmpresa { get; set; }
+
+
 		[Column("statusavaliacao")]
 		public TipoStatus Status { get; set; }
 

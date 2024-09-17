@@ -36,15 +36,24 @@ namespace COMTUR.Models
 		[ForeignKey("tipoturismoid")]
 		public int IdTipoTurismo { get; set; }
 
-		// relação com empresario
+
+		// relação com Avaliacao
 		[JsonIgnore]
-        public UsuarioModel? UsuarioModel { get; set; }
+		public ICollection<AvaliacaoModel>? Avaliacao { get; set; }
+
+		// relação com Empresario
+
+		[JsonIgnore]
+    public UsuarioModel? UsuarioModel { get; set; }
 
 		// relação com ImagemEmpresa
 		public ICollection<ImagemEmpresaModel>? ImagemEmpresa { get; set; }
 
 		[Column("usuarioid")]
 		[ForeignKey("usuarioid")]
+
+
+
 		public int IdUsuario { get; set; }
 
 		[Column("statusatracao")]
@@ -63,10 +72,3 @@ namespace COMTUR.Models
 
 	}
 }
-
-
-
-
-
-
-

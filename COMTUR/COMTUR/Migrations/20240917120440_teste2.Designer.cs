@@ -3,6 +3,7 @@ using System;
 using COMTUR.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    partial class ComturDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240917120440_teste2")]
+    partial class teste2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,10 +304,6 @@ namespace COMTUR.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("nome");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("statusatracao");
-
                     b.Property<int?>("TipoTurismoModelId")
                         .HasColumnType("integer");
 
@@ -327,8 +326,7 @@ namespace COMTUR.Migrations
                             Endereco = "Rua Ana Carolina, 0902 - Jardim Ana, Jales - SP, 15700-123",
                             IdTipoTurismo = 2,
                             IdUsuario = 5,
-                            Nome = "AnaStore",
-                            Status = 1
+                            Nome = "AnaStore"
                         },
                         new
                         {
@@ -338,8 +336,7 @@ namespace COMTUR.Migrations
                             Endereco = "Rua Prof. Rubião Meira, 4120 - Jardim Paulista, Jales - SP, 15700-426",
                             IdTipoTurismo = 3,
                             IdUsuario = 6,
-                            Nome = "Tropicale Brasil Sorvetes",
-                            Status = 1
+                            Nome = "Tropicale Brasil Sorvetes"
                         });
                 });
 
@@ -606,10 +603,6 @@ namespace COMTUR.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("usuarioid");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("statustipoatracao");
-
                     b.Property<string>("Subtitulo")
                         .IsRequired()
                         .HasColumnType("text")
@@ -636,7 +629,6 @@ namespace COMTUR.Migrations
                             DataPublicacao = new DateOnly(2024, 5, 15),
                             HoraPublicacao = "10:30",
                             IdUsuario = 2,
-                            Status = 1,
                             Subtitulo = "A cidade de Jales recebeu hoje um novo marco na indústria da moda com a inauguração triunfante da AnaStore, uma loja que promete revolucionar o cenário fashion local.",
                             Titulo = "Grande Inauguração da AnaStore: Uma Celebração de Estilo e Elegância!"
                         },
@@ -647,7 +639,6 @@ namespace COMTUR.Migrations
                             DataPublicacao = new DateOnly(2024, 5, 27),
                             HoraPublicacao = "08:30",
                             IdUsuario = 2,
-                            Status = 1,
                             Subtitulo = "Combinando a refrescância da laranja com a suavidade do sorvete, \"Laravi\" promete ser uma verdadeira explosão cítrica de sabor que cativará os paladares de todos.",
                             Titulo = "Tropicale Lança Novo Sabor chamado Laravi: Uma Explosão Cítrica de Sabor!"
                         });
@@ -800,13 +791,6 @@ namespace COMTUR.Migrations
                             IdUsuario = 4,
                             Nome = "Alimento",
                             Status = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IdUsuario = 4,
-                            Nome = "Evento",
-                            Status = 1
                         });
                 });
 
@@ -858,10 +842,6 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("qrcode");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("statustipoatracao");
-
                     b.Property<int?>("TipoTurismoModelId")
                         .HasColumnType("integer");
 
@@ -886,8 +866,7 @@ namespace COMTUR.Migrations
                             IdUsuario = 2,
                             Local = "Praça da Fonte",
                             Nome = "Praça da Fonte",
-                            QRCode = "123456",
-                            Status = 1
+                            QRCode = "123456"
                         },
                         new
                         {
@@ -899,8 +878,7 @@ namespace COMTUR.Migrations
                             IdUsuario = 2,
                             Local = "Praça da Fonte",
                             Nome = "Expo Jales",
-                            QRCode = "123456",
-                            Status = 1
+                            QRCode = "123456"
                         });
                 });
 
@@ -937,10 +915,6 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("senhausuario");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("statustipoatracao");
-
                     b.Property<string>("Telefone")
                         .IsRequired()
                         .HasColumnType("text")
@@ -962,7 +936,6 @@ namespace COMTUR.Migrations
                             IdUsuario = 0,
                             Nome = "Gabriela Usuária",
                             SenhaUsuario = "123456",
-                            Status = 2,
                             Telefone = "(11) 11111-1111",
                             TipoUsuario = 1
                         },
@@ -973,7 +946,6 @@ namespace COMTUR.Migrations
                             IdUsuario = 0,
                             Nome = "Ana Vitória Funcionária",
                             SenhaUsuario = "123456",
-                            Status = 2,
                             Telefone = "(22) 22222-2222",
                             TipoUsuario = 2
                         },
@@ -984,7 +956,6 @@ namespace COMTUR.Migrations
                             IdUsuario = 0,
                             Nome = "Thaysa Empresaria",
                             SenhaUsuario = "123456",
-                            Status = 2,
                             Telefone = "(33) 33333-3333",
                             TipoUsuario = 3
                         },
@@ -995,7 +966,6 @@ namespace COMTUR.Migrations
                             IdUsuario = 0,
                             Nome = "Nabila Administradora",
                             SenhaUsuario = "123456",
-                            Status = 2,
                             Telefone = "(44) 44444-4444",
                             TipoUsuario = 4
                         },
@@ -1006,7 +976,6 @@ namespace COMTUR.Migrations
                             IdUsuario = 0,
                             Nome = "Ana",
                             SenhaUsuario = "123456",
-                            Status = 2,
                             Telefone = "(55) 5555-5555",
                             TipoUsuario = 3
                         },
@@ -1017,7 +986,6 @@ namespace COMTUR.Migrations
                             IdUsuario = 0,
                             Nome = "Tropicale",
                             SenhaUsuario = "123456",
-                            Status = 2,
                             Telefone = "(17) 3632-0117",
                             TipoUsuario = 3
                         });

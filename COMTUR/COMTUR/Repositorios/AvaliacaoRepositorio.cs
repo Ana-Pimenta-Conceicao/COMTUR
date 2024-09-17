@@ -57,7 +57,7 @@ namespace COMTUR.Repositorios
 			}
 
 			avaliacaoPorId.Id = Avaliacao.Id;
-			avaliacaoPorId.Nota =Avaliacao.Nota;
+			avaliacaoPorId.Nota = Avaliacao.Nota;
 			avaliacaoPorId.DataAvaliacao =Avaliacao.DataAvaliacao;
 			avaliacaoPorId.Comentario =Avaliacao.Comentario;
 

@@ -35,17 +35,19 @@ namespace COMTUR.Models
 		[ForeignKey("tipoturismoid")]
 		public int IdTipoTurismo { get; set; }
 
-		// Mapear o campo tipoStatus como enum
-		/*[Column("tipostatus")]
-		[EnumDataType(typeof(TipoStatus))]
-		public TipoStatus TipoStatus { get; set; }*/
+		// relação com Avaliacao
+		[JsonIgnore]
+		public ICollection<AvaliacaoModel>? Avaliacao { get; set; }
 
-		// relação com empresario
+		// relação com Empresario
 		[JsonIgnore]
         public UsuarioModel? UsuarioModel { get; set; }
 
 		[Column("usuarioid")]
 		[ForeignKey("usuarioid")]
+
+
+
 		public int IdUsuario { get; set; }
 
 		// relação com ImagemEmpresa

@@ -90,9 +90,9 @@ namespace COMTUR.Repositorios
 			empresaPorId.Descricao = empresaModel.Descricao;
             empresaPorId.IdUsuario = empresaModel.IdUsuario;
 			empresaPorId.IdTipoTurismo = empresaModel.IdTipoTurismo;
-            //empresaPorId.TipoStatus = empresaModel.TipoStatus;
+			//empresaPorId.TipoStatus = empresaModel.TipoStatus;
 
-            _dbContext.Empresa.Update(empresaPorId);
+			_dbContext.Empresa.Update(empresaPorId);
 			await _dbContext.SaveChangesAsync();
 
 			return empresaPorId;

@@ -297,11 +297,16 @@ namespace COMTUR.Data
 			//Adicionando Avaliacao para teste
 			modelBuilder.Entity<AvaliacaoModel>().HasData(
 			new AvaliacaoModel { Id = 2, Nota = "5", DataAvaliacao = new DateOnly(2024, 9, 11), Comentario = "Amei o show!", IdAtracao = 2, IdUsuario = 1, Status = TipoStatus.Analisando }
-			);
+            );
+
+            //Adicionando Avaliacao para teste
+            modelBuilder.Entity<AvaliacaoModel>().HasData(
+            new AvaliacaoModel { Id = 1, Nota = "4", DataAvaliacao = new DateOnly(2024, 7, 17), Comentario = "Excelente show!", IdAtracao = 1, IdUsuario = 1, Status = TipoStatus.Analisando }
+            );
 
 			//Adicionando Avaliacao para teste
 			modelBuilder.Entity<AvaliacaoModel>().HasData(
-			new AvaliacaoModel { Id = 1, Nota = "4", DataAvaliacao = new DateOnly(2024, 7, 17), Comentario = "Excelente show!!", IdAtracao = 1, IdUsuario = 1, Status = TipoStatus.Analisando }
+			new AvaliacaoModel { Id = 3, Nota = "5", DataAvaliacao = new DateOnly(2024, 9, 17), Comentario = "Loja incrível!", IdEmpresa = 1, IdUsuario = 1, Status = TipoStatus.Aprovado}
 			);
 
 			//Adicionando Imagem Atracao para teste

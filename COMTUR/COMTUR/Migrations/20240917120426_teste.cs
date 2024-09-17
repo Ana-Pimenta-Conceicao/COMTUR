@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class comtur : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -336,6 +336,8 @@ namespace COMTUR.Migrations
                     AtracaoModelId = table.Column<int>(type: "integer", nullable: true),
                     idatracao = table.Column<int>(type: "integer", nullable: false),
                     usuarioid = table.Column<int>(type: "integer", nullable: false),
+                    EmpresaModelId = table.Column<int>(type: "integer", nullable: true),
+                    empresaid = table.Column<int>(type: "integer", nullable: false),
                     statusavaliacao = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -346,6 +348,11 @@ namespace COMTUR.Migrations
                         column: x => x.AtracaoModelId,
                         principalTable: "atracao",
                         principalColumn: "atracaoid");
+                    table.ForeignKey(
+                        name: "FK_avaliacao_empresa_EmpresaModelId",
+                        column: x => x.EmpresaModelId,
+                        principalTable: "empresa",
+                        principalColumn: "empresaid");
                     table.ForeignKey(
                         name: "FK_avaliacao_turismo_TurismoModelId",
                         column: x => x.TurismoModelId,
@@ -430,11 +437,12 @@ namespace COMTUR.Migrations
 
             migrationBuilder.InsertData(
                 table: "avaliacao",
-                columns: new[] { "avaliacaoid", "AtracaoModelId", "comentarioAvaliacao", "dataAvaliacao", "idatracao", "idturismo", "usuarioid", "notaAvaliacao", "statusavaliacao", "TurismoModelId" },
+                columns: new[] { "avaliacaoid", "AtracaoModelId", "comentarioAvaliacao", "dataAvaliacao", "EmpresaModelId", "idatracao", "empresaid", "idturismo", "usuarioid", "notaAvaliacao", "statusavaliacao", "TurismoModelId" },
                 values: new object[,]
                 {
-                    { 1, null, "Excelente show!!", new DateOnly(2024, 7, 17), 1, 0, 1, "4", 1, null },
-                    { 2, null, "Amei o show!", new DateOnly(2024, 9, 11), 2, 0, 1, "5", 1, null }
+                    { 1, null, "Excelente show!", new DateOnly(2024, 7, 17), null, 1, 0, 0, 1, "4", 1, null },
+                    { 2, null, "Amei o show!", new DateOnly(2024, 9, 11), null, 2, 0, 0, 1, "5", 1, null },
+                    { 3, null, "Loja incrível!", new DateOnly(2024, 9, 17), null, 0, 1, 0, 1, "5", 2, null }
                 });
 
             migrationBuilder.InsertData(
@@ -556,6 +564,11 @@ namespace COMTUR.Migrations
                 name: "IX_avaliacao_AtracaoModelId",
                 table: "avaliacao",
                 column: "AtracaoModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_avaliacao_EmpresaModelId",
+                table: "avaliacao",
+                column: "EmpresaModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_avaliacao_TurismoModelId",

@@ -44,7 +44,8 @@ namespace COMTUR.Migrations
                     emailusuario = table.Column<string>(type: "text", nullable: false),
                     senhausuario = table.Column<string>(type: "text", nullable: false),
                     tipousuario = table.Column<int>(type: "integer", nullable: false),
-                    imagemperfilusuario = table.Column<string>(type: "text", nullable: true)
+                    imagemperfilusuario = table.Column<string>(type: "text", nullable: true),
+                    statustipoatracao = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -130,6 +131,7 @@ namespace COMTUR.Migrations
                     descricao = table.Column<string>(type: "text", nullable: false),
                     tipoturismoid = table.Column<int>(type: "integer", nullable: false),
                     usuarioid = table.Column<int>(type: "integer", nullable: false),
+                    statusatracao = table.Column<int>(type: "integer", nullable: false),
                     TipoTurismoModelId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -168,6 +170,7 @@ namespace COMTUR.Migrations
                     diafuncionamento = table.Column<string>(type: "text", nullable: false),
                     usuarioid = table.Column<int>(type: "integer", nullable: false),
                     idtipoturismo = table.Column<int>(type: "integer", nullable: false),
+                    statustipoatracao = table.Column<int>(type: "integer", nullable: false),
                     TipoTurismoModelId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -303,7 +306,8 @@ namespace COMTUR.Migrations
                     datapublicacao = table.Column<DateOnly>(type: "date", nullable: false),
                     horapublicacao = table.Column<string>(type: "text", nullable: false),
                     usuarioid = table.Column<int>(type: "integer", nullable: false),
-                    idturismo = table.Column<int>(type: "integer", nullable: true)
+                    idturismo = table.Column<int>(type: "integer", nullable: true),
+                    statustipoatracao = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -424,15 +428,15 @@ namespace COMTUR.Migrations
 
             migrationBuilder.InsertData(
                 table: "usuario",
-                columns: new[] { "usuarioid", "emailusuario", "idusuario", "imagemperfilusuario", "nome", "senhausuario", "telefone", "tipousuario" },
+                columns: new[] { "usuarioid", "emailusuario", "idusuario", "imagemperfilusuario", "nome", "senhausuario", "statustipoatracao", "telefone", "tipousuario" },
                 values: new object[,]
                 {
-                    { 1, "gabriela@gmail.com", 0, null, "Gabriela Usuária", "123456", "(11) 11111-1111", 1 },
-                    { 2, "anav@gmail.com", 0, null, "Ana Vitória Funcionária", "123456", "(22) 22222-2222", 2 },
-                    { 3, "thaysa@gmail.com", 0, null, "Thaysa Empresaria", "123456", "(33) 33333-3333", 3 },
-                    { 4, "nabila@gmail.com", 0, null, "Nabila Administradora", "123456", "(44) 44444-4444", 4 },
-                    { 5, "ana@gmail.com", 0, null, "Ana", "123456", "(55) 5555-5555", 3 },
-                    { 6, "atendimento@lojatropicale.com.br", 0, null, "Tropicale", "123456", "(17) 3632-0117", 3 }
+                    { 1, "gabriela@gmail.com", 0, null, "Gabriela Usuária", "123456", 2, "(11) 11111-1111", 1 },
+                    { 2, "anav@gmail.com", 0, null, "Ana Vitória Funcionária", "123456", 2, "(22) 22222-2222", 2 },
+                    { 3, "thaysa@gmail.com", 0, null, "Thaysa Empresaria", "123456", 2, "(33) 33333-3333", 3 },
+                    { 4, "nabila@gmail.com", 0, null, "Nabila Administradora", "123456", 2, "(44) 44444-4444", 4 },
+                    { 5, "ana@gmail.com", 0, null, "Ana", "123456", 2, "(55) 5555-5555", 3 },
+                    { 6, "atendimento@lojatropicale.com.br", 0, null, "Tropicale", "123456", 2, "(17) 3632-0117", 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -447,11 +451,11 @@ namespace COMTUR.Migrations
 
             migrationBuilder.InsertData(
                 table: "noticia",
-                columns: new[] { "noticiaid", "conteudo", "datapublicacao", "horapublicacao", "idturismo", "usuarioid", "subtitulo", "titulo" },
+                columns: new[] { "noticiaid", "conteudo", "datapublicacao", "horapublicacao", "idturismo", "usuarioid", "statustipoatracao", "subtitulo", "titulo" },
                 values: new object[,]
                 {
-                    { 1, "Hoje, a cidade de Jales testemunhou um marco na cena da moda local com a grandiosa inauguração da AnaStore, a mais recente empreitada da renomada empresária Ana Carolina. Situada no coração da área comercial, a loja promete revolucionar o estilo dos moradores locais com suas coleções exclusivas e uma abordagem única para moda e estilo.\r\n\r\nCom uma cerimônia de inauguração repleta de glamour e entusiasmo, a Sra. Ana Carolina expressou sua gratidão pela calorosa recepção que a comunidade de Jales ofereceu à sua mais recente iniciativa empresarial. \"A AnaStore não é apenas uma loja de roupas, é um espaço onde a moda encontra a expressão pessoal. Queremos ser mais do que apenas uma opção de compras, queremos ser uma fonte de inspiração para todos aqueles que desejam expressar sua individualidade através do estilo\", afirmou a visionária empresária.\r\n\r\nOs clientes que compareceram ao evento de inauguração foram recebidos com um desfile de moda exclusivo, apresentando as últimas tendências e peças selecionadas cuidadosamente pela equipe da AnaStore. De vestuário casual a trajes de gala, a loja oferece uma ampla variedade de opções para atender a todos os gostos e ocasiões.\r\n\r\nAlém de oferecer uma experiência de compra excepcional, a AnaStore também se compromete com a sustentabilidade ambiental e social. \"Estamos empenhados em promover práticas comerciais éticas e sustentáveis, desde a escolha dos materiais até as condições de trabalho em nossas fábricas parceiras. Queremos que nossos clientes se sintam bem não apenas com suas escolhas de moda, mas também com o impacto positivo que estão causando no mundo\", ressaltou Ana Carolina.\r\n\r\nA AnaStore já se destaca como um destino imperdível para os amantes da moda em Jales, e sua inauguração promete ser apenas o começo de uma jornada emocionante rumo ao sucesso e à inovação na indústria da moda local. ", new DateOnly(2024, 5, 15), "10:30", null, 2, "A cidade de Jales recebeu hoje um novo marco na indústria da moda com a inauguração triunfante da AnaStore, uma loja que promete revolucionar o cenário fashion local.", "Grande Inauguração da AnaStore: Uma Celebração de Estilo e Elegância!" },
-                    { 2, "Os aficionados por sorvete têm motivos para comemorar com o mais recente lançamento da Tropicale, uma das principais marcas de sorvetes do país. Hoje, a empresa revelou seu mais novo sabor de dar água na boca: \"Laravi\", uma deliciosa combinação de frescor e doçura inspirada na laranja.\r\n\r\nCom a chegada do verão, a Tropicale decidiu elevar a experiência dos consumidores com uma criação que captura o sabor vibrante e refrescante da fruta cítrica favorita de muitos. O sabor \"Laravi\" promete oferecer uma explosão de sabor a cada colherada, combinando o suculento aroma da laranja com a suavidade e cremosidade característica dos sorvetes da marca.\r\n\r\nEm uma entrevista exclusiva, o diretor de desenvolvimento de produtos da Tropicale, Carlos Mendes, compartilhou insights sobre a inspiração por trás do novo sabor. \"Queríamos criar algo verdadeiramente único que despertasse a nostalgia do verão e proporcionasse uma experiência memorável aos nossos clientes. O 'Laravi' é uma homenagem à simplicidade e à autenticidade da laranja, e estamos confiantes de que será um sucesso entre os amantes de sorvete de todas as idades\", afirmou Mendes.\r\n\r\nAlém de seu irresistível sabor, o \"Laravi\" também se destaca por sua composição de alta qualidade, feita com ingredientes naturais e frescos. A Tropicale reiterou seu compromisso com a excelência e a inovação, garantindo que cada porção de sorvete seja uma experiência verdadeiramente indulgente e satisfatória.\r\n\r\nO lançamento do sabor \"Laravi\" já está gerando grande expectativa entre os consumidores, que mal podem esperar para experimentar essa nova criação da Tropicale. Com sua promessa de refrescar os dias quentes de verão com uma explosão de sabor, o \"Laravi\" está pronto para se tornar o novo favorito entre os apreciadores de sorvete em todo o país.", new DateOnly(2024, 5, 27), "08:30", null, 2, "Combinando a refrescância da laranja com a suavidade do sorvete, \"Laravi\" promete ser uma verdadeira explosão cítrica de sabor que cativará os paladares de todos.", "Tropicale Lança Novo Sabor chamado Laravi: Uma Explosão Cítrica de Sabor!" }
+                    { 1, "Hoje, a cidade de Jales testemunhou um marco na cena da moda local com a grandiosa inauguração da AnaStore, a mais recente empreitada da renomada empresária Ana Carolina. Situada no coração da área comercial, a loja promete revolucionar o estilo dos moradores locais com suas coleções exclusivas e uma abordagem única para moda e estilo.\r\n\r\nCom uma cerimônia de inauguração repleta de glamour e entusiasmo, a Sra. Ana Carolina expressou sua gratidão pela calorosa recepção que a comunidade de Jales ofereceu à sua mais recente iniciativa empresarial. \"A AnaStore não é apenas uma loja de roupas, é um espaço onde a moda encontra a expressão pessoal. Queremos ser mais do que apenas uma opção de compras, queremos ser uma fonte de inspiração para todos aqueles que desejam expressar sua individualidade através do estilo\", afirmou a visionária empresária.\r\n\r\nOs clientes que compareceram ao evento de inauguração foram recebidos com um desfile de moda exclusivo, apresentando as últimas tendências e peças selecionadas cuidadosamente pela equipe da AnaStore. De vestuário casual a trajes de gala, a loja oferece uma ampla variedade de opções para atender a todos os gostos e ocasiões.\r\n\r\nAlém de oferecer uma experiência de compra excepcional, a AnaStore também se compromete com a sustentabilidade ambiental e social. \"Estamos empenhados em promover práticas comerciais éticas e sustentáveis, desde a escolha dos materiais até as condições de trabalho em nossas fábricas parceiras. Queremos que nossos clientes se sintam bem não apenas com suas escolhas de moda, mas também com o impacto positivo que estão causando no mundo\", ressaltou Ana Carolina.\r\n\r\nA AnaStore já se destaca como um destino imperdível para os amantes da moda em Jales, e sua inauguração promete ser apenas o começo de uma jornada emocionante rumo ao sucesso e à inovação na indústria da moda local. ", new DateOnly(2024, 5, 15), "10:30", null, 2, 1, "A cidade de Jales recebeu hoje um novo marco na indústria da moda com a inauguração triunfante da AnaStore, uma loja que promete revolucionar o cenário fashion local.", "Grande Inauguração da AnaStore: Uma Celebração de Estilo e Elegância!" },
+                    { 2, "Os aficionados por sorvete têm motivos para comemorar com o mais recente lançamento da Tropicale, uma das principais marcas de sorvetes do país. Hoje, a empresa revelou seu mais novo sabor de dar água na boca: \"Laravi\", uma deliciosa combinação de frescor e doçura inspirada na laranja.\r\n\r\nCom a chegada do verão, a Tropicale decidiu elevar a experiência dos consumidores com uma criação que captura o sabor vibrante e refrescante da fruta cítrica favorita de muitos. O sabor \"Laravi\" promete oferecer uma explosão de sabor a cada colherada, combinando o suculento aroma da laranja com a suavidade e cremosidade característica dos sorvetes da marca.\r\n\r\nEm uma entrevista exclusiva, o diretor de desenvolvimento de produtos da Tropicale, Carlos Mendes, compartilhou insights sobre a inspiração por trás do novo sabor. \"Queríamos criar algo verdadeiramente único que despertasse a nostalgia do verão e proporcionasse uma experiência memorável aos nossos clientes. O 'Laravi' é uma homenagem à simplicidade e à autenticidade da laranja, e estamos confiantes de que será um sucesso entre os amantes de sorvete de todas as idades\", afirmou Mendes.\r\n\r\nAlém de seu irresistível sabor, o \"Laravi\" também se destaca por sua composição de alta qualidade, feita com ingredientes naturais e frescos. A Tropicale reiterou seu compromisso com a excelência e a inovação, garantindo que cada porção de sorvete seja uma experiência verdadeiramente indulgente e satisfatória.\r\n\r\nO lançamento do sabor \"Laravi\" já está gerando grande expectativa entre os consumidores, que mal podem esperar para experimentar essa nova criação da Tropicale. Com sua promessa de refrescar os dias quentes de verão com uma explosão de sabor, o \"Laravi\" está pronto para se tornar o novo favorito entre os apreciadores de sorvete em todo o país.", new DateOnly(2024, 5, 27), "08:30", null, 2, 1, "Combinando a refrescância da laranja com a suavidade do sorvete, \"Laravi\" promete ser uma verdadeira explosão cítrica de sabor que cativará os paladares de todos.", "Tropicale Lança Novo Sabor chamado Laravi: Uma Explosão Cítrica de Sabor!" }
                 });
 
             migrationBuilder.InsertData(
@@ -470,16 +474,17 @@ namespace COMTUR.Migrations
                 {
                     { 1, 4, null, "Expo", 1 },
                     { 2, 4, null, "Varejo", 1 },
-                    { 3, 4, null, "Alimento", 1 }
+                    { 3, 4, null, "Alimento", 1 },
+                    { 4, 4, null, "Evento", 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "empresa",
-                columns: new[] { "empresaid", "cnpj", "descricao", "endereco", "tipoturismoid", "usuarioid", "nome", "TipoTurismoModelId" },
+                columns: new[] { "empresaid", "cnpj", "descricao", "endereco", "tipoturismoid", "usuarioid", "nome", "statusatracao", "TipoTurismoModelId" },
                 values: new object[,]
                 {
-                    { 1, "12.345.678/9012-34", "Em AnaStore, acreditamos que cada pessoa tem sua própria história para contar, e é por isso que oferecemos uma seleção cuidadosamente analisada de roupas e acessórios que abraçam uma variedade de estilos, desde o casual chic até o elegante e sofisticado. Nossas coleções são atualizadas regularmente para garantir que nossos clientes sempre encontrem algo novo e empolgante a cada visita.", "Rua Ana Carolina, 0902 - Jardim Ana, Jales - SP, 15700-123", 2, 5, "AnaStore", null },
-                    { 2, " 30.475.124/0001-94 ", "A Tropicale oferece uma experiência única ao priorizar a qualidade em todas as etapas, desde a seleção dos ingredientes até o armazenamento dos sorvetes. Equipada com tecnologia de ponta, proporciona um ambiente acolhedor para famílias e amigos desfrutarem momentos especiais juntos. O cardápio diversificado inclui sorvetes de massa, picolés de fruta e ao leite, picolés gourmet e opções sem lactose.", "Rua Prof. Rubião Meira, 4120 - Jardim Paulista, Jales - SP, 15700-426", 3, 6, "Tropicale Brasil Sorvetes", null }
+                    { 1, "12.345.678/9012-34", "Em AnaStore, acreditamos que cada pessoa tem sua própria história para contar, e é por isso que oferecemos uma seleção cuidadosamente analisada de roupas e acessórios que abraçam uma variedade de estilos, desde o casual chic até o elegante e sofisticado. Nossas coleções são atualizadas regularmente para garantir que nossos clientes sempre encontrem algo novo e empolgante a cada visita.", "Rua Ana Carolina, 0902 - Jardim Ana, Jales - SP, 15700-123", 2, 5, "AnaStore", 1, null },
+                    { 2, " 30.475.124/0001-94 ", "A Tropicale oferece uma experiência única ao priorizar a qualidade em todas as etapas, desde a seleção dos ingredientes até o armazenamento dos sorvetes. Equipada com tecnologia de ponta, proporciona um ambiente acolhedor para famílias e amigos desfrutarem momentos especiais juntos. O cardápio diversificado inclui sorvetes de massa, picolés de fruta e ao leite, picolés gourmet e opções sem lactose.", "Rua Prof. Rubião Meira, 4120 - Jardim Paulista, Jales - SP, 15700-426", 3, 6, "Tropicale Brasil Sorvetes", 1, null }
                 });
 
             migrationBuilder.InsertData(
@@ -493,11 +498,11 @@ namespace COMTUR.Migrations
 
             migrationBuilder.InsertData(
                 table: "turismo",
-                columns: new[] { "turismoid", "descricao", "diafuncionamento", "horario", "idtipoturismo", "usuarioid", "local", "nome", "qrcode", "TipoTurismoModelId" },
+                columns: new[] { "turismoid", "descricao", "diafuncionamento", "horario", "idtipoturismo", "usuarioid", "local", "nome", "qrcode", "statustipoatracao", "TipoTurismoModelId" },
                 values: new object[,]
                 {
-                    { 1, "Praça da Fonte", "Todos os dias", "18:00", 1, 2, "Praça da Fonte", "Praça da Fonte", "123456", null },
-                    { 2, "Praça da Fonte", "Todos os dias", "18:00", 1, 2, "Praça da Fonte", "Expo Jales", "123456", null }
+                    { 1, "Praça da Fonte", "Todos os dias", "18:00", 1, 2, "Praça da Fonte", "Praça da Fonte", "123456", 1, null },
+                    { 2, "Praça da Fonte", "Todos os dias", "18:00", 1, 2, "Praça da Fonte", "Expo Jales", "123456", 1, null }
                 });
 
             migrationBuilder.InsertData(

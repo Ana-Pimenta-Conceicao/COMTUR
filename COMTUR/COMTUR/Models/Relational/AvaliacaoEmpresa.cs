@@ -2,48 +2,35 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using COMTUR.Models.Enum;
-using COMTUR.Models.Relational;
 
-namespace COMTUR.Models
+namespace COMTUR.Models.Relational
 {
 
-    [Table("avaliacao")]
+    [Table("avaliacaoEmpresa")]
 
-	public class AvaliacaoModel
+	public class AvaliacaoEmpresaModel
 	{
 		[Key]
-		[Column("avaliacaoid")]
+		[Column("avaliacaoempresaid")]
 		public int Id { get; set; }
 
-		[Column("notaAvaliacao")]
+        [Column("statusavaliacaoempresa")]
+        public TipoStatus Status { get; set; }
 
-		public string Nota { get; set; }
+		[Column("idavaliacao")]
+		[ForeignKey("idavaliacao")]
+		public int IdAvaliacao { get; set; }
 
-		[Column("dataAvaliacao")]
-		public DateOnly DataAvaliacao { get; set; }
-
-		[Column("comentarioAvaliacao")]
-		public string Comentario { get; set; }
-
-		[Column("statusavaliacao")]
-		public TipoStatus Status { get; set; }
-
-        [Column("idusuario")]
-        [ForeignKey("idusuario")]
-        public int IdUsuario { get; set; }
+		[Column("idempresa")]
+		[ForeignKey("idempresa")]
+		public int IdEmpresa { get; set; }
 
 
         [JsonIgnore]
-        public UsuarioModel UsuarioModel { get; set; }
+        public AvaliacaoModel? AvaliacaoModel { get; set; }
 
         [JsonIgnore]
-        public ICollection<AvaliacaoAtracaoModel>? AvaliacaoAtracoes { get; set; }
-
-        [JsonIgnore]
-        public ICollection<AvaliacaoEmpresaModel>? AvaliacaoEmpresaModels { get; set; }
-
-        [JsonIgnore]
-        public ICollection<AvaliacaoTurismoModel>? AvaliacaoTurismoModels { get; set; }
+        public EmpresaModel? EmpresaModel { get; set; }
 
 
 

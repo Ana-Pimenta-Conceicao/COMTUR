@@ -1,8 +1,8 @@
-﻿using COMTUR.Repositorios.Interfaces;
+﻿using COMTUR.Models.Enum;
 
 namespace COMTUR.Models.StatusState
 {
-	public class AprovadoState : IStatusStateRepositorio
+    public class AprovadoState : IStatusState
 	{
 		public string State { get; } = "Aprovado";
 

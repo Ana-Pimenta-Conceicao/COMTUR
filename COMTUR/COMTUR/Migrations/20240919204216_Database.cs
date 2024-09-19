@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class teste : Migration
+    public partial class Database : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,6 +50,29 @@ namespace COMTUR.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_usuario", x => x.usuarioid);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "avaliacao",
+                columns: table => new
+                {
+                    avaliacaoid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    notaAvaliacao = table.Column<string>(type: "text", nullable: false),
+                    dataAvaliacao = table.Column<DateOnly>(type: "date", nullable: false),
+                    comentarioAvaliacao = table.Column<string>(type: "text", nullable: false),
+                    statusavaliacao = table.Column<int>(type: "integer", nullable: false),
+                    idusuario = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_avaliacao", x => x.avaliacaoid);
+                    table.ForeignKey(
+                        name: "FK_avaliacao_usuario_idusuario",
+                        column: x => x.idusuario,
+                        principalTable: "usuario",
+                        principalColumn: "usuarioid",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,6 +219,33 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "avaliacaoEmpresa",
+                columns: table => new
+                {
+                    avaliacaoempresaid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    statusavaliacaoempresa = table.Column<int>(type: "integer", nullable: false),
+                    idavaliacao = table.Column<int>(type: "integer", nullable: false),
+                    idempresa = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_avaliacaoEmpresa", x => x.avaliacaoempresaid);
+                    table.ForeignKey(
+                        name: "FK_avaliacaoEmpresa_avaliacao_idempresa",
+                        column: x => x.idempresa,
+                        principalTable: "avaliacao",
+                        principalColumn: "avaliacaoid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_avaliacaoEmpresa_empresa_idempresa",
+                        column: x => x.idempresa,
+                        principalTable: "empresa",
+                        principalColumn: "empresaid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "imagemempresa",
                 columns: table => new
                 {
@@ -267,6 +317,33 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "avaliacaoTurismo",
+                columns: table => new
+                {
+                    avaliacaoturismoid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    statusavaliacaoturismo = table.Column<int>(type: "integer", nullable: false),
+                    idavaliacao = table.Column<int>(type: "integer", nullable: false),
+                    idturismo = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_avaliacaoTurismo", x => x.avaliacaoturismoid);
+                    table.ForeignKey(
+                        name: "FK_avaliacaoTurismo_avaliacao_idturismo",
+                        column: x => x.idturismo,
+                        principalTable: "avaliacao",
+                        principalColumn: "avaliacaoid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_avaliacaoTurismo_turismo_idturismo",
+                        column: x => x.idturismo,
+                        principalTable: "turismo",
+                        principalColumn: "turismoid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "imagemturismo",
                 columns: table => new
                 {
@@ -327,46 +404,29 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "avaliacao",
+                name: "avaliacaoAtracao",
                 columns: table => new
                 {
-                    avaliacaoid = table.Column<int>(type: "integer", nullable: false)
+                    avaliacaoatracaoid = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    notaAvaliacao = table.Column<string>(type: "text", nullable: false),
-                    dataAvaliacao = table.Column<DateOnly>(type: "date", nullable: false),
-                    comentarioAvaliacao = table.Column<string>(type: "text", nullable: false),
-                    TurismoModelId = table.Column<int>(type: "integer", nullable: true),
-                    idturismo = table.Column<int>(type: "integer", nullable: false),
-                    AtracaoModelId = table.Column<int>(type: "integer", nullable: true),
-                    idatracao = table.Column<int>(type: "integer", nullable: false),
-                    usuarioid = table.Column<int>(type: "integer", nullable: false),
-                    EmpresaModelId = table.Column<int>(type: "integer", nullable: true),
-                    empresaid = table.Column<int>(type: "integer", nullable: false),
-                    statusavaliacao = table.Column<int>(type: "integer", nullable: false)
+                    statusavaliacaoatracao = table.Column<int>(type: "integer", nullable: false),
+                    idavaliacao = table.Column<int>(type: "integer", nullable: false),
+                    idatracao = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_avaliacao", x => x.avaliacaoid);
+                    table.PrimaryKey("PK_avaliacaoAtracao", x => x.avaliacaoatracaoid);
                     table.ForeignKey(
-                        name: "FK_avaliacao_atracao_AtracaoModelId",
-                        column: x => x.AtracaoModelId,
+                        name: "FK_avaliacaoAtracao_atracao_idatracao",
+                        column: x => x.idatracao,
                         principalTable: "atracao",
-                        principalColumn: "atracaoid");
+                        principalColumn: "atracaoid",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_avaliacao_empresa_EmpresaModelId",
-                        column: x => x.EmpresaModelId,
-                        principalTable: "empresa",
-                        principalColumn: "empresaid");
-                    table.ForeignKey(
-                        name: "FK_avaliacao_turismo_TurismoModelId",
-                        column: x => x.TurismoModelId,
-                        principalTable: "turismo",
-                        principalColumn: "turismoid");
-                    table.ForeignKey(
-                        name: "FK_avaliacao_usuario_usuarioid",
-                        column: x => x.usuarioid,
-                        principalTable: "usuario",
-                        principalColumn: "usuarioid",
+                        name: "FK_avaliacaoAtracao_avaliacao_idatracao",
+                        column: x => x.idatracao,
+                        principalTable: "avaliacao",
+                        principalColumn: "avaliacaoid",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -437,16 +497,6 @@ namespace COMTUR.Migrations
                     { 4, "nabila@gmail.com", 0, null, "Nabila Administradora", "123456", 2, "(44) 44444-4444", 4 },
                     { 5, "ana@gmail.com", 0, null, "Ana", "123456", 2, "(55) 5555-5555", 3 },
                     { 6, "atendimento@lojatropicale.com.br", 0, null, "Tropicale", "123456", 2, "(17) 3632-0117", 3 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "avaliacao",
-                columns: new[] { "avaliacaoid", "AtracaoModelId", "comentarioAvaliacao", "dataAvaliacao", "EmpresaModelId", "idatracao", "empresaid", "idturismo", "usuarioid", "notaAvaliacao", "statusavaliacao", "TurismoModelId" },
-                values: new object[,]
-                {
-                    { 1, null, "Excelente show!", new DateOnly(2024, 7, 17), null, 1, 0, 0, 1, "4", 1, null },
-                    { 2, null, "Amei o show!", new DateOnly(2024, 9, 11), null, 2, 0, 0, 1, "5", 1, null },
-                    { 3, null, "Loja incrível!", new DateOnly(2024, 9, 17), null, 0, 1, 0, 1, "5", 2, null }
                 });
 
             migrationBuilder.InsertData(
@@ -566,24 +616,24 @@ namespace COMTUR.Migrations
                 column: "usuarioid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_avaliacao_AtracaoModelId",
+                name: "IX_avaliacao_idusuario",
                 table: "avaliacao",
-                column: "AtracaoModelId");
+                column: "idusuario");
 
             migrationBuilder.CreateIndex(
-                name: "IX_avaliacao_EmpresaModelId",
-                table: "avaliacao",
-                column: "EmpresaModelId");
+                name: "IX_avaliacaoAtracao_idatracao",
+                table: "avaliacaoAtracao",
+                column: "idatracao");
 
             migrationBuilder.CreateIndex(
-                name: "IX_avaliacao_TurismoModelId",
-                table: "avaliacao",
-                column: "TurismoModelId");
+                name: "IX_avaliacaoEmpresa_idempresa",
+                table: "avaliacaoEmpresa",
+                column: "idempresa");
 
             migrationBuilder.CreateIndex(
-                name: "IX_avaliacao_usuarioid",
-                table: "avaliacao",
-                column: "usuarioid");
+                name: "IX_avaliacaoTurismo_idturismo",
+                table: "avaliacaoTurismo",
+                column: "idturismo");
 
             migrationBuilder.CreateIndex(
                 name: "IX_empresa_tipoturismoid",
@@ -688,7 +738,13 @@ namespace COMTUR.Migrations
                 name: "Auditoria");
 
             migrationBuilder.DropTable(
-                name: "avaliacao");
+                name: "avaliacaoAtracao");
+
+            migrationBuilder.DropTable(
+                name: "avaliacaoEmpresa");
+
+            migrationBuilder.DropTable(
+                name: "avaliacaoTurismo");
 
             migrationBuilder.DropTable(
                 name: "imagematracao");
@@ -704,6 +760,9 @@ namespace COMTUR.Migrations
 
             migrationBuilder.DropTable(
                 name: "sessao");
+
+            migrationBuilder.DropTable(
+                name: "avaliacao");
 
             migrationBuilder.DropTable(
                 name: "atracao");

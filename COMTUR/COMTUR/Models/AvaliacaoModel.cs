@@ -34,7 +34,7 @@ namespace COMTUR.Models
 
 
         [JsonIgnore]
-        public UsuarioModel UsuarioModel { get; set; }
+        public UsuarioModel? UsuarioModel { get; set; }
 
         [JsonIgnore]
         public ICollection<AvaliacaoAtracaoModel>? AvaliacaoAtracoes { get; set; }

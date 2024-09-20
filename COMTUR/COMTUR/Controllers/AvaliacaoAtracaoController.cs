@@ -10,12 +10,12 @@ namespace COMTUR.Controllers
 
 	[Route("api/[controller]")]
 	[ApiController]
-	public class AvaliacaoAtracaoModelController : Controller
+	public class AvaliacaoAtracaoController : Controller
 	{
 		private readonly IAvaliacaoAtracaoRepositorio _AvaliacaoAtracaoRepositorio;
         private readonly IAvaliacaoRepositorio _AvaliacaoRepositorio;
 
-        public AvaliacaoAtracaoModelController(IAvaliacaoAtracaoRepositorio AvaliacaoAtracaoRepositorio, IAvaliacaoRepositorio AvaliacaoRepositorio)
+        public AvaliacaoAtracaoController(IAvaliacaoAtracaoRepositorio AvaliacaoAtracaoRepositorio, IAvaliacaoRepositorio AvaliacaoRepositorio)
 		{
 			_AvaliacaoAtracaoRepositorio = AvaliacaoAtracaoRepositorio;
             _AvaliacaoRepositorio = AvaliacaoRepositorio;
@@ -24,19 +24,19 @@ namespace COMTUR.Controllers
 		[HttpGet]
 		public async Task<ActionResult<List<AvaliacaoAtracaoModel>>> BuscarAvaliacaoAtracaoModel()
 		{
-			List<AvaliacaoAtracaoModel> AvaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarAvaliacaoAtracaoModel();
-			return Ok(AvaliacaoAtracaoModel);
+			List<AvaliacaoAtracaoModel> avaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarAvaliacaoAtracaoModel();
+			return Ok(avaliacaoAtracaoModel);
 		}
 
-        [HttpGet("atracao/{idAtracao:int}")]
-        public async Task<ActionResult<AvaliacaoAtracaoModel>> BuscarPorIdAtracao(int idAtracao)
+        [HttpGet("Atracao/{idAtracao:int}")]
+        public async Task<ActionResult<List<AvaliacaoAtracaoModel>>> BuscarPorIdAtracao(int idAtracao)
         {
-            List<AvaliacaoAtracaoModel> AvaliacoesAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorIdAtracao(idAtracao);
-            return Ok(AvaliacoesAtracaoModel);
+            List<AvaliacaoAtracaoModel> avaliacoesAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorIdAtracao(idAtracao);
+            return Ok(avaliacoesAtracaoModel);
         }
 
-        [HttpGet("atracao/{idAtracao:int}/score")]
-        public async Task<ActionResult<double>> CalcularScoreAtracao(int idAtracao)
+        [HttpGet("Atracao/{idAtracao:int}/Score")]
+        public async Task<ActionResult> CalcularScoreAtracao(int idAtracao)
         {
             // Buscar todas as avaliações associadas à atração
             List<AvaliacaoAtracaoModel> avaliacoesAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorIdAtracao(idAtracao);
@@ -54,25 +54,29 @@ namespace COMTUR.Controllers
                 }
             }
 
-            // Calcular o score médio
-            score /= avaliacoesAtracaoModel.Count;
+            // Calcular o score médio, evitando divisão por zero
+            if (avaliacoesAtracaoModel.Count > 0)
+            {
+                score /= avaliacoesAtracaoModel.Count;
+            }
 
-            return Ok(score);
+            // Retornar a quantidade de avaliações e o score
+            return Ok(new { avaliacoes = avaliacoesAtracaoModel.Count, score = score });
         }
 
         [HttpGet("{id:int}")]
 		public async Task<ActionResult<AvaliacaoAtracaoModel>> BuscarPorId(int id)
 		{
-			AvaliacaoAtracaoModel AvaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorId(id);
-			return Ok(AvaliacaoAtracaoModel);
+			AvaliacaoAtracaoModel avaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorId(id);
+			return Ok(avaliacaoAtracaoModel);
 		}
 
-		[HttpPost]
-		public async Task<ActionResult<AvaliacaoAtracaoModel>> Cadastrar([FromForm] AvaliacaoAtracaoModel AvaliacaoAtracaoModel)
+        [HttpPost]
+		public async Task<ActionResult<AvaliacaoAtracaoModel>> Cadastrar([FromForm] AvaliacaoAtracaoModel avaliacaoAtracaoModel)
 		{
-			AvaliacaoAtracaoModel AvaliacaoAtracao = await _AvaliacaoAtracaoRepositorio.Adicionar(AvaliacaoAtracaoModel);
+			AvaliacaoAtracaoModel avaliacaoAtracao = await _AvaliacaoAtracaoRepositorio.Adicionar(avaliacaoAtracaoModel);
 
-			return Ok(AvaliacaoAtracao);
+			return Ok(avaliacaoAtracao);
 		}
 
 		[HttpDelete("{id:int}")]
@@ -85,96 +89,96 @@ namespace COMTUR.Controllers
 		[HttpPut("{id:int}/Aprovar")]
 		public async Task<ActionResult<AvaliacaoAtracaoModel>> Activity(int id)
 		{
-			var AvaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorId(id);
-			if (AvaliacaoAtracaoModel == null)
+			var avaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorId(id);
+			if (avaliacaoAtracaoModel == null)
 			{
 				return NotFound("Avaliação de Atração não encontrado!");
 			}
 
-			if (AvaliacaoAtracaoModel.CanApproved())
+			if (avaliacaoAtracaoModel.CanApproved())
 			{
-				AvaliacaoAtracaoModel.Approved();
+				avaliacaoAtracaoModel.Approved();
 				await _AvaliacaoAtracaoRepositorio.AtualizarStatus(TipoStatus.Aprovado, id);
 
-				return Ok(AvaliacaoAtracaoModel);
+				return Ok(avaliacaoAtracaoModel);
 			}
 			else
 			{
-				return AvaliacaoAtracaoModel.GetState() == "Aprovado" ?
-					BadRequest("A Avaliação de Atração já está " + AvaliacaoAtracaoModel.GetState() + "!") :
-					BadRequest("A Avaliação de Atração não pode ser Aprovado porque está " + AvaliacaoAtracaoModel.GetState() + "!");
+				return avaliacaoAtracaoModel.GetState() == "Aprovado" ?
+					BadRequest("A Avaliação de Atração já está " + avaliacaoAtracaoModel.GetState() + "!") :
+					BadRequest("A Avaliação de Atração não pode ser Aprovado porque está " + avaliacaoAtracaoModel.GetState() + "!");
 			}
 		}
 
 		[HttpPut("{id:int}/Desativar")]
 		public async Task<ActionResult<AvaliacaoAtracaoModel>> Desactivity(int id)
 		{
-			var AvaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorId(id);
-			if (AvaliacaoAtracaoModel == null)
+			var avaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorId(id);
+			if (avaliacaoAtracaoModel == null)
 			{
 				return NotFound("Avaliação de Atração não encontrado!");
 			}
 
-			if (AvaliacaoAtracaoModel.CanInactive())
+			if (avaliacaoAtracaoModel.CanInactive())
 			{
-				AvaliacaoAtracaoModel.Inactive();
+				avaliacaoAtracaoModel.Inactive();
 				await _AvaliacaoAtracaoRepositorio.AtualizarStatus(TipoStatus.Aprovado, id);
 
-				return Ok(AvaliacaoAtracaoModel);
+				return Ok(avaliacaoAtracaoModel);
 			}
 			else
 			{
-				return AvaliacaoAtracaoModel.GetState() == "Desativado" ?
-					BadRequest("A Avaliação de Atração já está " + AvaliacaoAtracaoModel.GetState() + "!") :
-					BadRequest("A Avaliação de Atração não pode ser Desativado porque está " + AvaliacaoAtracaoModel.GetState() + "!");
+				return avaliacaoAtracaoModel.GetState() == "Desativado" ?
+					BadRequest("A Avaliação de Atração já está " + avaliacaoAtracaoModel.GetState() + "!") :
+					BadRequest("A Avaliação de Atração não pode ser Desativado porque está " + avaliacaoAtracaoModel.GetState() + "!");
 			}
 		}
 
 		[HttpPut("{id:int}/EmAnalise")]
 		public async Task<ActionResult<AvaliacaoAtracaoModel>> Analyzing(int id)
 		{
-			var AvaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorId(id);
-			if (AvaliacaoAtracaoModel == null)
+			var avaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorId(id);
+			if (avaliacaoAtracaoModel == null)
 			{
 				return NotFound("Avaliação de Atração não encontrado!");
 			}
 
-			if (AvaliacaoAtracaoModel.CanAnalyzing())
+			if (avaliacaoAtracaoModel.CanAnalyzing())
 			{
-				AvaliacaoAtracaoModel.Analyzing();
+				avaliacaoAtracaoModel.Analyzing();
 				await _AvaliacaoAtracaoRepositorio.AtualizarStatus(TipoStatus.Aprovado, id);
 
-				return Ok(AvaliacaoAtracaoModel);
+				return Ok(avaliacaoAtracaoModel);
 			}
 			else
 			{
-				return AvaliacaoAtracaoModel.GetState() == "em Análise" ?
-					BadRequest("A Avaliação de Atração já está " + AvaliacaoAtracaoModel.GetState() + "!") :
-					BadRequest("A Avaliação de Atração não pode ser colocado em Análise porque está " + AvaliacaoAtracaoModel.GetState() + "!");
+				return avaliacaoAtracaoModel.GetState() == "em Análise" ?
+					BadRequest("A Avaliação de Atração já está " + avaliacaoAtracaoModel.GetState() + "!") :
+					BadRequest("A Avaliação de Atração não pode ser colocado em Análise porque está " + avaliacaoAtracaoModel.GetState() + "!");
 			}
 		}
 
 		[HttpPut("{id:int}/Reprovar")]
 		public async Task<ActionResult<AvaliacaoAtracaoModel>> Disapproved(int id)
 		{
-			var AvaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorId(id);
-			if (AvaliacaoAtracaoModel == null)
+			var avaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarPorId(id);
+			if (avaliacaoAtracaoModel == null)
 			{
 				return NotFound("Avaliação de Atração não encontrado!");
 			}
 
-			if (AvaliacaoAtracaoModel.CanDisapproved())
+			if (avaliacaoAtracaoModel.CanDisapproved())
 			{
-				AvaliacaoAtracaoModel.Disapproved();
+				avaliacaoAtracaoModel.Disapproved();
 				await _AvaliacaoAtracaoRepositorio.AtualizarStatus(TipoStatus.Aprovado, id);
 
-				return Ok(AvaliacaoAtracaoModel);
+				return Ok(avaliacaoAtracaoModel);
 			}
 			else
 			{
-				return AvaliacaoAtracaoModel.GetState() == "Reprovado" ?
-					BadRequest("A Avaliação de Atração já está " + AvaliacaoAtracaoModel.GetState() + "!") :
-					BadRequest("A Avaliação de Atração não pode ser Reprovado porque está " + AvaliacaoAtracaoModel.GetState() + "!");
+				return avaliacaoAtracaoModel.GetState() == "Reprovado" ?
+					BadRequest("A Avaliação de Atração já está " + avaliacaoAtracaoModel.GetState() + "!") :
+					BadRequest("A Avaliação de Atração não pode ser Reprovado porque está " + avaliacaoAtracaoModel.GetState() + "!");
 			}
 		}
 	}

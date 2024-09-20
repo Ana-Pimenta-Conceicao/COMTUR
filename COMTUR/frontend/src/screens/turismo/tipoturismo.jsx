@@ -104,6 +104,7 @@ function TipoTurismo() {
         nome: tipoturismoNome,
         imagem: "teste",
         idUsuario: idUsuario,
+        status: 1 
       })
       .then((response) => {
         setData(data.concat(response.data));

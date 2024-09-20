@@ -1,5 +1,5 @@
 ﻿using COMTUR.Models.Enum;
-using COMTUR.Repositorios.Interfaces;
+using COMTUR.Models.Relational;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace COMTUR.Models
 {
-	[Table("empresa")]
+    [Table("empresa")]
 	public class EmpresaModel
 	{
 		[Key]
@@ -39,11 +39,11 @@ namespace COMTUR.Models
 
 		// relação com Avaliacao
 		[JsonIgnore]
-		public ICollection<AvaliacaoModel>? Avaliacao { get; set; }
+        public ICollection<AvaliacaoEmpresaModel>? AvaliacoesEmpresa { get; set; }
 
-		// relação com Empresario
+        // relação com Empresario
 
-		[JsonIgnore]
+        [JsonIgnore]
     public UsuarioModel? UsuarioModel { get; set; }
 
 		// relação com ImagemEmpresa
@@ -64,11 +64,11 @@ namespace COMTUR.Models
 		public void Disapproved() => Status = StatusEnumExtensions.Disapproved();
 		public void Analyzing() => Status = StatusEnumExtensions.Analyzing();
 
-		public string GetState() => IStatusStateRepositorioExtensions.GetState(this.Status);
-		public bool CanInactive() => IStatusStateRepositorioExtensions.CanInactive(this.Status);
-		public bool CanAnalyzing() => IStatusStateRepositorioExtensions.CanAnalyzing(this.Status);
-		public bool CanApproved() => IStatusStateRepositorioExtensions.CanApproved(this.Status);
-		public bool CanDisapproved() => IStatusStateRepositorioExtensions.CanDisapproved(this.Status);
+		public string GetState() => IStatusStateExtensions.GetState(this.Status);
+		public bool CanInactive() => IStatusStateExtensions.CanInactive(this.Status);
+		public bool CanAnalyzing() => IStatusStateExtensions.CanAnalyzing(this.Status);
+		public bool CanApproved() => IStatusStateExtensions.CanApproved(this.Status);
+		public bool CanDisapproved() => IStatusStateExtensions.CanDisapproved(this.Status);
 
 	}
 }

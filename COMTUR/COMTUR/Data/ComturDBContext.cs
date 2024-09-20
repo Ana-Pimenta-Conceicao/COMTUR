@@ -3,6 +3,7 @@ using COMTUR.Models;
 using COMTUR.Data.Map;
 using COMTUR.Models.Enum;
 using System.ComponentModel.DataAnnotations;
+using COMTUR.Models.Relational;
 
 namespace COMTUR.Data
 {
@@ -24,6 +25,10 @@ namespace COMTUR.Data
         public DbSet<TurismoModel> Turismo { get; set; }
         public DbSet<AuditoriaModel> Auditoria { get; set; }
 		public DbSet<AvaliacaoModel> Avaliacao { get; set; }
+
+        public DbSet<AvaliacaoAtracaoModel> AvaliacaoAtracao { get; set; }
+        public DbSet<AvaliacaoEmpresaModel> AvaliacaoEmpresa { get; set; }
+        public DbSet<AvaliacaoTurismoModel> AvaliacaoTurismo { get; set; }
 
         public override int SaveChanges()
         {
@@ -198,8 +203,11 @@ namespace COMTUR.Data
             modelBuilder.ApplyConfiguration(new SessaoMap());
             modelBuilder.ApplyConfiguration(new TurismoMap());
 			modelBuilder.ApplyConfiguration(new AvaliacaoMap());
+            modelBuilder.ApplyConfiguration(new AvaliacaoAtracaoModelMap());
+            modelBuilder.ApplyConfiguration(new AvaliacaoEmpresaModelMap());
+            modelBuilder.ApplyConfiguration(new AvaliacaoTurismoModelMap());
 
-			base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
 
             //Adicionando Tipos de Usuario para teste
             modelBuilder.Entity<UsuarioModel>().HasData(
@@ -298,21 +306,6 @@ namespace COMTUR.Data
             modelBuilder.Entity<AtracaoModel>().HasData(
             new AtracaoModel { Id = 4, Nome = "Palco", Descricao = "Palco para shows na praça", QRCode = "123456", IdTipoAtracao = 2, IdTurismo = 1, IdUsuario = 4, Status = TipoStatus.Analisando }
             );
-
-			//Adicionando Avaliacao para teste
-			modelBuilder.Entity<AvaliacaoModel>().HasData(
-			new AvaliacaoModel { Id = 2, Nota = "5", DataAvaliacao = new DateOnly(2024, 9, 11), Comentario = "Amei o show!", IdAtracao = 2, IdUsuario = 1, Status = TipoStatus.Analisando }
-            );
-
-            //Adicionando Avaliacao para teste
-            modelBuilder.Entity<AvaliacaoModel>().HasData(
-            new AvaliacaoModel { Id = 1, Nota = "4", DataAvaliacao = new DateOnly(2024, 7, 17), Comentario = "Excelente show!", IdAtracao = 1, IdUsuario = 1, Status = TipoStatus.Analisando }
-            );
-
-			//Adicionando Avaliacao para teste
-			modelBuilder.Entity<AvaliacaoModel>().HasData(
-			new AvaliacaoModel { Id = 3, Nota = "5", DataAvaliacao = new DateOnly(2024, 9, 17), Comentario = "Loja incrível!", IdEmpresa = 1, IdUsuario = 1, Status = TipoStatus.Aprovado}
-			);
 
 			//Adicionando Imagem Atracao para teste
 			modelBuilder.Entity<ImagemAtracaoModel>().HasData(

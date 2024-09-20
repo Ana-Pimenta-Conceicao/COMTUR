@@ -2,11 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using COMTUR.Models.Enum;
-using COMTUR.Repositorios.Interfaces;
+using COMTUR.Models.Relational;
 
 namespace COMTUR.Models
 {
-	[Table("turismo")]
+    [Table("turismo")]
 	public class TurismoModel
 	{
 		[Key]
@@ -50,16 +50,16 @@ namespace COMTUR.Models
 		// relação com ImagemTurismo
 		public ICollection<ImagemTurismoModel>? ImagemTurismo { get; set; }
 
-		// relação com Atracao
+		// relação com Avaliacao
 		[JsonIgnore]
-		public ICollection<AtracaoModel>? Atracao { get; set; }
+        public ICollection<AvaliacaoTurismoModel>? AvaliacoesTurismo { get; set; }
 
-		// relação com Noticia
-		[JsonIgnore]
+        // relação com Noticia
+        [JsonIgnore]
 		public ICollection<NoticiaModel>? Noticia { get; set; }
 
-		// relaçao com Avaliacao
-		public ICollection<AvaliacaoModel>? Avaliacao { get; set; }
+        // relaçao com Atracao
+        public ICollection<AtracaoModel>? Atracao { get; set; }
 
 		[Column("statustipoatracao")]
 		public TipoStatus Status { get; set; }
@@ -69,10 +69,10 @@ namespace COMTUR.Models
 		public void Disapproved() => Status = StatusEnumExtensions.Disapproved();
 		public void Analyzing() => Status = StatusEnumExtensions.Analyzing();
 
-		public string GetState() => IStatusStateRepositorioExtensions.GetState(this.Status);
-		public bool CanInactive() => IStatusStateRepositorioExtensions.CanInactive(this.Status);
-		public bool CanAnalyzing() => IStatusStateRepositorioExtensions.CanAnalyzing(this.Status);
-		public bool CanApproved() => IStatusStateRepositorioExtensions.CanApproved(this.Status);
-		public bool CanDisapproved() => IStatusStateRepositorioExtensions.CanDisapproved(this.Status);
+		public string GetState() => IStatusStateExtensions.GetState(this.Status);
+		public bool CanInactive() => IStatusStateExtensions.CanInactive(this.Status);
+		public bool CanAnalyzing() => IStatusStateExtensions.CanAnalyzing(this.Status);
+		public bool CanApproved() => IStatusStateExtensions.CanApproved(this.Status);
+		public bool CanDisapproved() => IStatusStateExtensions.CanDisapproved(this.Status);
 	}
 }

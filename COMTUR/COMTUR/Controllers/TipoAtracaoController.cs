@@ -5,12 +5,11 @@ using COMTUR.Repositorios.Interfaces;
 using COMTUR.Repositorios;
 using Azure;
 using COMTUR.Models.Enum;
-using COMTUR.Models.StatusState;
-using Response = COMTUR.Models.StatusState.Response;
+using Response = COMTUR.Models.Utilities.Response;
 
 namespace COMTUR.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 
 	public class TipoAtracaoController : ControllerBase

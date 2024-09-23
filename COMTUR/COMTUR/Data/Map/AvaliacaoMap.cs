@@ -9,11 +9,11 @@ namespace COMTUR.Data.Map
 		public void Configure(EntityTypeBuilder<AvaliacaoModel> builder)
 		{
 
-			builder.HasKey(x => x.Id);
-			builder.Property(ta => ta.Status).IsRequired();
+			builder.HasKey(a => a.Id);
+			builder.Property(a => a.Status).IsRequired();
 
-			// Relacionamento da Avaliacao com funcionario/admin
-			builder.HasOne(e => e.UsuarioModel).WithMany(u => u.Avaliacao).HasForeignKey(e => e.IdUsuario);
+			// Relacionamento da Avaliacao com Usuario
+			builder.HasOne(a => a.UsuarioModel).WithMany(u => u.Avaliacao).HasForeignKey(a => a.IdUsuario);
 
 		}
 	}

@@ -1,8 +1,8 @@
-﻿using COMTUR.Repositorios.Interfaces;
+﻿using COMTUR.Models.Enum;
 
 namespace COMTUR.Models.StatusState
 {
-	public class AnalisandoState : IStatusStateRepositorio
+    public class AnalisandoState : IStatusState
 	{
 		public string State { get; } = "em Análise";
 

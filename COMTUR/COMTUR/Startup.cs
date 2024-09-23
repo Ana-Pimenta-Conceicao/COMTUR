@@ -127,50 +127,52 @@ namespace COMTUR
 			services.AddScoped<ITurismoRepositorio, TurismoRepositorio>();
 			// Dependência: Avaliacao
 			services.AddScoped<IAvaliacaoRepositorio, AvaliacaoRepositorio>();
-		}
+            // Dependência: AvaliacaoAtracao
+            services.AddScoped<IAvaliacaoAtracaoRepositorio, AvaliacaoAtracaoRepositorio>();
+            // Dependência: AvaliacaoEmpresa
+            services.AddScoped<IAvaliacaoEmpresaRepositorio, AvaliacaoEmpresaRepositorio>();
+            // Dependência: AvaliacaoTurismo
+            services.AddScoped<IAvaliacaoTurismoRepositorio, AvaliacaoTurismoRepositorio>();
+        }
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-				app.UseSwagger();
-				app.UseSwaggerUI(c =>
-				{
-					c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sua API V1");
-					// Adicione essas linhas para habilitar o botão "Authorize"
-					c.DocExpansion(DocExpansion.None);
-					c.DisplayRequestDuration();
-					c.EnableDeepLinking();
-					c.EnableFilter();
-					c.ShowExtensions();
-					c.EnableValidator();
-					c.SupportedSubmitMethods(SubmitMethod.Get, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Delete);
-					c.OAuthClientId("swagger-ui");
-					c.OAuthAppName("Swagger UI");
-				});
-			}
-			else
-			{
-				app.UseExceptionHandler("/Home/Error");
-				app.UseHsts();
-			}
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sua API V1");
+                    c.DocExpansion(DocExpansion.None);
+                    c.DisplayRequestDuration();
+                    c.EnableDeepLinking();
+                    c.EnableFilter();
+                    c.ShowExtensions();
+                    c.EnableValidator();
+                    c.SupportedSubmitMethods(SubmitMethod.Get, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Delete);
+                    c.OAuthClientId("swagger-ui");
+                    c.OAuthAppName("Swagger UI");
+                });
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
 
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseCors("MyPolicy");
 
-			app.UseRouting();
-
-			app.UseAuthentication();
-			app.UseAuthorization();
-
-			app.UseCors("MyPolicy");
-
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllers();
-			});
-		}
-	}
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+    }
 }
 

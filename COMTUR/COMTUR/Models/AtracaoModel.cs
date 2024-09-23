@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using COMTUR.Models.Enum;
+using COMTUR.Models.Relational;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -20,11 +22,6 @@ public class AtracaoModel
 
 	[Column("qrcode")]
 	public string QRCode { get; set; }
-
-	// Mapear o campo tipoStatus como enum
-	/*[Column("tipostatus")]
-	[EnumDataType(typeof(TipoStatus))]
-	public TipoStatus TipoStatus { get; set; }*/
 
 	// relaçao com TipoAtracao
 	[JsonIgnore]
@@ -54,7 +51,21 @@ public class AtracaoModel
 	public int IdUsuario { get; set; }
 
 	// relaçao com Avaliacao
-	public ICollection<AvaliacaoModel>? Avaliacao { get; set; }
+	public ICollection<AvaliacaoAtracaoModel>? AvaliacoesAtracao { get; set; }
+
+	[Column("statusatracao")]
+	public TipoStatus Status { get; set; }
+
+	public void Approved() => Status = StatusEnumExtensions.Approved();
+	public void Inactive() => Status = StatusEnumExtensions.Inactive();
+	public void Disapproved() => Status = StatusEnumExtensions.Disapproved();
+	public void Analyzing() => Status = StatusEnumExtensions.Analyzing();
+
+	public string GetState() => IStatusStateExtensions.GetState(this.Status);
+	public bool CanInactive() => IStatusStateExtensions.CanInactive(this.Status);
+	public bool CanAnalyzing() => IStatusStateExtensions.CanAnalyzing(this.Status);
+	public bool CanApproved() => IStatusStateExtensions.CanApproved(this.Status);
+	public bool CanDisapproved() => IStatusStateExtensions.CanDisapproved(this.Status);
 
 }
 

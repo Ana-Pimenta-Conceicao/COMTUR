@@ -172,6 +172,7 @@ function Atracao() {
     formData.append("idtipoatracao", tipoAtracaoSelecionada);
     formData.append("idturismo", turismoSelecionado);
     formData.append("idUsuario", idUsuario);
+    formData.append("status", 1);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -289,14 +290,11 @@ function Atracao() {
           },
         }
       );
-
       console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
-
-
 
   const removeImagemByIndex = (indexToRemove) => {
     setImagensAtracao((prevImagens) =>
@@ -326,8 +324,6 @@ function Atracao() {
       setAtualizarData(false);
     }
   }, [atualizarData]);
-
-
 
   useEffect(() => {
     if (dataTipoAtracao) {
@@ -385,13 +381,10 @@ function Atracao() {
     setIdUsuario(idTipoUsuarioAPI);
   }, []);
 
-
-
-
-
   const loadOptions = (inputValue, callback) => {
     callback(filterOptions(inputValue));
   }
+
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -427,6 +420,22 @@ function Atracao() {
     })
   };
 
+  
+  const statusOptions = [
+    { value: '', label: 'Todos' },
+    { value: '1', label: 'Em Análise' },
+    { value: '2', label: 'Aprovado' },
+    { value: '3', label: 'Reprovado' },
+    { value: '4', label: 'Desativado' }
+  ];
+
+  const statusColors = {
+    1: "bg-gray-800 text-white", // cinza para Em Análise
+    2: "bg-[#009688] text-white", // verde escuro para Aprovado
+    3: "bg-[#FF6B6B] text-white", // Vermelho claro para Reprovado
+    4: "bg-gray-400 text-white", // Cinza claro para Desativado
+  };
+  
   const apresentaDados = Array.isArray(currentItems) ? currentItems.map((atracao) => {
     const tipoAtracao = dataTipoAtracao.find((tipo) => tipo.id === atracao.idTipoAtracao);
     const tipoAtracaoNome = tipoAtracao ? tipoAtracao.nome : "Tipo não encontrado";
@@ -435,21 +444,24 @@ function Atracao() {
     const descricao = atracao.descricao && typeof atracao.descricao === 'string' ? (atracao.descricao.length > 20 ? `${atracao.descricao.slice(0, 20)}...` : atracao.descricao) : '';
 
     return {
-        id: atracao.id,
-        nome: nome,
-        tipoAtracao: tipoAtracaoNome,
-        descricao: descricao,
-        status: "teste",
-        acoes: (
-            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-                <BtnAcao funcao={() => AtracaoSet(atracao, "Editar")} acao="Editar" />
-                <BtnAcao funcao={() => AtracaoSet(atracao, "Excluir")} acao="Excluir" />
-                <BtnAcao funcao={() => AtracaoSet(atracao, "Visualizar")} acao="Visualizar" />
-            </div>
-        ),
+      id: atracao.id,
+      nome: nome,
+      tipoAtracao: tipoAtracaoNome,
+      descricao: descricao,
+      status: (
+        <div className={`px-3 py-1 rounded-md ${statusColors[atracao.status]}`}>
+          {statusOptions.find(option => option.value === atracao.status.toString())?.label}
+        </div>
+      ),
+      acoes: (
+        <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+          <BtnAcao funcao={() => AtracaoSet(atracao, "Editar")} acao="Editar" />
+          <BtnAcao funcao={() => AtracaoSet(atracao, "Excluir")} acao="Excluir" />
+          <BtnAcao funcao={() => AtracaoSet(atracao, "Visualizar")} acao="Visualizar" />
+        </div>
+      ),
     };
-}) : [];
-
+  }) : [];
 
   if (userType === "1" || userType === "3") {
     return <Navigate to="/notfound" />;
@@ -478,7 +490,7 @@ function Atracao() {
               numColunas={6}
             />
 
-            <div className="float-right flex-auto py-6">
+            <div className="inline-flex float-right py-6">
               <BtnAcao funcao={""} acao="Publicados" />
 
               <BtnAcao
@@ -812,9 +824,9 @@ function Atracao() {
             </div>
           </ModalBody>
           <ModalFooter>
-          <BtnModaisIMG funcao={() => pedidoAtualizar()} acao="Editar" />
+            <BtnModaisIMG funcao={() => pedidoAtualizar()} acao="Editar" />
             <BtnModaisIMG funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
-          
+
           </ModalFooter>
         </Modal>
         <PopupEditado
@@ -827,8 +839,8 @@ function Atracao() {
             <label>Confirma a exclusão desta Atração : {atracaoNome} ?</label>
           </ModalBody>
           <ModalFooter>
-          <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
-          <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
+            <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+            <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
           </ModalFooter>
         </Modal>
 

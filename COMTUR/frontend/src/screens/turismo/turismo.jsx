@@ -179,6 +179,7 @@ const Turismo = () => {
     formData.append("diaFuncionamento", turismoDias);
     formData.append("idUsuario", idUsuario);
     formData.append("idTipoTurismo", turismoTipoSelecionado);
+    formData.append("status", 1);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -388,17 +389,20 @@ const Turismo = () => {
     setIdUsuario(idTipoUsuarioAPI);
   }, []);
 
-  // turismoid
-  // nome
-  // descricao
-  // horario
-  // qrcode
-  // local
-  // diafuncionamento
-  // usuarioid
-  // idtipoturismo
-  // imagemturismo
-
+  const statusColors = {
+    1: "bg-gray-800 text-white", // cinza para Em Análise
+    2: "bg-[#009688] text-white", // verde escuro para Aprovado
+    3: "bg-[#FF6B6B] text-white", // Vermelho claro para Reprovado
+    4: "bg-gray-400 text-white", // Cinza claro para Desativado
+  };
+  
+  const statusOptions = [
+    { value: '', label: 'Todos' },
+    { value: '1', label: 'Em Análise' },
+    { value: '2', label: 'Aprovado' },
+    { value: '3', label: 'Reprovado' },
+    { value: '4', label: 'Desativado' }
+  ];
   const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((turismo) => {
         const tipoTurismo = dataTipoTurismo.find(
@@ -410,15 +414,19 @@ const Turismo = () => {
         return {
           id: turismo.id,
           nome:
-            turismo.nome.length > 25
-              ? `${turismo.nome.substring(0, 35)}...`
+            turismo.nome.length > 20
+              ? `${turismo.nome.substring(0, 20)}...`
               : turismo.nome,
           descricao:
-            turismo.descricao.length > 25
-              ? `${turismo.descricao.substring(0, 35)}...`
+            turismo.descricao.length > 20
+              ? `${turismo.descricao.substring(0, 20)}...`
               : turismo.descricao,
           tipo: tipoTurismoNome,
-          status: "teste",
+          status: (
+            <div className={`px-3 py-1 rounded-md ${statusColors[turismo.status]}`}>
+              {statusOptions.find(option => option.value === turismo.status.toString())?.label}
+            </div>
+          ),
           acoes: (
             <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
               <BtnAcao
@@ -464,7 +472,7 @@ const Turismo = () => {
               numColunas={6}
             />
 
-            <div className="float-right flex-auto py-6">
+            <div className="inline-flex float-right py-6">
               <BtnAcao funcao={""} acao="Publicados" />
 
               <BtnAcao

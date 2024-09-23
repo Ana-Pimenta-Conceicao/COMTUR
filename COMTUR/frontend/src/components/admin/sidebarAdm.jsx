@@ -84,7 +84,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
         { title: "Tipos de Atrações", link: "/tipoatracao" },
       ],
     },
-    { title: "Dashboard", src: "Dashboard", iconSrc: "Dashboard" },
+    { title: "Status", src: "status", iconSrc: "Dashboard" },
   ];
 
   const toggleSubmenu = (index) => {

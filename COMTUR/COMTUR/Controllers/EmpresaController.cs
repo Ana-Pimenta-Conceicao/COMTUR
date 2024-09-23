@@ -20,19 +20,6 @@ namespace COMTUR.Controllers
 			_imagemEmpresaRepositorio = imagemEmpresaRepositorio;
 		}
 
-		/*[HttpGet("porTipoStatus/{tipoStatus}")]
-		public async Task<ActionResult<IEnumerable<EmpresaModel>>> GetEmpresaPorTipo(int tipoStatus)
-		{
-			var empresas = await _empresaRepositorio.ListarPorTipoStatus(tipoStatus);
-
-			if (empresas == null)
-			{
-				return NotFound();
-			}
-
-			return Ok(empresas);
-		}*/
-
 		[HttpPost("{empresaId}/imagens")]
 		public IActionResult AdicionarImagem(int empresaId, [FromForm] ImagemEmpresaModel imagem)
 		{
@@ -71,14 +58,14 @@ namespace COMTUR.Controllers
 		}
 
 		[HttpGet("{id}/usuario")]
-		public async Task<ActionResult<EmpresaModel>> BuscarPorIdUsuario(int id)
+		public async Task<ActionResult<List<EmpresaModel>>> BuscarPorIdUsuario(int id)
 		{
-			EmpresaModel empresa = await _empresaRepositorio.GetById(id);
-			if (empresa == null)
+			var empresas = await _empresaRepositorio.BuscarPorIdUsuario(id);
+			if (!empresas.Any())
 			{
 				return NotFound($"Usuario com ID {id} não encontrada.");
 			}
-			return Ok(empresa);
+			return Ok(empresas);
 		}
 
 		[HttpGet("{id}/imagens")]
@@ -99,7 +86,7 @@ namespace COMTUR.Controllers
 		[HttpPut("{id}")]
 		public async Task<ActionResult<EmpresaModel>> Atualizar([FromForm] EmpresaModel empresaModel, int id)
 		{
-	;
+			;
 			EmpresaModel empresa = await _empresaRepositorio.Atualizar(empresaModel, id);
 
 			return Ok(empresa);
@@ -111,6 +98,102 @@ namespace COMTUR.Controllers
 			bool apagado = await _empresaRepositorio.Apagar(id);
 
 			return Ok(apagado);
+		}
+
+		[HttpPut("{id:int}/Aprovar")]
+		public async Task<ActionResult<EmpresaModel>> Activity(int id)
+		{
+			var EmpresaModel = await _empresaRepositorio.BuscarPorId(id); // Busca a empresa que tem o id informado
+			if (EmpresaModel == null) // Verifica se ele existe
+			{
+				return NotFound("Empresa não encontrado!"); // Retorna que não foi encontrado (not found)
+			}
+
+			if (EmpresaModel.CanApproved()) // Se ele pode ser aprovado
+			{
+				EmpresaModel.Approved(); // Muda seu estado para Aprovado
+				await _empresaRepositorio.Atualizar(EmpresaModel, id); // Salva as alterações
+
+				return Ok(EmpresaModel); // Retorna que a operação foi bem-sucedida (ok)
+			}
+			else
+			{
+				return EmpresaModel.GetState() == "Aprovado" ? // Se ele já está Aprovado
+					BadRequest("Empresa já está " + EmpresaModel.GetState() + "!") : // Retorna que ele já está aprovado
+					BadRequest("Empresa não pode ser Aprovada porque está " + EmpresaModel.GetState() + "!"); // Retorna que não é possível aprovar por causa do seu status atual
+			}
+		}
+
+		[HttpPut("{id:int}/Desativar")]
+		public async Task<ActionResult<EmpresaModel>> Desactivity(int id)
+		{
+			var EmpresaModel = await _empresaRepositorio.BuscarPorId(id);
+			if (EmpresaModel == null)
+			{
+				return NotFound("Empresa não encontrado!");
+			}
+
+			if (EmpresaModel.CanInactive())
+			{
+				EmpresaModel.Inactive();
+				await _empresaRepositorio.Atualizar(EmpresaModel, id);
+
+				return Ok(EmpresaModel);
+			}
+			else
+			{
+				return EmpresaModel.GetState() == "Desativado" ?
+					BadRequest("Empresa já está " + EmpresaModel.GetState() + "!") :
+					BadRequest("Empresa não pode ser Desativada porque está " + EmpresaModel.GetState() + "!");
+			}
+		}
+
+		[HttpPut("{id:int}/EmAnalise")]
+		public async Task<ActionResult<EmpresaModel>> Analyzing(int id)
+		{
+			var EmpresaModel = await _empresaRepositorio.BuscarPorId(id);
+			if (EmpresaModel == null)
+			{
+				return NotFound("Empresa não encontrada!");
+			}
+
+			if (EmpresaModel.CanAnalyzing())
+			{
+				EmpresaModel.Analyzing();
+				await _empresaRepositorio.Atualizar(EmpresaModel, id);
+
+				return Ok(EmpresaModel);
+			}
+			else
+			{
+				return EmpresaModel.GetState() == "em Análise" ?
+					BadRequest("Empresa já está " + EmpresaModel.GetState() + "!") :
+					BadRequest("Empresa não pode ser colocado em Análise porque está " + EmpresaModel.GetState() + "!");
+			}
+		}
+
+		[HttpPut("{id:int}/Reprovar")]
+		public async Task<ActionResult<EmpresaModel>> Disapproved(int id)
+		{
+			var EmpresaModel = await _empresaRepositorio.BuscarPorId(id);
+			if (EmpresaModel == null)
+			{
+				return NotFound("Empresa não encontrada!");
+			}
+
+			if (EmpresaModel.CanDisapproved())
+			{
+				EmpresaModel.Disapproved();
+				await _empresaRepositorio.Atualizar(EmpresaModel, id);
+
+				return Ok(EmpresaModel);
+			}
+			else
+			{
+				return EmpresaModel.GetState() == "Reprovado" ?
+					BadRequest("Empresa já está " + EmpresaModel.GetState() + "!") :
+					BadRequest("Empresa não pode ser Reprovada porque está " + EmpresaModel.GetState() + "!");
+			}
 		}
 	}
 }

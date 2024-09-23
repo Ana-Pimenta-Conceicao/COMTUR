@@ -51,7 +51,12 @@ namespace COMTUR.Repositorios
 			return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).ToListAsync();
 		}
 
-		public async Task<EmpresaModel> Adicionar(EmpresaModel empresaModel)
+        public async Task<List<EmpresaModel>> BuscarPorIdUsuario(int idUsuario)
+        {
+            return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).Where(empresa => empresa.IdUsuario == idUsuario).ToListAsync();
+        }
+
+        public async Task<EmpresaModel> Adicionar(EmpresaModel empresaModel)
 		{
 			/*if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
 			{
@@ -85,9 +90,9 @@ namespace COMTUR.Repositorios
 			empresaPorId.Descricao = empresaModel.Descricao;
             empresaPorId.IdUsuario = empresaModel.IdUsuario;
 			empresaPorId.IdTipoTurismo = empresaModel.IdTipoTurismo;
-            //empresaPorId.TipoStatus = empresaModel.TipoStatus;
+			//empresaPorId.TipoStatus = empresaModel.TipoStatus;
 
-            _dbContext.Empresa.Update(empresaPorId);
+			_dbContext.Empresa.Update(empresaPorId);
 			await _dbContext.SaveChangesAsync();
 
 			return empresaPorId;

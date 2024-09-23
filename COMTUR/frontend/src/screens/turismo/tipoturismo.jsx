@@ -104,6 +104,7 @@ function TipoTurismo() {
         nome: tipoturismoNome,
         imagem: "teste",
         idUsuario: idUsuario,
+        status: 1,
       })
       .then((response) => {
         setData(data.concat(response.data));
@@ -184,6 +185,20 @@ function TipoTurismo() {
       setCurrentPage(page);
     }
   };
+  const statusOptions = [
+    { value: "", label: "Todos" },
+    { value: "1", label: "Em Análise" },
+    { value: "2", label: "Aprovado" },
+    { value: "3", label: "Reprovado" },
+    { value: "4", label: "Desativado" },
+  ];
+
+  const statusColors = {
+    1: "bg-gray-800 text-white", // cinza para Em Análise
+    2: "bg-[#009688] text-white", // verde escuro para Aprovado
+    3: "bg-[#FF6B6B] text-white", // Vermelho claro para Reprovado
+    4: "bg-gray-400 text-white", // Cinza claro para Desativado
+  };
 
   useEffect(() => {
     const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
@@ -195,7 +210,19 @@ function TipoTurismo() {
         return {
           id: tipoturismo.id,
           nome: tipoturismo.nome,
-          status: "teste",
+          status: (
+            <div
+              className={`px-3 py-1 rounded-md ${
+                statusColors[tipoturismo.status]
+              }`}
+            >
+              {
+                statusOptions.find(
+                  (option) => option.value === tipoturismo.status.toString()
+                )?.label
+              }
+            </div>
+          ),
           acoes: (
             <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
               <BtnAcao
@@ -243,7 +270,7 @@ function TipoTurismo() {
               formatarData={""}
               numColunas={4}
             />
-            <div className="float-right flex-auto py-6">
+            <div className=" inline-flex float-right py-6">
               <BtnAcao
                 funcao={() => abrirFecharModalInserir("Cadastrar")}
                 acao="Cadastrar"

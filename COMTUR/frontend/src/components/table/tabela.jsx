@@ -1,7 +1,7 @@
 import React from "react";
 import Paginacao from "./paginacao.jsx";
 
-function Tabela({ object, currentPage, totalPages, goToPage, colunas, numColunas }) {
+function Tabela({ object, currentPage, totalPages, goToPage, colunas, numColunas, onRowClick }) {
   const renderTableHeader = (columns, numColumns) => {
     const colSpan = numColumns === 6 ? "grid-cols-11" : "grid-cols-7";
 
@@ -22,7 +22,10 @@ function Tabela({ object, currentPage, totalPages, goToPage, colunas, numColunas
     return (
       <ul className="w-full">
         {data.map((item, rowIndex) => (
-          <li key={rowIndex} className={`grid ${colSpan} w-full border-gray-100`}>
+          <li 
+            key={rowIndex} 
+            className={`grid ${colSpan} w-full border-gray-100`}
+          >
             {Object.values(item).map((value, colIndex) => (
               <span
                 key={colIndex}

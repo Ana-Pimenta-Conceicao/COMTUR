@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-
+using COMTUR.Models.Enum;
+using COMTUR.Models.Relational;
 
 namespace COMTUR.Models
 {
-	[Table("turismo")]
+    [Table("turismo")]
 	public class TurismoModel
 	{
 		[Key]
@@ -30,11 +31,6 @@ namespace COMTUR.Models
 		[Column("diafuncionamento")]
 		public string DiaFuncionamento { get; set; }
 
-		// Mapear o campo tipoStatus como enum
-		/*[Column("tipostatus")]
-		[EnumDataType(typeof(TipoStatus))]
-		public TipoStatus TipoStatus { get; set; }*/
-
 		// relação com funcionario/admin
 		[JsonIgnore]
 		public UsuarioModel? UsuarioModel { get; set; }
@@ -54,15 +50,29 @@ namespace COMTUR.Models
 		// relação com ImagemTurismo
 		public ICollection<ImagemTurismoModel>? ImagemTurismo { get; set; }
 
-		// relação com Atracao
+		// relação com Avaliacao
 		[JsonIgnore]
-		public ICollection<AtracaoModel>? Atracao { get; set; }
+        public ICollection<AvaliacaoTurismoModel>? AvaliacoesTurismo { get; set; }
 
-		// relação com Noticia
-		[JsonIgnore]
+        // relação com Noticia
+        [JsonIgnore]
 		public ICollection<NoticiaModel>? Noticia { get; set; }
 
-		// relaçao com Avaliacao
-		public ICollection<AvaliacaoModel>? Avaliacao { get; set; }
+        // relaçao com Atracao
+        public ICollection<AtracaoModel>? Atracao { get; set; }
+
+		[Column("statustipoatracao")]
+		public TipoStatus Status { get; set; }
+
+		public void Approved() => Status = StatusEnumExtensions.Approved();
+		public void Inactive() => Status = StatusEnumExtensions.Inactive();
+		public void Disapproved() => Status = StatusEnumExtensions.Disapproved();
+		public void Analyzing() => Status = StatusEnumExtensions.Analyzing();
+
+		public string GetState() => IStatusStateExtensions.GetState(this.Status);
+		public bool CanInactive() => IStatusStateExtensions.CanInactive(this.Status);
+		public bool CanAnalyzing() => IStatusStateExtensions.CanAnalyzing(this.Status);
+		public bool CanApproved() => IStatusStateExtensions.CanApproved(this.Status);
+		public bool CanDisapproved() => IStatusStateExtensions.CanDisapproved(this.Status);
 	}
 }

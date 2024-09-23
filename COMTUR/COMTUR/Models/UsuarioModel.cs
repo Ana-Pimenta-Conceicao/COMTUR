@@ -7,17 +7,17 @@ using System.Text.Json.Serialization;
 
 namespace COMTUR.Models
 {
-	[Table("usuario")]
+    [Table("usuario")]
 	public class UsuarioModel
 	{
 		[Key]
 		[Column("usuarioid")]
 		public int Id { get; set; }
 
-        [Column("idusuario")]
-        public int IdUsuario { get; set; }
+		[Column("idusuario")]
+		public int IdUsuario { get; set; }
 
-        [Column("nome")]
+		[Column("nome")]
 		public string Nome { get; set; }
 
 		[Column("telefone")]
@@ -34,17 +34,12 @@ namespace COMTUR.Models
 		[EnumDataType(typeof(TipoUsuario))]
 		public TipoUsuario TipoUsuario { get; set; }
 
-		// Mapear o campo tipoStatus como enum
-		/*[Column("tipostatus")]
-		[EnumDataType(typeof(TipoStatus))]
-		public TipoStatus TipoStatus { get; set; }*/
-
 		[Column("imagemperfilusuario")]
 		public string? ImagemPerfilUsuario { get; set; }
 
 		// Relacionamento com empresa para o empresário
-        [JsonIgnore]
-        public ICollection<EmpresaModel>? Empresas { get; set; }
+		[JsonIgnore]
+		public ICollection<EmpresaModel>? Empresas { get; set; }
 
 		// Relacionamento com noticia para o funcionario
 		[JsonIgnore]
@@ -69,5 +64,19 @@ namespace COMTUR.Models
 		// Relacionamento com avaliacao para o usuario
 		[JsonIgnore]
 		public ICollection<AvaliacaoModel>? Avaliacao { get; set; }
+
+		[Column("statustipoatracao")]
+		public TipoStatus Status { get; set; }
+		public void Approved() => Status = StatusEnumExtensions.Approved();
+		public void Inactive() => Status = StatusEnumExtensions.Inactive();
+		public void Disapproved() => Status = StatusEnumExtensions.Disapproved();
+		public void Analyzing() => Status = StatusEnumExtensions.Analyzing();
+
+		public string GetState() => IStatusStateExtensions.GetState(this.Status);
+		public bool CanInactive() => IStatusStateExtensions.CanInactive(this.Status);
+		public bool CanAnalyzing() => IStatusStateExtensions.CanAnalyzing(this.Status);
+		public bool CanApproved() => IStatusStateExtensions.CanApproved(this.Status);
+		public bool CanDisapproved() => IStatusStateExtensions.CanDisapproved(this.Status);
+
 	}
 }

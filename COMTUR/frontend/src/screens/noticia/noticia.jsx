@@ -159,6 +159,7 @@ export default function Noticia() {
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
     formData.append("idUsuario", idUsuario);
+    formData.append("status", 1);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -340,13 +341,25 @@ export default function Noticia() {
     setUserType(userTypeFromLocalStorage);
     setIdUsuario(idTipoUsuarioAPI);
   }, []);
+  const statusOptions = [
+    { value: '', label: 'Todos' },
+    { value: '1', label: 'Em Análise' },
+    { value: '2', label: 'Aprovado' },
+    { value: '3', label: 'Reprovado' },
+    { value: '4', label: 'Desativado' }
+  ];
+
+  const statusColors = {
+    1: "bg-gray-800 text-white", // cinza para Em Análise
+    2: "bg-[#009688] text-white", // verde escuro para Aprovado
+    3: "bg-[#FF6B6B] text-white", // Vermelho claro para Reprovado
+    4: "bg-gray-400 text-white", // Cinza claro para Desativado
+  };
 
  
 
   const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((noticia) => {
-
-     
         const titulo = noticia.titulo && typeof noticia.titulo === 'string'
           ? (noticia.titulo.length > 20
             ? `${noticia.titulo.slice(0, 20)}...`
@@ -358,14 +371,16 @@ export default function Noticia() {
             ? `${noticia.subtitulo.slice(0, 20)}...`
             : noticia.subtitulo)
           : '';
-
-        
         return {
           id: noticia.id,
           titulo: titulo,
           subtitulo: subtitulo,
           dataPublicacao: formatarDataParaExibicao(noticia.dataPublicacao),
-          status: "teste",
+          status: (
+            <div className={`px-3 py-1 rounded-md ${statusColors[noticia.status]}`}>
+              {statusOptions.find(option => option.value === noticia.status.toString())?.label}
+            </div>
+          ),
           acoes: (
             <div className="flex items-center justify-center">
               <BtnAcao
@@ -412,7 +427,7 @@ export default function Noticia() {
               numColunas={6}
             />
 
-            <div className="float-right flex-auto py-6">
+            <div className="inline-flex float-right py-6 ">
               <BtnAcao
                 funcao={() => VisualizarTodasNoticias()}
                 acao="Publicados"

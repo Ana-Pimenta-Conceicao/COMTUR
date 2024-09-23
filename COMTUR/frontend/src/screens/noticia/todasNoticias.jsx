@@ -22,7 +22,7 @@ export default function TodasNoticias() {
         const response = await axios.get(`${baseUrl}`);
         setOutrasNoticias(
           response.data.filter(
-            (outraNoticia) => outraNoticia.id !== parseInt(id)
+            (outraNoticia) => outraNoticia.id !== parseInt(id) && outraNoticia.status === 2
           )
         );
 
@@ -89,6 +89,12 @@ export default function TodasNoticias() {
   return (
     <div>
       <NavbarUsr />
+      <div className="flex flex-col px-4 sm:pl-24 sm:pr-24">
+        <h1 className="text-[#373636] mb-3 text-lg font-extrabold pt-4 sm:pt-14 sm:px-16 sm:text-4xl">
+          Conheça as notícias da cidade</h1>
+      </div>
+
+      <hr class="pb-4 border-[1.5px] border-black  w-75 ml-auto" />
       <div className="">
         <div className="pb-6">
           <div className="relative w-full  h-[200px] sm:h-[400px] lg:h-[500px]">

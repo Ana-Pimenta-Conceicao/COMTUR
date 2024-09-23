@@ -10,6 +10,7 @@ namespace COMTUR.Data.Map
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Titulo).IsRequired();
+			builder.Property(ta => ta.Status).IsRequired();
 
 			// Relacionamento da noticia com Turismo
 			builder.HasOne(x => x.TurismoModel).WithMany().HasForeignKey(x => x.IdTurismo);

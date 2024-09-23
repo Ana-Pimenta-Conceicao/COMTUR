@@ -4,6 +4,7 @@ import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
 import NavBarAdm from "../../components/admin/navbarAdm.jsx";
 import { useParams } from "react-router-dom";
 import { Camera, Eye, EyeSlash } from "@phosphor-icons/react";
+import SidebarEmp from "../../components/empresario/sidebarEmp.jsx";
 
 export default function VisualizarPerfil() {
   const { id } = useParams();
@@ -99,7 +100,11 @@ export default function VisualizarPerfil() {
   return (
     <div className="home">
       <div className="h-screen flex fixed">
-        <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
+      {tipoUsuario === 3 ? (
+          <SidebarEmp setOpen={setSidebarOpen} open={sidebarOpen} />
+        ) : (
+          <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
+        )}
       </div>
       <div
         className="flex-1 container-fluid"

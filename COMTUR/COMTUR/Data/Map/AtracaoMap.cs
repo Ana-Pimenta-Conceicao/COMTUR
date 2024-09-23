@@ -11,6 +11,7 @@ namespace COMTUR.Data.Map
 		{
 			builder.HasKey(x => x.Id);
 			builder.Property(x => x.Nome).IsRequired();
+			builder.Property(ta => ta.Status).IsRequired();
 
 			// Relacionamento da Atracao com TipoAtracao
 			builder.HasOne(x => x.TipoAtracaoModel).WithMany().HasForeignKey(x => x.IdTipoAtracao);

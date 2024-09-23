@@ -1,8 +1,8 @@
-﻿using COMTUR.Repositorios.Interfaces;
+﻿using COMTUR.Models.Enum;
 
 namespace COMTUR.Models.StatusState
 {
-	public class DesativadoState : IStatusStateRepositorio
+    public class DesativadoState : IStatusState
 	{
 		public string State { get; } = "Desativado";
 

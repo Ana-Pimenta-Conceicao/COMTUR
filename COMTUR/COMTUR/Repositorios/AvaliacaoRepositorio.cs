@@ -57,7 +57,7 @@ namespace COMTUR.Repositorios
 			}
 
 			avaliacaoPorId.Id = Avaliacao.Id;
-			avaliacaoPorId.Nota =Avaliacao.Nota;
+			avaliacaoPorId.Nota = Avaliacao.Nota;
 			avaliacaoPorId.DataAvaliacao =Avaliacao.DataAvaliacao;
 			avaliacaoPorId.Comentario =Avaliacao.Comentario;
 
@@ -74,12 +74,12 @@ namespace COMTUR.Repositorios
 
 		public async Task<AvaliacaoModel> BuscarIdAtracao(int id)
 		{
-			return await _dbContext.Avaliacao.Include(objeto => objeto.AtracaoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+			return await _dbContext.Avaliacao.Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
 
 		public async Task<AvaliacaoModel> BuscarIdTurismo(int id)
 		{
-			return await _dbContext.Avaliacao.Include(objeto => objeto.TurismoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
+			return await _dbContext.Avaliacao.Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
 
 		public async Task<AvaliacaoModel> BuscarIdUsuario(int id)

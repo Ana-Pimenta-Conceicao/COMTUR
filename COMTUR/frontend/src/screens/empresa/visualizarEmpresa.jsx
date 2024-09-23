@@ -12,6 +12,8 @@ import Comtur from "../../assets/Comtur";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import BtnModaisIMG from "../../components/botoes/btnModaisIMG.jsx";
 import BtnModais from "../../components/botoes/btnModais.jsx";
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 export default function VisualizarEmpresa() {
     const { id } = useParams();
@@ -98,12 +100,18 @@ export default function VisualizarEmpresa() {
     };
 
     const pedidoPostAvaliacao = async () => {
+        const currentDate = new Date();
+
+        // Formata a data apenas para o formato desejado (DD/MM/YYYY)
+        const formattedDate = format(currentDate, 'yyyy-MM-dd', { locale: ptBR }); // Formato para o banco de dados
+
         const formData = new FormData();
         formData.append("nota", avaliacaoNota);
-        formData.append("dataPublicacao", inverterDataParaFormatoBanco(avaliacaoDataPublicacao));
+        formData.append("dataAvaliacao", formattedDate);
         formData.append("comentario", avaliacaoComentario);
         formData.append("status", 1);
         formData.append("idUsuario", idUsuario);
+
 
         try {
             const response = await axios.post(avaliacaoUrl, formData, {
@@ -121,6 +129,7 @@ export default function VisualizarEmpresa() {
             console.log(error);
         }
     };
+
 
     const pedidoPostAvaliacaoEmpresa = async (idAvaliacao) => {
         const formData = new FormData();
@@ -314,11 +323,11 @@ export default function VisualizarEmpresa() {
                             <div className="flex flex-col">
                                 <div className="d-flex justify-content-between mt-2">
                                     <div className="flex flex-row w-full justify-start items-center">
-                                        <Star size={20} className={`${avaliacoes.score >= 1 ? "text-[#FFD121]" : ""}`} />
-                                        <Star size={20} className={`${avaliacoes.score >= 2 ? "text-[#FFD121]" : ""}`} />
-                                        <Star size={20} className={`${avaliacoes.score >= 3 ? "text-[#FFD121]" : ""}`} />
-                                        <Star size={20} className={`${avaliacoes.score >= 4 ? "text-[#FFD121]" : ""}`} />
-                                        <Star size={20} className={`${avaliacoes.score === 5 ? "text-[#FFD121]" : ""}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score >= 1 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score >= 2 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score >= 3 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score >= 4 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score === 5 ? "text-[#FFD121]" : "text-gray-300"}`} />
                                         <h3 className="text-gray-800 text-xs pl-2">{avaliacoes.avaliacoes} avaliações</h3>
                                     </div>
                                 </div>
@@ -447,7 +456,7 @@ export default function VisualizarEmpresa() {
                 <ModalBody>
                     <div className="m-2">
                         <div className="flex items-center mb-2">
-                            <div className="w-10 h-10 mr-2 rounded-full">
+                            <div className="w-10 h-10 mr-3 rounded-full">
                                 <Xadrez />
                             </div>
                             <div className="font-medium text-gray-500 ml-1">
@@ -456,28 +465,25 @@ export default function VisualizarEmpresa() {
                             <div className="ml-auto"><Comtur /></div>
                         </div>
 
-                        <div className="flex flex-col items-center justify-center mb-8">
+                        <div className="flex flex-col mt-4">
                             <label>Comentário:</label>
                             <textarea
-                                className="form-control text-sm"
+                                className="form-control text-sm mt-2"
                                 onChange={(e) => setAvaliacaoComentario(e.target.value)}
                                 placeholder="Deixe seu Comentário"
                             />
                             <br />
 
-                            <label htmlFor="avaliacaoDataPublicacao">Data:</label>
-                            <input
+                            {/* Campo de Data removido da exibição */}
+                            <input hidden
                                 type="text"
                                 className="form-control text-sm"
-                                id="avaliacaoDataPublicacao"
-                                onChange={(e) => handleDate(e.target.value)}
-                                placeholder="Digite apenas números"
-                                value={avaliacaoDataPublicacao}
+                                readOnly
+                                value={format(new Date(), 'dd/MM/yyyy', { locale: ptBR })} // Mostra apenas a data
                             />
-                            <br />
 
-                            <h1 className="m-2 text-black">Faça uma avaliação!</h1>
-                            <h2 className="m-2 text-gray-500">Compartilhe sua experiência para ajudar outras pessoas</h2>
+                            <h1 className="mb-2 text-black">Faça uma avaliação!</h1>
+                            <h2 className="mb-2  text-gray-500">Compartilhe sua experiência para ajudar outras pessoas</h2>
 
                             <div className="flex items-center mt-2">
                                 <div className="flex flex-row w-full justify-start items-center text-[#FFD121]">
@@ -485,6 +491,7 @@ export default function VisualizarEmpresa() {
                                         <Star
                                             key={starIndex}
                                             size={30}
+                                            weight="fill"
                                             className={starIndex <= avaliacaoNota ? "text-yellow-400" : "text-gray-300"}
                                             onClick={() => handleStarClick(starIndex)}
                                             style={{ cursor: "pointer" }}
@@ -494,19 +501,17 @@ export default function VisualizarEmpresa() {
                             </div>
                         </div>
 
-                        <div className="flex justify-end">
+                        <div className="flex justify-end mt-4">
                             <button
                                 className="btn btnavaliar bg-yellow-400 rounded-md mr-1"
-                                onClick={() => {
-                                    pedidoPostAvaliacao(); // Chamando diretamente a função para cadastrar
-                                }}
+                                onClick={pedidoPostAvaliacao} // Chama a função diretamente
                             >
                                 Avaliar
                             </button>
 
                             <button
                                 className="btn btncancelarmodal"
-                                onClick={() => abrirFecharModalAvaliacao()}
+                                onClick={abrirFecharModalAvaliacao}
                             >
                                 Cancelar
                             </button>
@@ -515,8 +520,9 @@ export default function VisualizarEmpresa() {
                 </ModalBody>
             </Modal>
 
+
             <Modal className="modal-xl-gridxl" isOpen={modalEditar} style={{ maxWidth: "1000px" }} >
-                <ModalHeader>Editar Noticia</ModalHeader>
+                <ModalHeader>Editar Avaliação</ModalHeader>
                 <ModalBody>
                     <div className="m-2">
                         <div className="flex items-center mb-2">

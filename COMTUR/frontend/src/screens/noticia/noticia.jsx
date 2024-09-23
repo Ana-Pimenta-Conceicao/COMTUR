@@ -159,6 +159,7 @@ export default function Noticia() {
     formData.append("dataPublicacao", dataFormatoBanco);
     formData.append("horaPublicacao", noticiaHoraPublicacao);
     formData.append("idUsuario", idUsuario);
+    formData.append("status", 1);
 
     try {
       const response = await axios.post(baseUrl, formData, {

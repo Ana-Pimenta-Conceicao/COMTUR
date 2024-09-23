@@ -194,8 +194,10 @@ export default function Empresa() {
     formData.append("endereco", empresaEndereco);
     formData.append("descricao", empresaDescricao);
     formData.append("idtipoturismo", tipoTurismoSelecionado);
-    formData.append("idUsuario", parseInt(usuarioSelecionado.value));
+    // formData.append("idUsuario", parseInt(usuarioSelecionado.value));
     formData.append("idUsuario", idUsuario);
+    formData.append("status", 1);
+    
     console.log(tipoTurismoSelecionado);
 
     try {

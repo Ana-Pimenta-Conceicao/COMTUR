@@ -179,6 +179,7 @@ const Turismo = () => {
     formData.append("diaFuncionamento", turismoDias);
     formData.append("idUsuario", idUsuario);
     formData.append("idTipoTurismo", turismoTipoSelecionado);
+    formData.append("status", 1);
 
     try {
       const response = await axios.post(baseUrl, formData, {

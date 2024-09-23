@@ -33,10 +33,12 @@ const StatusDropdown = ({ currentStatus, onUpdateStatus }) => {
   };
 
   const confirmStatusChange = () => {
-    setSelectedStatus(pendingStatus);
-    onUpdateStatus(pendingStatus);
-    setModalOpen(false); // Fecha a modal após confirmar
-    setPendingStatus(null); // Limpa o status pendente
+    if (pendingStatus) {
+      setSelectedStatus(pendingStatus);
+      onUpdateStatus(pendingStatus); // Aqui você pode adicionar o ID e a entidade se necessário
+    }
+    setModalOpen(false);
+    setPendingStatus(null);
   };
 
   const cancelStatusChange = () => {

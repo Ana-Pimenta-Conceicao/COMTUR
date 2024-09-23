@@ -2,13 +2,14 @@ import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
 import NavBarAdm from "../../components/admin/navbarAdm.jsx";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Tabela from "../../components/table/tabelaStatus.jsx";
 import StatusDropdown from "../../components/admin/statusDropdown.jsx";
 import ModalStatus from "../../components/modais/modalStatus.jsx";
+import FiltroEntidade from "../../components/filter/FiltroEntidade.jsx"; // Importar o filtro de entidade
 
 function Status() {
-  const entities = ["TipoAtracao", "TipoTurismo", "Turismo", "Noticia"];
+  const entities = ["TipoAtracao", "TipoTurismo", "Turismo", "Noticia", "Atracao", "Empresa"];
   const [data, setData] = useState([]);
   const [auditoriaInfo, setAuditoriaInfo] = useState({});
   const [usuarioInfo, setUsuarioInfo] = useState({});
@@ -18,6 +19,7 @@ function Status() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [loadingAuditoria, setLoadingAuditoria] = useState({});
+  const [selectedEntity, setSelectedEntity] = useState(""); // Estado para a entidade selecionada
 
   const openModal = async (id, entidade) => {
     try {
@@ -42,7 +44,7 @@ function Status() {
         const response = await axios.get(`https://localhost:7256/api/${entity}`);
         const enrichedData = response.data.map(item => ({
           ...item,
-          entity // Adiciona o nome da entidade
+          entity // Certifique-se de que a entidade correta é atribuída
         }));
         allData.push(...enrichedData);
       } catch (error) {
@@ -112,31 +114,42 @@ function Status() {
       id: item.id,
       nome: item.nome ? item.nome : "Em Branco",
       autor: usuario ? usuario.nome : "Desconhecido",
-      entidade: loadingAuditoria[item.id] ? "Carregando..." : auditoria ? auditoria.nomeEntidade : "Desconhecido",
+      entidade: loadingAuditoria[item.id] ? "Carregando..." : item.entity, // Alterado para usar item.entity
       status: (
         <StatusDropdown
           currentStatus={item.status}
-          onUpdateStatus={(newStatus) => handleStatusUpdate(item.id, newStatus)}
+          onUpdateStatus={(newStatus) => handleStatusUpdate(item.id, newStatus, item.entity)} // Adicionando ID e entidade
         />
       ),
       data: loadingAuditoria[item.id] ? "Carregando..." : auditoria ? `${auditoria.data} às ${auditoria.hora}` : "Desconhecido",
     };
   });
 
-  const handleStatusUpdate = async (id, newStatus) => {
+  const filteredData = selectedEntity
+    ? apresentaDados.filter(item => item.entidade === selectedEntity)
+    : apresentaDados;
+
+  const handleStatusUpdate = async (id, newStatus, entidade) => {
+    console.log('ID:', id, 'Entidade:', entidade); // Verifique os valores aqui
+
+    if (!id || !entidade) {
+      console.error('ID ou entidade indefinidos:', id, entidade);
+      return;
+    }
+
     let url;
     switch (newStatus) {
       case '1':
-        url = `https://localhost:7256/api/TipoAtracao/${id}/EmAnalise`;
+        url = `https://localhost:7256/api/${entidade}/${id}/EmAnalise`;
         break;
       case '2':
-        url = `https://localhost:7256/api/TipoAtracao/${id}/Aprovar`;
+        url = `https://localhost:7256/api/${entidade}/${id}/Aprovar`;
         break;
       case '3':
-        url = `https://localhost:7256/api/TipoAtracao/${id}/Reprovar`;
+        url = `https://localhost:7256/api/${entidade}/${id}/Reprovar`;
         break;
       case '4':
-        url = `https://localhost:7256/api/TipoAtracao/${id}/Desativar`;
+        url = `https://localhost:7256/api/${entidade}/${id}/Desativar`;
         break;
       default:
         console.error('Status desconhecido:', newStatus);
@@ -150,7 +163,7 @@ function Status() {
           item.id === id ? { ...item, status: newStatus } : item
         )
       );
-      await fetchAuditoria(id, "TipoAtracao");
+      await fetchAuditoria(id, entidade);
     } catch (error) {
       console.error("Erro ao atualizar o status:", error);
     }
@@ -169,14 +182,21 @@ function Status() {
         <div className="flex-1 container-fluid" style={{ paddingLeft: sidebarOpen ? 200 : 100 }}>
           <NavBarAdm />
           <div className="pl-8 pr-8 pt-[20px]">
-            <h1 className="text-3xl font-semibold pb-2">Lista de Atrações, Turismos e Notícias</h1>
+            <div className="flex justify-between">
+              <h1 className="text-3xl font-semibold pb-2">Lista de Registros</h1>
+              <FiltroEntidade
+                entities={entities}
+                selectedEntity={selectedEntity}
+                onSelectEntity={setSelectedEntity}
+              />
+            </div>
             <hr className="pb-4 border-[2.5px] border-gray-300" />
             <Tabela
-              object={apresentaDados}
+              object={filteredData} // Usar dados filtrados
               colunas={["ID", "Nome", "Autor", "Entidade", "Status", "Data"]}
               currentPage={1}
               totalPages={1} // Ajuste conforme necessário
-              goToPage={() => {}}
+              goToPage={() => { }}
               numColunas={6}
               onRowClick={(id, entidade) => handleRowClick(id, entidade)} // Ajuste para passar a entidade correta
             />

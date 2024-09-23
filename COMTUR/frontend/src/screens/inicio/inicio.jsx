@@ -5,8 +5,6 @@ import NavbarUsr from "../../components/user/navbarUsr.jsx";
 import FooterUsr from "../../components/user/footerUsr.jsx";
 import "../inicio/inicio.css"
 
-
-
 function Inicio() {
     const [outrasNoticias, setOutrasNoticias] = useState([]);
     const [atualizarData, setAtualizarData] = useState(true);

@@ -172,6 +172,7 @@ function Atracao() {
     formData.append("idtipoatracao", tipoAtracaoSelecionada);
     formData.append("idturismo", turismoSelecionado);
     formData.append("idUsuario", idUsuario);
+    formData.append("status", 1);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -289,14 +290,11 @@ function Atracao() {
           },
         }
       );
-
       console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
-
-
 
   const removeImagemByIndex = (indexToRemove) => {
     setImagensAtracao((prevImagens) =>
@@ -326,8 +324,6 @@ function Atracao() {
       setAtualizarData(false);
     }
   }, [atualizarData]);
-
-
 
   useEffect(() => {
     if (dataTipoAtracao) {
@@ -385,13 +381,10 @@ function Atracao() {
     setIdUsuario(idTipoUsuarioAPI);
   }, []);
 
-
-
-
-
   const loadOptions = (inputValue, callback) => {
     callback(filterOptions(inputValue));
   }
+
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -435,21 +428,20 @@ function Atracao() {
     const descricao = atracao.descricao && typeof atracao.descricao === 'string' ? (atracao.descricao.length > 20 ? `${atracao.descricao.slice(0, 20)}...` : atracao.descricao) : '';
 
     return {
-        id: atracao.id,
-        nome: nome,
-        tipoAtracao: tipoAtracaoNome,
-        descricao: descricao,
-        status: "teste",
-        acoes: (
-            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-                <BtnAcao funcao={() => AtracaoSet(atracao, "Editar")} acao="Editar" />
-                <BtnAcao funcao={() => AtracaoSet(atracao, "Excluir")} acao="Excluir" />
-                <BtnAcao funcao={() => AtracaoSet(atracao, "Visualizar")} acao="Visualizar" />
-            </div>
-        ),
+      id: atracao.id,
+      nome: nome,
+      tipoAtracao: tipoAtracaoNome,
+      descricao: descricao,
+      status: "teste",
+      acoes: (
+        <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+          <BtnAcao funcao={() => AtracaoSet(atracao, "Editar")} acao="Editar" />
+          <BtnAcao funcao={() => AtracaoSet(atracao, "Excluir")} acao="Excluir" />
+          <BtnAcao funcao={() => AtracaoSet(atracao, "Visualizar")} acao="Visualizar" />
+        </div>
+      ),
     };
-}) : [];
-
+  }) : [];
 
   if (userType === "1" || userType === "3") {
     return <Navigate to="/notfound" />;
@@ -812,9 +804,9 @@ function Atracao() {
             </div>
           </ModalBody>
           <ModalFooter>
-          <BtnModaisIMG funcao={() => pedidoAtualizar()} acao="Editar" />
+            <BtnModaisIMG funcao={() => pedidoAtualizar()} acao="Editar" />
             <BtnModaisIMG funcao={() => abrirFecharModalEditar()} acao="Cancelar" />
-          
+
           </ModalFooter>
         </Modal>
         <PopupEditado
@@ -827,8 +819,8 @@ function Atracao() {
             <label>Confirma a exclusão desta Atração : {atracaoNome} ?</label>
           </ModalBody>
           <ModalFooter>
-          <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
-          <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
+            <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
+            <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
           </ModalFooter>
         </Modal>
 

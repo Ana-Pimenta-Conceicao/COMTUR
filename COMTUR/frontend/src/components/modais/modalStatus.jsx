@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Collapse } from "reactstrap";
-import axios from "axios"; // Certifique-se de ter importado o axios
+import axios from "axios";
 
-export default function ModalStatus({ isOpen, data, onRequestClose }) {
+export default function ModalStatus({ isOpen, data, onRequestClose, entidade }) {
     if (!data || data.length === 0) return null;
 
     const [isCollapsed, setIsCollapsed] = useState(false);
     const toggleCollapse = () => setIsCollapsed(!isCollapsed);
-    const [usuarioInfo, setUsuarioInfo] = useState({}); // Estado para armazenar as informações dos usuários
+    const [usuarioInfo, setUsuarioInfo] = useState({});
 
-    const ultimoRegistro = data[data.length - 1];
+    const ultimoRegistro = data.find(item => item.entidade === entidade); // Busca o registro com a entidade correta
+    if (!ultimoRegistro) return null; // Caso não encontre, retorna null
+
     const { nomeEntidade, novosValores, data: dataUltimaMod, hora: horaUltimaMod, operacao: ultimaOperacao } = ultimoRegistro;
     const novosValoresParsed = novosValores ? JSON.parse(novosValores) : null;
 
-    // Função para buscar o nome do usuário baseado no ID
     const fetchUsuario = async (idUsuario) => {
-        if (!usuarioInfo[idUsuario]) { // Só faz a requisição se o usuário não estiver no cache
+        if (!usuarioInfo[idUsuario]) {
             try {
                 const response = await axios.get(`https://localhost:7256/api/Usuario/${idUsuario}`);
                 setUsuarioInfo((prev) => ({
                     ...prev,
-                    [idUsuario]: response.data.nome, // Armazena o nome do usuário no estado
+                    [idUsuario]: response.data.nome,
                 }));
             } catch (error) {
                 console.error(`Erro ao buscar o usuário com ID ${idUsuario}:`, error);
@@ -32,13 +33,12 @@ export default function ModalStatus({ isOpen, data, onRequestClose }) {
         }
     };
 
-    // Efeito para buscar os nomes dos usuários nos registros do histórico
     useEffect(() => {
         data.forEach((registro) => {
             const { novosValores } = registro;
             const novosValoresParsed = novosValores ? JSON.parse(novosValores) : null;
             if (novosValoresParsed?.IdUsuario) {
-                fetchUsuario(novosValoresParsed.IdUsuario); // Chama a função de busca
+                fetchUsuario(novosValoresParsed.IdUsuario);
             }
         });
     }, [data]);
@@ -58,7 +58,14 @@ export default function ModalStatus({ isOpen, data, onRequestClose }) {
                         <div className="bg-slate-100 p-3 rounded-md shadow-md">
                             <p><span className="font-semibold">Id:</span> {novosValoresParsed.Id}</p>
                             <p><span className="font-semibold">Nome:</span> {novosValoresParsed.Nome}</p>
-                            <p><span className="font-semibold">Status:</span> {novosValoresParsed.Status === 1 ? 'Em análise' : 'Outro status'}</p>
+                            <p>
+                                <span className="font-semibold">Status:</span>
+                                {novosValoresParsed.Status === 1 ? 'Em análise' :
+                                    novosValoresParsed.Status === 2 ? 'Aprovado' :
+                                        novosValoresParsed.Status === 3 ? 'Reprovado' :
+                                            novosValoresParsed.Status === 4 ? 'Desativado' :
+                                                'Status desconhecido'}
+                            </p>
                         </div>
                     )}
                     <p className="mt-3 text-sm text-gray-600"><strong>Data da última alteração:</strong> {dataUltimaMod} às {horaUltimaMod}</p>
@@ -71,7 +78,7 @@ export default function ModalStatus({ isOpen, data, onRequestClose }) {
                     const { novosValores, data: dataRegistro, hora, operacao } = registro;
                     const novosValoresParsed = novosValores ? JSON.parse(novosValores) : null;
                     const idUsuario = novosValoresParsed?.IdUsuario;
-                    const nomeUsuario = usuarioInfo[idUsuario] || "Carregando..."; // Exibe "Carregando..." enquanto busca
+                    const nomeUsuario = usuarioInfo[idUsuario] || "Carregando...";
 
                     return (
                         <div className="py-2" key={index}>

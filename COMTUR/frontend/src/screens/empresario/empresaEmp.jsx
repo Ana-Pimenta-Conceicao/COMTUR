@@ -199,6 +199,7 @@ export default function EmpresaEmp() {
         formData.append("imagemEmpresa", imagensEmpresa);
         formData.append("idtipoturismo", tipoTurismoSelecionado);
         formData.append("idUsuario", idUsuario);
+        formData.append("status", 1);
 
         try {
             const response = await axios.put(`${baseUrl}/${empresaId}`, formData, {

@@ -133,6 +133,7 @@ export default function UsuarioComum() {
     formData.append("emailUsuario", emailUser);
     formData.append("senhaUsuario", senhaUser);
     formData.append("tipoUsuario", userType);
+    formData.append("status", 1);
 
     // Verificar se o campo de imagem está vazio
     if (imagemUser instanceof File) {

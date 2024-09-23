@@ -9,10 +9,11 @@ export default function ModalStatus({ isOpen, data, onRequestClose, entidade }) 
     const toggleCollapse = () => setIsCollapsed(!isCollapsed);
     const [usuarioInfo, setUsuarioInfo] = useState({});
 
-    const ultimoRegistro = data.find(item => item.entidade === entidade); // Busca o registro com a entidade correta
-    if (!ultimoRegistro) return null; // Caso não encontre, retorna null
+    // O registro atual deve ser o último da lista, então pegamos o último elemento do array.
+    const registroAtual = data[data.length - 1]; // O último registro
+    const historico = data.slice(0, -1); // Todo o restante são os registros antigos
 
-    const { nomeEntidade, novosValores, data: dataUltimaMod, hora: horaUltimaMod, operacao: ultimaOperacao } = ultimoRegistro;
+    const { nomeEntidade, novosValores, data: dataUltimaMod, hora: horaUltimaMod, operacao: ultimaOperacao } = registroAtual;
     const novosValoresParsed = novosValores ? JSON.parse(novosValores) : null;
 
     const fetchUsuario = async (idUsuario) => {
@@ -52,6 +53,7 @@ export default function ModalStatus({ isOpen, data, onRequestClose, entidade }) 
                 Histórico de Alterações
             </ModalHeader>
             <ModalBody className="bg-gray-50 text-black rounded-b-lg p-6">
+                {/* Exibe o registro atual */}
                 <div className="pb-4">
                     <h5 className="text-gray-700 font-semibold mb-2">Registro Atual</h5>
                     {novosValoresParsed && (
@@ -59,7 +61,7 @@ export default function ModalStatus({ isOpen, data, onRequestClose, entidade }) 
                             <p><span className="font-semibold">Id:</span> {novosValoresParsed.Id}</p>
                             <p><span className="font-semibold">Nome:</span> {novosValoresParsed.Nome}</p>
                             <p>
-                                <span className="font-semibold">Status:</span>
+                                <span className="font-semibold">Status: </span>
                                 {novosValoresParsed.Status === 1 ? 'Em análise' :
                                     novosValoresParsed.Status === 2 ? 'Aprovado' :
                                         novosValoresParsed.Status === 3 ? 'Reprovado' :
@@ -73,8 +75,9 @@ export default function ModalStatus({ isOpen, data, onRequestClose, entidade }) 
                     <hr className="border-t-2 border-[#FFD121] mt-3" />
                 </div>
 
+                {/* Exibe o histórico */}
                 <h4 className="font-semibold text-lg text-gray-700">Histórico</h4>
-                {data.slice(0, -1).reverse().map((registro, index) => {
+                {historico.reverse().map((registro, index) => {
                     const { novosValores, data: dataRegistro, hora, operacao } = registro;
                     const novosValoresParsed = novosValores ? JSON.parse(novosValores) : null;
                     const idUsuario = novosValoresParsed?.IdUsuario;
@@ -98,7 +101,13 @@ export default function ModalStatus({ isOpen, data, onRequestClose, entidade }) 
                                             <p><span className="font-semibold">Id:</span> {novosValoresParsed.Id}</p>
                                             <p><span className="font-semibold">Id Usuário:</span> {novosValoresParsed.IdUsuario}</p>
                                             <p><span className="font-semibold">Nome:</span> {novosValoresParsed.Nome}</p>
-                                            <p><span className="font-semibold">Status:</span> {novosValoresParsed.Status === 1 ? 'Em análise' : 'Outro status'}</p>
+                                            <p><span className="font-semibold">Status: </span>
+                                                {novosValoresParsed.Status === 1 ? 'Em análise' :
+                                                    novosValoresParsed.Status === 2 ? 'Aprovado' :
+                                                        novosValoresParsed.Status === 3 ? 'Reprovado' :
+                                                            novosValoresParsed.Status === 4 ? 'Desativado' :
+                                                                'Status desconhecido'}
+                                            </p>
                                         </div>
                                     </div>
                                 )}

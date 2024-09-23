@@ -5,7 +5,7 @@ import FooterUsr from "../../components/user/footerUsr.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 import { Funnel } from "@phosphor-icons/react";
 
-export default function TodosTurismos() {
+export default function TodosEventos() {
   const { id } = useParams();
   const [OutrosTurismos, setOutrosTurismos] = useState([]);
   const [tiposTurismo, setTiposTurismo] = useState([]);
@@ -19,7 +19,7 @@ export default function TodosTurismos() {
         const response = await axios.get(`${baseUrl}`);
         setOutrosTurismos(
           response.data.filter(
-            (OutrosTurismos) => OutrosTurismos.idTipoTurismo === 4 && OutrosTurismos.id !== parseInt(id)
+            (OutrosTurismos) => OutrosTurismos.idTipoTurismo === 4 && OutrosTurismos.id !== parseInt(id) && OutrosTurismos.status === 2
           )
         );
       } catch (error) {

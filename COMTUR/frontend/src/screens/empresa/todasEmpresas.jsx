@@ -20,7 +20,7 @@ export default function TodasEmpresas() {
         const response = await axios.get(`${baseUrl}`);
         setOutrasEmpresas(
           response.data.filter(
-            (outraEmpresa) => outraEmpresa.id !== parseInt(id)
+            (outraEmpresa) => outraEmpresa.id !== parseInt(id) && outraEmpresa.status === 2
           )
         );
       } catch (error) {

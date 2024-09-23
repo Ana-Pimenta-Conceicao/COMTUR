@@ -22,7 +22,7 @@ export default function TodasNoticias() {
         const response = await axios.get(`${baseUrl}`);
         setOutrasNoticias(
           response.data.filter(
-            (outraNoticia) => outraNoticia.id !== parseInt(id)
+            (outraNoticia) => outraNoticia.id !== parseInt(id) && outraNoticia.status === 2
           )
         );
 

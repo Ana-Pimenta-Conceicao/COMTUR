@@ -7,86 +7,120 @@ import InputMask from "react-input-mask";
 import BtnAcao from "../../components/botoes/btnAcao.jsx";
 import BtnModais from "../../components/botoes/btnModais.jsx";
 import BtnModaisIMG from "../../components/botoes/btnModaisIMG.jsx";
-import SidebarAdm from "../../components/admin/sidebarAdm.jsx";
 import NavBarAdm from "../../components/admin/navbarAdm.jsx";
 import { Navigate, useNavigate } from "react-router-dom";
 import PopupCadastrado from "../../components/popups/popupCadastro.jsx";
 import PopupExcluido from "../../components/popups/popupExcluido.jsx";
 import PopupEditado from "../../components/popups/popupEditado.jsx";
+import Select from "react-select";
 import Tabela from "../../components/table/tabela.jsx";
+import SidebarEmp from "../../components/empresario/sidebarEmp.jsx";
 
-export default function Noticia() {
-  const baseUrl = "https://localhost:7256/api/Noticia";
-  const baseUrlImagem = "https://localhost:7256/api/ImagemNoticia";
+export default function EmpresaEmp() {
+  const baseUrl = "https://localhost:7256/api/Empresa";
+  const baseUrlImagem = "https://localhost:7256/api/ImagemEmpresa";
+  const baseUrlUsuario = "https://localhost:7256/api/Usuario";
+  const baseUrlTipoTurismo = "https://localhost:7256/api/TipoTurismo";
+
   const [data, setData] = useState([]);
   const [atualizarData, setAtualizarData] = useState(true);
-  
+  const [dataUsuario, setDataUsuario] = useState([]);
+  const [dataTipoTurismo, setDataTipoTurismo] = useState([]);
+
+  const [modalCadastrado, setModalCadastrado] = useState(false);
+  const [modalExcluido, setModalExcluido] = useState(false);
   const [modalInserir, setModalInserir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
- 
-  const [modalCadastrado, setModalCadastrado] = useState(false);
-  const [modalExcluido, setModalExcluido] = useState(false);
   const [modalEditado, setModalEditado] = useState(false);
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [noticiaTitulo, setNoticiaTitulo] = useState("");
-  const [noticiaSubtitulo, setNoticiaSubtitulo] = useState("");
-  const [noticiaConteudo, setNoticiaConteudo] = useState("");
-  const [noticiaDataPublicacao, setNoticiaDataPublicacao] = useState("");
-  const [noticiaHoraPublicacao, setNoticiaHoraPublicacao] = useState("");
+
+  const [empresaNome, setNome] = useState("");
+  const [empresaCNPJ, setCNPJ] = useState("");
+  const [empresaEndereco, setEndereco] = useState("");
+  const [imagensEmpresa, setImagensEmpresa] = useState([]);
+  const [empresaLegendaImagem, setEmpresaLegendaImagem] = useState([]);
+  const [empresaDescricao, setDescricao] = useState([]);
+  const [empresaId, setEmpresaId] = useState("");
   const [userType, setUserType] = useState(null);
-  const [noticiaLegendaImagem, setNoticiaLegendaImagem] = useState([]);
+  const [usuarioId, setUsuarioId] = useState("");
+  const [tipoturismoId, setTipoTurismoId] = useState("");
+  const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
+  const [usuarioOptions, setUsuarioOptions] = useState([]);
+  const [tipoTurismoSelecionado, settipoTurismoSelecionado] = useState(null);
+  const [tipoTurismoOptions, setTipoTurismoOptions] = useState([]);
   const [idUsuario, setIdUsuario] = useState("");
-  const [imagensNoticia, setImagensNoticia] = useState([]);
-  const [noticiaId, setNoticiaId] = useState("");
 
   const navigate = useNavigate();
 
   const limparDados = () => {
-    setNoticiaTitulo("");
-    setNoticiaSubtitulo("");
-    setNoticiaConteudo("");
-    setNoticiaDataPublicacao("");
-    setNoticiaHoraPublicacao("");
-    setNoticiaLegendaImagem("");
-    setImagensNoticia("");
-    setNoticiaId("");
+    setNome("");
+    setCNPJ("");
+    setEndereco("");
+    setImagensEmpresa("");
+    setEmpresaLegendaImagem("");
+    setDescricao("");
+    setEmpresaId("");
   };
 
-  const toggleModalCadastro = () => setModalCadastrado(!modalCadastrado);
+  const EmpresaSet = (empresa, opcao) => {
+    console.log("Empresa que foi passada: ", empresa);
+    setEmpresaId(parseInt(empresa.id));
+    setNome(empresa.nome);
+    setCNPJ(empresa.cnpj);
+    setEndereco(empresa.endereco);
+    setDescricao(empresa.descricao);
+    setEmpresaLegendaImagem(empresa.legendaImagem);
+    setImagensEmpresa(empresa.imagemEmpresa);
+    setUsuarioId(empresa.idUsuario);
+    setTipoTurismoId(empresa.idTipoTurismo);
 
-  const toggleModalEdita = () => setModalEditado(!modalEditado);
-
-  const toggleModalExclui = () => setModalExcluido(!modalExcluido);
-  const NoticiaSet = (noticia, opcao) => {
-    console.log("Noticia que foi passada: ", noticia);
-    setNoticiaId(noticia.id);
-    setNoticiaTitulo(noticia.titulo);
-    setNoticiaSubtitulo(noticia.subtitulo);
-    setNoticiaConteudo(noticia.conteudo);
-    setNoticiaDataPublicacao(formatarDataParaExibicao(noticia.dataPublicacao));
-    setNoticiaHoraPublicacao(noticia.horaPublicacao);
-
-    setImagensNoticia(noticia.imagemNoticia);
-    console.log(noticia.imagemNoticia);
+    setUsuarioSelecionado(
+      usuarioOptions.find((opcao) => opcao.value === empresa.idUsuario)
+    );
+    settipoTurismoSelecionado(empresa.idTipoTurismo);
 
     if (opcao === "Editar") {
-      abrirFecharModalEditar(/*noticia.id*/);
+      abrirFecharModalEditar(/*empresa.id*/);
     } else if (opcao === "Excluir") {
       abrirFecharModalDeletar();
     } else {
-      navigate(`/visualizarNoticia/${noticia.id}`);
+      navigate(`/visualizarEmpresa/${empresa.id}`);
     }
   };
 
-  const VisualizarTodasNoticias = () => {
-    navigate(`/todasnoticias`);
+  const VisualizarTodasEmpresas = () => {
+    navigate(`/todasempresas`);
   };
 
   const abrirFecharModalInserir = () => {
     modalInserir ? limparDados() : null;
     setModalInserir(!modalInserir);
+  };
+
+  const abrirModalCadastrado = () => {
+    setModalCadastrado(true);
+  };
+
+  const fecharModalCadastrado = () => {
+    setModalCadastrado(false);
+  };
+
+  const abrirModalExcluido = () => {
+    setModalExcluido(true);
+  };
+
+  const fecharModaExcluido = () => {
+    setModalExcluido(false);
+  };
+
+  const abrirModalEditado = () => {
+    setModalEditado(true);
+  };
+
+  const fecharModaEditado = () => {
+    setModalEditado(false);
   };
 
   const abrirFecharModalEditar = async (id) => {
@@ -99,23 +133,16 @@ export default function Noticia() {
     setModalDeletar(!modalDeletar);
   };
 
-  function inverterDataParaFormatoBanco(data) {
-    const partes = data.split("/");
-    if (partes.length === 3) {
-      const [dia, mes, ano] = partes;
-      return `${ano}-${mes}-${dia}`;
-    }
-    return data;
-  }
-
-  function formatarDataParaExibicao(data) {
-    const partes = data.split("-");
-    if (partes.length === 3) {
-      const [ano, mes, dia] = partes;
-      return `${dia}/${mes}/${ano}`;
-    }
-    return data; // Retorna a data original se não estiver no formato esperado
-  }
+  const pedidoGetTipoTurismo = async () => {
+    await axios
+      .get(baseUrlTipoTurismo)
+      .then((response) => {
+        setDataTipoTurismo(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const pedidoGet = async () => {
     await axios
@@ -127,8 +154,6 @@ export default function Noticia() {
         console.log(error);
       });
   };
-
-  const dataFormatoBanco = inverterDataParaFormatoBanco(noticiaDataPublicacao);
 
   function convertImageToBase64(imageFile, callback) {
     if (!imageFile) {
@@ -150,16 +175,28 @@ export default function Noticia() {
     reader.readAsDataURL(imageFile);
   }
 
-  // Adicione isso à sua função pedidoPost para converter as imagens para base64
+  const pedidoGetUsuario = async () => {
+    await axios
+      .get(baseUrlUsuario)
+      .then((response) => {
+        setDataUsuario(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const pedidoPost = async () => {
     const formData = new FormData();
-    formData.append("titulo", noticiaTitulo);
-    formData.append("subtitulo", noticiaSubtitulo);
-    formData.append("conteudo", noticiaConteudo);
-    formData.append("dataPublicacao", dataFormatoBanco);
-    formData.append("horaPublicacao", noticiaHoraPublicacao);
+    formData.append("nome", empresaNome);
+    formData.append("cnpj", empresaCNPJ);
+    formData.append("endereco", empresaEndereco);
+    formData.append("descricao", empresaDescricao);
+    formData.append("idtipoturismo", tipoTurismoSelecionado);
     formData.append("idUsuario", idUsuario);
     formData.append("status", 1);
+
+    console.log(tipoTurismoSelecionado);
 
     try {
       const response = await axios.post(baseUrl, formData, {
@@ -167,39 +204,40 @@ export default function Noticia() {
           "Content-Type": "multipart/form-data",
         },
       });
+
       setData(data.concat(response.data));
 
-      if (imagensNoticia.length !== 0) {
+      if (imagensEmpresa.length !== 0)
         await pedidoPostImagens(response.data.id);
-      }
 
       abrirFecharModalInserir();
       limparDados();
       setAtualizarData(true);
-      toggleModalCadastro();
+      abrirModalCadastrado();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const pedidoPostImagens = async (idNoticia) => {
+  const pedidoPostImagens = async (idEmpresa) => {
     const formData = new FormData();
 
     let todasImagens = [];
     let todasLegendas = [];
 
-    imagensNoticia?.forEach((imagem) => {
+    imagensEmpresa?.forEach((imagem) => {
       todasImagens = [...todasImagens, imagem.imagem];
       todasLegendas = [...todasLegendas, imagem.legendaImagem];
     });
 
     todasImagens.forEach((imagem) => formData.append("imagens", imagem));
     todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
+    console.log(idUsuario);
     formData.append("idUsuario", idUsuario);
 
     try {
       const response = await axios.post(
-        baseUrlImagem + `/${idNoticia}/CadastrarImagensNoticia`,
+        baseUrlImagem + `/${idEmpresa}/CadastrarImagensEmpresa`,
         formData,
         {
           headers: {
@@ -214,41 +252,41 @@ export default function Noticia() {
 
   async function pedidoAtualizar() {
     const formData = new FormData();
-    formData.append("id", noticiaId);
-    formData.append("titulo", noticiaTitulo);
-    formData.append("subtitulo", noticiaSubtitulo);
-    formData.append("conteudo", noticiaConteudo);
-    formData.append("dataPublicacao", dataFormatoBanco);
-    formData.append("horaPublicacao", noticiaHoraPublicacao);
-    formData.append("imagem", imagensNoticia);
+    formData.append("id", empresaId);
+    formData.append("nome", empresaNome);
+    formData.append("cnpj", empresaCNPJ);
+    formData.append("endereco", empresaEndereco);
+    formData.append("descricao", empresaDescricao);
+    formData.append("imagemEmpresa", imagensEmpresa);
+    formData.append("idtipoturismo", tipoTurismoSelecionado);
     formData.append("idUsuario", idUsuario);
 
     try {
-      const response = await axios.put(`${baseUrl}/${noticiaId}`, formData, {
+      const response = await axios.put(`${baseUrl}/${empresaId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      const updatedNoticia = response.data;
+      const updatedEmpresa = response.data;
 
       setData((prevData) => {
-        return prevData.map((noticia) => {
-          if (noticia.id === noticiaId) {
-            return updatedNoticia;
+        return prevData.map((empresa) => {
+          if (empresa.id === empresaId) {
+            return updatedEmpresa;
           }
-          return noticia;
+          return empresa;
         });
       });
 
-      abrirFecharModalEditar();
-
-      if (imagensNoticia.length !== 0) {
+      if (imagensEmpresa.lenght !== 0) {
         await pedidoPutImagens();
       }
 
+      abrirFecharModalEditar();
+      limparDados();
       setAtualizarData(true);
-      toggleModalEdita();
+      abrirModalEditado();
     } catch (error) {
       console.log(error);
     }
@@ -260,7 +298,7 @@ export default function Noticia() {
     let todasImagens = [];
     let todasLegendas = [];
 
-    imagensNoticia?.forEach((imagem) => {
+    imagensEmpresa?.forEach((imagem) => {
       todasImagens = [...todasImagens, imagem.imagem];
       todasLegendas = [...todasLegendas, imagem.legendaImagem];
     });
@@ -274,7 +312,7 @@ export default function Noticia() {
 
     try {
       const response = await axios.put(
-        baseUrlImagem + `/${noticiaId}/AtualizarImagensNoticia`,
+        baseUrlImagem + `/${empresaId}/AtualizarImagensEmpresa`,
         formData,
         {
           headers: {
@@ -290,23 +328,23 @@ export default function Noticia() {
   };
 
   const removeImagemByIndex = (indexToRemove) => {
-    setImagensNoticia((prevImagens) =>
+    setImagensEmpresa((prevImagens) =>
       prevImagens.filter((_, index) => index !== indexToRemove)
     );
   };
 
   const pedidoDeletar = async () => {
     await axios
-      .delete(baseUrl + "/" + noticiaId)
+      .delete(baseUrl + "/" + empresaId)
       .then((response) => {
-        const newNoticias = data.filter(
-          (noticia) => noticia.id !== response.data
+        const newEmpresas = data.filter(
+          (empresa) => empresa.id !== response.data
         );
-        setData(newNoticias);
+        setData(newEmpresas);
         abrirFecharModalDeletar();
         limparDados();
         setAtualizarData(true);
-        toggleModalExclui();
+        abrirModalExcluido();
       })
       .catch((error) => {
         console.log(error);
@@ -316,9 +354,42 @@ export default function Noticia() {
   useEffect(() => {
     if (atualizarData) {
       pedidoGet();
+      pedidoGetTipoTurismo();
+      pedidoGetUsuario();
       setAtualizarData(false);
     }
   }, [atualizarData]);
+
+  useEffect(() => {
+    if (dataUsuario) {
+      const options = dataUsuario
+        .filter((usuario) => usuario.tipoUsuario === 3)
+        .map((usuario) => ({ value: usuario.id, label: usuario.nome }));
+
+      setUsuarioOptions(options);
+
+      if (options.length > 0) {
+        setUsuarioSelecionado(options[0].value);
+        setUsuarioId(options[0].value);
+      }
+    }
+  }, [dataUsuario]);
+
+  useEffect(() => {
+    if (dataTipoTurismo) {
+      const options = dataTipoTurismo.map((tipoturismo) => {
+        return { value: tipoturismo.id, label: tipoturismo.nome };
+      });
+      setTipoTurismoOptions(options);
+
+      if (!options.some((option) => option.value === tipoTurismoSelecionado)) {
+        const turismoPadrao = options.length > 0 ? options[0].value : "";
+
+        settipoTurismoSelecionado(turismoPadrao);
+        setTipoTurismoId(turismoPadrao);
+      }
+    }
+  }, [dataTipoTurismo]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
@@ -335,12 +406,21 @@ export default function Noticia() {
   // Renderiza os itens da página atual
   const currentItems = getCurrentPageItems(currentPage);
 
+  // Funções para navegar entre as páginas
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
   useEffect(() => {
     const userTypeFromLocalStorage = localStorage.getItem("tipoUsuario");
     const idTipoUsuarioAPI = localStorage.getItem("id");
     setUserType(userTypeFromLocalStorage);
-    setIdUsuario(idTipoUsuarioAPI);
+    setIdUsuario(idTipoUsuarioAPI); 
   }, []);
+  
+  const idUsuarioNum = Number(idUsuario);
+
   const statusOptions = [
     { value: '', label: 'Todos' },
     { value: '1', label: 'Em Análise' },
@@ -356,83 +436,73 @@ export default function Noticia() {
     4: "bg-gray-400 text-white", // Cinza claro para Desativado
   };
 
- 
-
   const apresentaDados = Array.isArray(currentItems)
-    ? currentItems.map((noticia) => {
-        const titulo = noticia.titulo && typeof noticia.titulo === 'string'
-          ? (noticia.titulo.length > 20
-            ? `${noticia.titulo.slice(0, 20)}...`
-            : noticia.titulo)
-          : '';
-
-          const subtitulo = noticia.subtitulo && typeof noticia.subtitulo === 'string'
-          ? (noticia.subtitulo.length > 20
-            ? `${noticia.subtitulo.slice(0, 20)}...`
-            : noticia.subtitulo)
-          : '';
+  ? currentItems
+      .filter((empresa) => empresa.idUsuario === idUsuarioNum) 
+      .map((empresa) => {
+        const tipoTurismo = dataTipoTurismo.find(
+          (tipo) => tipo.id === empresa.idTipoTurismo
+        );
+        const tipoTurismoNome = tipoTurismo
+          ? tipoTurismo.nome
+          : "Tipo não encontrado";
         return {
-          id: noticia.id,
-          titulo: titulo,
-          subtitulo: subtitulo,
-          dataPublicacao: formatarDataParaExibicao(noticia.dataPublicacao),
+          id: empresa.id,
+          nome: empresa.nome,
+          cnpj: empresa.cnpj,
+          tipo: tipoTurismoNome,
           status: (
-            <div className={`px-3 py-1 rounded-md ${statusColors[noticia.status]}`}>
-              {statusOptions.find(option => option.value === noticia.status.toString())?.label}
+            <div className={`px-3 py-1 rounded-md ${statusColors[empresa.status]}`}>
+              {statusOptions.find(option => option.value === empresa.status.toString())?.label}
             </div>
           ),
           acoes: (
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
               <BtnAcao
-                funcao={() => NoticiaSet(noticia, "Editar")}
+                funcao={() => EmpresaSet(empresa, "Editar")}
                 acao="Editar"
               />
               <BtnAcao
-                funcao={() => NoticiaSet(noticia, "Excluir")}
+                funcao={() => EmpresaSet(empresa, "Excluir")}
                 acao="Excluir"
               />
               <BtnAcao
-                funcao={() => NoticiaSet(noticia, "Visualizar")}
+                funcao={() => EmpresaSet(empresa, "Visualizar")}
                 acao="Visualizar"
               />
             </div>
           ),
         };
       })
-    : [];
+  : [];
 
-  if (userType === "1" || userType === "3") {
+  if (userType === "1") {
     return <Navigate to="/notfound" />;
   } else {
     return (
       <div className="home">
         <div className="h-screen flex fixed">
-          <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
+          <SidebarEmp setOpen={setSidebarOpen} open={sidebarOpen} />
         </div>
         <div
           className="flex-1 container-fluid"
           style={{ paddingLeft: sidebarOpen ? 200 : 100 }}
         >
           <NavBarAdm />
+
           <div className="pl-8 pr-8 pt-[20px]">
-            <h1 className="text-3xl font-semibold pb-2">Lista de Notícias</h1>
-            <hr className="pb-4 border-[2.5px] border-gray-300" />
+            <h1 className="text-3xl font-semibold pb-2">Lista de Empresas</h1>
+            <hr className="pb-4 border-[2.5px] border-[#DBDBDB]" />
             <Tabela
               object={apresentaDados}
-              colunas={["ID", "Título", "Subtítulo", "Data", "Status", "Ações"]}
+              colunas={["ID", "Nome", "CNPJ", "Segmento", "Status", "Ações"]}
               currentPage={currentPage}
               totalPages={totalPages}
               goToPage={setCurrentPage}
-              formatarData={formatarDataParaExibicao}
+              formatarData={""}
               numColunas={6}
             />
-
-            <div className="inline-flex float-right py-6 ">
-              <BtnAcao
-                funcao={() => VisualizarTodasNoticias()}
-                acao="Publicados"
-              />
-
+            <div className="float-right flex-auto py-6">
               <BtnAcao
                 funcao={() => abrirFecharModalInserir("Cadastrar")}
                 acao="Cadastrar"
@@ -445,60 +515,59 @@ export default function Noticia() {
           isOpen={modalInserir}
           style={{ maxWidth: "1000px" }}
         >
-          <ModalHeader className="">Cadastrar Noticia</ModalHeader>
+          <ModalHeader className="">Cadastrar Empresa</ModalHeader>
           <ModalBody className="">
             <div className="grid grid-cols-2 ">
               <div className="form-group  ">
                 <div className="flex flex-col col-span-1 pr-6">
-                  <label>Titulo: </label>
+                  <label>Nome Fantasia: </label>
                   <input
                     type="text"
                     className="form-control text-sm"
-                    onChange={(e) => setNoticiaTitulo(e.target.value)}
-                    placeholder="Digite o Titulo"
+                    onChange={(e) => setNome(e.target.value)}
+                    placeholder="Digite o Nome Fantasia"
                   />
                   <br />
 
-                  <label>Subtitulo:</label>
-                  <textarea
-                    className="form-control text-sm"
-                    onChange={(e) => setNoticiaSubtitulo(e.target.value)}
-                    placeholder="Digite o Subtitulo"
-                  />
-                  <br />
-
-                  <label>Conteúdo:</label>
-                  <textarea
-                    className="form-control text-sm"
-                    onChange={(e) => setNoticiaConteudo(e.target.value)}
-                    placeholder="Digite o Conteúdo"
-                  />
-                  <br />
-
-                  <label htmlFor="noticiaDataPublicacao">Data:</label>
+                  <label htmlFor="empresaCNPJ">CNPJ:</label>
                   <InputMask
-                    mask="99/99/9999"
-                    maskPlaceholder="dd/mm/yyyy"
+                    mask="99.999.999/9999-99"
+                    maskPlaceholder="99.999.999/9999-99"
                     type="text"
                     className="form-control text-sm"
-                    id="noticiaDataPublicacao"
-                    onChange={(e) => setNoticiaDataPublicacao(e.target.value)}
+                    id="empresaCNPJ"
+                    onChange={(e) => setCNPJ(e.target.value)}
                     placeholder="Digite apenas números"
-                    value={noticiaDataPublicacao}
+                    value={empresaCNPJ}
                   />
                   <br />
 
-                  <label htmlFor="noticiaHoraPublicacao">Hora:</label>
-                  <InputMask
-                    mask="99:99"
-                    maskPlaceholder="hh:mm"
-                    type="text"
+                  <label>Endereço:</label>
+                  <textarea
                     className="form-control text-sm"
-                    id="noticiaHoraPublicacao"
-                    onChange={(e) => setNoticiaHoraPublicacao(e.target.value)}
-                    placeholder="Digite apenas números"
-                    value={noticiaHoraPublicacao}
+                    onChange={(e) => setEndereco(e.target.value)}
+                    placeholder="Digite o Endereço"
                   />
+                  <br />
+                  <label>Descrição:</label>
+                  <textarea
+                    className="form-control text-sm"
+                    onChange={(e) => setDescricao(e.target.value)}
+                    placeholder="Descrição Empresa"
+                  />
+                  <br />
+                  <label>Tipo:</label>
+                  <select
+                    className="form-control"
+                    value={tipoTurismoSelecionado}
+                    onChange={(e) => settipoTurismoSelecionado(e.target.value)}
+                  >
+                    {tipoTurismoOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
                   <br />
                 </div>
               </div>
@@ -517,7 +586,7 @@ export default function Noticia() {
                             imagem: result,
                             legendaImagem: "",
                           };
-                          setImagensNoticia((prevImagens) => [
+                          setImagensEmpresa((prevImagens) => [
                             ...prevImagens,
                             objetoImagem,
                           ]);
@@ -529,7 +598,7 @@ export default function Noticia() {
                     multiple
                   />
 
-                  {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map(
+                  {(Array.isArray(imagensEmpresa) ? imagensEmpresa : []).map(
                     (imagem, index) =>
                       index % 1 === 0 && (
                         <div
@@ -540,7 +609,7 @@ export default function Noticia() {
                             {
                               length: Math.min(
                                 1,
-                                imagensNoticia.length - index
+                                imagensEmpresa.length - index
                               ),
                             },
                             (_, i) => (
@@ -548,7 +617,7 @@ export default function Noticia() {
                                 <div className="flex w-[140px] justify-end">
                                   <img
                                     className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
-                                    src={imagensNoticia[index + i].imagem}
+                                    src={imagensEmpresa[index + i].imagem}
                                     alt={`Imagem ${index}`}
                                   />
                                   <div className="flex flex-col pl-3 justify-end">
@@ -557,7 +626,7 @@ export default function Noticia() {
                                       type="text"
                                       className="form-control text-sm w-[286px] mb-0 "
                                       onChange={(e) =>
-                                        setImagensNoticia((prevImagens) => {
+                                        setImagensEmpresa((prevImagens) => {
                                           const novasImagens = [...prevImagens];
                                           novasImagens[
                                             index + i
@@ -587,65 +656,87 @@ export default function Noticia() {
             </div>
             <div className="flex justify-between items-center px-[405px] pt-5">
               <BtnModais funcao={() => pedidoPost()} acao="Cadastrar" />
-              <BtnModais funcao={() => abrirFecharModalInserir()} acao="Cancelar" />
+              <BtnModais
+                funcao={() => abrirFecharModalInserir()}
+                acao="Cancelar"
+              />
             </div>
           </ModalBody>
         </Modal>
-
-        <PopupCadastrado isOpen={modalCadastrado} toggle={toggleModalCadastro} objeto="Notícia" />
-        <PopupExcluido isOpen={modalExcluido} toggle={toggleModalExclui} objeto="Notícia"/>
-        <PopupEditado isOpen={modalEditado} toggle={toggleModalEdita}  objeto="Notícia"/>
-        
-        <Modal className="modal-xl-gridxl" isOpen={modalEditar} style={{ maxWidth: "1000px" }} >
-          <ModalHeader>Editar Noticia</ModalHeader>
+        <PopupCadastrado
+          isOpen={modalCadastrado}
+          toggle={fecharModalCadastrado}
+          objeto="Empresa"
+        />
+        <PopupExcluido
+          isOpen={modalExcluido}
+          toggle={fecharModaExcluido}
+          objeto="Empresa"
+        />
+        <PopupEditado
+          isOpen={modalEditado}
+          toggle={fecharModaEditado}
+          objeto="Empresa"
+        />
+        <Modal
+          className="modal-xl-gridxl"
+          isOpen={modalEditar}
+          style={{ maxWidth: "1000px" }}
+        >
+          <ModalHeader>Editar Empresa</ModalHeader>
           <ModalBody>
             <div className="grid grid-cols-2 ">
               <div className="form-group  ">
                 <div className="flex flex-col pr-6">
-                  <label>Titulo: </label>
+                  <label>Nome Fantasia: </label>
                   <input
                     type="text"
                     className="form-control text-sm"
-                    onChange={(e) => setNoticiaTitulo(e.target.value)}
-                    value={noticiaTitulo}
+                    onChange={(e) => setNome(e.target.value)}
+                    value={empresaNome}
                   />
                   <br />
-                  <label>Subtitulo:</label>
+                  <label htmlFor="empresaCNPJ">CNPJ:</label>
+                  <InputMask
+                    mask="99.999.999/9999-99"
+                    maskPlaceholder="99.999.999/9999-99"
+                    type="text"
+                    className="form-control text-sm"
+                    id="empresaCNPJ"
+                    onChange={(e) => setCNPJ(e.target.value)}
+                    placeholder="Digite apenas números"
+                    value={empresaCNPJ}
+                  />
+                  <br />
+                  <label>Endereço:</label>
                   <textarea
                     className="form-control  text-sm"
-                    name="noticiaSubtitulo"
-                    onChange={(e) => setNoticiaSubtitulo(e.target.value)}
-                    value={noticiaSubtitulo}
+                    name="empresaEndereco"
+                    onChange={(e) => setEndereco(e.target.value)}
+                    value={empresaEndereco}
                   />
                   <br />
-                  <label>Conteúdo:</label>
+                  <label>Descrição:</label>
                   <textarea
                     className="form-control  text-sm"
-                    name="noticiaConteudo"
-                    onChange={(e) => setNoticiaConteudo(e.target.value)}
-                    value={noticiaConteudo}
+                    name="empresaEndereco"
+                    onChange={(e) => setDescricao(e.target.value)}
+                    value={empresaDescricao}
                   />
                   <br />
-                  <label>Data:</label>
-                  <InputMask
-                    mask="99/99/9999"
-                    maskPlaceholder="dd/mm/yyyy"
-                    type="text"
-                    className="form-control  text-sm"
-                    id="noticiaDataPublicacao"
-                    onChange={(e) => setNoticiaDataPublicacao(e.target.value)}
-                    value={noticiaDataPublicacao}
-                  />
-                  <br />
-                  <label>Hora:</label>
-                  <InputMask
-                    mask="99:99"
-                    maskPlaceholder="hh:mm"
-                    type="text"
-                    className="form-control  text-sm"
-                    onChange={(e) => setNoticiaHoraPublicacao(e.target.value)}
-                    value={noticiaHoraPublicacao}
-                  />
+                  <label>Tipo:</label>
+                  <select
+                    className="form-control"
+                    value={tipoTurismoSelecionado}
+                    onChange={(e) => settipoTurismoSelecionado(e.target.value)}
+                  >
+                    {tipoTurismoOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+
                   <br />
                 </div>
               </div>
@@ -663,7 +754,7 @@ export default function Noticia() {
                             imagem: result,
                             legendaImagem: "",
                           };
-                          setImagensNoticia((prevImagens) => [
+                          setImagensEmpresa((prevImagens) => [
                             ...prevImagens,
                             objetoImagem,
                           ]);
@@ -678,7 +769,7 @@ export default function Noticia() {
 
                 {modalEditar && (
                   <div>
-                    {(Array.isArray(imagensNoticia) ? imagensNoticia : []).map(
+                    {(Array.isArray(imagensEmpresa) ? imagensEmpresa : []).map(
                       (imagem, index) =>
                         index % 1 === 0 && (
                           <div
@@ -689,7 +780,7 @@ export default function Noticia() {
                               {
                                 length: Math.min(
                                   1,
-                                  imagensNoticia.length - index
+                                  imagensEmpresa.length - index
                                 ),
                               },
                               (_, i) => (
@@ -700,8 +791,7 @@ export default function Noticia() {
                                   <div className="flex w-[140px] justify-end">
                                     <img
                                       className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
-                                      src={imagensNoticia[index + i].imagem}
-                                      alt={`Imagem ${index}`}
+                                      src={imagensEmpresa[index + i].imagem}
                                     />
                                     <div className="flex flex-col pl-3 justify-end">
                                       <label>Legenda:</label>
@@ -709,7 +799,7 @@ export default function Noticia() {
                                         type="text"
                                         className="form-control  text-sm w-[286px]"
                                         onChange={(e) =>
-                                          setImagensNoticia((prevImagens) => {
+                                          setImagensEmpresa((prevImagens) => {
                                             const novasImagens = [
                                               ...prevImagens,
                                             ];
@@ -720,7 +810,7 @@ export default function Noticia() {
                                           })
                                         }
                                         value={
-                                          imagensNoticia[index + i]
+                                          imagensEmpresa[index + i]
                                             .legendaImagem
                                         }
                                       />
@@ -748,7 +838,7 @@ export default function Noticia() {
             </div>
             <div className="flex justify-between items-center px-[395px] pt-5">
               <BtnModaisIMG
-                funcao={() => pedidoAtualizar(noticiaId)}
+                funcao={() => pedidoAtualizar(empresaId)}
                 acao="Editar"
               />
               <BtnModaisIMG
@@ -759,7 +849,7 @@ export default function Noticia() {
           </ModalBody>
         </Modal>
         <Modal isOpen={modalDeletar}>
-          <ModalBody>Confirma a exclusão de "{noticiaTitulo}" ?</ModalBody>
+          <ModalBody>Confirma a exclusão da "{empresaNome}" ?</ModalBody>
           <ModalFooter>
             <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
             <BtnModais

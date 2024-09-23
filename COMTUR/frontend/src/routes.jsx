@@ -21,16 +21,14 @@ import HomeEmpresario from "./screens/empresario/homeEmpresario.jsx";
 import Turismo from "./screens/turismo/turismo.jsx";
 import VisualizarTurismos from "./screens/turismo/visualizarturismo.jsx";
 import VisualizarAtracao from "./screens/atracao/visualizarAtracao.jsx";
-import VisualizarTipoAtracao from "./screens/atracao/visualizarTipoAtracao.jsx";
 import VisualizarEmpresa from "./screens/empresa/visualizarEmpresa.jsx";
 import VisualizarPerfil from "./screens/usuarios/perfilusuarios.jsx";
-import Status from "./screens/administrador/Status.jsx"
-import TodasEmpresas from "./screens/empresa/todasEmpresas.jsx";
+import EmpresaEmp from "./screens/empresa/empresaEmp.jsx";
+import Status from "./screens/administrador/Status.jsx";
 import TodosTurismos from "./screens/turismo/todosTurismos.jsx";
 import TodosEventos from "./screens/turismo/todosEventos.jsx";
-import Evento from "./screens/turismo/evento.jsx";
-import EmpresaEmp from "./screens/empresario/empresaEmp.jsx";
-
+import TodasEmpresas from "./screens/empresa/todasEmpresas.jsx";
+import Evento from "./screens/turismo/evento.jsx"
 
 const isUserLoggedIn = () => {
     // Verificar se há um token armazenado no localStorage
@@ -53,13 +51,13 @@ const AppRoutes = () => {
                 <Route path="/" element={ <Inicio />} />
                 <Route path="/visualizarNoticia/:id" element={ <VisualizarNoticia/>} />
                 <Route path="/todasnoticias" element={<TodasNoticias/>} />
+                <Route path="/todosturismos" element={<TodosTurismos/>} />
+                <Route path="/todoseventos" element={<TodosEventos/>} />
+                <Route path="/todasempresas" element={<TodasEmpresas/>} />
                 <Route path="/login" element={ <Login/> } />
                 <Route path="/notfound" element={<NotFound/>} />
                 <Route path="/visualizarTurismo/:id" element={<VisualizarTurismos/>}/>
                 <Route path="/visualizarEmpresa/:id" element={<VisualizarEmpresa/>}/>
-                <Route path="/todasempresas" element={<TodasEmpresas/>} />
-                <Route path="/todosTurismos" element={<TodosTurismos/>} />
-                <Route path="/todoseventos" element={<TodosEventos/>} />
 
                 {/* <Route path="/home"  element={ <Home />} /> */}
                 <Route path="/noticia" element={<ProtectedRoute element={ <Noticia /> } />}/>
@@ -75,14 +73,13 @@ const AppRoutes = () => {
                 <Route path="/perfil/:id" element={<ProtectedRoute element={ <VisualizarPerfil/> } />}/>
                 <Route path="/homeEmpresario" element={<ProtectedRoute element={<HomeEmpresario/>} /> } />
                 <Route path="/turismo" element={<ProtectedRoute element={<Turismo/>} /> } />
-                <Route path="/evento" element={<ProtectedRoute element={<Evento/>} /> } />
+                <Route path="/eventos" element={<ProtectedRoute element={<Evento/>} /> } />
                 <Route path="/visualizaratracao/:id" element={<VisualizarAtracao/>} />
-                <Route path="/visualizartipoatracao/:id" element={<VisualizarTipoAtracao/>} />
                 <Route path="/empresa" element={<ProtectedRoute element={<Empresa/>}/> } />
                 <Route path="/empresaEmp" element={<ProtectedRoute element={<EmpresaEmp/>}/> } />
                 <Route path="/status" element={<ProtectedRoute element={<Status/>}/> } />
+
                 <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-                
             </Routes>
         </Router>
     );

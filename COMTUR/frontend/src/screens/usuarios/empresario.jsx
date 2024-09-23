@@ -48,7 +48,6 @@ export default function Empresario() {
   const [editImage, setEditImage] = useState(false); // Estado para controlar se a imagem está sendo editada
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [idUsuario, setIdUsuario] = useState("");
-  
 
   const navigate = useNavigate();
 
@@ -303,51 +302,79 @@ export default function Empresario() {
     const idTipoUsuarioAPI = localStorage.getItem("id");
     setUserType(userTypeFromLocalStorage);
     setIdUsuario(idTipoUsuarioAPI);
-  }, []);   
+  }, []);
 
+  const statusOptions = [
+    { value: "", label: "Todos" },
+    { value: "1", label: "Em Análise" },
+    { value: "2", label: "Aprovado" },
+    { value: "3", label: "Reprovado" },
+    { value: "4", label: "Desativado" },
+  ];
+
+  const statusColors = {
+    1: "bg-gray-800 text-white", // cinza para Em Análise
+    2: "bg-[#009688] text-white", // verde escuro para Aprovado
+    3: "bg-[#FF6B6B] text-white", // Vermelho claro para Reprovado
+    4: "bg-gray-400 text-white", // Cinza claro para Desativado
+  };
+  
   const apresentaDados = Array.isArray(currentItems)
-  ? currentItems
-      .filter((usuario) => usuario.tipoUsuario === 3) // Filtrar apenas os usuários com tipo de usuário igual a 2
-      .map((usuario) => {
-        const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
-        const descricao = usuario.emailUsuario && typeof usuario.emailUsuario === 'string'
-        ? (usuario.emailUsuario.length > 20 
-          ? `${usuario.emailUsuario.slice(0, 20)}...` 
-          : usuario.emailUsuario)
-        : '';
+    ? currentItems
+        .filter((usuario) => usuario.tipoUsuario === 3) // Filtrar apenas os usuários com tipo de usuário igual a 2
+        .map((usuario) => {
+          const tipoUsuarioNome = obterNomeTipoUsuario(usuario.tipoUsuario);
+          const descricao =
+            usuario.emailUsuario && typeof usuario.emailUsuario === "string"
+              ? usuario.emailUsuario.length > 20
+                ? `${usuario.emailUsuario.slice(0, 20)}...`
+                : usuario.emailUsuario
+              : "";
 
-        const nome = usuario.nome && typeof usuario.nome === 'string'
-        ? (usuario.nome.length > 20 
-          ? `${usuario.nome.slice(0, 15)}...` 
-          : usuario.nome)
-        : '';
-        
-        return {
-          id: usuario.id,
-          nome: nome,
-          descricao: descricao,
-          tipoUsuario: tipoUsuarioNome,
-          status: "teste",
-          acoes: (
-            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-              <BtnAcao
-                funcao={() => UserSet(usuario, "Editar")}
-                acao="Editar"
-              />
-              <BtnAcao
-                funcao={() => UserSet(usuario, "Excluir")}
-                acao="Excluir"
-              />
-              <BtnAcao
-                funcao={() => UserSet(usuario, "Visualizar")}
-                acao="Visualizar"
-              />
-            </div>
-          ),
-        };
-      })
-  : [];
+          const nome =
+            usuario.nome && typeof usuario.nome === "string"
+              ? usuario.nome.length > 20
+                ? `${usuario.nome.slice(0, 15)}...`
+                : usuario.nome
+              : "";
 
+          return {
+            id: usuario.id,
+            nome: nome,
+            descricao: descricao,
+            tipoUsuario: tipoUsuarioNome,
+            status: (
+              <div
+                className={`px-3 py-1 rounded-md ${
+                  statusColors[usuario.status]
+                }`}
+              >
+                {
+                  statusOptions.find(
+                    (option) => option.value === usuario.status.toString()
+                  )?.label
+                }
+              </div>
+            ),
+            acoes: (
+              <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+                <BtnAcao
+                  funcao={() => UserSet(usuario, "Editar")}
+                  acao="Editar"
+                />
+                <BtnAcao
+                  funcao={() => UserSet(usuario, "Excluir")}
+                  acao="Excluir"
+                />
+                <BtnAcao
+                  funcao={() => UserSet(usuario, "Visualizar")}
+                  acao="Visualizar"
+                />
+              </div>
+            ),
+          };
+        })
+    : [];
 
   // Função auxiliar para obter o nome do tipo de usuário com base no enum
   function obterNomeTipoUsuario(tipoUsuario) {
@@ -464,7 +491,7 @@ export default function Empresario() {
                   value={userType}
                   onChange={handleUserTypeChange}
                 >
-                 <option value={3}>Empresário</option>
+                  <option value={3}>Empresário</option>
                 </select>
               </div>
 

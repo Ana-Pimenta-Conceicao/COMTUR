@@ -62,7 +62,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
       ],
     },
     { title: "Empresas", src: "empresa", iconSrc: "Empresa" },
-    { title: "Eventos", src: "evento", iconSrc: "Eventos" },
+    { title: "Eventos", src: "Eventos", iconSrc: "Eventos" },
     {
       title: "Turismos",
       src: "turismo",
@@ -84,7 +84,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
         { title: "Tipos de Atrações", link: "/tipoatracao" },
       ],
     },
-    { title: "Status", src: "Status", iconSrc: "Dashboard" },
+    { title: "Status", src: "status", iconSrc: "Dashboard" },
   ];
 
   const toggleSubmenu = (index) => {

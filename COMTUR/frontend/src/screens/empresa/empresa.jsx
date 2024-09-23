@@ -472,6 +472,21 @@ export default function Empresa() {
         lineHeight: '1.25rem' // line height correspondente do Tailwind
       })
     };
+    
+  const statusOptions = [
+    { value: '', label: 'Todos' },
+    { value: '1', label: 'Em Análise' },
+    { value: '2', label: 'Aprovado' },
+    { value: '3', label: 'Reprovado' },
+    { value: '4', label: 'Desativado' }
+  ];
+
+  const statusColors = {
+    1: "bg-gray-800 text-white", // cinza para Em Análise
+    2: "bg-[#009688] text-white", // verde escuro para Aprovado
+    3: "bg-[#FF6B6B] text-white", // Vermelho claro para Reprovado
+    4: "bg-gray-400 text-white", // Cinza claro para Desativado
+  };
 
     const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((empresa) => {
@@ -486,7 +501,11 @@ export default function Empresa() {
           nome: empresa.nome,
           cnpj: empresa.cnpj,
           tipo: tipoTurismoNome,
-          status: "teste",
+          status: (
+            <div className={`px-3 py-1 rounded-md ${statusColors[empresa.status]}`}>
+              {statusOptions.find(option => option.value === empresa.status.toString())?.label}
+            </div>
+          ),
           acoes: (
             <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
               <BtnAcao

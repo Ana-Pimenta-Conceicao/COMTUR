@@ -23,14 +23,14 @@ export default function TodosTurismos() {
         const response = await axios.get(`${baseUrl}`);
         setOutrosTurismos(
           response.data.filter(
-            (OutrosTurismos) => OutrosTurismos.id !== parseInt(id)
+            (OutrosTurismos) => OutrosTurismos.id !== parseInt(id) && OutrosTurismos.status === 2
           )
         );
       } catch (error) {
         console.error("Erro ao obter outros turismos:", error);
       }
     };
-
+  
     const obterTiposTurismo = async () => {
       try {
         const response = await axios.get(`${baseUrlTipoTurismo}`);
@@ -39,10 +39,11 @@ export default function TodosTurismos() {
         console.error("Erro ao obter tipos de turismo:", error);
       }
     };
-
+  
     obterOutrosTurismos();
     obterTiposTurismo();
   }, [id]);
+  
 
   // Função para encontrar o nome do tipo de turismo pelo ID
   const obterNomeTipoTurismo = (idTipoTurismo) => {
@@ -53,8 +54,11 @@ export default function TodosTurismos() {
   const pedidoGet = async () => {
     try {
       const response = await axios.get(baseUrl);
+      const turismosFiltrados = response.data.filter(
+        (turismo) => turismo.status === 2
+      );
       console.log("API response:", response.data);
-      setTurismo(response.data);
+      setTurismo(turismosFiltrados);
     } catch (error) {
       console.log("API error:", error);
     }

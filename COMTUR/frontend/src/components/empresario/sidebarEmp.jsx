@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import { CaretRight } from "@phosphor-icons/react";
 import Login from "../../assets/login.png";
 
 const SidebarEmp = ({ setOpen, open, nomeUsuario }) => {
-  const [submenuOpen, setSubmenuOpen] = useState(false);
   const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     // Buscar o nome do usuário do localStorage ao montar o componente
     const storedUserName = localStorage.getItem("nome");
+    const storedUserId = localStorage.getItem("id");
     if (storedUserName) {
       setUserName(storedUserName);
+      setUserId(storedUserId);
     }
   }, []);
 
@@ -35,16 +36,14 @@ const SidebarEmp = ({ setOpen, open, nomeUsuario }) => {
         });
       } catch (error) {}
     }
-
-    // Redirecionar o usuário para a página de login
   };
 
   const Menus = [
-    { title: "Dashboard", src: "homeEmpresario" },
-    { title: "Perfil", src: "perfil" },
-    { title: "Avisos", src: "avisos" },
-    { title: "Empresas", src: "empresaEmp" },
-    { title: "Anúncios", src: "anuncio" },
+    { title: "Dashboard", src: "Dashboard", iconSrc: "Dashboard" },
+    { title: "Perfil", src: `perfil/${userId}`, iconSrc:  "PerfilEmp"},
+    { title: "Avisos", src: "avisos", iconSrc: "avisos"},
+    { title: "Empresas", src: "empresaEmp", iconSrc: "empresaEmp"},
+    { title: "Anúncios", src: "anuncio", iconSrc: "anuncio" },
   ];
 
   return (
@@ -75,7 +74,7 @@ const SidebarEmp = ({ setOpen, open, nomeUsuario }) => {
             {userName.length > 10 ? userName.substring(0, 9) + "..." : userName}
           </h1>
         </div>
-        <ul className="pt-6" style={{ padding: 0, position: "relative" }}>
+        <ul className="pt-5" style={{ padding: 0, position: "relative" }}>
           {Menus.map((Menu, index) => (
             <>
               <li
@@ -90,7 +89,7 @@ const SidebarEmp = ({ setOpen, open, nomeUsuario }) => {
                   className="flex w-full text-inherit"
                 >
                   <div className="flex items-center w-full">
-                    <img src={`../src/assets/${Menu.src}.png`} />
+                    <img src={`../src/assets/${Menu.iconSrc}.png`} />
                     <span
                       className={`flex ${
                         !open && "hidden"

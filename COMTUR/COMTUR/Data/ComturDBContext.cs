@@ -3,6 +3,7 @@ using COMTUR.Models;
 using COMTUR.Data.Map;
 using COMTUR.Models.Enum;
 using System.ComponentModel.DataAnnotations;
+using COMTUR.Models.Relational;
 
 namespace COMTUR.Data
 {
@@ -24,6 +25,10 @@ namespace COMTUR.Data
         public DbSet<TurismoModel> Turismo { get; set; }
         public DbSet<AuditoriaModel> Auditoria { get; set; }
 		public DbSet<AvaliacaoModel> Avaliacao { get; set; }
+
+        public DbSet<AvaliacaoAtracaoModel> AvaliacaoAtracao { get; set; }
+        public DbSet<AvaliacaoEmpresaModel> AvaliacaoEmpresa { get; set; }
+        public DbSet<AvaliacaoTurismoModel> AvaliacaoTurismo { get; set; }
 
         public override int SaveChanges()
         {
@@ -198,8 +203,11 @@ namespace COMTUR.Data
             modelBuilder.ApplyConfiguration(new SessaoMap());
             modelBuilder.ApplyConfiguration(new TurismoMap());
 			modelBuilder.ApplyConfiguration(new AvaliacaoMap());
+            modelBuilder.ApplyConfiguration(new AvaliacaoAtracaoModelMap());
+            modelBuilder.ApplyConfiguration(new AvaliacaoEmpresaModelMap());
+            modelBuilder.ApplyConfiguration(new AvaliacaoTurismoModelMap());
 
-			base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
 
             //Adicionando Tipos de Usuario para teste
             modelBuilder.Entity<UsuarioModel>().HasData(

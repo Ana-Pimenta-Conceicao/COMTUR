@@ -1,5 +1,4 @@
 ﻿using COMTUR.Models.Enum;
-using COMTUR.Repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -46,10 +45,10 @@ public class TipoTurismoModel
 	public void Disapproved() => Status = StatusEnumExtensions.Disapproved();
 	public void Analyzing() => Status = StatusEnumExtensions.Analyzing();
 
-	public string GetState() => IStatusStateRepositorioExtensions.GetState(this.Status);
-	public bool CanInactive() => IStatusStateRepositorioExtensions.CanInactive(this.Status);
-	public bool CanAnalyzing() => IStatusStateRepositorioExtensions.CanAnalyzing(this.Status);
-	public bool CanApproved() => IStatusStateRepositorioExtensions.CanApproved(this.Status);
-	public bool CanDisapproved() => IStatusStateRepositorioExtensions.CanDisapproved(this.Status);
+	public string GetState() => IStatusStateExtensions.GetState(this.Status);
+	public bool CanInactive() => IStatusStateExtensions.CanInactive(this.Status);
+	public bool CanAnalyzing() => IStatusStateExtensions.CanAnalyzing(this.Status);
+	public bool CanApproved() => IStatusStateExtensions.CanApproved(this.Status);
+	public bool CanDisapproved() => IStatusStateExtensions.CanDisapproved(this.Status);
 
 }

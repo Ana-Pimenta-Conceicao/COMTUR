@@ -19,6 +19,7 @@ export default function VisualizarEmpresa() {
     const baseUrl = "https://localhost:7256/api/Empresa";
     const imagensUrl = `https://localhost:7256/api/ImagemEmpresa/${id}`;
     const avaliacaoUrl = "https://localhost:7256/api/Avaliacao";
+    const avaliacaoEmpresaUrl = "https://localhost:7256/api/AvaliacaoEmpresa";
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [outrasAtracoes, setOutrasAtracoes] = useState([]);
     const navigate = useNavigate();
@@ -27,6 +28,7 @@ export default function VisualizarEmpresa() {
     const [modalInserir, setModalInserir] = useState(false);
     const [modalEditar, setModalEditar] = useState(false);
     const [modalDeletar, setModalDeletar] = useState(false);
+    const [atualizarScoreAvaliacoes, setAtualizarScoreAvaliacoes] = useState(true);
 
     const abrirFecharModalAvaliacao = () => {
         if (modalInserir) {
@@ -40,7 +42,10 @@ export default function VisualizarEmpresa() {
     const [avaliacaoDataPublicacao, setAvaliacaoDataPublicacao] = useState("");
     const [avaliacaoComentario, setAvaliacaoComentario] = useState("");
     const [userType, setUserType] = useState(null);
-    const [avaliacaoId, setAvaliacaoId] = useState("");
+    const [avaliacaoId, setAvaliacaoId] = useState(0);
+    const [idUsuario, setIdUsuario] = useState(0);
+
+    const [avaliacoes, setAvaliacoes] = useState("");
 
     const limparDados = () => {
         setAvaliacaoNota("");
@@ -86,18 +91,19 @@ export default function VisualizarEmpresa() {
         await axios
             .get(avaliacaoUrl)
             .then((response) => {
-                setData(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
     };
 
-    const pedidoPost = async () => {
+    const pedidoPostAvaliacao = async () => {
         const formData = new FormData();
         formData.append("nota", avaliacaoNota);
         formData.append("dataPublicacao", inverterDataParaFormatoBanco(avaliacaoDataPublicacao));
         formData.append("comentario", avaliacaoComentario);
+        formData.append("status", 1);
+        formData.append("idUsuario", idUsuario);
 
         try {
             const response = await axios.post(avaliacaoUrl, formData, {
@@ -105,10 +111,30 @@ export default function VisualizarEmpresa() {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            setData(data.concat(response.data));
+            await pedidoPostAvaliacaoEmpresa(response.data.id);
+
             abrirFecharModalInserir();
             limparDados();
             setAtualizarData(true);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const pedidoPostAvaliacaoEmpresa = async (idAvaliacao) => {
+        const formData = new FormData();
+        formData.append("idAvaliacao", idAvaliacao);
+        formData.append("idEmpresa", id);
+
+        try {
+            const response = await axios.post(avaliacaoEmpresaUrl, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            limparDados();
+            setAtualizarScoreAvaliacoes(true);
 
         } catch (error) {
             console.log(error);
@@ -130,10 +156,6 @@ export default function VisualizarEmpresa() {
 
             const updatedAvaliacao = response.data;
 
-            setData((prevData) =>
-                prevData.map((avaliacao) => (avaliacao.id === avaliacaoId ? updatedAvaliacao : avaliacao))
-            );
-
             abrirFecharModalEditar();
             setAtualizarData(true);
 
@@ -142,12 +164,22 @@ export default function VisualizarEmpresa() {
         }
     };
 
+    const pedidoAtualizarAvaliacoes = async () => {
+        await axios
+            .get(`${avaliacaoEmpresaUrl}/Empresa/${id}/Score`)
+            .then((response) => {
+                setAvaliacoes(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
     const pedidoDeletar = async () => {
         await axios
             .delete(avaliacaoUrl + "/" + avaliacaoId)
             .then((response) => {
                 const newAvaliacao = data.filter((avaliacao) => avaliacao.id !== response.data);
-                setData(newAvaliacao);
                 abrirFecharModalDeletar();
                 limparDados();
                 setAtualizarData(true);
@@ -170,6 +202,18 @@ export default function VisualizarEmpresa() {
 
         buscarEmpresa();
     }, [id]);
+
+    useEffect(() => {
+        if (atualizarScoreAvaliacoes) {
+            pedidoAtualizarAvaliacoes();
+            setAtualizarScoreAvaliacoes(false);
+        }
+    }, [atualizarScoreAvaliacoes]);
+
+    useEffect(() => {
+        const idTipoUsuarioAPI = localStorage.getItem("id");
+        setIdUsuario(idTipoUsuarioAPI);
+    }, []);
 
     if (!empresa) {
         return <h2>Carregando...</h2>;
@@ -194,20 +238,26 @@ export default function VisualizarEmpresa() {
     const handleDate = (value) => {
         // Filtra somente números
         const numbersOnly = value.replace(/\D/g, '');
-    
-        // Limita a quantidade de caracteres a 10
-        const limitedValue = numbersOnly.slice(0, 10);
-    
-        // Formata para o formato 99/99/9999
-        const formattedValue = limitedValue
-            .replace(/^(\d{2})(\d{0,2})/, '$1/$2')      // Adiciona a barra após os primeiros 2 dígitos
-            .replace(/\/(\d{2})(\d{0,4})/, '/$1/$2')   // Adiciona a segunda barra após os próximos 2 dígitos
-            .slice(0, 10);                             // Garante que o comprimento máximo seja 10 caracteres
-    
+
+        // Limita a quantidade de caracteres a 8 (apenas os dígitos da data)
+        const limitedValue = numbersOnly.slice(0, 8);
+
+        let formattedValue = limitedValue;
+
+        // Adiciona a primeira barra após 2 dígitos (se houver mais que 2 dígitos)
+        if (limitedValue.length > 2) {
+            formattedValue = limitedValue.slice(0, 2) + '/' + limitedValue.slice(2);
+        }
+
+        // Adiciona a segunda barra após 4 dígitos (se houver mais que 4 dígitos)
+        if (limitedValue.length > 4) {
+            formattedValue = formattedValue.slice(0, 5) + '/' + limitedValue.slice(4);
+        }
+
         // Atualiza o estado com a data formatada
         setAvaliacaoDataPublicacao(formattedValue);
-    };    
-    
+    };
+
     return (
         <div>
             <NavbarUsr />
@@ -263,12 +313,13 @@ export default function VisualizarEmpresa() {
                         <div className="row mb-3 flex justify-between">
                             <div className="flex flex-col">
                                 <div className="d-flex justify-content-between mt-2">
-                                    <div className="flex flex-row w-full justify-start items-center text-[#FFD121]">
-                                        <Star size={20} /> <Star size={20} />
-                                        <Star size={20} />
-                                        <Star size={20} />
-                                        <Star size={20} />
-                                        <h3 className="text-gray-800 text-xs pl-2">14 avaliações</h3>
+                                    <div className="flex flex-row w-full justify-start items-center">
+                                        <Star size={20} className={`${avaliacoes.score >= 1 ? "text-[#FFD121]" : ""}`} />
+                                        <Star size={20} className={`${avaliacoes.score >= 2 ? "text-[#FFD121]" : ""}`} />
+                                        <Star size={20} className={`${avaliacoes.score >= 3 ? "text-[#FFD121]" : ""}`} />
+                                        <Star size={20} className={`${avaliacoes.score >= 4 ? "text-[#FFD121]" : ""}`} />
+                                        <Star size={20} className={`${avaliacoes.score === 5 ? "text-[#FFD121]" : ""}`} />
+                                        <h3 className="text-gray-800 text-xs pl-2">{avaliacoes.avaliacoes} avaliações</h3>
                                     </div>
                                 </div>
                             </div>
@@ -447,7 +498,7 @@ export default function VisualizarEmpresa() {
                             <button
                                 className="btn btnavaliar bg-yellow-400 rounded-md mr-1"
                                 onClick={() => {
-                                    pedidoPost(); // Chamando diretamente a função para cadastrar
+                                    pedidoPostAvaliacao(); // Chamando diretamente a função para cadastrar
                                 }}
                             >
                                 Avaliar

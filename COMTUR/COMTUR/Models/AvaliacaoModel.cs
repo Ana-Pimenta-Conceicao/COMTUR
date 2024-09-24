@@ -20,7 +20,7 @@ namespace COMTUR.Models
 		public string Nota { get; set; }
 
 		[Column("dataAvaliacao")]
-		public DateOnly DataAvaliacao { get; set; }
+		public string DataAvaliacao { get; set; }
 
 		[Column("comentarioAvaliacao")]
 		public string Comentario { get; set; }

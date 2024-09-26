@@ -86,8 +86,11 @@ namespace COMTUR.Repositorios
 			usuarioPorId.Telefone = usuarioModel.Telefone;
 			usuarioPorId.EmailUsuario = usuarioModel.EmailUsuario;
 			usuarioPorId.SenhaUsuario = usuarioModel.SenhaUsuario;
-			usuarioPorId.ImagemPerfilUsuario = usuarioModel.ImagemPerfilUsuario;
-			usuarioPorId.TipoUsuario = usuarioModel.TipoUsuario; // Atualizar o tipo de usuário
+            if (!string.IsNullOrEmpty(usuarioModel.ImagemPerfilUsuario) && usuarioModel.ImagemPerfilUsuario.StartsWith("data:image/"))
+            {
+                usuarioPorId.ImagemPerfilUsuario = usuarioModel.ImagemPerfilUsuario;
+            }
+            usuarioPorId.TipoUsuario = usuarioModel.TipoUsuario; // Atualizar o tipo de usuário
 																 //usuarioPorId.TipoStatus = usuarioModel.TipoStatus; // Atualizar o tipo de status
 
 			_dbContext.Usuario.Update(usuarioPorId);

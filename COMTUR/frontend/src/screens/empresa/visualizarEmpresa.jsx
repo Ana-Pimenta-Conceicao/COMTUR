@@ -15,11 +15,13 @@ import BtnModais from "../../components/botoes/btnModais.jsx";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+
 export default function VisualizarEmpresa() {
     const { id } = useParams();
     const [empresa, setEmpresa] = useState(null);
     const baseUrl = "https://localhost:7256/api/Empresa";
     const imagensUrl = `https://localhost:7256/api/ImagemEmpresa/${id}`;
+    const usuarioUrl = "https://localhost:7256/api/Usuario";
     const avaliacaoUrl = "https://localhost:7256/api/Avaliacao";
     const avaliacaoEmpresaUrl = "https://localhost:7256/api/AvaliacaoEmpresa";
     const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -48,6 +50,61 @@ export default function VisualizarEmpresa() {
     const [idUsuario, setIdUsuario] = useState(0);
 
     const [avaliacoes, setAvaliacoes] = useState("");
+
+    const [avaliacoesEmpresa, setAvaliacoesEmpresa] = useState([]);
+    //const [avaliacao, setAvaliacao] = useState({});
+    //const [usuario, setUsuario] = useState({});
+
+    const [avaliacoesCompletas, setAvaliacoesCompletas] = useState([]);
+
+    useEffect(() => {
+        const fetchAvaliacoes = async () => {
+            const avaliacoesData = await Promise.all(avaliacoesEmpresa.map(async avaliacaoEmpresa => {
+                const avaliacao = await pedidoGetAvaliacao(avaliacaoEmpresa.idAvaliacao);
+
+                if (avaliacao && Object.keys(avaliacao).length > 0) {
+                    const usuario = await pedidoGetUsuario(avaliacao.idUsuario);
+                    if (usuario && Object.keys(usuario).length > 0) {
+                        return {
+                            avaliacao,
+                            usuario,
+                        };
+                    }
+                }
+                return null;
+            }));
+
+            setAvaliacoesCompletas(avaliacoesData.filter(avaliacao => avaliacao !== null));
+        };
+
+        if (avaliacoesEmpresa.length > 0) {
+            fetchAvaliacoes();
+        }
+    }, [avaliacoesEmpresa]);
+
+    // Layout em 3 avaliações
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 3; // Define quantas avaliações serão mostradas por vez
+
+    const displayedAvaliacoes = avaliacoesCompletas.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
+    const nextAvaliacoes = () => {
+        if ((currentPage + 1) * itemsPerPage < avaliacoesCompletas.length) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const prevAvaliacoes = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+
+
+    // aqui acaba o layout 
+
 
     const limparDados = () => {
         setAvaliacaoNota("");
@@ -199,6 +256,48 @@ export default function VisualizarEmpresa() {
             });
     };
 
+    const pedidoGetAvaliacoesEmpresa = async () => {
+        await axios
+            .get(`${avaliacaoEmpresaUrl}/Empresa/${id}`)
+            .then((response) => {
+                setAvaliacoesEmpresa(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const pedidoGetAvaliacao = async (idAvaliacao) => {
+        var avaliacao = null;
+
+        await axios
+            .get(`${avaliacaoUrl}/${idAvaliacao}`)
+            .then((response) => {
+                avaliacao = response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+                return {};
+            });
+
+        return avaliacao;
+    };
+
+    const pedidoGetUsuario = async (idUsuario) => {
+        var usuario = null;
+
+        await axios
+            .get(`${usuarioUrl}/${idUsuario}`)
+            .then((response) => {
+                usuario = response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        return usuario;
+    };
+
     useEffect(() => {
         const buscarEmpresa = async () => {
             try {
@@ -215,6 +314,8 @@ export default function VisualizarEmpresa() {
     useEffect(() => {
         if (atualizarScoreAvaliacoes) {
             pedidoAtualizarAvaliacoes();
+            pedidoGetAvaliacoesEmpresa();
+
             setAtualizarScoreAvaliacoes(false);
         }
     }, [atualizarScoreAvaliacoes]);
@@ -223,6 +324,8 @@ export default function VisualizarEmpresa() {
         const idTipoUsuarioAPI = localStorage.getItem("id");
         setIdUsuario(idTipoUsuarioAPI);
     }, []);
+
+
 
     if (!empresa) {
         return <h2>Carregando...</h2>;
@@ -266,6 +369,7 @@ export default function VisualizarEmpresa() {
         // Atualiza o estado com a data formatada
         setAvaliacaoDataPublicacao(formattedValue);
     };
+
 
     return (
         <div>
@@ -371,6 +475,63 @@ export default function VisualizarEmpresa() {
                 </div>
             </div>
 
+            {/* Avaliações */}
+
+            <div className="flex justify-center mb-3">
+                <h1 className="text-[#FFD121] sm:text-2xl text-sm font-bold sm:pl-6 pl-3 mt-4">Avaliações</h1>
+            </div>
+
+            <div className="container">
+                <div className="row d-flex justify-content-center g-4">
+                    {displayedAvaliacoes.length > 0 ? (
+                        displayedAvaliacoes.map((avaliacaoCompleta, index) => (
+                            <div className="col-md-4" key={index}>
+                                <div className="card m-2 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
+                                    <article>
+                                        <div className="flex items-center mb-3">
+                                            <div className="w-10 h-10 me-4 rounded-full">
+                                                {avaliacaoCompleta.usuario.imagemPerfilUsuario ? (
+                                                    <img src={avaliacaoCompleta.usuario.imagemPerfilUsuario} alt="Avatar" className="rounded-full" />
+                                                ) : (
+                                                    <Xadrez />
+                                                )}
+                                            </div>
+                                            <div className="font-medium dark:text-black">
+                                                <p>
+                                                    @{avaliacaoCompleta.usuario.nome}
+                                                    <time dateTime={avaliacaoCompleta.avaliacao.dataAvaliacao} className="block text-sm text-gray-500 dark:text-gray-400">
+                                                        {formatarDataParaExibicao(avaliacaoCompleta.avaliacao.dataAvaliacao)}
+                                                    </time>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center">
+                                            {[...Array(5)].map((_, i) => (
+                                                i < parseInt(avaliacaoCompleta.avaliacao.nota) ? <Estrela key={i} /> : <Estrelasemcor key={i} />
+                                            ))}
+                                        </div>
+                                        <p className="mt-7 text-gray-500 dark:text-gray-400">
+                                            {avaliacaoCompleta.avaliacao.comentario}
+                                        </p>
+                                    </article>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p>Nenhuma avaliação disponível.</p>
+                    )}
+                </div>
+
+                {/* Navegação das avaliações */}
+                <div className="flex justify-center mt-4">
+                    <button onClick={prevAvaliacoes} className="mx-2 px-4 py-2 bg-gray-200 rounded-lg" disabled={currentPage === 0}>
+                        <CaretLeft size={24} />
+                    </button>
+                    <button onClick={nextAvaliacoes} className="mx-2 px-4 py-2 bg-gray-200 rounded-lg" disabled={(currentPage + 1) * itemsPerPage >= avaliacoesCompletas.length}>
+                        <CaretRight size={24} />
+                    </button>
+                </div>
+            </div>
 
 
 
@@ -595,6 +756,6 @@ export default function VisualizarEmpresa() {
                     />
                 </ModalFooter>
             </Modal>
-        </div>
+        </div >
     );
 }

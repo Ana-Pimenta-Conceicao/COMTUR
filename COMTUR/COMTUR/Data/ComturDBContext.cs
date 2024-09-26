@@ -25,6 +25,7 @@ namespace COMTUR.Data
         public DbSet<TurismoModel> Turismo { get; set; }
         public DbSet<AuditoriaModel> Auditoria { get; set; }
 		public DbSet<AvaliacaoModel> Avaliacao { get; set; }
+        public DbSet<MembroModel> Membro { get; set; }
 
         public DbSet<AvaliacaoAtracaoModel> AvaliacaoAtracao { get; set; }
         public DbSet<AvaliacaoEmpresaModel> AvaliacaoEmpresa { get; set; }
@@ -206,6 +207,7 @@ namespace COMTUR.Data
             modelBuilder.ApplyConfiguration(new AvaliacaoAtracaoModelMap());
             modelBuilder.ApplyConfiguration(new AvaliacaoEmpresaModelMap());
             modelBuilder.ApplyConfiguration(new AvaliacaoTurismoModelMap());
+            modelBuilder.ApplyConfiguration(new MembroMap());
 
             base.OnModelCreating(modelBuilder);
 

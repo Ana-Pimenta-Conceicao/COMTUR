@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { CaretRight } from "@phosphor-icons/react";
+import { CaretRight, UserGear } from "@phosphor-icons/react";
+
 import Login from "../../assets/login.png";
 import axios from "axios";
 
@@ -62,6 +63,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
       ],
     },
     { title: "Empresas", src: "empresa", iconSrc: "Empresa" },
+    { title: "Membros", src: "membro", iconSrc: "user-focus" },
     { title: "Eventos", src: "Eventos", iconSrc: "Eventos" },
     {
       title: "Turismos",

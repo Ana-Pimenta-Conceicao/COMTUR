@@ -30,6 +30,7 @@ import TodosEventos from "./screens/turismo/todosEventos.jsx";
 import TodasEmpresas from "./screens/empresa/todasEmpresas.jsx";
 import Evento from "./screens/turismo/evento.jsx";
 import Anuncio from "./screens/turismo/anuncio.jsx"
+import Membro from "./screens/administrador/membro.jsx";
 
 const isUserLoggedIn = () => {
     // Verificar se há um token armazenado no localStorage
@@ -81,6 +82,7 @@ const AppRoutes = () => {
                 <Route path="/status" element={<ProtectedRoute element={<Status/>}/> } />
                 <Route path="/anuncio" element={<ProtectedRoute element={<Anuncio/>}/> } />
                 <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+                <Route path="/membro" element={<ProtectedRoute element={<Membro />} />} />
             </Routes>
         </Router>
     );

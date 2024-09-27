@@ -73,9 +73,6 @@ namespace COMTUR.Repositorios
 
             return true;
         }
-
-       
-
       
     }
 }

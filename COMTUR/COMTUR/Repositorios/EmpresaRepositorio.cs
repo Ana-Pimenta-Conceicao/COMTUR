@@ -34,13 +34,6 @@ namespace COMTUR.Repositorios
 			return await _dbContext.Empresa.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
 
-		/*public async Task<List<EmpresaModel>> ListarPorTipoStatus(int tipoStatus)
-		{
-			return await _dbContext.Empresa
-				.Where(x => (int)x.TipoStatus == tipoStatus)
-				.ToListAsync();
-		}*/
-
 		public async Task<EmpresaModel> GetByIdTipoTurismo(int id)
 		{
 			return await _dbContext.Empresa.Include(objeto => objeto.TipoTurismoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
@@ -58,10 +51,6 @@ namespace COMTUR.Repositorios
 
         public async Task<EmpresaModel> Adicionar(EmpresaModel empresaModel)
 		{
-			/*if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
-			{
-				throw new ArgumentException("Tipo de status inválido");
-			}*/
 
 			await _dbContext.Empresa.AddAsync(empresaModel);
 			await _dbContext.SaveChangesAsync();
@@ -72,11 +61,6 @@ namespace COMTUR.Repositorios
 		public async Task<EmpresaModel> Atualizar(EmpresaModel empresaModel, int id)
 		{
 			EmpresaModel empresaPorId = await BuscarPorId(id);
-
-			/*if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
-			{
-				throw new ArgumentException("Tipo de status inválido");
-			}*/
 
 			if (empresaPorId == null)
 			{
@@ -90,7 +74,6 @@ namespace COMTUR.Repositorios
 			empresaPorId.Descricao = empresaModel.Descricao;
             empresaPorId.IdUsuario = empresaModel.IdUsuario;
 			empresaPorId.IdTipoTurismo = empresaModel.IdTipoTurismo;
-			//empresaPorId.TipoStatus = empresaModel.TipoStatus;
 
 			_dbContext.Empresa.Update(empresaPorId);
 			await _dbContext.SaveChangesAsync();

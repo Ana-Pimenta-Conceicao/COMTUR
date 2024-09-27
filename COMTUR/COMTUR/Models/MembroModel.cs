@@ -13,7 +13,7 @@ namespace COMTUR.Models
         [Column("nome")]
         public string Nome { get; set; }
        
-        [Column("nome")]
+        [Column("cargo")]
         public string Cargo { get; set; }
       
         [Column("imagem")]

@@ -39,12 +39,6 @@ namespace COMTUR.Repositorios
 				.Where(x => (int)x.TipoUsuario == tipoUsuario)
 				.ToListAsync();
 		}
-		/*public async Task<List<UsuarioModel>> ListarPorTipoStatus(int tipoStatus)
-		{
-			return await _dbContext.Usuario
-				.Where(x => (int)x.TipoStatus == tipoStatus)
-				.ToListAsync();
-		}*/
 
 		public async Task<UsuarioModel> Adicionar(UsuarioModel usuarioModel)
 		{
@@ -52,11 +46,6 @@ namespace COMTUR.Repositorios
 			{
 				throw new ArgumentException("Tipo de usuário inválido");
 			}
-
-			/*if (!Enum.IsDefined(typeof(TipoStatus), usuarioModel.TipoStatus))
-			{
-				throw new ArgumentException("Tipo de status inválido");
-			}*/
 
 			await _dbContext.Usuario.AddAsync(usuarioModel);
 			await _dbContext.SaveChangesAsync();
@@ -76,11 +65,6 @@ namespace COMTUR.Repositorios
 			{
 				throw new ArgumentException("Tipo de usuário inválido");
 			}
-
-			/*if (!Enum.IsDefined(typeof(TipoStatus), usuarioModel.TipoStatus))
-			{
-				throw new ArgumentException("Tipo de status inválido");
-			}*/
 
 			usuarioPorId.Nome = usuarioModel.Nome;
 			usuarioPorId.Telefone = usuarioModel.Telefone;

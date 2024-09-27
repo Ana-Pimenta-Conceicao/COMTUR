@@ -43,20 +43,8 @@ namespace COMTUR.Repositorios
             return await _dbContext.Noticia.Include(n => n.ImagemNoticia).ToListAsync();
         }
 
-		/*public async Task<List<NoticiaModel>> ListarPorTipoStatus(int tipoStatus)
-		{
-			return await _dbContext.Noticia
-				.Where(x => (int)x.TipoStatus == tipoStatus)
-				.ToListAsync();
-		}*/
-
-
 		public async Task<NoticiaModel> Adicionar(NoticiaModel noticiaModel)
         {
-			/*if (!Enum.IsDefined(typeof(TipoStatus), noticiaModel.TipoStatus))
-			{
-				throw new ArgumentException("Tipo de status inválido");
-			}*/
 
 			// Adiciona a notícia no banco de dados
 			await _dbContext.Noticia.AddAsync(noticiaModel);

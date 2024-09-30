@@ -4,13 +4,19 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import NavbarUsr from "../../components/user/navbarUsr.jsx";
 import FooterUsr from "../../components/user/footerUsr.jsx";
 import "../inicio/inicio.css";
-
+import hospedagem from '../../assets/HospedagemCad.svg';
+import rural from '../../assets/RuralCard.svg';
+import saude from '../../assets/SaudeCard.svg';
+import alimentacao from '../../assets/AlimentacaoCard.svg';
+import eventos from '../../assets/EventosCard.svg';
+import cultura from '../../assets/CulturaCard.svg';
 function Inicio() {
   const [outrasNoticias, setOutrasNoticias] = useState([]);
   const [atualizarData, setAtualizarData] = useState(true);
   const [turismo, setTurismo] = useState([]);
   const navigate = useNavigate();
   const baseUrl = "https://localhost:7256/api/Noticia";
+  const [isMobile, setIsMobile] = useState(false);
 
   const { id } = useParams();
   const baseUrlTurismo = "https://localhost:7256/api/Turismo";
@@ -36,6 +42,19 @@ function Inicio() {
     }
     return data; // Retorna a data original se não estiver no formato esperado
   }
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize(); // Chama a função uma vez para definir o estado inicial
+    window.addEventListener("resize", handleResize); // Adiciona o listener
+
+    return () => {
+      window.removeEventListener("resize", handleResize); // Limpa o listener ao desmontar
+    };
+  }, []);
 
   useEffect(() => {
     if (atualizarData) {
@@ -194,7 +213,7 @@ function Inicio() {
                           368,6 km²
                         </h1>
                         <span class="fs-5 fw-semi-bold text-black">
-                          Área Territoria
+                          Área Territorial
                         </span>
                       </div>
                     </div>
@@ -252,117 +271,93 @@ function Inicio() {
         </div>
 
         {/* menu de card  */}
-
-        <div class="container mt-0">
-          <div class="row g-4 m-0 justify-content-center">
-            <div class="col-lg-3 col-md-6 espacocard">
-              <div class="team-item rounded p-0 d-flex flex-column align-items-center">
-                <div className="card cardconteudo">
-                  <img
-                    class="img-fluid"
-                    src="./src/assets/cardsaude.png"
-                    alt=""
-                  />
-                  <div class="justify-content-center">
-                    <div class="d-grid gap-2">
-                      <button class="btn btncard font-medium">Saúde</button>
+        <div className="container mt-4">
+          {isMobile ? (
+            <div id="cardCarousel" className="carousel slide" data-bs-ride="carousel" data-bs-touch="true"> {/* Adicionado para permitir deslizar */}
+              <div className="carousel-inner">
+                <div className="carousel-item active">
+                  <div className="d-flex justify-content-center">
+                    <div className="card cardlaranja p-1 text-white mx-2">
+                      <img className="m-3" src={cultura} alt="icone cultura" />
+                      <h6 className="card-title text-center">Cultura</h6>
+                    </div>
+                    <div className="card cardazul p-1 bg-info text-white mx-2">
+                      <img className="m-3" src={rural} alt="icone rural" />
+                      <h6 className="card-title text-center">Turismo Rural</h6>
+                    </div>
+                    <div className="card cardlaranja p-1 bg-warning text-white mx-2">
+                      <img className="m-3" src={hospedagem} alt="icone hotel" />
+                      <h6 className="card-title text-center">Hospedagem</h6>
                     </div>
                   </div>
                 </div>
+                <div className="carousel-item">
+                  <div className="d-flex justify-content-center">
+                    <div className="card cardlaranja p-1 text-white mx-2">
+                      <img className="m-3" src={saude} alt="icone saude" />
+                      <h6 className="card-title text-center">Saúde</h6>
+                    </div>
+                    <div className="card cardazul p-1 text-white mx-2">
+                      <img className="m-3" src={alimentacao} alt="icone alimentação" />
+                      <h6 className="card-title text-center">Alimentação</h6>
+                    </div>
+                    <div className="card cardlaranja p-1 text-white mx-2">
+                      <img className="m-3" src={eventos} alt="icone eventos" />
+                      <h6 className="card-title text-center">Eventos</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button className="carousel-control-prev" type="button" data-bs-target="#cardCarousel" data-bs-slide="prev">
+                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span className="visually-hidden">Previous</span>
+              </button>
+              <button className="carousel-control-next" type="button" data-bs-target="#cardCarousel" data-bs-slide="next">
+                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                <span className="visually-hidden">Next</span>
+              </button>
+            </div>
+          ) : (
+            <div className="row justify-content-center text-center">
+              <div className="card cardlaranja m-2 text-white">
+                <img className="m-3" src={cultura} alt="icone cultura" />
+                <h6 className="card-title">Cultura</h6>
+              </div>
+              <div className="card cardazul m-2 text-white">
+                <img className="m-4" src={rural} alt="icone rural" />
+                <h6 className="card-title">Turismo Rural</h6>
+              </div>
+              <div className="card cardlaranja m-2 text-white">
+                <img className="m-4" src={hospedagem} alt="icone hotel" />
+                <h6 className="card-title">Hospedagem</h6>
+              </div>
+              <div className="card cardazul m-2 text-white">
+                <img className="m-4" src={saude} alt="icone saude" />
+                <h6 className="card-title">Saúde</h6>
+              </div>
+              <div className="card cardlaranja m-2 text-white">
+                <img className="m-4" src={alimentacao} alt="icone alimentação" />
+                <h6 className="card-title">Alimentação</h6>
+              </div>
+              <div className="card cardazul m-2 text-white">
+                <img className="m-4" src={eventos} alt="icone eventos" />
+                <h6 className="card-title">Eventos</h6>
               </div>
             </div>
-            <div class="col-lg-3 col-md-6 espacocard">
-              <div class="team-item rounded p-0 d-flex flex-column align-items-center">
-                <div className="card cardconteudo">
-                  <img
-                    class="img-fluid"
-                    src="./src/assets/cardhospedagem.png"
-                    alt=""
-                  />
-                  <div class="justify-content-center">
-                    <div class="d-grid gap-2">
-                      <button class="btn btncard font-medium">
-                        Hospedagem
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6 espacocard">
-              <div class="team-item rounded p-0 d-flex flex-column align-items-center">
-                <div className="card cardconteudo">
-                  <img
-                    class="img-fluid"
-                    src="./src/assets/cardalimentacao.png"
-                    alt=""
-                  />
-                  <div class="justify-content-center">
-                    <div class="d-grid gap-2">
-                      <button class="btn btncard font-medium">
-                        Alimentação
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row g-4 m-0 justify-content-center">
-            <Link to="/todosEventos" class="col-lg-3 col-md-6 espacocard">
-              <div class="team-item rounded p-0 d-flex flex-column align-items-center">
-                <div className="card cardconteudo">
-                  <img
-                    class="img-fluid"
-                    src="./src/assets/cardeventos.png"
-                    alt=""
-                  />
-                  <div class="justify-content-center">
-                    <div class="d-grid gap-2">
-                      <button class="btn btncard font-medium">Eventos</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-            <Link to="" class="col-lg-3 col-md-6 espacocard">
-              <div class="team-item rounded p-0 d-flex flex-column align-items-center">
-                <div className="card cardconteudo">
-                  <img
-                    class="img-fluid"
-                    src="./src/assets/cardrural.png"
-                    alt=""
-                  />
-                  <div class="justify-content-center">
-                    <div class="d-grid gap-2">
-                      <button class="btn btncard font-medium">
-                        Turismo Rural
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-            <Link to="" class="col-lg-3 col-md-6 espacocard">
-              <div class="team-item rounded p-0 d-flex flex-column align-items-center">
-                <div className="card cardconteudo">
-                  <img
-                    class="img-fluid"
-                    src="./src/assets/cardcultura.png"
-                    alt=""
-                  />
-                  <div class="justify-content-center">
-                    <div class="d-grid gap-2">
-                      <button class="btn btncard font-medium">Cultura</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
+          )}
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
         <div className="inline-flex items-center justify-center w-full mt-5">
           <hr className="w-full h-1 my-6 opacity-100 bg-[#FFD121] border-0 rounded" />

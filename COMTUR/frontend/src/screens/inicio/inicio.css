@@ -319,3 +319,36 @@
 .cardconteudo {
     border: none;
 }
+
+.carousel-item {
+    transition: transform 0.5s ease;
+  }
+  
+  .carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5); /* Cor de fundo para as setas de navegação */
+    border-radius: 50%;
+  }
+  
+  .card {
+    width: 150px; /* Ajustar o tamanho do card */
+  }
+.carousel-item {
+  transition: transform 0.5s ease;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5); /* Cor de fundo para as setas de navegação */
+  border-radius: 50%;
+}
+
+.card {
+  width: 150px; /* Ajustar o tamanho do card */
+}
+.cardlaranja{
+    background-color: #ED7833 !important;
+    border: none;
+}
+.cardazul{
+    background-color: #58AFAE !important;
+       border: none;
+}

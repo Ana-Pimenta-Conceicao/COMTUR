@@ -135,6 +135,8 @@ namespace COMTUR
             services.AddScoped<IAvaliacaoTurismoRepositorio, AvaliacaoTurismoRepositorio>();
             // Dependência: Membro
             services.AddScoped<IMembroRepositorio, MembroRepositorio>();
+            // Dependência: Parametro
+            services.AddScoped<IParametroRepositorio,ParametroRepositorio>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

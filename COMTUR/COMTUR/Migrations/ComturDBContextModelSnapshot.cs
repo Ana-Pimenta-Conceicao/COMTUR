@@ -619,6 +619,85 @@ namespace COMTUR.Migrations
                         });
                 });
 
+            modelBuilder.Entity("COMTUR.Models.ParametroModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("parametroid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AreaTerritorial")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("areaTerritorial");
+
+                    b.Property<string>("Beneficios")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("beneficios");
+
+                    b.Property<DateOnly>("DataFundacao")
+                        .HasColumnType("date")
+                        .HasColumnName("datafundacao");
+
+                    b.Property<string>("DefinicaoTurismo")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("definicaoTurismo");
+
+                    b.Property<string>("DescricaoEntreRios")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("descricaoentrerios");
+
+                    b.Property<string>("DescricaoIT")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("descricaoit");
+
+                    b.Property<string>("DistanciaCapital")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("distanciaCapital");
+
+                    b.Property<string>("Habitantes")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("habitantes");
+
+                    b.Property<string>("ImagemEntreRios")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagementrerios");
+
+                    b.Property<string>("ImagemIT")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imagemit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("parametro");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AreaTerritorial = "368 km²",
+                            Beneficios = "O turismo vai além de viagens e pontos turísticos. Ele impulsiona a economia, gera empregos e valoriza culturas locais. Também promove a preservação ambiental e melhora a infraestrutura das comunidades. Além disso, viajar enriquece o conhecimento, conectando pessoas e transformando realidades.",
+                            DataFundacao = new DateOnly(1941, 4, 15),
+                            DefinicaoTurismo = "Turismo é a arte de explorar o mundo! Envolve viajar para novos destinos em busca de diversão, cultura e aventura. Além de enriquecer a vida dos viajantes, essa prática impulsiona a economia local e promove a troca cultural. Descubra opções incríveis e torne sua próxima viagem inesquecível!",
+                            DescricaoEntreRios = "Descubra Jales, um dos novos Municípios que participam do Entre Rios, que encanta com sua oferta cultural, religiosa e natural. Reconhecida como um centro de referência médica, abriga o Hospital de Câncer de Barretos e uma UPA que atendem mais de dois mil pacientes diariamente. Com um clima ideal para a produção de uvas de mesa, a cidade conta com a Estação Experimental de Viticultura Tropical (EVT), que inova no setor. Em setembro, Jales celebra a Feira da Uva e do Mel e a tradicional Festa do Peão, oferecendo experiências únicas. Venha explorar tudo o que Jales tem a oferecer!",
+                            DescricaoIT = "O município se destaca nacionalmente pelo cultivo da fruticultura, tendo como destaque a produção de uvas finas. Jales é um dos mais novos municípios do Estado e surgiu de um racional plano de arquitetura e urbanismo, que atesta a clarividência de seus primeiros colonizadores.",
+                            DistanciaCapital = "608 km",
+                            Habitantes = "48.776 pessoas",
+                            ImagemEntreRios = "w",
+                            ImagemIT = "s"
+                        });
+                });
+
             modelBuilder.Entity("COMTUR.Models.Relational.AvaliacaoAtracaoModel", b =>
                 {
                     b.Property<int>("Id")

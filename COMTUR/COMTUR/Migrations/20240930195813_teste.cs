@@ -48,6 +48,28 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "parametro",
+                columns: table => new
+                {
+                    parametroid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    definicaoTurismo = table.Column<string>(type: "text", nullable: false),
+                    beneficios = table.Column<string>(type: "text", nullable: false),
+                    datafundacao = table.Column<DateOnly>(type: "date", nullable: false),
+                    areaTerritorial = table.Column<string>(type: "text", nullable: false),
+                    distanciaCapital = table.Column<string>(type: "text", nullable: false),
+                    habitantes = table.Column<string>(type: "text", nullable: false),
+                    descricaoentrerios = table.Column<string>(type: "text", nullable: false),
+                    imagementrerios = table.Column<string>(type: "text", nullable: false),
+                    descricaoit = table.Column<string>(type: "text", nullable: false),
+                    imagemit = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_parametro", x => x.parametroid);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "usuario",
                 columns: table => new
                 {
@@ -502,6 +524,11 @@ namespace COMTUR.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "parametro",
+                columns: new[] { "parametroid", "areaTerritorial", "beneficios", "datafundacao", "definicaoTurismo", "descricaoentrerios", "descricaoit", "distanciaCapital", "habitantes", "imagementrerios", "imagemit" },
+                values: new object[] { 1, "368 km²", "O turismo vai além de viagens e pontos turísticos. Ele impulsiona a economia, gera empregos e valoriza culturas locais. Também promove a preservação ambiental e melhora a infraestrutura das comunidades. Além disso, viajar enriquece o conhecimento, conectando pessoas e transformando realidades.", new DateOnly(1941, 4, 15), "Turismo é a arte de explorar o mundo! Envolve viajar para novos destinos em busca de diversão, cultura e aventura. Além de enriquecer a vida dos viajantes, essa prática impulsiona a economia local e promove a troca cultural. Descubra opções incríveis e torne sua próxima viagem inesquecível!", "Descubra Jales, um dos novos Municípios que participam do Entre Rios, que encanta com sua oferta cultural, religiosa e natural. Reconhecida como um centro de referência médica, abriga o Hospital de Câncer de Barretos e uma UPA que atendem mais de dois mil pacientes diariamente. Com um clima ideal para a produção de uvas de mesa, a cidade conta com a Estação Experimental de Viticultura Tropical (EVT), que inova no setor. Em setembro, Jales celebra a Feira da Uva e do Mel e a tradicional Festa do Peão, oferecendo experiências únicas. Venha explorar tudo o que Jales tem a oferecer!", "O município se destaca nacionalmente pelo cultivo da fruticultura, tendo como destaque a produção de uvas finas. Jales é um dos mais novos municípios do Estado e surgiu de um racional plano de arquitetura e urbanismo, que atesta a clarividência de seus primeiros colonizadores.", "608 km", "48.776 pessoas", "w", "s" });
+
+            migrationBuilder.InsertData(
                 table: "usuario",
                 columns: new[] { "usuarioid", "emailusuario", "idusuario", "imagemperfilusuario", "nome", "senhausuario", "statustipoatracao", "telefone", "tipousuario" },
                 values: new object[,]
@@ -775,6 +802,9 @@ namespace COMTUR.Migrations
 
             migrationBuilder.DropTable(
                 name: "membros");
+
+            migrationBuilder.DropTable(
+                name: "parametro");
 
             migrationBuilder.DropTable(
                 name: "sessao");

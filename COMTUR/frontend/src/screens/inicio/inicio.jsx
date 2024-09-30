@@ -14,10 +14,12 @@ function Inicio() {
   const [outrasNoticias, setOutrasNoticias] = useState([]);
   const [atualizarData, setAtualizarData] = useState(true);
   const [turismo, setTurismo] = useState([]);
+  const [parametro, setParametro] = useState([]);
   const navigate = useNavigate();
   const baseUrl = "https://localhost:7256/api/Noticia";
   const [isMobile, setIsMobile] = useState(false);
 
+  const baseUrlParametro = "https://localhost:7256/api/Parametro/1";
   const { id } = useParams();
   const baseUrlTurismo = "https://localhost:7256/api/Turismo";
   const [currentTurismoIndex, setCurrentTurismoIndex] = useState(0);
@@ -29,6 +31,16 @@ function Inicio() {
         (turismo) => turismo.status === 2
       );
       setTurismo(turismosFiltrados);
+    } catch (error) {
+      console.log("API error:", error);
+    }
+  };
+
+  const pedidoGetParametro = async () => {
+    try {
+      const response = await axios.get(baseUrlParametro);
+      setParametro(response.data);
+      console.log(parametro);
     } catch (error) {
       console.log("API error:", error);
     }
@@ -55,6 +67,14 @@ function Inicio() {
       window.removeEventListener("resize", handleResize); // Limpa o listener ao desmontar
     };
   }, []);
+
+  useEffect(() => {
+    if (atualizarData) {
+      console.log("useEffect executed");
+      pedidoGetParametro();
+      setAtualizarData(false);
+    }
+  }, [atualizarData]);
 
   useEffect(() => {
     if (atualizarData) {
@@ -146,9 +166,19 @@ function Inicio() {
             <div class="row g-5 align-items-center">
               <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                 <p class="section-title bg-white text-start text-black pe-3">
-                  VENHA CONHECER
+                  O QUE É TURISMO?
                 </p>
-                <h1 class="mb-4">Sejam Bem Vindos ao Comtur!</h1>
+                <h1 class="mb-4">Conheça mais sobre a cidade de Jales!</h1>
+                <div className="flex relative items-center bg-black">
+        
+                </div>
+                {parametro && ( // Verifique se 'parametro' não é null
+        <div>
+          <h1 className="text-black">
+            {parametro.definicaoTurismo} a
+          </h1>
+        </div>
+      )}
                 <p class="mb-4">
                   Mais do que um guia. Uma experiência turística e moderna!
                   Mergulhe em uma experiência única, onde a modernidade se
@@ -346,19 +376,6 @@ function Inicio() {
             </div>
           )}
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div className="inline-flex items-center justify-center w-full mt-5">
           <hr className="w-full h-1 my-6 opacity-100 bg-[#FFD121] border-0 rounded" />
           <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">

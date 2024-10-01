@@ -64,6 +64,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
     },
     { title: "Empresas", src: "empresa", iconSrc: "Empresa" },
     { title: "Membros", src: "membro", iconSrc: "user-focus" },
+    { title: "Parâmetros", src: "parametro", iconSrc: "user-focus" },
     { title: "Eventos", src: "Eventos", iconSrc: "Eventos" },
     {
       title: "Turismos",

@@ -168,125 +168,106 @@ function Inicio() {
                 <p class="section-title bg-white text-start text-black pe-3">
                   O QUE É TURISMO?
                 </p>
-                <h1 class="mb-4">Conheça mais sobre a cidade de Jales!</h1>
-                <div className="flex relative items-center bg-black">
-        
-                </div>
-                {parametro && ( // Verifique se 'parametro' não é null
-        <div>
-          <h1 className="text-black">
-            {parametro.definicaoTurismo} a
-          </h1>
-        </div>
-      )}
-                <p class="mb-4">
-                  Mais do que um guia. Uma experiência turística e moderna!
-                  Mergulhe em uma experiência única, onde a modernidade se
-                  encontra com a criatividade para revelar o melhor da nossa
-                  cidade
-                </p>
-                <p>
-                  <i class="fa fa-check text-black me-3"></i>Explore Pontos
-                  Turísticos e Atrações
-                </p>
-                <p>
-                  <i class="fa fa-check text-black me-3"></i>Descubra Eventos
-                  Imperdíveis
-                </p>
-                <p>
-                  <i class="fa fa-check text-black me-3"></i>Mantenha-se
-                  Atualizado{" "}
-                </p>
+                <h1 class="mb-3">Conheça mais sobre a cidade de Jales!</h1>
 
-                <button
-                  class="btn btnmais rounded-pill py-3 px-5 mt-3"
-                  onClick={() => {
-                    navigate(`/todosTurismos`);
-                  }}
-                >
+                {parametro && ( // Verifique se 'parametro' não é null
+                  <div>
+                    <p className="mb-4 text-gray-900" >
+                      {parametro.definicaoTurismo} a
+                    </p>
+                    <p>
+                      <i class="fa fa-check text-[#fabc0b] me-1"></i> {parametro.beneficios}
+                    </p>
+                  </div>
+                )}
+                <button class="btn btnmais rounded-pill py-3 px-5 mt-3 text-[#fefefe]" onClick={() => { navigate(`/todosTurismos`) }}>
                   Explorar
                 </button>
               </div>
-              <div class="col-lg-6">
-                <div class="rounded overflow-hidden">
-                  <div class="row g-0">
-                    <div class="col-sm-6 wow fadeIn">
-                      <div class="text-center bg-black py-5 px-4">
-                        <div class="d-flex justify-content-center">
-                          <img
-                            class="img-fluid mb-4"
-                            src="./src/assets/experience.png"
-                            alt=""
-                          />
+              {parametro && (
+                <div class="col-lg-6  text-[#fefefe]">
+                  <div class="rounded overflow-hidden">
+                    <div class="row g-0">
+                      <div class="col-sm-6 wow fadeIn">
+                        <div class="text-center bg-[#58afae] py-5 px-4">
+                          <div class="d-flex justify-content-center">
+                            <img
+                              class="img-fluid mb-4"
+                              src="./src/assets/experience.png"
+                              alt=""
+                            />
+                          </div>
+                          <h1
+                            class="display-6 text-white"
+                            data-toggle="counter-up"
+                          >
+                            {parametro.dataFundacao}
+
+                          </h1>
+                          <span class="fs-5 fw-semi-bold text-[#727272]">
+                            Anos de Fundação
+                          </span>
                         </div>
-                        <h1
-                          class="display-6 text-white"
-                          data-toggle="counter-up"
-                        >
-                          83
-                        </h1>
-                        <span class="fs-5 fw-semi-bold text-secondary">
-                          Anos de Fundação
-                        </span>
                       </div>
-                    </div>
-                    <div class="col-sm-6 wow fadeIn">
-                      <div class="text-center bg-warning py-5 px-4">
-                        <div class="d-flex justify-content-center">
-                          <img
-                            class="img-fluid mb-4"
-                            src="./src/assets/award.png"
-                            alt=""
-                          />
+                      <div class="col-sm-6 bg-[#064d56] wow fadeIn">
+                        <div class="text-center bg-[#064d56] py-5 px-4">
+                          <div class="d-flex justify-content-center">
+                            <img
+                              class="img-fluid mb-4"
+                              src="./src/assets/award.png"
+                              alt=""
+                            />
+                          </div>
+                          <h1 class="display-6" data-toggle="counter-up">
+                            {parametro.areaTerritorial}
+                            
+                          </h1>
+                          <span class="fs-5 fw-semi-bold text-white">
+                            Área Territorial
+                          </span>
                         </div>
-                        <h1 class="display-6" data-toggle="counter-up">
-                          368,6 km²
-                        </h1>
-                        <span class="fs-5 fw-semi-bold text-black">
-                          Área Territorial
-                        </span>
                       </div>
-                    </div>
-                    <div class="col-sm-6 wow fadeIn">
-                      <div class="text-center bg-warning py-5 px-4">
-                        <div class="d-flex justify-content-center">
-                          <img
-                            class="img-fluid mb-4"
-                            src="./src/assets/animal.png"
-                            alt=""
-                          />
+                      <div class="col-sm-6 bg-[#064d56] wow fadeIn">
+                        <div class="text-center bg-[#064d56] py-5 px-4">
+                          <div class="d-flex justify-content-center">
+                            <img
+                              class="img-fluid mb-4"
+                              src="./src/assets/animal.png"
+                              alt=""
+                            />
+                          </div>
+                          <h1 class="display-6" data-toggle="counter-up">
+                          {parametro.distanciaCapital}
+                          </h1>
+                          <span class="fs-5 fw-semi-bold text-white">
+                            da cidade de São Paulo
+                          </span>
                         </div>
-                        <h1 class="display-6" data-toggle="counter-up">
-                          586 km
-                        </h1>
-                        <span class="fs-5 fw-semi-bold text-black">
-                          da cidade de São Paulo
-                        </span>
                       </div>
-                    </div>
-                    <div class="col-sm-6 wow fadeIn">
-                      <div class="text-center bg-black py-5 px-4">
-                        <div class="d-flex justify-content-center">
-                          <img
-                            class="img-fluid mb-4"
-                            src="./src/assets/client.png"
-                            alt=""
-                          />
+                      <div class="col-sm-6 wow fadeIn">
+                        <div class="text-center  bg-[#ed7833] py-5 px-4">
+                          <div class="d-flex justify-content-center">
+                            <img
+                              class="img-fluid mb-4"
+                              src="./src/assets/client.png"
+                              alt=""
+                            />
+                          </div>
+                          <h1
+                            class="display-6 text-white"
+                            data-toggle="counter-up"
+                          >
+                            {parametro.habitantes}
+                          </h1>
+                          <span class="fs-5 fw-semi-bold text-secondary">
+                            Habitantes
+                          </span>
                         </div>
-                        <h1
-                          class="display-6 text-white"
-                          data-toggle="counter-up"
-                        >
-                          49.201
-                        </h1>
-                        <span class="fs-5 fw-semi-bold text-secondary">
-                          Habitantes
-                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

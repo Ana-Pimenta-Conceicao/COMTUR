@@ -18,18 +18,18 @@
 
 .btncard {
     border-radius: 0;
-    background-color: #FFD121 !important;
+    background-color: #58afae !important;
 
 }
 
 .retanguloamarelo {
-    background-color: #FFD121 !important;
+    background-color: #58afae !important;
 }
 
 /********** Template CSS **********/
 :root {
-    --primary: #FFD121;
-    --secondary: #EDDD5E;
+    --primary: #fabc0b;
+    --secondary: #58afae;
     --light: #F7F7F7;
     --dark: #000000;
 }
@@ -290,7 +290,7 @@
 }
 
 .btnmais {
-    background-color: #ffd121;
+    background-color: #58AFAE;
     color: #373636;
     border: none;
     border-radius: 50px;

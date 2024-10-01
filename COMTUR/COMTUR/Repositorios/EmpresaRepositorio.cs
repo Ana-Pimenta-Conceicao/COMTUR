@@ -26,10 +26,10 @@ namespace COMTUR.Repositorios
 
 		public async Task<EmpresaModel> BuscarPorId(int id)
 		{
-			return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).FirstOrDefaultAsync(x => x.Id == id);
+			return await _dbContext.Empresa.FirstOrDefaultAsync(x => x.Id == id);
 		}
 
-		public async Task<EmpresaModel> GetById(int id)
+		public async Task<EmpresaModel> GetByIdUsuario(int id)
 		{
 			return await _dbContext.Empresa.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
@@ -41,14 +41,8 @@ namespace COMTUR.Repositorios
 
 		public async Task<List<EmpresaModel>> BuscarEmpresa()
 		{
-			return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).ToListAsync();
+			return await _dbContext.Empresa.ToListAsync();
 		}
-
-        public async Task<List<EmpresaModel>> BuscarPorIdUsuario(int idUsuario)
-        {
-            return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).Where(empresa => empresa.IdUsuario == idUsuario).ToListAsync();
-        }
-
         public async Task<EmpresaModel> Adicionar(EmpresaModel empresaModel)
 		{
 
@@ -71,7 +65,6 @@ namespace COMTUR.Repositorios
 			empresaPorId.Nome = empresaModel.Nome;
 			empresaPorId.CNPJ = empresaModel.CNPJ;
 			empresaPorId.Endereco = empresaModel.Endereco;
-			empresaPorId.Descricao = empresaModel.Descricao;
             empresaPorId.IdUsuario = empresaModel.IdUsuario;
 			empresaPorId.IdTipoTurismo = empresaModel.IdTipoTurismo;
 
@@ -94,15 +87,6 @@ namespace COMTUR.Repositorios
 			await _dbContext.SaveChangesAsync();
 
 			return true;
-		}
-
-		public async Task<List<ImagemEmpresaModel>> BuscarImagensPorEmpresaId(int EmpresaId)
-		{
-			// Use o Entity Framework para consultar as imagens associadas a uma empresa específica
-			var imagens = await _dbContext.ImagemEmpresa
-										   .Where(imagem => imagem.IdEmpresa == EmpresaId)
-										   .ToListAsync();
-			return imagens;
 		}
 	}
 }

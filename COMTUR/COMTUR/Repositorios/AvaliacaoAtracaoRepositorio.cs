@@ -2,13 +2,12 @@
 using COMTUR.Data;
 using COMTUR.Models;
 using COMTUR.Models.Enum;
-using COMTUR.Models.Relational;
 using COMTUR.Repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace COMTUR.Repositorios
 {
-	public class AvaliacaoAtracaoRepositorio : IAvaliacaoAtracaoRepositorio
+    public class AvaliacaoAtracaoRepositorio : IAvaliacaoAtracaoRepositorio
 	{
 		private readonly IAvaliacaoAtracaoRepositorio _AvaliacaoAtracaoRepositorio;
 		private readonly IMapper _mapper;

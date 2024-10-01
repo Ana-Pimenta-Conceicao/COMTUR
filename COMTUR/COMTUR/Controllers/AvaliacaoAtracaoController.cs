@@ -1,6 +1,5 @@
 ﻿using COMTUR.Models;
 using COMTUR.Models.Enum;
-using COMTUR.Models.Relational;
 using COMTUR.Repositorios;
 using COMTUR.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace COMTUR.Controllers
 {
 
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class AvaliacaoAtracaoController : Controller
 	{

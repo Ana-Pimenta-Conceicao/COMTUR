@@ -11,21 +11,10 @@ namespace COMTUR.Controllers
 	public class EmpresaController : ControllerBase
 	{
 		private readonly IEmpresaRepositorio _empresaRepositorio;
-		private readonly IImagemEmpresaRepositorio _imagemEmpresaRepositorio;
 
-
-		public EmpresaController(IEmpresaRepositorio EmpresaRepositorio, IImagemEmpresaRepositorio imagemEmpresaRepositorio)
+		public EmpresaController(IEmpresaRepositorio EmpresaRepositorio)
 		{
 			_empresaRepositorio = EmpresaRepositorio;
-			_imagemEmpresaRepositorio = imagemEmpresaRepositorio;
-		}
-
-		[HttpPost("{empresaId}/imagens")]
-		public IActionResult AdicionarImagem(int empresaId, [FromForm] ImagemEmpresaModel imagem)
-		{
-			imagem.IdEmpresa = empresaId;
-			_imagemEmpresaRepositorio.Adicionar(imagem);
-			return Ok();
 		}
 
 		[HttpGet("{id}/tipoturismo")]
@@ -60,19 +49,12 @@ namespace COMTUR.Controllers
 		[HttpGet("{id}/usuario")]
 		public async Task<ActionResult<List<EmpresaModel>>> BuscarPorIdUsuario(int id)
 		{
-			var empresas = await _empresaRepositorio.BuscarPorIdUsuario(id);
-			if (!empresas.Any())
+			EmpresaModel empresa = await _empresaRepositorio.GetByIdUsuario(id);
+			if (empresa == null)
 			{
-				return NotFound($"Usuario com ID {id} não encontrada.");
+				return NotFound($"Usuario com ID {id} não encontrado.");
 			}
-			return Ok(empresas);
-		}
-
-		[HttpGet("{id}/imagens")]
-		public async Task<ActionResult<List<string>>> BuscarImagensPorEmpresaId(int empresaId)
-		{
-			var imagens = await _empresaRepositorio.BuscarImagensPorEmpresaId(empresaId);
-			return Ok(imagens);
+			return Ok(empresa);
 		}
 
 		[HttpPost]

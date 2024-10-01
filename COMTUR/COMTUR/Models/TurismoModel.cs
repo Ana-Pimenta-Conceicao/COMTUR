@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using COMTUR.Models.Enum;
-using COMTUR.Models.Relational;
 
 namespace COMTUR.Models
 {

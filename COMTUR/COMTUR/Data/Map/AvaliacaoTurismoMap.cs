@@ -1,11 +1,10 @@
 ﻿using COMTUR.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using COMTUR.Models.Relational;
 
 namespace COMTUR.Data.Map
 {
-	public class AvaliacaoTurismoModelMap : IEntityTypeConfiguration<AvaliacaoTurismoModel>
+    public class AvaliacaoTurismoModelMap : IEntityTypeConfiguration<AvaliacaoTurismoModel>
 	{
 		public void Configure(EntityTypeBuilder<AvaliacaoTurismoModel> builder)
 		{

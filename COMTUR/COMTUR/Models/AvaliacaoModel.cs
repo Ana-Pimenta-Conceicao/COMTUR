@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using COMTUR.Models.Enum;
-using COMTUR.Models.Relational;
 
 namespace COMTUR.Models
 {
@@ -38,9 +37,6 @@ namespace COMTUR.Models
 
         [JsonIgnore]
         public ICollection<AvaliacaoAtracaoModel>? AvaliacaoAtracoes { get; set; }
-
-        [JsonIgnore]
-        public ICollection<AvaliacaoEmpresaModel>? AvaliacaoEmpresaModels { get; set; }
 
         [JsonIgnore]
         public ICollection<AvaliacaoTurismoModel>? AvaliacaoTurismoModels { get; set; }

@@ -1,9 +1,9 @@
-﻿using COMTUR.Models.Enum;
-using COMTUR.Models.Relational;
+﻿using COMTUR.Models;
+using COMTUR.Models.Enum;
 
 namespace COMTUR.Repositorios.Interfaces
 {
-	public interface IAvaliacaoAtracaoRepositorio
+    public interface IAvaliacaoAtracaoRepositorio
 	{
 		Task<List<AvaliacaoAtracaoModel>> BuscarAvaliacaoAtracaoModel();
         Task<List<AvaliacaoAtracaoModel>> BuscarPorIdAtracao(int idAtracao);

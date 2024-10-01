@@ -41,7 +41,7 @@ namespace COMTUR.Controllers
 			TipoTurismoModel tipo = await _tipoTurismoRepositorio.GetByIdUsuario(id);
 			if (tipo == null)
 			{
-				return NotFound($"Usuario com ID {id} não encontrada.");
+				return NotFound($"Usuario com ID {id} não encontrado.");
 			}
 			return Ok(tipo);
 		}

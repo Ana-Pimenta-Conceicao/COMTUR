@@ -26,7 +26,7 @@ namespace COMTUR.Models
         public string DistanciaCapital { get; set; }
 
         [Column("habitantes")]
-        public string Habitantes { get; set; }
+        public int Habitantes { get; set; }
         
         [Column("descricaoentrerios")]
         public string DescricaoEntreRios { get; set; }

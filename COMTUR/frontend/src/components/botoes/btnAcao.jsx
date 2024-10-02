@@ -10,7 +10,7 @@ const BtnAcao = ({ funcao, acao, objeto }) => {
       Excluir: "bg-[#D30000] hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800",
       Visualizar: "bg-[#3F3F3F] hover:bg-[#222222] dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
       Publicados: "bg-[#1F9D93] hover:bg-[#00847A]",
-      Cadastrar: "bg-[#FFD121] hover:bg-[#EEBB4D] px-3",
+      Cadastrar: "bg-[#FABC0B] hover:bg-[#EEBB4D] px-3",
       VisualizarMais: "bg-[#FFD121] hover:bg-[#EEBB4D] px-3",
       CadastrarTipo: "bg-black hover:bg-[#EEBB4D] px-3"
     }

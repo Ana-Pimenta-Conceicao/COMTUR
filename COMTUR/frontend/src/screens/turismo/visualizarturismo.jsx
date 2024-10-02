@@ -4,14 +4,7 @@ import NavbarUsr from "../../components/user/navbarUsr.jsx";
 import FooterUsr from "../../components/user/footerUsr.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 import BtnAcao from "../../components/botoes/btnAcao.jsx";
-import {
-  CaretRight,
-  CaretLeft,
-  Star,
-  MapPinLine,
-  Clock,
-  CalendarCheck,
-} from "@phosphor-icons/react";
+import { CaretRight, CaretLeft, Star, MapPinLine, Clock, CalendarCheck, } from "@phosphor-icons/react";
 import GaleriaAtracao from "../../components/cards/GaleriaAtracao";
 
 export default function VisualizarTurismos() {
@@ -85,7 +78,7 @@ export default function VisualizarTurismos() {
                 <div className="relative w-full h-[200px] sm:h-[400px] lg:h-[500px] mb-8">
                   {turismo.imagemTurismo.length > 1 && (
                     <button
-                      className="absolute top-1/2 left-0 z-10 transform -translate-y-1/2 text-white bg-[#FFD121] p-2 m-2 rounded-full opacity-90 hover:opacity-100 focus:outline-none"
+                      className="absolute top-1/2 left-0 z-10 transform -translate-y-1/2 text-white bg-[#58AFAE] p-2 m-2 rounded-full opacity-90 hover:opacity-100 focus:outline-none"
                       onClick={prevSlide}
                     >
                       <CaretLeft size={24} />
@@ -94,7 +87,7 @@ export default function VisualizarTurismos() {
 
                   {turismo.imagemTurismo.length > 1 && (
                     <button
-                      className="absolute top-1/2 right-0 z-10 transform -translate-y-1/2 text-white bg-[#FFD121] opacity-90 hover:opacity-100 p-2 m-2 rounded-full focus:outline-none"
+                      className="absolute top-1/2 right-0 z-10 transform -translate-y-1/2 text-white bg-[#58AFAE] opacity-90 hover:opacity-100 p-2 m-2 rounded-full focus:outline-none"
                       onClick={nextSlide}
                     >
                       <CaretRight size={24} />
@@ -115,7 +108,7 @@ export default function VisualizarTurismos() {
                   )}
                 </div>
 
-                <div className="flex flex-row w-full justify-start items-center text-[#FFD121] ml-6">
+                <div className="flex flex-row w-full justify-start items-center text-[#ED7833] ml-6">
                   <Star size={20} />
                   <Star size={20} />
                   <Star size={20} />
@@ -125,47 +118,47 @@ export default function VisualizarTurismos() {
                 </div>
 
                 <div className="flex w-full justify-center items-center pt-2">
-                  <hr className="w-11/12 mb-2 h-[1px] bg-gray-200 rounded" />
+                  <hr className="w-11/12 mb-2 h-[1px] text-[#58AFAE] rounded" />
                 </div>
 
-                <div className="sm:px-16">
-                  <div className="flex flex-row ml-6 gap-2 items-center">
+                <div className="sm:px-16 ">
+                  <div className="flex flex-row ml-6 gap-2 items-center text-sm text-white">
                     <a
                       href={`https://www.google.com/maps/search/?api=1&query=${turismo.local}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <button className="flex justify-center items-center w-[30px] h-6 bg-black text-sm text-[#FFD121] rounded-md">
+                      <button className="flex justify-center items-center bg-[#064D56] w-[30px] h-6 rounded-md">
                         <MapPinLine size={18} />
                       </button>
                     </a>
                     <button
-                      className="flex flex-start justify-start items-center w-full h-6 text-xs pl-1"
+                      className="flex flex-start justify-start items-center text-gray-900 w-full h-6 text-xs pl-1"
                       onClick={() => abrirGoogleMaps(turismo.local)}
                     >
                       {turismo.local}
                     </button>
                   </div>
 
-                  <div className="flex flex-row ml-6 pt-2 gap-2 items-center">
-                    <button className="flex justify-center items-center w-[30px] h-6 bg-black text-sm text-[#FFD121] rounded-md">
+                  <div className="flex flex-row ml-6 pt-2 gap-2   text-white items-center">
+                    <button className="flex justify-center items-center w-[30px]  bg-[#064D56] h-6 rounded-md">
                       <CalendarCheck size={18} />
                     </button>
-                    <button className="flex flex-start justify-start items-center w-full h-6 text-xs pl-1">
+                    <button className="flex flex-start justify-start text-gray-900 items-center w-full h-6 text-xs pl-1">
                       {turismo.diaFuncionamento}
                     </button>
                   </div>
 
-                  <div className="flex flex-row ml-6 pt-2 gap-2 pb-4 items-center">
-                    <button className="flex justify-center items-center w-[30px] h-6 bg-black text-sm text-[#FFD121] rounded-md">
+                  <div className="flex flex-row ml-6 pt-2 gap-2 pb-4  text-white  items-center">
+                    <button className="flex justify-center items-center w-[30px]  bg-[#064D56] h-6 rounded-md">
                       <Clock size={18} />
                     </button>
-                    <button className="flex flex-start justify-start items-center w-full h-6 text-xs pl-1">
+                    <button className="flex flex-start justify-start text-gray-900  items-center w-full h-6 text-xs pl-1">
                       {turismo.horario}
                     </button>
                   </div>
                 </div>
-                <hr className="flex float-right w-3/4 pb-4  border-[1.5px] border-[#000000]" />
+                <hr className="flex float-right w-3/4 pb-4 text-[#58AFAE]  border-[1.5px]" />
                 <h3 className="flex w-full mt-4 font-semibold sm:font-bold text-sm sm:text-lg pl-3 sm:pl-6">
                   Mais informações sobre o(a) {turismo.nome}{" "}
                 </h3>
@@ -175,9 +168,9 @@ export default function VisualizarTurismos() {
               </div>
             </div>
 
-            <div className="flex w-full justify-center items-center mt-3 mb-4 bg-black h-[330px]">
+            <div className="flex w-full justify-center items-center mt-3 mb-4 bg-[#064D56]  h-[330px]">
               <div className="flex flex-col w-full">
-                <h2 className="text-[#FFD121] text-base font-bold text-center pb-3">
+                <h2 className="text-white text-base font-bold text-center pb-3">
                   GALERIA DE ATRAÇÕES
                 </h2>
                 <GaleriaAtracao identi={turismo.id} />

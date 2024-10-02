@@ -165,7 +165,7 @@ export default function Login() {
   }, [showSignupForm]);
 
   return (
-    <div className="flex justify-center md:items-center bg-black w-full min-h-screen">
+    <div className="flex justify-center md:items-center bg-[#064D56] w-full min-h-screen">
       <div className="absolute left-0 top-0">
         <div
           className="relative flex text-lg text-white pt-4 pl-2 items-center cursor-pointer"
@@ -228,7 +228,7 @@ export default function Login() {
                             onChange={(e) => setSenha(e.target.value)}
                           />
                           <button
-                            className="btn flex w-[20%] h-[40px] justify-center bg-white text-black  border-y-[#DBDBDB] border-r-[#DBDBDB] hover:text-[#FFD121]"
+                            className="btn flex w-[20%] h-[40px] justify-center bg-white text-black  border-y-[#DBDBDB] border-r-[#DBDBDB] "
                             type="button"
                             onClick={togglePasswordVisibility}
                           >
@@ -241,12 +241,12 @@ export default function Login() {
                         </div>
                       </div>
 
-                      <label htmlFor="erro" className="font-semibold pt-4 ml-4 text-red-600 2xl:text-xl" > {erroLogin} </label>
+                      <label htmlFor="erro" className="font-semibold pt-4 ml-4 text-[#ED7833] 2xl:text-xl" > {erroLogin} </label>
 
                       <div className="flex flex-col w-full justify-center pt-4 px-4">
                         <button
                           ref={loginButtonRef}
-                          className="text-white 2xl:text-2xl text-lg bg-black w-full h-[50px] rounded-md"
+                          className="text-white 2xl:text-2xl text-lg bg-[#58AFAE] hover:scale-105 w-full h-[50px] rounded-md"
                           onClick={(e) => login()}
                         >
                           Entrar

@@ -657,9 +657,8 @@ namespace COMTUR.Migrations
                         .HasColumnType("text")
                         .HasColumnName("distanciaCapital");
 
-                    b.Property<string>("Habitantes")
-                        .IsRequired()
-                        .HasColumnType("text")
+                    b.Property<int>("Habitantes")
+                        .HasColumnType("integer")
                         .HasColumnName("habitantes");
 
                     b.Property<string>("ImagemEntreRios")
@@ -687,7 +686,7 @@ namespace COMTUR.Migrations
                             DescricaoEntreRios = "Descubra Jales, um dos novos Municípios que participam do Entre Rios, que encanta com sua oferta cultural, religiosa e natural. Reconhecida como um centro de referência médica, abriga o Hospital de Câncer de Barretos e uma UPA que atendem mais de dois mil pacientes diariamente. Com um clima ideal para a produção de uvas de mesa, a cidade conta com a Estação Experimental de Viticultura Tropical (EVT), que inova no setor. Em setembro, Jales celebra a Feira da Uva e do Mel e a tradicional Festa do Peão, oferecendo experiências únicas. Venha explorar tudo o que Jales tem a oferecer!",
                             DescricaoIT = "O município se destaca nacionalmente pelo cultivo da fruticultura, tendo como destaque a produção de uvas finas. Jales é um dos mais novos municípios do Estado e surgiu de um racional plano de arquitetura e urbanismo, que atesta a clarividência de seus primeiros colonizadores.",
                             DistanciaCapital = "608 km",
-                            Habitantes = "48.776 pessoas",
+                            Habitantes = 48776,
                             ImagemEntreRios = "w",
                             ImagemIT = "s"
                         });

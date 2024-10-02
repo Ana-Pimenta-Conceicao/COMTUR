@@ -90,7 +90,7 @@ export default function TodosTurismos() {
         </h1>
       </div>
 
-      <hr class="pb-4 border-[1.5px] border-black  w-75 ml-auto" />
+      <hr class="pb-4 border-[1.5px] text-[#58AFAE]   w-75 ml-auto" />
       <div className="">
         {turismo.length > 0 && (
           <div
@@ -117,12 +117,14 @@ export default function TodosTurismos() {
           </h3>
         )}
       </div>
-      <div className="inline-flex items-center justify-center w-full pt-4">
-        <hr className="w-full h-1 my-8 opacity-100 bg-[#FFD121] border-0 rounded" />
-        <div className="absolute justify-center items-center px-[18px] sm:px-4 -translate-x-1/2 bg-white left-1/2">
-          <h1 className="text-[#373636] text-xl font-bold uppercase sm:text-3xl">Pontos Turísticos</h1>
+      <div className="inline-flex items-center justify-center w-full p-4">
+          <hr className="w-full h-1 my-6 opacity-100 bg-[#58AFAE] border-0 rounded" />
+          <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">
+            <h1 className="text-[#373636] sm:text-2xl text-sm font-bold px-6">
+              PONTOS TURÍSTICOS
+            </h1>
+          </div>
         </div>
-      </div>
       <div className="">
         <div className="flex items-center space-x-4">
           <div className="ml-auto inline-flex items-center">

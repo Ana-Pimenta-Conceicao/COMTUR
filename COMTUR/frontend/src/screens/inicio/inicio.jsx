@@ -18,7 +18,7 @@ function Inicio() {
   const navigate = useNavigate();
   const baseUrl = "https://localhost:7256/api/Noticia";
   const [isMobile, setIsMobile] = useState(false);
-
+  const [idadeMunicipio, setIdadeMunicipio] = useState(0);
   const baseUrlParametro = "https://localhost:7256/api/Parametro/1";
   const { id } = useParams();
   const baseUrlTurismo = "https://localhost:7256/api/Turismo";
@@ -40,11 +40,22 @@ function Inicio() {
     try {
       const response = await axios.get(baseUrlParametro);
       setParametro(response.data);
-      console.log(parametro);
+      if (response.data.dataFundacao) {
+        calcularIdadeMunicipio(response.data.dataFundacao);
+      }
     } catch (error) {
       console.log("API error:", error);
     }
   };
+  
+  const calcularIdadeMunicipio = (dataFundacao) => {
+    const dataFundacaoObj = new Date(dataFundacao);
+    const anoFundacao = dataFundacaoObj.getFullYear();
+    const anoAtual = new Date().getFullYear();
+    const idade = anoAtual - anoFundacao;
+    setIdadeMunicipio(idade);
+  };
+  
 
   function formatarDataParaExibicao(data) {
     const partes = data.split("-");
@@ -147,7 +158,7 @@ function Inicio() {
                   {turismo[currentTurismoIndex].nome}
                 </h3>
                 <button
-                  className="mx-32 sm:mx-[550px] py-1 border-3 rounded-sm border-[#FFD121] text-xs sm:text-2xl font-medium text-slate-50 bg-transparent hover:bg-[#FFD121] transition-colors duration-300"
+                  className="mx-32 sm:mx-[550px] py-1 border-3 rounded-sm border-[#ED7833] text-xs sm:text-2xl font-medium text-slate-50 bg-transparent transition-colors duration-300"
                   onClick={() => {
                     navigate(
                       `/visualizarTurismo/${turismo[currentTurismoIndex].id}`
@@ -180,7 +191,7 @@ function Inicio() {
                     </p>
                   </div>
                 )}
-                <button class="btn btnmais rounded-pill py-3 px-5 mt-3 text-[#fefefe]" onClick={() => { navigate(`/todosTurismos`) }}>
+                <button class="btn btnmais rounded-pill hover:scale-105 py-3 px-5 mt-3 text-[#fefefe]" onClick={() => { navigate(`/todosTurismos`) }}>
                   Explorar
                 </button>
               </div>
@@ -201,10 +212,10 @@ function Inicio() {
                             class="display-6 text-white"
                             data-toggle="counter-up"
                           >
-                            {parametro.dataFundacao}
+                            {idadeMunicipio}
 
                           </h1>
-                          <span class="fs-5 fw-semi-bold text-[#727272]">
+                          <span class="fs-5 fw-semi-bold text-white">
                             Anos de Fundação
                           </span>
                         </div>
@@ -259,7 +270,7 @@ function Inicio() {
                           >
                             {parametro.habitantes}
                           </h1>
-                          <span class="fs-5 fw-semi-bold text-secondary">
+                          <span class="fs-5 fw-semi-bold text-white">
                             Habitantes
                           </span>
                         </div>
@@ -273,9 +284,9 @@ function Inicio() {
         </div>
 
         <div className="inline-flex items-center justify-center w-full p-4">
-          <hr className="w-full h-1 my-6 opacity-100 bg-[#FFD121] border-0 rounded" />
+          <hr className="w-full h-1 my-6 opacity-100 bg-[#58AFAE] border-0 rounded" />
           <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">
-            <h1 className="text-[#373636] sm:text-2xl text-sm font-bold sm:pl-6 pl-3">
+            <h1 className="text-[#373636] sm:text-2xl text-sm font-bold px-6">
               CONHEÇA JALES
             </h1>
           </div>
@@ -357,10 +368,10 @@ function Inicio() {
             </div>
           )}
         </div>
-        <div className="inline-flex items-center justify-center w-full mt-5">
-          <hr className="w-full h-1 my-6 opacity-100 bg-[#FFD121] border-0 rounded" />
+        <div className="inline-flex items-center justify-center w-full p-4">
+          <hr className="w-full h-1 my-6 opacity-100 bg-[#58AFAE] border-0 rounded" />
           <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">
-            <h1 className="text-[#373636] sm:text-2xl text-sm font-bold ">
+            <h1 className="text-[#373636] sm:text-2xl text-sm font-bold px-6">
               NOTÍCIAS
             </h1>
           </div>
@@ -389,7 +400,7 @@ function Inicio() {
 
                     <div className="flex">
                       <button
-                        className="mt-6 bg-[#FFD121] text-xs sm:text-bas text-[#373636]font-medium hover:bg-black hover:text-white w-20 h-6 sm:w-32 sm:h-10"
+                        className="mt-6 bg-[#58AFAE] text-xs sm:text-bas text-[#373636]font-medium hover:scale-105 hover:bg-[#ED7833] text-white w-20 h-6 sm:w-32 sm:h-10"
                         onClick={() =>
                           navigate(`/visualizarNoticia/${outraNoticia.id}`)
                         }
@@ -401,7 +412,7 @@ function Inicio() {
                 </div>
                 <div className="relative">
                   <div className="absolute bottom-0 right-0">
-                    <div className="flex justify-center items-center text-[10px] sm:text-xs text-[#373636] font-medium bg-[#FFD121] w-20 h-4 sm:w-32 sm:h-8">
+                    <div className="flex justify-center items-center text-[10px] sm:text-xs text-white  font-medium bg-[#ED7833] w-20 h-4 sm:w-32 sm:h-8">
                       {formatarDataParaExibicao(outraNoticia.dataPublicacao)}
                     </div>
                   </div>

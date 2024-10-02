@@ -24,22 +24,22 @@ const NavbarAdm = () => {
       <div>
         <ul className="nav nav-pills ">
           <li className="nav-item" >
-            <a className="nav-link active m-1 " aria-current="page" href="#" style={{backgroundColor: "#FDE964"}}>
+            <a className="nav-link active m-1 " aria-current="page" href="#" style={{backgroundColor: "#58AFAE"}}>
               <img className="AcessibilidadeLuz w-[20px] h-[22px] "
              src="../src/assets/Iconeluz.svg" /></a>
           </li>
           <li className="nav-item">
-            <a className="nav-link active m-1" aria-current="page" href="#" style={{backgroundColor: "#FDE964"}}>
+            <a className="nav-link active m-1" aria-current="page" href="#" style={{backgroundColor: "#58AFAE"}}>
               <img className="Acessibilidadedaltonico  w-[20px] h-[22px]" 
               src="../src/assets/iconeDaltonico.svg" /></a>
           </li>
           <li className="nav-item">
-            <a className="nav-link active m-1" aria-current="page" href="#" style={{backgroundColor: "#FDE964"}} onClick={aumentarFonte}>
+            <a className="nav-link active m-1" aria-current="page" href="#" style={{backgroundColor: "#58AFAE"}} onClick={aumentarFonte}>
               <img className="Acessibilidadefontemais w-[20px] h-[22px]" src="../src/assets/A+.svg" />
             </a>
           </li>
           <li className="nav-item">
-            <a className=" nav-link active m-1" aria-current="page" href="#" style={{backgroundColor: "#FDE964"}} onClick={resetarFonte}>
+            <a className=" nav-link active m-1" aria-current="page" href="#" style={{backgroundColor: "#58AFAE"}} onClick={resetarFonte}>
               <img className="Acessibilidadefonte w-[20px] h-[22px]" src="../src/assets/A-.svg" />
             </a>
           </li>
@@ -58,8 +58,6 @@ const NavbarAdm = () => {
           style={{ width: 30, height: 30, paddingRight: 10 }}
         />
       </form>
-
-      <img className="LocomarcaComtur" style={{ width: 150, height: 50, padding: 5 }} src="../src/assets/iconeComtur.svg" />
     </div>
   );
 };

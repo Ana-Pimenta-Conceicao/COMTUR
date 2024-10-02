@@ -87,7 +87,7 @@ namespace COMTUR.Migrations
                             IdUsuario = 4,
                             Nome = "Ana Castela",
                             QRCode = "123456",
-                            Status = 1
+                            Status = 2
                         },
                         new
                         {
@@ -98,7 +98,7 @@ namespace COMTUR.Migrations
                             IdUsuario = 4,
                             Nome = "Luan Santana",
                             QRCode = "123456",
-                            Status = 1
+                            Status = 2
                         },
                         new
                         {
@@ -109,7 +109,7 @@ namespace COMTUR.Migrations
                             IdUsuario = 4,
                             Nome = "Fonte Iluminada",
                             QRCode = "123456",
-                            Status = 1
+                            Status = 2
                         },
                         new
                         {
@@ -120,7 +120,7 @@ namespace COMTUR.Migrations
                             IdUsuario = 4,
                             Nome = "Palco",
                             QRCode = "123456",
-                            Status = 1
+                            Status = 2
                         });
                 });
 
@@ -597,7 +597,7 @@ namespace COMTUR.Migrations
                             DataPublicacao = new DateOnly(2024, 5, 15),
                             HoraPublicacao = "10:30",
                             IdUsuario = 2,
-                            Status = 1,
+                            Status = 2,
                             Subtitulo = "A cidade de Jales recebeu hoje um novo marco na indústria da moda com a inauguração triunfante da AnaStore, uma loja que promete revolucionar o cenário fashion local.",
                             Titulo = "Grande Inauguração da AnaStore: Uma Celebração de Estilo e Elegância!"
                         },
@@ -608,7 +608,7 @@ namespace COMTUR.Migrations
                             DataPublicacao = new DateOnly(2024, 5, 27),
                             HoraPublicacao = "08:30",
                             IdUsuario = 2,
-                            Status = 1,
+                            Status = 2,
                             Subtitulo = "Combinando a refrescância da laranja com a suavidade do sorvete, \"Laravi\" promete ser uma verdadeira explosão cítrica de sabor que cativará os paladares de todos.",
                             Titulo = "Tropicale Lança Novo Sabor chamado Laravi: Uma Explosão Cítrica de Sabor!"
                         });
@@ -775,14 +775,14 @@ namespace COMTUR.Migrations
                             Id = 1,
                             IdUsuario = 4,
                             Nome = "Show",
-                            Status = 1
+                            Status = 2
                         },
                         new
                         {
                             Id = 2,
                             IdUsuario = 4,
                             Nome = "Monumento",
-                            Status = 1
+                            Status = 2
                         });
                 });
 
@@ -825,28 +825,28 @@ namespace COMTUR.Migrations
                             Id = 1,
                             IdUsuario = 4,
                             Nome = "Expo",
-                            Status = 1
+                            Status = 2
                         },
                         new
                         {
                             Id = 2,
                             IdUsuario = 4,
                             Nome = "Varejo",
-                            Status = 1
+                            Status = 2
                         },
                         new
                         {
                             Id = 3,
                             IdUsuario = 4,
                             Nome = "Alimento",
-                            Status = 1
+                            Status = 2
                         },
                         new
                         {
                             Id = 4,
                             IdUsuario = 4,
                             Nome = "Evento",
-                            Status = 1
+                            Status = 2
                         });
                 });
 
@@ -927,7 +927,7 @@ namespace COMTUR.Migrations
                             Local = "Praça da Fonte",
                             Nome = "Praça da Fonte",
                             QRCode = "123456",
-                            Status = 1
+                            Status = 2
                         },
                         new
                         {
@@ -940,7 +940,7 @@ namespace COMTUR.Migrations
                             Local = "Praça da Fonte",
                             Nome = "Expo Jales",
                             QRCode = "123456",
-                            Status = 1
+                            Status = 2
                         });
                 });
 

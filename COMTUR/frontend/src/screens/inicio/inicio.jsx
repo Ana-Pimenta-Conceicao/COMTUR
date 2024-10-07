@@ -158,7 +158,7 @@ function Inicio() {
                   {turismo[currentTurismoIndex].nome}
                 </h3>
                 <button
-                  className="mx-32 sm:mx-[550px] py-1 border-3 rounded-sm border-[#ED7833] text-xs sm:text-2xl font-medium text-slate-50 bg-transparent transition-colors duration-300"
+                  className="mx-32 sm:mx-[550px] py-1 border-3 rounded-sm bg-[#ED7833] text-xs sm:text-2xl font-medium text-slate-50 bg-transparent transition-colors duration-300"
                   onClick={() => {
                     navigate(
                       `/visualizarTurismo/${turismo[currentTurismoIndex].id}`

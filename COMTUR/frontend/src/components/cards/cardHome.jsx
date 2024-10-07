@@ -2,14 +2,14 @@ import React from "react";
 
 const Card = ({ link, imageSrc, title, imageAlt }) => {
   return (
-    <div className="w-full md:w-1/2 lg:w-1/3 p-4 ">
-      <div className="max-w-sm flex-row rounded-lg justify-center items-center bg-[#064D56] dark:bg-gray-800 dark:border-gray-700 shadow-md hover:transition-opacity hover:scale-105" >
+    <div className="w-[300px] md:w-1/2 lg:w-1/3 p-3">
+      <div className="max-w-sm flex-row rounded-lg justify-center items-center bg-[#FABC0B] dark:bg-gray-800 dark:border-gray-700 shadow-md hover:transition-opacity hover:scale-105" >
         <a href={link}>
           <img className="rounded-t-lg w-full" src={imageSrc} alt={imageAlt} />
         </a>
-        <div className="flex flex-col justify-center items-center h-12 p-2 rounded-b-lg bg-[#064D56]">
+        <div className="flex flex-col justify-center items-center h-12 p-2 rounded-b-lg bg-[#FABC0B]">
           <a href={link}>
-            <h5 className="justify-center items-center text-2xl font-medium tracking-tight text-white ">
+            <h5 className="justify-center items-center text-2xl font-medium tracking-tight text-[#282828] ">
               {title}
             </h5>
           </a>

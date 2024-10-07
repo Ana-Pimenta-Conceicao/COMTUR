@@ -34,26 +34,32 @@ export default function TodosMembros() {
 
       <div className="container">
         <div className="flex flex-wrap justify-center pb-2 pt-4 items-center">
-          <div className="pb-2 px-2 text-xs sm:pl-32 sm:pr-32 sm:min-w-[320px] lg:w-[90%] xl:w-[80%] 2xl:w-[70%] flex flex-wrap justify-center">
+          <div className="pb-3 px-3 text-xs sm:pl-32 sm:pr-32 sm:min-w-[320px] lg:w-[90%] xl:w-[80%] 2xl:w-[70%] flex flex-wrap justify-center">
             {outrosMembros.length === 0 ? (
               <p>Nenhum membro encontrado.</p>
             ) : (
               outrosMembros.map((outroMembro) => (
-                <div key={outroMembro.id} className="card rounded-none w-[352px] m-2">
-                  <div className="w-[352px] h-[367px]">
-                    {outroMembro.imagem && (
+                <div
+                  key={outroMembro.id}
+                  className="card rounded-none m-2 flex flex-col"
+                  style={{ height: '400px', width: '100%', maxWidth: '352px' }} // Max largura e altura fixa
+                >
+                  <div className="w-full" style={{ height: '250px', overflow: 'hidden' }}>
+                    {outroMembro.imagem ? (
                       <img
                         src={outroMembro.imagem}
                         className="card-img-top h-full w-full object-cover"
                         alt="Preview"
+                        style={{ objectFit: 'cover', height: '100%', width: '100%' }}
                       />
+                    ) : (
+                      <div className="card-img-top" style={{ height: '100%', backgroundColor: '#f0f0f0' }} />
                     )}
                   </div>
-                  <div className="card-body flex flex-col justify-center items-center h-full relative pt-0">
+                  <div className="card-body flex flex-col justify-center items-center relative pt-0">
                     <h2 className="m-3 text-[#373636] text-xs sm:text-lg font-semibold text-center">
                       {outroMembro.nome}
                     </h2>
-
                     <div className="absolute bottom-0 right-0 left-0 flex justify-center">
                       <div className="flex justify-center items-center text-[10px] sm:text-xs text-[#373636] font-medium bg-[#FFD121] w-20 h-4 sm:w-32 sm:h-8">
                         {outroMembro.cargo}
@@ -66,7 +72,11 @@ export default function TodosMembros() {
           </div>
         </div>
       </div>
-  
+
+
+
+
+
 
       <FooterUsr />
     </div>

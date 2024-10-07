@@ -2,18 +2,21 @@ import React, { useState, useEffect } from 'react';
 import $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import '@fortawesome/fontawesome-free/css/all.min.css'; // Importando Font Awesome
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useNavigate } from "react-router-dom";
 import logoSF from '../../assets/logoComturNovo.svg';
-
 
 const NavbarUsr = () => {
   const navigate = useNavigate();
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 991);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
   useEffect(() => {
+    const userId = localStorage.getItem("id");
+    setIsLoggedIn(!!userId); 
+
     $('.navbar-nav a').on('click', () => {
       setIsNavbarOpen(false);
     });
@@ -47,7 +50,7 @@ const NavbarUsr = () => {
         }
 
         .navbar {
-          background-color: #064D56 !important; /* Alterando a cor da navbar */
+          background-color: #064D56 !important;
         }
 
         .navbar .navbar-nav .nav-link {
@@ -111,14 +114,17 @@ const NavbarUsr = () => {
             <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todosEventos`); }}>Eventos</a>
             <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`#`); }}>Comtur</a>
             <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todasNoticias`); }}>Notícias</a>
-            <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/login`); }}>Login</a>
+            <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todasEmpresas`); }}>Empresas</a>
+            {!isLoggedIn && ( 
+              <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/login`); }}>Login</a>
+            )}
           </div>
           <div className={`border-start ps-4 ${isMobile ? 'd-flex align-items-center' : 'd-none d-lg-block'}`}>
             {isSearchOpen && (
               <input type="text" className="form-control search-input" placeholder="Pesquisar..." />
             )}
             <button type="button" className="btn btn-sm p-0 ml-2" onClick={handleSearchToggle}>
-              <i className="fa fa-search text-white"></i> {/* Ícone de pesquisa */}
+              <i className="fa fa-search text-white"></i>
             </button>
           </div>
         </div>

@@ -5,8 +5,6 @@ import FooterUsr from "../../components/user/footerUsr.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 import { CaretRight, CaretLeft, Star } from "@phosphor-icons/react";
 import React from "react";
-import Estrela from "../../assets/estrela";
-import Estrelasemcor from "../../assets/Estrelasemcor";
 import Xadrez from "../../assets/xadrez";
 import Comtur from "../../assets/Comtur";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
@@ -160,7 +158,6 @@ export default function VisualizarAtracao() {
         formData.append("status", 1);
         formData.append("idUsuario", idUsuario);
 
-
         try {
             const response = await axios.post(avaliacaoUrl, formData, {
                 headers: {
@@ -304,20 +301,19 @@ export default function VisualizarAtracao() {
     useEffect(() => {
         // Função para buscar os detalhes da atração pelo ID
         const buscarAtracao = async () => {
-            try {
-                const response = await axios.get(baseUrl + `/${id}`);
-                // Corrigindo a atribuição dos dados da atração
+            await axios
+            .get(baseUrl + `/${id}`)
+            .then((response) => {
                 setAtracao(response.data);
-                console.log("Atração recebida:", response.data);
-            } catch (error) {
-                console.error("Erro ao buscar atração:", error);
-            }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
         };
+        
         buscarAtracao();
     }, [id]);
-    if (!atracao) {
-        return <h2>Carregando...</h2>;
-    }
+
     const nextSlide = () => {
         if (atracao.imagemAtracao.length > 1) {
             setCurrentSlide((prev) => (prev === atracao.imagemAtracao.length - 1 ? 0 : prev + 1));
@@ -358,6 +354,11 @@ export default function VisualizarAtracao() {
         // Atualiza o estado com a data formatada
         setAvaliacaoDataPublicacao(formattedValue);
     };
+
+    if (!atracao) {
+        return <h2>Carregando...</h2>;
+    }
+
     return (
         <div>
             <NavbarUsr />
@@ -365,10 +366,10 @@ export default function VisualizarAtracao() {
             <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] mb-10">
                 <div className="flex flex-col px-4 sm:pl-24 sm:pr-24">
                     <h1 className="text-[#373636] mb-3 text-lg font-extrabold pt-4 sm:pt-14 sm:px-16 sm:text-4xl">
-                        {atracao.nome}
+                        {atracao?.nome}
                     </h1>
                 </div>
-                {atracao.imagemAtracao?.length > 1 && (
+                {atracao?.imagemAtracao?.length > 1 && (
                     <button
                         className="absolute top-1/2 z-10 transform -translate-y-1/2 text-white bg-[#FFD121] p-3 px-3 m-2 rounded-full opacity-90 hover:opacity-100 focus:outline-none"
                         onClick={prevSlide}
@@ -376,7 +377,7 @@ export default function VisualizarAtracao() {
                         <CaretLeft size={14} />
                     </button>
                 )}
-                {atracao.imagemAtracao?.length > 1 && (
+                {atracao?.imagemAtracao?.length > 1 && (
                     <button
                         className="absolute top-1/2 right-0 z-10 transform -translate-y-1/2 text-white bg-[#FFD121] opacity-90 hover:opacity-100  p-3 px-3 m-2 rounded-full  focus:outline-none"
                         onClick={nextSlide}
@@ -385,20 +386,20 @@ export default function VisualizarAtracao() {
                     </button>
                 )}
 
-                {atracao.imagemAtracao?.length > 0 && (
+                {atracao?.imagemAtracao?.length > 0 && (
                     <>
                         <img
-                            src={atracao.imagemAtracao[currentSlide]?.imagem}
+                            src={atracao?.imagemAtracao[currentSlide]?.imagem}
                             alt={`Imagem ${currentSlide + 1}`}
                             className="object-cover w-full h-full sm:h-full "
                         />
                         <h3 className="text-xs sm:text-lg font-medium text-center italic ">
-                            {atracao.imagemAtracao[currentSlide]?.legendaImagem}
+                            {atracao?.imagemAtracao[currentSlide]?.legendaImagem}
                         </h3>
                     </>
                 )}
                 <h3 className="text-xs sm:text-lg font-medium text-justify italic px-4 ">
-                    {atracao.legendaImagem}
+                    {atracao?.legendaImagem}
                 </h3>
             </div>
 
@@ -406,23 +407,22 @@ export default function VisualizarAtracao() {
                 <div className="row m-8">
                     <div className="flex flex-col">
                         <p className="text-[#373636] italic text-xs sm:text-lg sm:px-16  font-normal pb-4">
-                            {atracao.nome}
+                            {atracao?.nome}
                         </p>
 
                         <div className="row mb-3 flex justify-between">
                             <div className="flex flex-col">
                                 <p className="text-[#373636] italic text-xs sm:text-lg sm:px-16  font-normal pb-4">
-                                    {atracao.nome}
+                                    {atracao?.nome}
                                 </p>
-                                <div class="d-flex justify-content-between">
-                                    <div class="flex items-center">
-                                        <Estrela />
-                                        <Estrela />
-                                        <Estrela />
-                                        <Estrela />
-                                        <Estrelasemcor />
-                                        <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">44</p>
-                                        <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">Avaliações</p>
+                                <div className="d-flex justify-content-between">
+                                    <div className="flex items-center">
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score >= 1 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score >= 2 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score >= 3 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score >= 4 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score === 5 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <h3 className="text-gray-800 text-xs pl-2">{avaliacoes.avaliacoes} avaliações</h3>
                                     </div>
 
 
@@ -445,32 +445,32 @@ export default function VisualizarAtracao() {
                         </h2>
 
                         <div className="container px-4 pb-10 text-[#373636] text-sm sm:text-lg font-base sm:pt-6 pt-0 w-full max-w-full">
-                            {atracao.descricao.split("\n").map((paragrafo, index) => (
+                            {atracao?.descricao.split("\n").map((paragrafo, index) => (
                                 <React.Fragment key={index}>
                                     <p className="sm:px-14 pt-1 text-justify break-all">{paragrafo}</p>
                                 </React.Fragment>
                             ))}
                         </div>
 
-                        <hr class="pb-4 border-[1.5px] border-black  w-75 ml-auto" />
+                        <hr className="pb-4 border-[1.5px] border-black  w-75 ml-auto" />
                     </div>
                 </div>
                 <div className="flex justify-center mb-3">
                     <h1 className="text-[#FFD121] sm:text-2xl text-sm font-bold sm:pl-6 pl-3">Avaliações da atração</h1>
                 </div>
 
-                          {/* Avaliações */}
+                {/* Avaliações */}
 
-            <div className="flex justify-center mb-3">
-                <h1 className="text-[#FFD121] sm:text-2xl text-sm font-bold sm:pl-6 pl-3 mt-4">Avaliações</h1>
-            </div>
+                <div className="flex justify-center mb-3">
+                    <h1 className="text-[#FFD121] sm:text-2xl text-sm font-bold sm:pl-6 pl-3 mt-4">Avaliações</h1>
+                </div>
 
-            <div className="container">
+                <div className="container">
                 <div className="row d-flex justify-content-center g-4">
                     {displayedAvaliacoes.length > 0 ? (
                         displayedAvaliacoes.map((avaliacaoCompleta, index) => (
-                            <div className="col-md-4" key={index}>
-                                <div className="card m-2 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
+                            <div className="col-md-3 justify-center" key={index}>
+                                <div className="card m-1 justify-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
                                     <article>
                                         <div className="flex items-center mb-3">
                                             <div className="w-10 h-10 me-4 rounded-full">
@@ -491,7 +491,7 @@ export default function VisualizarAtracao() {
                                         </div>
                                         <div className="flex items-center">
                                             {[...Array(5)].map((_, i) => (
-                                                i < parseInt(avaliacaoCompleta.avaliacao.nota) ? <Estrela key={i} /> : <Estrelasemcor key={i} />
+                                                 <Star key={i} size={20} weight="fill" className={`${i < parseInt(avaliacaoCompleta.avaliacao.nota) ? "text-[#FFD121]" : "text-gray-300"}`} />
                                             ))}
                                         </div>
                                         <p className="mt-7 text-gray-500 dark:text-gray-400">
@@ -516,82 +516,82 @@ export default function VisualizarAtracao() {
                     </button>
                 </div>
             </div>
-                <div class="flex justify-end mr-12">
-                    <div class="items-left">
-                        <p class="mt-2 ml-5 text-gray-500 dark:text-gray-400">Mais Avaliações</p>
+                <div className="flex justify-end mr-12">
+                    <div className="items-left">
+                        <p className="mt-2 ml-5 text-gray-500 dark:text-gray-400">Mais Avaliações</p>
                     </div>
                 </div>
                 <div>
-                <div className="inline-flex items-center justify-center w-full p-4">
-                    <hr className="w-full h-1 my-6 opacity-100 bg-[#FFD121] border-0 rounded" />
-                    <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">
-                        <h1 className="text-[#373636] sm:text-2xl text-sm font-bold sm:pl-6 pl-3">Mais Atrações</h1>
+                    <div className="inline-flex items-center justify-center w-full p-4">
+                        <hr className="w-full h-1 my-6 opacity-100 bg-[#FFD121] border-0 rounded" />
+                        <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">
+                            <h1 className="text-[#373636] sm:text-2xl text-sm font-bold sm:pl-6 pl-3">Mais Atrações</h1>
+                        </div>
                     </div>
+
+                    <div className="row justify-center items-center m-2">
+
+                        <div className="card rounded-none w-[352px] m-2">
+                            <div className="w-[352px] h-[367px]">
+                                <img src="..." className="card-img-top" alt="..." />
+                            </div>
+                            <div className="card-body">
+
+                                <h2 className="mt-3 text-[#373636] text-xs sm:text-lg font-semibold">TÍTULO DO ANÚNCIO</h2>
+                                <p className="card-text mt-2 text-gray-500 dark:text-gray-400">breve resumo breve resumo breve resumo breve
+                                    resumo breve resumo breve resumo
+                                    breve resumo breve resumo </p>
+
+                            </div>
+
+                            <div className="mt-4 flex justify-center">
+                                <button type="button" className="btn btn-outline-secondary rounded-none h-10 w-40 text-black mb-6">Visualizar</button>
+                            </div>
+
+                        </div>
+
+                        <div className="card rounded-none w-[352px] m-2">
+                            <div className="w-[352px] h-[367px]">
+                                <img src="..." className="card-img-top" alt="..." />
+                            </div>
+                            <div className="card-body">
+
+                                <h2 className="mt-3 text-[#373636] text-xs sm:text-lg font-semibold">TÍTULO DO ANÚNCIO</h2>
+                                <p className="card-text mt-2 text-gray-500 dark:text-gray-400">breve resumo breve resumo breve resumo breve
+                                    resumo breve resumo breve resumo
+                                    breve resumo breve resumo </p>
+
+                            </div>
+
+                            <div className="mt-4 flex justify-center">
+                                <button type="button" className="btn btn-outline-secondary rounded-none h-10 w-40 text-black mb-6">Visualizar</button>
+                            </div>
+
+                        </div>
+
+                        <div className="card rounded-none w-[352px] m-2">
+                            <div className="w-[352px] h-[367px]">
+                                <img src="..." className="card-img-top" alt="..." />
+                            </div>
+                            <div className="card-body">
+
+                                <h2 className="mt-3 text-[#373636] text-xs sm:text-lg font-semibold">TÍTULO DO ANÚNCIO</h2>
+                                <p className="card-text mt-2 text-gray-500 dark:text-gray-400">breve resumo breve resumo breve resumo breve
+                                    resumo breve resumo breve resumo
+                                    breve resumo breve resumo </p>
+
+                            </div>
+
+                            <div className="mt-4 flex justify-center">
+                                <button type="button" className="btn btn-outline-secondary rounded-none h-10 w-40 text-black mb-6">Visualizar</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
                 </div>
-
-                <div className="row justify-center items-center m-2">
-
-                    <div className="card rounded-none w-[352px] m-2">
-                        <div className="w-[352px] h-[367px]">
-                            <img src="..." className="card-img-top" alt="..." />
-                        </div>
-                        <div className="card-body">
-
-                            <h2 className="mt-3 text-[#373636] text-xs sm:text-lg font-semibold">TÍTULO DO ANÚNCIO</h2>
-                            <p className="card-text mt-2 text-gray-500 dark:text-gray-400">breve resumo breve resumo breve resumo breve
-                                resumo breve resumo breve resumo
-                                breve resumo breve resumo </p>
-
-                        </div>
-
-                        <div className="mt-4 flex justify-center">
-                            <button type="button" className="btn btn-outline-secondary rounded-none h-10 w-40 text-black mb-6">Visualizar</button>
-                        </div>
-
-                    </div>
-
-                    <div className="card rounded-none w-[352px] m-2">
-                        <div className="w-[352px] h-[367px]">
-                            <img src="..." className="card-img-top" alt="..." />
-                        </div>
-                        <div className="card-body">
-
-                            <h2 className="mt-3 text-[#373636] text-xs sm:text-lg font-semibold">TÍTULO DO ANÚNCIO</h2>
-                            <p className="card-text mt-2 text-gray-500 dark:text-gray-400">breve resumo breve resumo breve resumo breve
-                                resumo breve resumo breve resumo
-                                breve resumo breve resumo </p>
-
-                        </div>
-
-                        <div className="mt-4 flex justify-center">
-                            <button type="button" className="btn btn-outline-secondary rounded-none h-10 w-40 text-black mb-6">Visualizar</button>
-                        </div>
-
-                    </div>
-
-                    <div className="card rounded-none w-[352px] m-2">
-                        <div className="w-[352px] h-[367px]">
-                            <img src="..." className="card-img-top" alt="..." />
-                        </div>
-                        <div className="card-body">
-
-                            <h2 className="mt-3 text-[#373636] text-xs sm:text-lg font-semibold">TÍTULO DO ANÚNCIO</h2>
-                            <p className="card-text mt-2 text-gray-500 dark:text-gray-400">breve resumo breve resumo breve resumo breve
-                                resumo breve resumo breve resumo
-                                breve resumo breve resumo </p>
-
-                        </div>
-
-                        <div className="mt-4 flex justify-center">
-                            <button type="button" className="btn btn-outline-secondary rounded-none h-10 w-40 text-black mb-6">Visualizar</button>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-            </div>
                 {/* <div className="pt-5 pb-5 px-2 text-xs sm:pl-32 sm:pr-32 sm:min-w-[320px] lg:w-[90%] xl:w-[80%] 2xl:w-[70%]">
                         {outrasAtracoes.map((outraAtracao) => (
                             <div key={outraAtracao.id} className="p-4">

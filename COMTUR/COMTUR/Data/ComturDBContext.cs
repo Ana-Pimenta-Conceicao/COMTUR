@@ -27,8 +27,9 @@ namespace COMTUR.Data
         public DbSet<ParametroModel> Parametro { get; set; }
         public DbSet<AvaliacaoAtracaoModel> AvaliacaoAtracao { get; set; }
         public DbSet<AvaliacaoTurismoModel> AvaliacaoTurismo { get; set; }
+		public DbSet<AtaModel> Ata { get; set; }
 
-        public override int SaveChanges()
+		public override int SaveChanges()
         {
             // 1. Capturar auditoria antes de salvar as mudanças (exclusões, adições, modificações)
             var auditoriasPostSave = CapturarDadosAuditoria(out var entidadesAdicionadas);
@@ -204,8 +205,9 @@ namespace COMTUR.Data
             modelBuilder.ApplyConfiguration(new AvaliacaoTurismoModelMap());
             modelBuilder.ApplyConfiguration(new MembroMap());
             modelBuilder.ApplyConfiguration(new ParametroMap());
+			modelBuilder.ApplyConfiguration(new AtaMap());
 
-            base.OnModelCreating(modelBuilder);
+			base.OnModelCreating(modelBuilder);
 
             //Adicionando Tipos de Usuario para teste
             modelBuilder.Entity<UsuarioModel>().HasData(

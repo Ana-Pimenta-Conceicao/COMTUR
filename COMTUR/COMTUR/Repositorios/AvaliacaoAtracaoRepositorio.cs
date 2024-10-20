@@ -8,15 +8,15 @@ using Microsoft.EntityFrameworkCore;
 namespace COMTUR.Repositorios
 {
     public class AvaliacaoAtracaoRepositorio : IAvaliacaoAtracaoRepositorio
-	{
-		private readonly IAvaliacaoAtracaoRepositorio _AvaliacaoAtracaoRepositorio;
-		private readonly IMapper _mapper;
-		private readonly ComturDBContext _dbContext;
+    {
+        private readonly IAvaliacaoAtracaoRepositorio _AvaliacaoAtracaoRepositorio;
+        private readonly IMapper _mapper;
+        private readonly ComturDBContext _dbContext;
 
-		public AvaliacaoAtracaoRepositorio(ComturDBContext dbContext)
-		{
-			_dbContext = dbContext;
-		}
+        public AvaliacaoAtracaoRepositorio(ComturDBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
         public async Task<List<AvaliacaoAtracaoModel>> BuscarAvaliacaoAtracaoModel()
         {
@@ -29,18 +29,18 @@ namespace COMTUR.Repositorios
         }
 
         public async Task<AvaliacaoAtracaoModel> BuscarPorId(int id)
-		{
-			return await _dbContext.AvaliacaoAtracao.Where(x => x.Id == id).FirstOrDefaultAsync();
-		}
+        {
+            return await _dbContext.AvaliacaoAtracao.Where(x => x.Id == id).FirstOrDefaultAsync();
+        }
 
-		public async Task<AvaliacaoAtracaoModel> Adicionar(AvaliacaoAtracaoModel AvaliacaoAtracaoModel)
-		{
+        public async Task<AvaliacaoAtracaoModel> Adicionar(AvaliacaoAtracaoModel AvaliacaoAtracaoModel)
+        {
 
-			await _dbContext.AvaliacaoAtracao.AddAsync(AvaliacaoAtracaoModel);
-			await _dbContext.SaveChangesAsync();
+            await _dbContext.AvaliacaoAtracao.AddAsync(AvaliacaoAtracaoModel);
+            await _dbContext.SaveChangesAsync();
 
-			return AvaliacaoAtracaoModel;
-		}
+            return AvaliacaoAtracaoModel;
+        }
 
         public async Task<AvaliacaoAtracaoModel> AtualizarStatus(TipoStatus status, int id)
         {
@@ -61,18 +61,18 @@ namespace COMTUR.Repositorios
         }
 
         public async Task<bool> Apagar(int id)
-		{
-			AvaliacaoAtracaoModel AvaliacaoAtracaoModelPorId = await BuscarPorId(id);
+        {
+            AvaliacaoAtracaoModel AvaliacaoAtracaoModelPorId = await BuscarPorId(id);
 
-			if (AvaliacaoAtracaoModelPorId == null)
-			{
-				throw new Exception($"Avaliação da Atração {id} não encontrada");
-			}
+            if (AvaliacaoAtracaoModelPorId == null)
+            {
+                throw new Exception($"Avaliação da Atração {id} não encontrada");
+            }
 
-			_dbContext.AvaliacaoAtracao.Remove(AvaliacaoAtracaoModelPorId);
-			await _dbContext.SaveChangesAsync();
+            _dbContext.AvaliacaoAtracao.Remove(AvaliacaoAtracaoModelPorId);
+            await _dbContext.SaveChangesAsync();
 
-			return true;
-		}
-	}
+            return true;
+        }
+    }
 }

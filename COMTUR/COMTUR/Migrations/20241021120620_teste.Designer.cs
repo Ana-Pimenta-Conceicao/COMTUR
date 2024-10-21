@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20241007170202_comtur")]
-    partial class comtur
+    [Migration("20241021120620_teste")]
+    partial class teste
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,33 @@ namespace COMTUR.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("COMTUR.Models.AtaModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("idata");
+
+                    b.Property<DateOnly>("DataAta")
+                        .HasColumnType("date")
+                        .HasColumnName("dataata");
+
+                    b.Property<byte[]>("DocumentoAta")
+                        .IsRequired()
+                        .HasColumnType("bytea")
+                        .HasColumnName("documentoata");
+
+                    b.Property<string>("TituloAta")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("tituloata");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ata");
+                });
 
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
                 {

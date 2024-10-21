@@ -133,7 +133,9 @@ namespace COMTUR
             services.AddScoped<IMembroRepositorio, MembroRepositorio>();
             // Dependência: Parametro
             services.AddScoped<IParametroRepositorio,ParametroRepositorio>();
-        }
+			// Dependência: Ata
+			services.AddScoped<IAtaRepositorio, AtaRepositorio>();
+		}
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

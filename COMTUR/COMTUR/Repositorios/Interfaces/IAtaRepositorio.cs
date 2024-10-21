@@ -4,11 +4,10 @@ namespace COMTUR.Repositorios.Interfaces
 {
 	public interface IAtaRepositorio
 	{
-		Task<IEnumerable<AtaModel>> GetAll();
-		Task<IEnumerable<AtaModel>> GetByProcess(Guid idAta);
-		Task<AtaModel> GetById(Guid id);
-		Task<AtaModel> Create(AtaModel AtaModel);
-		Task<AtaModel> Update(AtaModel AtaModel);
-		Task<AtaModel> Delete(Guid id);
+		Task<List<AtaModel>> BuscarAta();
+		Task<AtaModel> BuscarPorId(Guid id);
+		Task<AtaModel> Adicionar(AtaModel ataModel);
+		Task<AtaModel> Atualizar(AtaModel ataModel, Guid id);
+		Task<bool> Apagar(Guid id);
 	}
 }

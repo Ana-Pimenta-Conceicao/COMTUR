@@ -30,7 +30,8 @@ namespace COMTUR.Repositorios
             parametroPorId.AreaTerritorial = ParametroModel.AreaTerritorial;
             parametroPorId.DistanciaCapital = ParametroModel.DistanciaCapital;
             parametroPorId.Habitantes = ParametroModel.Habitantes;
-            parametroPorId.DescricaoEntreRios = ParametroModel.ImagemEntreRios;
+            parametroPorId.DescricaoEntreRios = ParametroModel.DescricaoEntreRios;
+            parametroPorId.ImagemEntreRios = ParametroModel.ImagemEntreRios;
             parametroPorId.DescricaoIT = ParametroModel.DescricaoIT;
             parametroPorId.ImagemIT = ParametroModel.ImagemIT;
 

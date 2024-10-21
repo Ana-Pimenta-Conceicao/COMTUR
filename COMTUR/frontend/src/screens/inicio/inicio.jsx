@@ -47,7 +47,7 @@ function Inicio() {
       console.log("API error:", error);
     }
   };
-  
+
   const calcularIdadeMunicipio = (dataFundacao) => {
     const dataFundacaoObj = new Date(dataFundacao);
     const anoFundacao = dataFundacaoObj.getFullYear();
@@ -55,7 +55,7 @@ function Inicio() {
     const idade = anoAtual - anoFundacao;
     setIdadeMunicipio(idade);
   };
-  
+
 
   function formatarDataParaExibicao(data) {
     const partes = data.split("-");
@@ -184,7 +184,7 @@ function Inicio() {
                 {parametro && ( // Verifique se 'parametro' não é null
                   <div>
                     <p className="mb-4 text-gray-900" >
-                      {parametro.definicaoTurismo} a
+                      {parametro.definicaoTurismo}
                     </p>
                     <p>
                       <i class="fa fa-check text-[#fabc0b] me-1"></i> {parametro.beneficios}
@@ -231,7 +231,7 @@ function Inicio() {
                           </div>
                           <h1 class="display-6" data-toggle="counter-up">
                             {parametro.areaTerritorial}
-                            
+
                           </h1>
                           <span class="fs-5 fw-semi-bold text-white">
                             Área Territorial
@@ -248,7 +248,7 @@ function Inicio() {
                             />
                           </div>
                           <h1 class="display-6" data-toggle="counter-up">
-                          {parametro.distanciaCapital}
+                            {parametro.distanciaCapital}
                           </h1>
                           <span class="fs-5 fw-semi-bold text-white">
                             da cidade de São Paulo
@@ -368,6 +368,20 @@ function Inicio() {
             </div>
           )}
         </div>
+        <div className="w-full px-14">
+          <hr className="w-full  my-6 opacity-40  border-[#373636] border-1 rounded" />
+        </div>
+        <div className="flex w-full flex-col mb-4 text-gray-900">
+          <div className="flex flex-col md:flex-row w-full bg-[#ED7833]">
+            <h4 className="w-full md:w-1/2 px-8 text-white text-lg py-2 flex items-center justify-center">{parametro.descricaoEntreRios}</h4>
+            <img className="h-[356px] w-full md:w-1/2 object-cover" src={parametro.imagemEntreRios} />
+          </div>
+          <div className="flex flex-col md:flex-row w-full bg-[#58AFAE] text-white">
+            <img className="h-[356px] w-full md:w-1/2 object-cover" src={parametro.imagemIT} />
+            <h4 className="w-full md:w-1/2 px-5 flex items-center py-2 text-lg justify-center">{parametro.descricaoIT}</h4>
+          </div>
+        </div>
+
         <div className="inline-flex items-center justify-center w-full p-4">
           <hr className="w-full h-1 my-6 opacity-100 bg-[#58AFAE] border-0 rounded" />
           <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">

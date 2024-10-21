@@ -63,7 +63,6 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
     },
     { title: "Empresas", src: "empresa", iconSrc: "Empresa" },
     { title: "Membros", src: "membro", iconSrc: "user-focus" },
-    { title: "Parâmetros", src: "parametro", iconSrc: "gear-six" },
     { title: "Eventos", src: "Eventos", iconSrc: "Eventos" },
     {
       title: "Turismos",
@@ -87,6 +86,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
       ],
     },
     { title: "Status", src: "status", iconSrc: "Dashboard" },
+    { title: "Visualizar", src: " ", iconSrc: "Dashboard" },
   ];
 
   const toggleSubmenu = (index) => {

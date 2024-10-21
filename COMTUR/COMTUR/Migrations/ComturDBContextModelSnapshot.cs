@@ -22,6 +22,33 @@ namespace COMTUR.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("COMTUR.Models.AtaModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("idata");
+
+                    b.Property<DateOnly>("DataAta")
+                        .HasColumnType("date")
+                        .HasColumnName("dataata");
+
+                    b.Property<byte[]>("DocumentoAta")
+                        .IsRequired()
+                        .HasColumnType("bytea")
+                        .HasColumnName("documentoata");
+
+                    b.Property<string>("TituloAta")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("tituloata");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ata");
+                });
+
             modelBuilder.Entity("COMTUR.Models.AtracaoModel", b =>
                 {
                     b.Property<int>("Id")

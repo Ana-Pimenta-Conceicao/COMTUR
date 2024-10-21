@@ -1,55 +1,74 @@
 ﻿using COMTUR.Data;
 using COMTUR.Models;
+using COMTUR.Models.Enum;
 using COMTUR.Repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace COMTUR.Repositorios
 {
 	public class AtaRepositorio : IAtaRepositorio
 	{
 		private readonly ComturDBContext _dbContext;
+		private readonly IWebHostEnvironment _hostingEnvironment;
 
-		public AtaRepositorio(ComturDBContext AtadbContext)
+		public AtaRepositorio(ComturDBContext dbContext, IWebHostEnvironment hostingEnvironment)
 		{
-			_dbContext = AtadbContext;
+			_dbContext = dbContext;
+			_hostingEnvironment = hostingEnvironment;
 		}
 
-		public async Task<IEnumerable<AtaModel>> GetAll()
+		public async Task<AtaModel> BuscarPorId(Guid id)
+		{
+			return await _dbContext.Ata.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+		}
+
+		public async Task<List<AtaModel>> BuscarAta()
 		{
 			return await _dbContext.Ata.AsNoTracking().ToListAsync();
 		}
 
-		public async Task<IEnumerable<AtaModel>> GetByProcess(Guid idAta)
+		public async Task<AtaModel> Adicionar(AtaModel ataModel)
 		{
-			return await _dbContext.Ata.AsNoTracking().Where(da => da.Id == idAta).ToListAsync();
-		}
 
-		public async Task<AtaModel> GetById(Guid id)
-		{
-			return await _dbContext.Ata.AsNoTracking().FirstOrDefaultAsync(da => da.Id == id);
-		}
-
-		public async Task<AtaModel> Create(AtaModel AtaModel)
-		{
-			_dbContext.Ata.Add(AtaModel);
+			await _dbContext.Ata.AddAsync(ataModel);
 			await _dbContext.SaveChangesAsync();
-			return AtaModel;
+
+			return ataModel;
 		}
 
-		public async Task<AtaModel> Update(AtaModel AtaModel)
+		public async Task<AtaModel> Atualizar(AtaModel AtaModel, Guid id)
 		{
-			_dbContext.Entry(AtaModel).State = EntityState.Modified;
+			AtaModel ataPorId = await BuscarPorId(id);
+
+			if (ataPorId == null)
+			{
+				throw new Exception($"Ata {id} não foi encontrada no banco de dados.");
+			}
+
+			ataPorId.TituloAta = AtaModel.TituloAta;
+			ataPorId.DocumentoAta = AtaModel.DocumentoAta;
+			ataPorId.DataAta = AtaModel.DataAta;
+
+			_dbContext.Ata.Update(ataPorId);
 			await _dbContext.SaveChangesAsync();
-			return AtaModel;
+
+			return ataPorId;
 		}
 
-		public async Task<AtaModel> Delete(Guid id)
+
+		public async Task<bool> Apagar(Guid id)
 		{
-			var AtaModel = await GetById(id);
-			_dbContext.Ata.Remove(AtaModel);
+			var ataParaExcluir = await BuscarPorId(id);
+
+			if (ataParaExcluir == null)
+			{
+				throw new Exception($"Ata {id} não foi encontrada");
+			}
+
+			_dbContext.Ata.Remove(ataParaExcluir);
 			await _dbContext.SaveChangesAsync();
-			return AtaModel;
+
+			return true;
 		}
 	}
 }

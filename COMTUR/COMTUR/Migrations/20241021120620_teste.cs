@@ -9,11 +9,25 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class comtur : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ata",
+                columns: table => new
+                {
+                    idata = table.Column<Guid>(type: "uuid", nullable: false),
+                    tituloata = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    documentoata = table.Column<byte[]>(type: "bytea", nullable: false),
+                    dataata = table.Column<DateOnly>(type: "date", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ata", x => x.idata);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Auditoria",
                 columns: table => new
@@ -696,6 +710,9 @@ namespace COMTUR.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ata");
+
             migrationBuilder.DropTable(
                 name: "Auditoria");
 

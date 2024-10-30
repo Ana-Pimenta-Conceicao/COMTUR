@@ -3,7 +3,7 @@ import axios from "axios";
 import NavbarUsr from "../../components/user/navbarUsr.jsx";
 import FooterUsr from "../../components/user/footerUsr.jsx";
 import { useParams, useNavigate } from "react-router-dom";
-import { CaretRight, CaretLeft, Star } from "@phosphor-icons/react";
+import { CaretRight, CaretLeft, Star, Trash, NotePencil } from "@phosphor-icons/react";
 import React from "react";
 import Xadrez from "../../assets/xadrez";
 import Comtur from "../../assets/Comtur";
@@ -222,7 +222,7 @@ export default function VisualizarAtracao() {
 
             abrirFecharModalInserir();
             limparDados();
-            setAtualizarData(true);
+            setAtualizarScoreAvaliacoes(true);
         } catch (error) {
             console.log(error);
         }
@@ -246,18 +246,54 @@ export default function VisualizarAtracao() {
         }
     };
 
-    const pedidoAtualizar = async () => {
-        const formData = new FormData();
-        formData.append("nota", avaliacaoNota);
-        formData.append(
-            "dataPublicacao",
-            inverterDataParaFormatoBanco(avaliacaoDataPublicacao)
+    // aqui
+    const toggleEdit = (index) => {
+        setAvaliacoesCompletas((prev) => {
+            const updatedAvaliacoes = [...prev];
+            updatedAvaliacoes[index].editMode = !updatedAvaliacoes[index].editMode;
+            return updatedAvaliacoes;
+        });
+    };
+
+    const handleComentarioChange = (index, value) => {
+        setAvaliacoesCompletas((prev) => {
+            const updatedAvaliacoes = [...prev];
+            updatedAvaliacoes[index].avaliacao.comentario = value;
+            return updatedAvaliacoes;
+        });
+    };
+
+    const handleStarClickEdit = (index, starIndex) => {
+        setAvaliacoesCompletas((prev) => {
+            const novasAvaliacoes = [...prev];
+            novasAvaliacoes[index].avaliacao.nota = starIndex; // Atualiza a nota
+            return novasAvaliacoes;
+        });
+    };
+
+    const selecionarAvaliacao = (id) => {
+        const avaliacaoSelecionada = avaliacoesCompletas.find(
+            (avaliacao) => avaliacao.avaliacao.id === id
         );
-        formData.append("comentario", avaliacaoComentario);
+
+        if (avaliacaoSelecionada) {
+            console.log(avaliacaoSelecionada);
+            pedidoAtualizar(avaliacaoSelecionada);
+        }
+    };
+
+    const pedidoAtualizar = async (avaliacao) => {
+        const formData = new FormData();
+        formData.append("nota", avaliacao?.avaliacao?.nota || avaliacaoNota);
+        formData.append(
+            "dataAvaliacao",
+            inverterDataParaFormatoBanco(avaliacao?.avaliacao?.dataAvaliacao || avaliacaoDataPublicacao)
+        );
+        formData.append("comentario", avaliacao?.avaliacao?.comentario || avaliacaoComentario);
 
         try {
             const response = await axios.put(
-                `${avaliacaoUrl}/${avaliacaoId}`,
+                `${avaliacaoUrl}/${avaliacao?.avaliacao?.id || avaliacaoId}`,
                 formData,
                 {
                     headers: {
@@ -266,14 +302,14 @@ export default function VisualizarAtracao() {
                 }
             );
 
+            setModalAvaliacoes(false);
             const updatedAvaliacao = response.data;
-
-            abrirFecharModalEditar();
-            setAtualizarData(true);
+            setAtualizarScoreAvaliacoes(true);
         } catch (error) {
             console.log(error);
         }
     };
+    // aqui
 
     const pedidoAtualizarAvaliacoes = async () => {
         await axios
@@ -286,16 +322,17 @@ export default function VisualizarAtracao() {
             });
     };
 
-    const pedidoDeletar = async () => {
+    const pedidoDeletar = async (id) => {
         await axios
-            .delete(avaliacaoUrl + "/" + avaliacaoId)
-            .then((response) => {
-                const newAvaliacao = data.filter(
-                    (avaliacao) => avaliacao.id !== response.data
-                );
-                abrirFecharModalDeletar();
-                limparDados();
-                setAtualizarData(true);
+            .delete(avaliacaoUrl + "/" + id || avaliacaoId)
+            .then(async (response) => {
+                setModalAvaliacoes(false);
+
+                const avaliacaoAtracao = await pedidoGetAvaliacaoAtracaoPorIdAvaliacao(id);
+                await pedidoDeletarAvaliacaoAtracao(avaliacaoAtracao.id);
+
+                setAtualizarScoreAvaliacoes(true);
+                await pedidoGetAvaliacoesAtracao();
             })
             .catch((error) => {
                 console.log(error);
@@ -327,6 +364,31 @@ export default function VisualizarAtracao() {
             });
 
         return avaliacao;
+    };
+
+    const pedidoGetAvaliacaoAtracaoPorIdAvaliacao = async (id) => {
+        var data = {};
+        await axios
+            .get(`${avaliacaoAtracaoUrl}/Avaliacao/${id}`)
+            .then((response) => {
+                data = response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        return data;
+    };
+
+    const pedidoDeletarAvaliacaoAtracao = async (id) => {
+        await axios
+            .delete(`${avaliacaoAtracaoUrl}/${id}`)
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     const pedidoGetUsuario = async (idUsuario) => {
@@ -920,7 +982,7 @@ export default function VisualizarAtracao() {
             {/* todas as avaliações */}
 
             <Modal className="modal-xl-gridxl" style={{ maxWidth: "500px" }} isOpen={modalAvaliacoes} toggle={abrirFecharModalAvaliacoes}>
-                <ModalBody style={{ maxHeight: '90vh', overflowY: 'auto' }}> {/* Adicionando scroll */}
+                <ModalBody style={{ maxHeight: '90vh', overflowY: 'auto' }}>
                     <div className="container">
                         {avaliacoesCompletas.length > 0 ? (
                             avaliacoesCompletas.map((avaliacaoCompleta, index) => (
@@ -945,23 +1007,56 @@ export default function VisualizarAtracao() {
                                                         {formatarDataParaExibicao(avaliacaoCompleta.avaliacao.dataAvaliacao)}
                                                     </small>
                                                 </div>
-                                            </div>
-                                            <div className="mt-3 ml-3 flex">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <Star
-                                                        key={i}
-                                                        size={12}
-                                                        weight="fill"
-                                                        className={`${i < parseInt(avaliacaoCompleta.avaliacao.nota)
-                                                            ? "text-[#FFD121]"
-                                                            : "text-gray-300"
-                                                            }`}
+                                                <div className="ml-auto d-flex">
+                                                    <NotePencil
+                                                        size={18}
+                                                        className="me-2 cursor-pointer"
+                                                        onClick={() => toggleEdit(index)}
                                                     />
-                                                ))}
+                                                    <Trash
+                                                        size={18}
+                                                        onClick={() => pedidoDeletar(avaliacaoCompleta.avaliacao.id)}
+                                                    />
+                                                </div>
                                             </div>
-
-                                            <p className="mt-2 ml-3">{avaliacaoCompleta.avaliacao.comentario}</p>
-
+                                            {avaliacaoCompleta.editMode ? (
+                                                <>
+                                                    <textarea
+                                                        className="form-control text-sm mt-2"
+                                                        value={avaliacaoCompleta.avaliacao.comentario}
+                                                        onChange={(e) => handleComentarioChange(index, e.target.value)}
+                                                        placeholder="Deixe seu Comentário"
+                                                    />
+                                                    <div className="flex items-center mt-2">
+                                                        {[1, 2, 3, 4, 5].map((starIndex) => (
+                                                            <Star
+                                                                key={starIndex}
+                                                                size={20}
+                                                                className={starIndex <= avaliacaoCompleta.avaliacao.nota ? "text-yellow-400" : "text-gray-300"}
+                                                                onClick={() => handleStarClickEdit(index, starIndex)} // Chama a função para atualizar a nota
+                                                                style={{ cursor: "pointer" }}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                    <button onClick={() => selecionarAvaliacao(avaliacaoCompleta.avaliacao.id)}>
+                                                        Salvar
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <div className="mt-3 ml-3 flex">
+                                                        {[...Array(5)].map((_, i) => (
+                                                            <Star
+                                                                key={i}
+                                                                size={12}
+                                                                weight="fill"
+                                                                className={`${i < parseInt(avaliacaoCompleta.avaliacao.nota) ? "text-[#FFD121]" : "text-gray-300"}`}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                    <p className="mt-2 ml-3">{avaliacaoCompleta.avaliacao.comentario}</p>
+                                                </>
+                                            )}
                                             <hr className="pb-3 border-[1.5px] border-[#000000] mt-2" />
                                         </div>
                                     </div>
@@ -978,7 +1073,6 @@ export default function VisualizarAtracao() {
                     </button>
                 </ModalFooter>
             </Modal>
-
 
 
 

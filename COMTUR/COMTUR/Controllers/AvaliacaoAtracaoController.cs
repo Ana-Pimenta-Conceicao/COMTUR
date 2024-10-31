@@ -33,6 +33,13 @@ namespace COMTUR.Controllers
             return Ok(avaliacoesAtracaoModel);
         }
 
+        [HttpGet("Avaliacao/{idAvaliacao:int}")]
+        public async Task<ActionResult<AvaliacaoAtracaoModel>> BuscarAvaliacaoAtracaoPorIdAvaliacao(int idAvaliacao)
+        {
+            List<AvaliacaoAtracaoModel> avaliacaoAtracaoModel = await _AvaliacaoAtracaoRepositorio.BuscarAvaliacaoAtracaoModel();
+            return Ok(avaliacaoAtracaoModel.FirstOrDefault(aa => aa.IdAvaliacao == idAvaliacao));
+        }
+
         [HttpGet("Atracao/{idAtracao:int}/Score")]
         public async Task<ActionResult> CalcularScoreAtracao(int idAtracao)
         {
@@ -46,7 +53,7 @@ namespace COMTUR.Controllers
             {
                 var avaliacao = await _AvaliacaoRepositorio.BuscarPorId(avaliacaoAtracao.IdAvaliacao);
 
-                if (int.TryParse(avaliacao.Nota, out int nota))
+                if (avaliacao != null && !string.IsNullOrEmpty(avaliacao.Nota) && int.TryParse(avaliacao.Nota, out int nota))
                 {
                     score += nota;  // Somar as notas convertidas
                 }

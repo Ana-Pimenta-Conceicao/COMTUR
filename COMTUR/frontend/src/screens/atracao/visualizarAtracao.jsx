@@ -303,7 +303,7 @@ export default function VisualizarAtracao() {
         novasAvaliacoes[index].editMode = false;
         setAvaliacoesCompletas(novasAvaliacoes);
     };
-    
+
     // aqui
 
     const pedidoAtualizarAvaliacoes = async () => {
@@ -834,7 +834,7 @@ export default function VisualizarAtracao() {
                                 onChange={(e) => setAvaliacaoComentario(e.target.value)}
                                 placeholder="Deixe seu Comentário"
                             />
-                            
+
                             <br />
 
                             {/* Campo de Data removido da exibição */}
@@ -919,18 +919,21 @@ export default function VisualizarAtracao() {
                                                         {formatarDataParaExibicao(avaliacaoCompleta.avaliacao.dataAvaliacao)}
                                                     </small>
                                                 </div>
-                                                <div className="ml-auto d-flex">
-                                                    <NotePencil
-                                                        size={18}
-                                                        className="me-2 cursor-pointer"
-                                                        onClick={() => toggleEdit(index)}
-                                                    />
-                                                    <Trash
-                                                        size={18}
-                                                        className="cursor-pointer"
-                                                        onClick={() => pedidoDeletar(avaliacaoCompleta.avaliacao.id)}
-                                                    />
-                                                </div>
+                                                {/* Verificação do ID do usuário logado */}
+                                                {localStorage.getItem("id") == avaliacaoCompleta.usuario.id && (
+                                                    <div className="ml-auto d-flex">
+                                                        <NotePencil
+                                                            size={18}
+                                                            className="me-2 cursor-pointer"
+                                                            onClick={() => toggleEdit(index)}
+                                                        />
+                                                        <Trash
+                                                            size={18}
+                                                            className="cursor-pointer"
+                                                            onClick={() => pedidoDeletar(avaliacaoCompleta.avaliacao.id)}
+                                                        />
+                                                    </div>
+                                                )}
                                             </div>
                                             {avaliacaoCompleta.editMode ? (
                                                 <>

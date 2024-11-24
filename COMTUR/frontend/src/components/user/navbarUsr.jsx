@@ -5,17 +5,19 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useNavigate } from "react-router-dom";
 import logoSF from '../../assets/logoComturNovo.svg';
+import { Link } from "react-router-dom";
+import Login from "../../assets/login.png";
 
 const NavbarUsr = () => {
   const navigate = useNavigate();
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 991);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const userId = localStorage.getItem("id");
-    setIsLoggedIn(!!userId); 
+    setIsLoggedIn(!!userId);
 
     $('.navbar-nav a').on('click', () => {
       setIsNavbarOpen(false);
@@ -31,6 +33,32 @@ const NavbarUsr = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  const handleLogout = async () => {
+    const baseUrl = "https://localhost:7256/api/Login";
+
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+
+      const formData = new FormData();
+      formData.append("token", token);
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("tipoUsuario");
+      localStorage.removeItem("nome");
+      localStorage.removeItem("id");
+
+      try {
+        await axios.post(baseUrl + "/Logout", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      } catch (error) {
+        console.error("Erro ao fazer logout:", error);
+      }
+    }
+  };
 
   const handleNavbarToggle = () => {
     setIsNavbarOpen(!isNavbarOpen);
@@ -108,18 +136,37 @@ const NavbarUsr = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarCollapse">
-          <div className="navbar-nav ms-auto p-4 p-lg-0">
+        <div className="navbar-nav ms-auto d-flex p-4 p-lg-0">
             <a href="" className="nav-item nav-link active text-white" onClick={() => { navigate(`/`); }}>Início</a>
             <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todosTurismos`); }}>Turismo</a>
             <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todosEventos`); }}>Eventos</a>
             <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`#`); }}>Comtur</a>
             <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todasNoticias`); }}>Notícias</a>
             <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todasEmpresas`); }}>Empresas</a>
-            {!isLoggedIn && ( 
+            {!isLoggedIn && (
               <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/login`); }}>Login</a>
             )}
+
+            <div className="d-flex align-items-center">
+              {isLoggedIn && (
+                <Link
+                  to="/login"
+                  onClick={handleLogout}
+                  className="d-flex align-items-center nav-item nav-link text-white"
+                >
+                  <img
+                    src={Login}
+                    alt="Logout"
+                    className="me-2"
+                    style={{ width: '20px', height: '20px' }}
+                  />
+                  <span>Sair</span>
+                </Link>
+              )}
+            </div>
           </div>
-          <div className={`border-start ps-4 ${isMobile ? 'd-flex align-items-center' : 'd-none d-lg-block'}`}>
+
+          <div className={`border-start m-2 ps-4 ${isMobile ? 'd-flex align-items-center' : 'd-none d-lg-block'}`}>
             {isSearchOpen && (
               <input type="text" className="form-control search-input" placeholder="Pesquisar..." />
             )}

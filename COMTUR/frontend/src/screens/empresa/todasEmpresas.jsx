@@ -91,19 +91,18 @@ export default function TodasEmpresas() {
               </div>
             </div>
 
-            <button
+            {/* <button
               type="button"
               className="btn btn-outline-warning rounded-none h-10 w-40 text-black"
               style={{ borderColor: '#DEE2E6', fontWeight: 'normal' }}
             >
               Cadastre Empresa
-            </button>
+            </button> */}
           </div>
         </div>
-
         <div className="container">
           <div className="flex justify-center pb-2 pt-4 items-center">
-            <div className="pb-2 px-2 text-xs sm:pl-32 sm:pr-32 sm:min-w-[320px] lg:w-[90%] xl:w-[80%] 2xl:w-[70%]">
+            <div className="grid md:grid-cols-2 pb-2 px-2 text-xs sm:pl-32 sm:pr-32 sm:min-w-[320px] lg:w-[90%] xl:w-[80%] 2xl:w-[70%]">
               {outrasEmpresas
                 .filter((outraEmpresa) =>
                   tipoTurismoSelecionado
@@ -111,15 +110,8 @@ export default function TodasEmpresas() {
                     : true
                 )
                 .map((outraEmpresa) => (
-                  <div key={outraEmpresa.id} className="pb-3 px-4">
-                    <div className="grid grid-cols-2 h-[140px] sm:h-[300px] border-2 border-[#DBDBDB]">
-                      {outraEmpresa.imagemEmpresa[0] && (
-                        <img
-                          src={outraEmpresa.imagemEmpresa[0]?.imagem}
-                          alt="Preview"
-                          className="flex w-full h-[136px] sm:h-[290px]"
-                        />
-                      )}
+                  <div key={outraEmpresa.id} className="flex-auto px-3 pb-3">
+                    <div className="h-[140px] w-[350px] sm:w-full sm:h-[120px] border-2 border-[#DBDBDB]">
                       <div className="pl-6 pt-2"> 
                         <h2 className="truncate pr-6 text-[#373636] text-ellipsis overflow-hidden font-semibold text-xs sm:text-base uppercase">
                           {outraEmpresa.nome}
@@ -127,18 +119,6 @@ export default function TodasEmpresas() {
                         <h2 className="truncate pr-6 pt-1 text-[#373636] font-normal text-xs sm:text-base">
                           {outraEmpresa.endereco}
                         </h2>
-
-                        <div className="flex mt-6">
-                          <button
-                            className="border border-black rounded-none h-8 w-24 sm:w-32 sm:h-10 sm:text-base text-[#373636] font-medium hover:bg-black hover:text-white text-xs sm:text-bas"
-                            onClick={() => {
-                              navigate(`/visualizarEmpresa/${outraEmpresa.id}`);
-                              window.location.reload();
-                            }}
-                          >
-                            Saiba mais
-                          </button>
-                        </div>
                       </div>
                     </div>
                     <div className="relative">

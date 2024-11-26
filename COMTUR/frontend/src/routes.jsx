@@ -30,7 +30,7 @@ import TodosEventos from "./screens/turismo/todosEventos.jsx";
 import TodasEmpresas from "./screens/empresa/todasEmpresas.jsx";
 import Evento from "./screens/turismo/evento.jsx";
 import Anuncio from "./screens/turismo/anuncio.jsx"
-import Membro from "./screens/administrador/membro.jsx";
+import Membro from "./screens/membros/membro.jsx";
 import TodosMembros from "./screens/membros/todosMembros.jsx";
 
 const isUserLoggedIn = () => {

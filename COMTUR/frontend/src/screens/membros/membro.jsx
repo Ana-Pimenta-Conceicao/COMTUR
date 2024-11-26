@@ -69,6 +69,10 @@ function Membro() {
         setMembroImagem("");
     }
 
+    const VisualizarTodosMembros = () => {
+        navigate(`/todosmembros`);
+    };
+
     const abrirFecharModalInserir = () => {
         setModalInserir(!modalInserir);
     };
@@ -258,13 +262,8 @@ function Membro() {
                             numColunas={4}
                         />
                         <div className="inline-flex float-right py-6">
-                            <BtnAcao
-                                funcao={() => {
-                                    abrirFecharModalInserir();
-                                    LimparCampos();
-                                }}
-                                acao="Cadastrar"
-                            />
+                            <BtnAcao funcao={() => VisualizarTodosMembros()} acao="Publicados"/>
+                            <BtnAcao funcao={() => {  abrirFecharModalInserir(); LimparCampos(); }}  acao="Cadastrar"  />
                         </div>
                     </div>
                 </div>

@@ -491,8 +491,6 @@ function Atracao() {
             />
 
             <div className="inline-flex float-right py-6">
-              <BtnAcao funcao={""} acao="Publicados" />
-
               <BtnAcao
                 funcao={() => abrirFecharModalInserir("Cadastrar")}
                 acao="Cadastrar"

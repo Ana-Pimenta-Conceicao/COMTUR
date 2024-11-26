@@ -233,10 +233,6 @@ function TipoTurismo() {
                 funcao={() => TipoTurismoSet(tipoturismo, "Excluir")}
                 acao="Excluir"
               />
-              <BtnAcao
-                funcao={() => TipoTurismoSet(tipoturismo, "Visualizar")}
-                acao="Visualizar"
-              />
             </div>
           ),
         };

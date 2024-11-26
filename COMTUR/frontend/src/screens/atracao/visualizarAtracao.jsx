@@ -522,18 +522,11 @@ export default function VisualizarAtracao() {
                 </h3>
             </div>
 
-            <div className="">
-                <div className="row m-8">
+            <div className="pb-12">
+                <div className="row mx-8 pt-14 sm:pt-20">
                     <div className="flex flex-col">
-                        <p className="text-[#373636] italic text-xs sm:text-lg sm:px-16  font-normal pb-4">
-                            {atracao?.nome}
-                        </p>
-
                         <div className="row mb-3 flex justify-between">
                             <div className="flex flex-col">
-                                <p className="text-[#373636] italic text-xs sm:text-lg sm:px-16  font-normal pb-4">
-                                    {atracao?.nome}
-                                </p>
                                 <div className="d-flex justify-content-between">
                                     <div className="flex items-center">
                                         <Star
@@ -591,10 +584,10 @@ export default function VisualizarAtracao() {
                             </div>
                         </div>
                     </div>
-                    <hr className="pb-4 border-[1.5px] border-[#000000]" />
+                    <hr className="border-[1.5px] border-[#000000]" />
                 </div>
 
-                <div>
+                <div className="ml-5">
                     <div>
                         <h2 className="text-[#373636] text-lg font-bold pt-4 sm:pt-14 sm:px-16 sm:text-2xl">
                             MAIS INFORMAÇÕES
@@ -704,7 +697,7 @@ export default function VisualizarAtracao() {
                         </button>
                     </div>
                 </div>
-                <div className="flex justify-end mr-12">
+                <div className="flex justify-end mr-12 pt-8">
                     <div className="items-left">
 
                         <span
@@ -716,7 +709,7 @@ export default function VisualizarAtracao() {
 
                     </div>
                 </div>
-                <div>
+                {/* <div>
                     <div className="inline-flex items-center justify-center w-full p-4">
                         <hr className="w-full h-1 my-6 opacity-100 bg-[#FFD121] border-0 rounded" />
                         <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">
@@ -799,7 +792,7 @@ export default function VisualizarAtracao() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
             </div>
             <FooterUsr />

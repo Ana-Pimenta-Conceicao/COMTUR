@@ -357,11 +357,7 @@ export default function Administrador() {
               <BtnAcao
                 funcao={() => UserSet(usuario, "Excluir")}
                 acao="Excluir"
-              />
-              <BtnAcao
-                funcao={() => UserSet(usuario, "Visualizar")}
-                acao="Visualizar"
-              />
+              />  
             </div>
           ),
         };

@@ -140,7 +140,7 @@ const NavbarUsr = () => {
             <a href="" className="nav-item nav-link active text-white" onClick={() => { navigate(`/`); }}>Início</a>
             <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todosTurismos`); }}>Turismo</a>
             <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todosEventos`); }}>Eventos</a>
-            <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`#`); }}>Comtur</a>
+            <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todosMembros`); }}>Membros</a>
             <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todasNoticias`); }}>Notícias</a>
             <a href="" className="nav-item nav-link text-white" onClick={() => { navigate(`/todasEmpresas`); }}>Empresas</a>
             {!isLoggedIn && (
@@ -154,12 +154,6 @@ const NavbarUsr = () => {
                   onClick={handleLogout}
                   className="d-flex align-items-center nav-item nav-link text-white"
                 >
-                  <img
-                    src={Login}
-                    alt="Logout"
-                    className="me-2"
-                    style={{ width: '20px', height: '20px' }}
-                  />
                   <span>Sair</span>
                 </Link>
               )}

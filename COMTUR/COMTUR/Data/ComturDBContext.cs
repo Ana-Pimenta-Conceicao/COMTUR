@@ -243,8 +243,23 @@ namespace COMTUR.Data
             new TipoTurismoModel { Id = 4, Nome = "Evento", IdUsuario = 4, Status = TipoStatus.Aprovado }
             );
 
-            //Adicionando TipoAtracao para teste
-            modelBuilder.Entity<TipoAtracaoModel>().HasData(
+            //Adicionando TipoTurismo para teste
+            modelBuilder.Entity<TipoTurismoModel>().HasData(
+            new TipoTurismoModel { Id = 5, Nome = "Cultura", IdUsuario = 4, Status = TipoStatus.Aprovado }
+            );
+
+            //Adicionando TipoTurismo para teste
+            modelBuilder.Entity<TipoTurismoModel>().HasData(
+            new TipoTurismoModel { Id = 6, Nome = "Turismo Rural", IdUsuario = 4, Status = TipoStatus.Aprovado }
+            );
+
+			//Adicionando TipoTurismo para teste
+			modelBuilder.Entity<TipoTurismoModel>().HasData(
+			new TipoTurismoModel { Id = 7, Nome = "Saúde", IdUsuario = 4, Status = TipoStatus.Aprovado }
+			);
+
+			//Adicionando TipoAtracao para teste
+			modelBuilder.Entity<TipoAtracaoModel>().HasData(
             new TipoAtracaoModel { Id = 1, Nome = "Show", IdUsuario = 4, Status = TipoStatus.Aprovado }
             );
 

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20241125231142_comtur")]
-    partial class comtur
+    [Migration("20241127121942_teste")]
+    partial class teste
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -875,6 +875,27 @@ namespace COMTUR.Migrations
                             Id = 4,
                             IdUsuario = 4,
                             Nome = "Evento",
+                            Status = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IdUsuario = 4,
+                            Nome = "Cultura",
+                            Status = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IdUsuario = 4,
+                            Nome = "Turismo Rural",
+                            Status = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IdUsuario = 4,
+                            Nome = "Saúde",
                             Status = 2
                         });
                 });

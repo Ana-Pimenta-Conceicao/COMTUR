@@ -873,6 +873,27 @@ namespace COMTUR.Migrations
                             IdUsuario = 4,
                             Nome = "Evento",
                             Status = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IdUsuario = 4,
+                            Nome = "Cultura",
+                            Status = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IdUsuario = 4,
+                            Nome = "Turismo Rural",
+                            Status = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IdUsuario = 4,
+                            Nome = "Saúde",
+                            Status = 2
                         });
                 });
 

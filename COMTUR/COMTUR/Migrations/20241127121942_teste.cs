@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     /// <inheritdoc />
-    public partial class comtur : Migration
+    public partial class teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -525,7 +525,10 @@ namespace COMTUR.Migrations
                     { 1, 4, null, "Expo", 2 },
                     { 2, 4, null, "Varejo", 2 },
                     { 3, 4, null, "Alimento", 2 },
-                    { 4, 4, null, "Evento", 2 }
+                    { 4, 4, null, "Evento", 2 },
+                    { 5, 4, null, "Cultura", 2 },
+                    { 6, 4, null, "Turismo Rural", 2 },
+                    { 7, 4, null, "Saúde", 2 }
                 });
 
             migrationBuilder.InsertData(

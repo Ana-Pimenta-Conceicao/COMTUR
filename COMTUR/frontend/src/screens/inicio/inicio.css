@@ -344,11 +344,15 @@
 .card {
   width: 150px; /* Ajustar o tamanho do card */
 }
+
 .cardlaranja{
     background-color: #ED7833 !important;
     border: none;
+    cursor: pointer;
 }
 .cardazul{
     background-color: #58AFAE !important;
-       border: none;
+    border: none;
+    cursor: pointer;
+    
 }

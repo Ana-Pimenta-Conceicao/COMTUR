@@ -53,7 +53,7 @@ export default function TodosEventos() {
         <h1 className="text-[#373636] mb-3 text-lg font-extrabold pt-4 sm:pt-14 sm:px-16 sm:text-4xl">Eventos</h1>
       </div>
 
-      <hr class="pb-4 border-[1.5px] border-black  w-75 ml-auto" />
+      <hr className="pb-4 border-[1.5px] border-black  w-75 ml-auto" />
 
       <div className="container">
         {/*<div className="flex items-center space-x-4">

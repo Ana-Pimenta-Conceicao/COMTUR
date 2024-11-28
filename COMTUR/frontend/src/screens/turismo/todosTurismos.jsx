@@ -17,13 +17,15 @@ export default function TodosTurismos() {
   const [currentTurismoIndex, setCurrentTurismoIndex] = useState(0);
   const [atualizarData, setAtualizarData] = useState(true);
 
+  const [filtrarPorId, setFiltrarPorId] = useState(false);
+
   useEffect(() => {
     const obterOutrosTurismos = async () => {
       try {
         const response = await axios.get(`${baseUrl}`);
         setOutrosTurismos(
           response.data.filter(
-            (OutrosTurismos) => OutrosTurismos.id !== parseInt(id) && OutrosTurismos.status === 2
+            (OutrosTurismos) => OutrosTurismos.status === 2
           )
         );
       } catch (error) {
@@ -43,6 +45,29 @@ export default function TodosTurismos() {
     obterOutrosTurismos();
     obterTiposTurismo();
   }, [id]);
+
+  useEffect(() => {
+    const obterTurismosPorTipo = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}`);
+        const turismosFiltrados = response.data.filter(
+          (turismo) => turismo.status === 2 && turismo.idTipoTurismo === parseInt(id)
+        );
+        setTurismo(turismosFiltrados);
+        setFiltrarPorId(true);
+      } catch (error) {
+        console.error("Erro ao obter turismos:", error);
+      }
+    };
+    if (id && !filtrarPorId) obterTurismosPorTipo();
+  }, [id]);
+
+  useEffect(() => {
+    if (id && !filtrarPorId) {
+      setTipoTurismoSelecionado(id);
+      setFiltrarPorId(true);
+    } }, [id]); // Dependência do ID para refazer a consulta
+
   
 
   // Função para encontrar o nome do tipo de turismo pelo ID
@@ -90,7 +115,7 @@ export default function TodosTurismos() {
         </h1>
       </div>
 
-      <hr class="pb-4 border-[1.5px] text-[#58AFAE]   w-75 ml-auto" />
+      <hr className="pb-4 border-[1.5px] text-[#58AFAE]   w-75 ml-auto" />
       <div className="">
         {turismo.length > 0 && (
           <div
@@ -154,7 +179,7 @@ export default function TodosTurismos() {
             <div className=" pb-2 px-2 text-xs sm:pl-32 sm:pr-32 sm:min-w-[320px] lg:w-[90%] xl:w-[80%] 2xl:w-[70%]">
               {OutrosTurismos.filter((OutrosTurismos) =>
                 tipoTurismoSelecionado
-                  ? OutrosTurismos.idTipoTurismo ===
+                  ? OutrosTurismos.idTipoTurismo ==
                     parseInt(tipoTurismoSelecionado)
                   : true
               ).map((OutrosTurismos) => (

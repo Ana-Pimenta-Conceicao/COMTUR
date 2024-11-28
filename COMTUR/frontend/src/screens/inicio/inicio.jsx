@@ -4,10 +4,10 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import NavbarUsr from "../../components/user/navbarUsr.jsx";
 import FooterUsr from "../../components/user/footerUsr.jsx";
 import "../inicio/inicio.css";
-import hospedagem from '../../assets/HospedagemCad.svg';
+import empresa from '../../assets/EmpresaCard.svg';
 import rural from '../../assets/RuralCard.svg';
 import saude from '../../assets/SaudeCard.svg';
-import alimentacao from '../../assets/AlimentacaoCard.svg';
+import noticia from '../../assets/NoticiaCard.svg';
 import eventos from '../../assets/EventosCard.svg';
 import cultura from '../../assets/CulturaCard.svg';
 function Inicio() {
@@ -127,7 +127,7 @@ function Inicio() {
     <div className="">
       <NavbarUsr />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
       <link
         href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Open+Sans:wght@400;500;600&display=swap"
         rel="stylesheet"
@@ -172,14 +172,14 @@ function Inicio() {
           )}
         </div>
 
-        <div class="container-xxl pb-5 pt-3">
-          <div class="container">
-            <div class="row g-5 align-items-center">
-              <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                <p class="section-title bg-white text-start text-black pe-3">
+        <div className="container-xxl pb-5 pt-3">
+          <div className="container">
+            <div className="row g-5 align-items-center">
+              <div className="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <p className="section-title bg-white text-start text-black pe-3">
                   O QUE É TURISMO?
                 </p>
-                <h1 class="mb-3">Conheça mais sobre a cidade de Jales!</h1>
+                <h1 className="mb-3">Conheça mais sobre a cidade de Jales!</h1>
 
                 {parametro && ( // Verifique se 'parametro' não é null
                   <div>
@@ -187,90 +187,90 @@ function Inicio() {
                       {parametro.definicaoTurismo}
                     </p>
                     <p>
-                      <i class="fa fa-check text-[#fabc0b] me-1"></i> {parametro.beneficios}
+                      <i className="fa fa-check text-[#fabc0b] me-1"></i> {parametro.beneficios}
                     </p>
                   </div>
                 )}
-                <button class="btn btnmais rounded-pill hover:scale-105 py-3 px-5 mt-3 text-[#fefefe]" onClick={() => { navigate(`/todosTurismos`) }}>
+                <button className="btn btnmais rounded-pill hover:scale-105 py-3 px-5 mt-3 text-[#fefefe]" onClick={() => { navigate(`/todosTurismos`) }}>
                   Explorar
                 </button>
               </div>
               {parametro && (
-                <div class="col-lg-6  text-[#fefefe]">
-                  <div class="rounded overflow-hidden">
-                    <div class="row g-0">
-                      <div class="col-sm-6 wow fadeIn">
-                        <div class="text-center bg-[#58afae] py-5 px-4">
-                          <div class="d-flex justify-content-center">
+                <div className="col-lg-6  text-[#fefefe]">
+                  <div className="rounded overflow-hidden">
+                    <div className="row g-0">
+                      <div className="col-sm-6 wow fadeIn">
+                        <div className="text-center bg-[#58afae] py-5 px-4">
+                          <div className="d-flex justify-content-center">
                             <img
-                              class="img-fluid mb-4"
+                              className="img-fluid mb-4"
                               src="./src/assets/experience.png"
                               alt=""
                             />
                           </div>
                           <h1
-                            class="display-6 text-white"
+                            className="display-6 text-white"
                             data-toggle="counter-up"
                           >
                             {idadeMunicipio}
 
                           </h1>
-                          <span class="fs-5 fw-semi-bold text-white">
+                          <span className="fs-5 fw-semi-bold text-white">
                             Anos de Fundação
                           </span>
                         </div>
                       </div>
-                      <div class="col-sm-6 bg-[#064d56] wow fadeIn">
-                        <div class="text-center bg-[#064d56] py-5 px-4">
-                          <div class="d-flex justify-content-center">
+                      <div className="col-sm-6 bg-[#064d56] wow fadeIn">
+                        <div className="text-center bg-[#064d56] py-5 px-4">
+                          <div className="d-flex justify-content-center">
                             <img
-                              class="img-fluid mb-4"
+                              className="img-fluid mb-4"
                               src="./src/assets/award.png"
                               alt=""
                             />
                           </div>
-                          <h1 class="display-6" data-toggle="counter-up">
+                          <h1 className="display-6" data-toggle="counter-up">
                             {parametro.areaTerritorial}
 
                           </h1>
-                          <span class="fs-5 fw-semi-bold text-white">
+                          <span className="fs-5 fw-semi-bold text-white">
                             Área Territorial
                           </span>
                         </div>
                       </div>
-                      <div class="col-sm-6 bg-[#064d56] wow fadeIn">
-                        <div class="text-center bg-[#064d56] py-5 px-4">
-                          <div class="d-flex justify-content-center">
+                      <div className="col-sm-6 bg-[#064d56] wow fadeIn">
+                        <div className="text-center bg-[#064d56] py-5 px-4">
+                          <div className="d-flex justify-content-center">
                             <img
-                              class="img-fluid mb-4"
+                              className="img-fluid mb-4"
                               src="./src/assets/animal.png"
                               alt=""
                             />
                           </div>
-                          <h1 class="display-6" data-toggle="counter-up">
+                          <h1 className="display-6" data-toggle="counter-up">
                             {parametro.distanciaCapital}
                           </h1>
-                          <span class="fs-5 fw-semi-bold text-white">
+                          <span className="fs-5 fw-semi-bold text-white">
                             da cidade de São Paulo
                           </span>
                         </div>
                       </div>
-                      <div class="col-sm-6 wow fadeIn">
-                        <div class="text-center  bg-[#ed7833] py-5 px-4">
-                          <div class="d-flex justify-content-center">
+                      <div className="col-sm-6 wow fadeIn">
+                        <div className="text-center  bg-[#ed7833] py-5 px-4">
+                          <div className="d-flex justify-content-center">
                             <img
-                              class="img-fluid mb-4"
+                              className="img-fluid mb-4"
                               src="./src/assets/client.png"
                               alt=""
                             />
                           </div>
                           <h1
-                            class="display-6 text-white"
+                            className="display-6 text-white"
                             data-toggle="counter-up"
                           >
                             {parametro.habitantes}
                           </h1>
-                          <span class="fs-5 fw-semi-bold text-white">
+                          <span className="fs-5 fw-semi-bold text-white">
                             Habitantes
                           </span>
                         </div>
@@ -308,25 +308,43 @@ function Inicio() {
                       <h6 className="card-title text-center">Turismo Rural</h6>
                     </div>
                     <div className="card cardlaranja p-1 bg-warning text-white mx-2">
-                      <img className="m-3" src={hospedagem} alt="icone hotel" />
-                      <h6 className="card-title text-center">Hospedagem</h6>
+                      <img className="m-3" src={empresa} alt="icone hotel" />
+                      <h6 className="card-title text-center">Empresas</h6>
                     </div>
                   </div>
                 </div>
                 <div className="carousel-item">
                   <div className="d-flex justify-content-center">
+
+
                     <div className="card cardlaranja p-1 text-white mx-2">
                       <img className="m-3" src={saude} alt="icone saude" />
                       <h6 className="card-title text-center">Saúde</h6>
                     </div>
+
+
                     <div className="card cardazul p-1 text-white mx-2">
-                      <img className="m-3" src={alimentacao} alt="icone alimentação" />
-                      <h6 className="card-title text-center">Alimentação</h6>
+                      <img className="m-3" src={noticia} alt="icone notícias" />
+                      <h6 className="card-title text-center">Notícias</h6>
                     </div>
-                    <div className="card cardlaranja p-1 text-white mx-2">
-                      <img className="m-3" src={eventos} alt="icone eventos" />
-                      <h6 className="card-title text-center">Eventos</h6>
-                    </div>
+
+                    {/* Card Eventos com Link */}
+                    <Link
+                      to="/todosEventos"
+                      className="text-decoration-none"
+                      aria-label="Ir para a página de Eventos"
+                    >
+                      <div
+                        className="card cardlaranja p-1 text-white mx-2"
+                        role="button"
+                        tabIndex="0"
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <img className="m-3" src={eventos} alt="Ícone de Eventos" />
+                        <h6 className="card-title text-center">Eventos</h6>
+                      </div>
+                    </Link>
+
                   </div>
                 </div>
               </div>
@@ -340,31 +358,48 @@ function Inicio() {
               </button>
             </div>
           ) : (
-            <div className="row justify-content-center text-center">
-              <div className="card cardlaranja m-2 text-white">
-                <img className="m-3" src={cultura} alt="icone cultura" />
-                <h6 className="card-title">Cultura</h6>
-              </div>
-              <div className="card cardazul m-2 text-white">
-                <img className="m-4" src={rural} alt="icone rural" />
-                <h6 className="card-title">Turismo Rural</h6>
-              </div>
-              <div className="card cardlaranja m-2 text-white">
-                <img className="m-4" src={hospedagem} alt="icone hotel" />
-                <h6 className="card-title">Hospedagem</h6>
-              </div>
-              <div className="card cardazul m-2 text-white">
-                <img className="m-4" src={saude} alt="icone saude" />
-                <h6 className="card-title">Saúde</h6>
-              </div>
-              <div className="card cardlaranja m-2 text-white">
-                <img className="m-4" src={alimentacao} alt="icone alimentação" />
-                <h6 className="card-title">Alimentação</h6>
-              </div>
-              <div className="card cardazul m-2 text-white">
-                <img className="m-4" src={eventos} alt="icone eventos" />
-                <h6 className="card-title">Eventos</h6>
-              </div>
+            <div className="row justify-content-center text-center flex-nowrap">
+              <Link to={`/todosturismos/${5}`} className="col-auto">
+                <div className="card cardlaranja m-2 text-white">
+                  <img className="m-3" src={cultura} alt="icone cultura" />
+                  <h6 className="card-title">Cultura</h6>
+                </div>
+              </Link>
+
+              <Link to={`/todosturismos/${6}`} className="col-auto">
+                <div className="card cardazul m-2 text-white">
+                  <img className="m-4" src={rural} alt="icone rural" />
+                  <h6 className="card-title">Turismo Rural</h6>
+                </div>
+              </Link>
+
+              <Link to="/todasEmpresas" className="col-auto">
+                <div className="card cardlaranja m-2 text-white">
+                  <img className="m-4" src={empresa} alt="icone loja" />
+                  <h6 className="card-title">Empresas</h6>
+                </div>
+              </Link>
+
+              <Link to={`/todosturismos/${7}`} className="col-auto">
+                <div className="card cardazul m-2 text-white">
+                  <img className="m-4" src={saude} alt="icone saude" />
+                  <h6 className="card-title">Saúde</h6>
+                </div>
+              </Link>
+
+              <Link to="/todasNoticias" className="col-auto">
+                <div className="card cardlaranja m-2 text-white">
+                  <img className="m-4" src={noticia} alt="icone notícias" />
+                  <h6 className="card-title">Notícias</h6>
+                </div>
+              </Link>
+
+              <Link to="/todosEventos" className="col-auto">
+                <div className="card cardazul m-2 text-white">
+                  <img className="m-4" src={eventos} alt="icone eventos" />
+                  <h6 className="card-title">Eventos</h6>
+                </div>
+              </Link>
             </div>
           )}
         </div>

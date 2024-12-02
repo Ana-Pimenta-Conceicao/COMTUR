@@ -297,56 +297,42 @@ function Inicio() {
           {isMobile ? (
             <div id="cardCarousel" className="carousel slide" data-bs-ride="carousel" data-bs-touch="true"> {/* Adicionado para permitir deslizar */}
               <div className="carousel-inner">
+
                 <div className="carousel-item active">
                   <div className="d-flex justify-content-center">
-                    <div className="card cardlaranja p-1 text-white mx-2">
+                    <Link to={`/todosturismos/${5}`} className="card cardlaranja p-1 text-white mx-2 text-decoration-none">
                       <img className="m-3" src={cultura} alt="icone cultura" />
                       <h6 className="card-title text-center">Cultura</h6>
-                    </div>
-                    <div className="card cardazul p-1 bg-info text-white mx-2">
+                    </Link>
+                    <Link to={`/todosturismos/${6}`} className="card cardazul p-1 bg-info text-white mx-2 text-decoration-none">
                       <img className="m-3" src={rural} alt="icone rural" />
                       <h6 className="card-title text-center">Turismo Rural</h6>
-                    </div>
-                    <div className="card cardlaranja p-1 bg-warning text-white mx-2">
+                    </Link>
+                    <Link to="/todasEmpresas" className="card cardlaranja p-1 bg-warning text-white mx-2 text-decoration-none">
                       <img className="m-3" src={empresa} alt="icone hotel" />
                       <h6 className="card-title text-center">Empresas</h6>
-                    </div>
+                    </Link>
                   </div>
                 </div>
+
                 <div className="carousel-item">
                   <div className="d-flex justify-content-center">
-
-
-                    <div className="card cardlaranja p-1 text-white mx-2">
+                    <Link to={`/todosturismos/${7}`} className="card cardazul p-1 text-white mx-2 text-decoration-none">
                       <img className="m-3" src={saude} alt="icone saude" />
                       <h6 className="card-title text-center">Saúde</h6>
-                    </div>
-
-
-                    <div className="card cardazul p-1 text-white mx-2">
+                    </Link>
+                    <Link to="/todasNoticias" className="card cardlaranja p-1 text-white mx-2 text-decoration-none">
                       <img className="m-3" src={noticia} alt="icone notícias" />
                       <h6 className="card-title text-center">Notícias</h6>
-                    </div>
-
-                    {/* Card Eventos com Link */}
-                    <Link
-                      to="/todosEventos"
-                      className="text-decoration-none"
-                      aria-label="Ir para a página de Eventos"
-                    >
-                      <div
-                        className="card cardlaranja p-1 text-white mx-2"
-                        role="button"
-                        tabIndex="0"
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <img className="m-3" src={eventos} alt="Ícone de Eventos" />
-                        <h6 className="card-title text-center">Eventos</h6>
-                      </div>
                     </Link>
-
+                    <Link to="/todosEventos" className="card cardazul p-1 text-white mx-2 text-decoration-none">
+                      <img className="m-3" src={eventos} alt="Ícone de Eventos" />
+                      <h6 className="card-title text-center">Eventos</h6>
+                    </Link>
                   </div>
                 </div>
+
+
               </div>
               <button className="carousel-control-prev" type="button" data-bs-target="#cardCarousel" data-bs-slide="prev">
                 <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -358,49 +344,40 @@ function Inicio() {
               </button>
             </div>
           ) : (
-            <div className="row justify-content-center text-center flex-nowrap">
-              <Link to={`/todosturismos/${5}`} className="col-auto">
-                <div className="card cardlaranja m-2 text-white">
-                  <img className="m-3" src={cultura} alt="icone cultura" />
-                  <h6 className="card-title">Cultura</h6>
-                </div>
+            <div className="row justify-content-center text-center">
+              <Link to={`/todosturismos/${5}`} className="card cardlaranja m-2 text-white text-decoration-none">
+                <img className="m-3" src={cultura} alt="icone cultura" />
+                <h6 className="card-title">Cultura</h6>
               </Link>
 
-              <Link to={`/todosturismos/${6}`} className="col-auto">
-                <div className="card cardazul m-2 text-white">
-                  <img className="m-4" src={rural} alt="icone rural" />
-                  <h6 className="card-title">Turismo Rural</h6>
-                </div>
+              <Link to={`/todosturismos/${6}`} className="card cardazul m-2 text-white text-decoration-none">
+                <img className="m-4" src={rural} alt="icone rural" />
+                <h6 className="card-title">Turismo Rural</h6>
               </Link>
 
-              <Link to="/todasEmpresas" className="col-auto">
-                <div className="card cardlaranja m-2 text-white">
-                  <img className="m-4" src={empresa} alt="icone loja" />
-                  <h6 className="card-title">Empresas</h6>
-                </div>
+              <Link to="/todasEmpresas" className="card cardlaranja m-2 text-white text-decoration-none">
+                <img className="m-4" src={empresa} alt="icone loja" />
+                <h6 className="card-title">Empresas</h6>
               </Link>
 
-              <Link to={`/todosturismos/${7}`} className="col-auto">
-                <div className="card cardazul m-2 text-white">
-                  <img className="m-4" src={saude} alt="icone saude" />
-                  <h6 className="card-title">Saúde</h6>
-                </div>
+              <Link to={`/todosturismos/${7}`} className="card cardazul m-2 text-white text-decoration-none">
+                <img className="m-4" src={saude} alt="icone saude" />
+                <h6 className="card-title">Saúde</h6>
               </Link>
 
-              <Link to="/todasNoticias" className="col-auto">
-                <div className="card cardlaranja m-2 text-white">
-                  <img className="m-4" src={noticia} alt="icone notícias" />
-                  <h6 className="card-title">Notícias</h6>
-                </div>
+              <Link to="/todasNoticias" className="card cardlaranja m-2 text-white text-decoration-none">
+                <img className="m-4" src={noticia} alt="icone notícias" />
+                <h6 className="card-title">Notícias</h6>
               </Link>
 
-              <Link to="/todosEventos" className="col-auto">
-                <div className="card cardazul m-2 text-white">
-                  <img className="m-4" src={eventos} alt="icone eventos" />
-                  <h6 className="card-title">Eventos</h6>
-                </div>
+              <Link to="/todosEventos" className="card cardazul m-2 text-white text-decoration-none">
+                <img className="m-4" src={eventos} alt="icone eventos" />
+                <h6 className="card-title">Eventos</h6>
               </Link>
             </div>
+
+
+
           )}
         </div>
         <div className="w-full px-14">

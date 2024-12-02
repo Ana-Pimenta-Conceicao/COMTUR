@@ -33,412 +33,414 @@ export default function VisualizarTurismos() {
 
   const abrirFecharModalAvaliacao = () => {
     if (modalInserir) {
-        limparDados(); // Limpa os dados se o modal estava aberto
+      limparDados(); // Limpa os dados se o modal estava aberto
     } else {
-        setBuscarUsuario(true);
+      setBuscarUsuario(true);
     }
     setModalInserir(!modalInserir); // Alterna o estado do modal
-};
+  };
 
-const [avaliacaoNota, setAvaliacaoNota] = useState(0);
-const [avaliacaoDataPublicacao, setAvaliacaoDataPublicacao] = useState("");
-const [avaliacaoComentario, setAvaliacaoComentario] = useState("");
-const [userType, setUserType] = useState(null);
-const [avaliacaoId, setAvaliacaoId] = useState(0);
-const [idUsuario, setIdUsuario] = useState(0);
-const [usuario, setUsuario] = useState({});
-const [buscarUsuario, setBuscarUsuario] = useState(false);
+  const [avaliacaoNota, setAvaliacaoNota] = useState(0);
+  const [avaliacaoDataPublicacao, setAvaliacaoDataPublicacao] = useState("");
+  const [avaliacaoComentario, setAvaliacaoComentario] = useState("");
+  const [userType, setUserType] = useState(null);
+  const [avaliacaoId, setAvaliacaoId] = useState(0);
+  const [idUsuario, setIdUsuario] = useState(0);
+  const [usuario, setUsuario] = useState({});
+  const [buscarUsuario, setBuscarUsuario] = useState(false);
 
-const [avaliacoes, setAvaliacoes] = useState("");
+  const [avaliacoes, setAvaliacoes] = useState("");
 
-const [avaliacoesTurismo, setAvaliacoesTurismo] = useState([]);
+  const [avaliacoesTurismo, setAvaliacoesTurismo] = useState([]);
 
-const [avaliacoesCompletas, setAvaliacoesCompletas] = useState([]);
+  const [avaliacoesCompletas, setAvaliacoesCompletas] = useState([]);
 
-const [modalAvaliacoes, setModalAvaliacoes] = useState(false);
+  const [modalAvaliacoes, setModalAvaliacoes] = useState(false);
 
-const abrirFecharModalAvaliacoes = () => {
+  const abrirFecharModalAvaliacoes = () => {
     setModalAvaliacoes(!modalAvaliacoes);
-};
+  };
 
-useEffect(() => {
-  const fetchAvaliacoes = async () => {
+  useEffect(() => {
+    const fetchAvaliacoes = async () => {
       const avaliacoesData = await Promise.all(
-          avaliacoesTurismo.map(async (avaliacaoTurismo) => {
-              const avaliacao = await pedidoGetAvaliacao(
-                  avaliacaoTurismo.idAvaliacao
-              );
+        avaliacoesTurismo.map(async (avaliacaoTurismo) => {
+          const avaliacao = await pedidoGetAvaliacao(
+            avaliacaoTurismo.idAvaliacao
+          );
 
-              if (avaliacao && Object.keys(avaliacao).length > 0) {
-                  const usuario = await pedidoGetUsuario(avaliacao.idUsuario);
-                  if (usuario && Object.keys(usuario).length > 0) {
-                      return {
-                          avaliacao,
-                          usuario,
-                      };
-                  }
-              }
-              return null;
-          })
+          if (avaliacao && Object.keys(avaliacao).length > 0) {
+            const usuario = await pedidoGetUsuario(avaliacao.idUsuario);
+            if (usuario && Object.keys(usuario).length > 0) {
+              return {
+                avaliacao,
+                usuario,
+              };
+            }
+          }
+          return null;
+        })
       );
 
       setAvaliacoesCompletas(
-          avaliacoesData.filter((avaliacao) => avaliacao !== null)
+        avaliacoesData.filter((avaliacao) => avaliacao !== null)
       );
+    };
+
+    if (avaliacoesTurismo.length > 0) {
+      fetchAvaliacoes();
+    }
+  }, [avaliacoesTurismo]);
+
+  // Aqui começa a navegação das avaliações 
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 3; // Define quantas avaliações serão mostradas por vez
+
+  // Filtra as últimas 12 avaliações
+  const ultimasAvaliacoes = avaliacoesCompletas.slice(-12);
+
+  // Usa as últimas 12 avaliações para a lógica de paginação
+  const displayedAvaliacoes = ultimasAvaliacoes.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
+
+  const nextAvaliacoes = () => {
+    if ((currentPage + 1) * itemsPerPage < ultimasAvaliacoes.length) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
-  if (avaliacoesTurismo.length > 0) {
-      fetchAvaliacoes();
-  }
-}, [avaliacoesTurismo]);
-
-// Aqui começa a navegação das avaliações 
-
-const [currentPage, setCurrentPage] = useState(0);
-const itemsPerPage = 3; // Define quantas avaliações serão mostradas por vez
-
-// Filtra as últimas 12 avaliações
-const ultimasAvaliacoes = avaliacoesCompletas.slice(-12);
-
-// Usa as últimas 12 avaliações para a lógica de paginação
-const displayedAvaliacoes = ultimasAvaliacoes.slice(
-  currentPage * itemsPerPage,
-  (currentPage + 1) * itemsPerPage
-);
-
-const nextAvaliacoes = () => {
-  if ((currentPage + 1) * itemsPerPage < ultimasAvaliacoes.length) {
-      setCurrentPage(currentPage + 1);
-  }
-};
-
-const prevAvaliacoes = () => {
-  if (currentPage > 0) {
+  const prevAvaliacoes = () => {
+    if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
-  }
-};
+    }
+  };
 
-// Total de páginas para a navegação
-const totalPages = Math.ceil(ultimasAvaliacoes.length / itemsPerPage);
+  // Total de páginas para a navegação
+  const totalPages = Math.ceil(ultimasAvaliacoes.length / itemsPerPage);
 
-const limparDados = () => {
-  setAvaliacaoNota("");
-  setAvaliacaoDataPublicacao("");
-  setAvaliacaoComentario("");
-  setAvaliacaoId("");
-};
+  const limparDados = () => {
+    setAvaliacaoNota("");
+    setAvaliacaoDataPublicacao("");
+    setAvaliacaoComentario("");
+    setAvaliacaoId("");
+  };
 
-const abrirFecharModalInserir = () => {
-  modalInserir ? limparDados() : null;
-  setModalInserir(!modalInserir);
-};
+  const abrirFecharModalInserir = () => {
+    modalInserir ? limparDados() : null;
+    setModalInserir(!modalInserir);
+  };
 
 
-const inverterDataParaFormatoBanco = (data) => {
-  const partes = data.split("/");
-  if (partes.length === 3) {
+  const inverterDataParaFormatoBanco = (data) => {
+    const partes = data.split("/");
+    if (partes.length === 3) {
       const [dia, mes, ano] = partes;
       return `${ano}-${mes}-${dia}`;
-  }
-  return data;
-};
+    }
+    return data;
+  };
 
-const formatarDataParaExibicao = (data) => {
-  const partes = data.split("-");
-  if (partes.length === 3) {
+  const formatarDataParaExibicao = (data) => {
+    const partes = data.split("-");
+    if (partes.length === 3) {
       const [ano, mes, dia] = partes;
       return `${dia}/${mes}/${ano}`;
-  }
-  return data; // Retorna a data original se não estiver no formato esperado
-};
-const pedidoGet = async () => {
-  await axios
+    }
+    return data; // Retorna a data original se não estiver no formato esperado
+  };
+  const pedidoGet = async () => {
+    await axios
       .get(avaliacaoUrl)
       .then((response) => { })
       .catch((error) => {
-          console.log(error);
+        console.log(error);
       });
-};
+  };
 
-const pedidoGetDadosUsuario = async () => {
-  const idUsuario = localStorage.getItem("id");
+  const pedidoGetDadosUsuario = async () => {
+    const idUsuario = localStorage.getItem("id");
 
-  try {
+    try {
       const response = await axios.get(`${usuarioUrl}/${idUsuario}`, {
-          headers: {
-              "Content-Type": "application/json",
-          },
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       setUsuario(response.data);
-  } catch (error) {
+    } catch (error) {
       console.log(error);
-  }
-};
-
-useEffect(() => {
-  const buscar = async () => {
-      await pedidoGetDadosUsuario();
+    }
   };
 
-  if (buscarUsuario) buscar();
-}, [buscarUsuario]);
+  useEffect(() => {
+    const buscar = async () => {
+      await pedidoGetDadosUsuario();
+    };
 
-const pedidoPostAvaliacao = async () => {
-  const currentDate = new Date();
+    if (buscarUsuario) buscar();
+  }, [buscarUsuario]);
 
-  // Formata a data apenas para o formato desejado (DD/MM/YYYY)
-  const formattedDate = format(currentDate, "yyyy-MM-dd", { locale: ptBR }); // Formato para o banco de dados
+  const pedidoPostAvaliacao = async () => {
+    const currentDate = new Date();
 
-  const formData = new FormData();
-  formData.append("nota", avaliacaoNota);
-  formData.append("dataAvaliacao", formattedDate);
-  formData.append("comentario", avaliacaoComentario);
-  formData.append("status", 1);
-  formData.append("idUsuario", idUsuario);
+    // Formata a data apenas para o formato desejado (DD/MM/YYYY)
+    const formattedDate = format(currentDate, "yyyy-MM-dd", { locale: ptBR }); // Formato para o banco de dados
 
-  try {
+    const formData = new FormData();
+    formData.append("nota", avaliacaoNota);
+    formData.append("dataAvaliacao", formattedDate);
+    formData.append("comentario", avaliacaoComentario);
+    formData.append("status", 1);
+    formData.append("idUsuario", idUsuario);
+
+    try {
       const response = await axios.post(avaliacaoUrl, formData, {
-          headers: {
-              "Content-Type": "multipart/form-data",
-          },
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       await pedidoPostAvaliacaoTurismo(response.data.id);
 
       abrirFecharModalInserir();
       limparDados();
       setAtualizarScoreAvaliacoes(true);
-  } catch (error) {
+    } catch (error) {
       console.log(error);
-  }
-};
+    }
+  };
 
-const pedidoPostAvaliacaoTurismo = async (idAvaliacao) => {
-  const formData = new FormData();
-  formData.append("idAvaliacao", idAvaliacao);
-  formData.append("idTurismo", id);
+  const pedidoPostAvaliacaoTurismo = async (idAvaliacao) => {
+    const formData = new FormData();
+    formData.append("idAvaliacao", idAvaliacao);
+    formData.append("idTurismo", id);
 
-  try {
+    try {
       const response = await axios.post(avaliacaoTurismoUrl, formData, {
-          headers: {
-              "Content-Type": "multipart/form-data",
-          },
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       limparDados();
       setAtualizarScoreAvaliacoes(true);
-  } catch (error) {
+    } catch (error) {
       console.log(error);
-  }
-};
+    }
+  };
 
-// aqui
-const toggleEdit = (index) => {
-  setAvaliacoesCompletas((prev) => {
+  // aqui
+  const toggleEdit = (index) => {
+    setAvaliacoesCompletas((prev) => {
       const updatedAvaliacoes = [...prev];
       updatedAvaliacoes[index].editMode = !updatedAvaliacoes[index].editMode;
       return updatedAvaliacoes;
-  });
-};
+    });
+  };
 
-const handleComentarioChange = (index, value) => {
-  setAvaliacoesCompletas((prev) => {
+  const handleComentarioChange = (index, value) => {
+    setAvaliacoesCompletas((prev) => {
       const updatedAvaliacoes = [...prev];
       updatedAvaliacoes[index].avaliacao.comentario = value;
       return updatedAvaliacoes;
-  });
-};
+    });
+  };
 
-const handleStarClickEdit = (index, starIndex) => {
-  setAvaliacoesCompletas((prev) => {
+  const handleStarClickEdit = (index, starIndex) => {
+    setAvaliacoesCompletas((prev) => {
       const novasAvaliacoes = [...prev];
       novasAvaliacoes[index].avaliacao.nota = starIndex; // Atualiza a nota
       return novasAvaliacoes;
-  });
-};
+    });
+  };
 
-const selecionarAvaliacao = (id) => {
-  const avaliacaoSelecionada = avaliacoesCompletas.find(
+  const selecionarAvaliacao = (id) => {
+    const avaliacaoSelecionada = avaliacoesCompletas.find(
       (avaliacao) => avaliacao.avaliacao.id === id
-  );
+    );
 
-  if (avaliacaoSelecionada) {
+    if (avaliacaoSelecionada) {
       console.log(avaliacaoSelecionada);
       pedidoAtualizar(avaliacaoSelecionada);
-  }
-};
+    }
+  };
 
-const pedidoAtualizar = async (avaliacao) => {
-  const formData = new FormData();
-  formData.append("nota", avaliacao?.avaliacao?.nota || avaliacaoNota);
-  formData.append(
+  const pedidoAtualizar = async (avaliacao) => {
+    const formData = new FormData();
+    formData.append("nota", avaliacao?.avaliacao?.nota || avaliacaoNota);
+    formData.append(
       "dataAvaliacao",
       inverterDataParaFormatoBanco(avaliacao?.avaliacao?.dataAvaliacao || avaliacaoDataPublicacao)
-  );
-  formData.append("comentario", avaliacao?.avaliacao?.comentario || avaliacaoComentario);
+    );
+    formData.append("comentario", avaliacao?.avaliacao?.comentario || avaliacaoComentario);
 
-  try {
+    try {
       const response = await axios.put(
-          `${avaliacaoUrl}/${avaliacao?.avaliacao?.id || avaliacaoId}`,
-          formData,
-          {
-              headers: {
-                  "Content-Type": "multipart/form-data",
-              },
-          }
+        `${avaliacaoUrl}/${avaliacao?.avaliacao?.id || avaliacaoId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
 
       setModalAvaliacoes(false);
       const updatedAvaliacao = response.data;
       setAtualizarScoreAvaliacoes(true);
-  } catch (error) {
+    } catch (error) {
       console.log(error);
-  }
-};
+    }
+  };
 
-const cancelarEdicao = (index) => {
-  const novasAvaliacoes = [...avaliacoesCompletas];
-  novasAvaliacoes[index].editMode = false;
-  setAvaliacoesCompletas(novasAvaliacoes);
-};
+  const cancelarEdicao = (index) => {
+    const novasAvaliacoes = [...avaliacoesCompletas];
+    novasAvaliacoes[index].editMode = false;
+    setAvaliacoesCompletas(novasAvaliacoes);
+  };
 
-// aqui
+  // aqui
 
-const pedidoAtualizarAvaliacoes = async () => {
-  await axios
+  const pedidoAtualizarAvaliacoes = async () => {
+    await axios
       .get(`${avaliacaoTurismoUrl}/Turismo/${id}/Score`)
       .then((response) => {
-          setAvaliacoes(response.data);
+        setAvaliacoes(response.data);
       })
       .catch((error) => {
-          console.log(error);
+        console.log(error);
       });
-};
+  };
 
-const pedidoDeletar = async (id) => {
-  await axios
-      .delete(avaliacaoUrl + "/" + id || avaliacaoId)
-      .then(async (response) => {
-          setModalAvaliacoes(false);
+  const pedidoDeletar = async (id) => {
+    const avaliacaoIdFinal = id || avaliacaoId;
+  
+    if (!avaliacaoIdFinal) {
+      console.error("ID inválido para exclusão.");
+      return;
+    }
+  
+    try {
+      await axios.delete(`${avaliacaoUrl}/${avaliacaoIdFinal}`);
+      console.log("Avaliação excluída com sucesso.");
+      setAtualizarScoreAvaliacoes(true);
+      await pedidoGetAvaliacoesTurismo();
+    } catch (error) {
+      console.error("Erro ao excluir avaliação:", error.message);
+    }
+  };
 
-          const avaliacaoTurismo = await pedidoGetAvaliacaoTurismoPorIdAvaliacao(id);
-          await pedidoDeletarAvaliacaoTurismo(avaliacaoTurismo.id);
 
-          setAtualizarScoreAvaliacoes(true);
-          await pedidoGetAvaliacoesTurismo();
-      })
-      .catch((error) => {
-          console.log(error);
-      });
-};
-
-const pedidoGetAvaliacoesTurismo = async () => {
-  await axios
+  const pedidoGetAvaliacoesTurismo = async () => {
+    await axios
       .get(`${avaliacaoTurismoUrl}/Turismo/${id}`)
       .then((response) => {
-          setAvaliacoesTurismo(response.data);
+        setAvaliacoesTurismo(response.data);
       })
       .catch((error) => {
-          console.log(error);
+        console.log(error);
       });
-};
+  };
 
-const pedidoGetAvaliacao = async (idAvaliacao) => {
-  var avaliacao = null;
+  const pedidoGetAvaliacao = async (idAvaliacao) => {
+    var avaliacao = null;
 
-  await axios
+    await axios
       .get(`${avaliacaoUrl}/${idAvaliacao}`)
       .then((response) => {
-          avaliacao = response.data;
+        avaliacao = response.data;
       })
       .catch((error) => {
-          console.log(error);
-          return {};
+        console.log(error);
+        return {};
       });
 
-  return avaliacao;
-};
+    return avaliacao;
+  };
 
-const pedidoGetAvaliacaoTurismoPorIdAvaliacao = async (id) => {
-  var data = {};
-  await axios
+  const pedidoGetAvaliacaoTurismoPorIdAvaliacao = async (id) => {
+    var data = {};
+    await axios
       .get(`${avaliacaoTurismoUrl}/Avaliacao/${id}`)
       .then((response) => {
-          data = response.data;
+        data = response.data;
       })
       .catch((error) => {
-          console.log(error);
+        console.log(error);
       });
 
-  return data;
-};
+    return data;
+  };
 
-const pedidoDeletarAvaliacaoTurismo = async (id) => {
-  await axios
+  const pedidoDeletarAvaliacaoTurismo = async (id) => {
+    await axios
       .delete(`${avaliacaoTurismoUrl}/${id}`)
       .then((response) => {
-          return response.data;
+        return response.data;
       })
       .catch((error) => {
-          console.log(error);
+        console.log(error);
       });
-};
+  };
 
-const pedidoGetUsuario = async (idUsuario) => {
-  var usuario = null;
+  const pedidoGetUsuario = async (idUsuario) => {
+    var usuario = null;
 
-  await axios
+    await axios
       .get(`${usuarioUrl}/${idUsuario}`)
       .then((response) => {
-          usuario = response.data;
+        usuario = response.data;
       })
       .catch((error) => {
-          console.log(error);
+        console.log(error);
       });
 
-  return usuario;
-};
-useEffect(() => {
-  if (atualizarScoreAvaliacoes) {
+    return usuario;
+  };
+  useEffect(() => {
+    if (atualizarScoreAvaliacoes) {
       pedidoAtualizarAvaliacoes();
       pedidoGetAvaliacoesTurismo();
 
       setAtualizarScoreAvaliacoes(false);
-  }
-}, [atualizarScoreAvaliacoes]);
+    }
+  }, [atualizarScoreAvaliacoes]);
 
-useEffect(() => {
-  const idTipoUsuarioAPI = localStorage.getItem("id");
-  setIdUsuario(idTipoUsuarioAPI);
-}, []);
+  useEffect(() => {
+    const idTipoUsuarioAPI = localStorage.getItem("id");
+    setIdUsuario(idTipoUsuarioAPI);
+  }, []);
 
 
 
-const handleStarClick = (index) => {
-  setAvaliacaoNota(index);
-};
+  const handleStarClick = (index) => {
+    setAvaliacaoNota(index);
+  };
 
-const handleDate = (value) => {
-  // Filtra somente números
-  const numbersOnly = value.replace(/\D/g, "");
+  const handleDate = (value) => {
+    // Filtra somente números
+    const numbersOnly = value.replace(/\D/g, "");
 
-  // Limita a quantidade de caracteres a 8 (apenas os dígitos da data)
-  const limitedValue = numbersOnly.slice(0, 8);
+    // Limita a quantidade de caracteres a 8 (apenas os dígitos da data)
+    const limitedValue = numbersOnly.slice(0, 8);
 
-  let formattedValue = limitedValue;
+    let formattedValue = limitedValue;
 
-  // Adiciona a primeira barra após 2 dígitos (se houver mais que 2 dígitos)
-  if (limitedValue.length > 2) {
+    // Adiciona a primeira barra após 2 dígitos (se houver mais que 2 dígitos)
+    if (limitedValue.length > 2) {
       formattedValue = limitedValue.slice(0, 2) + "/" + limitedValue.slice(2);
-  }
+    }
 
-  // Adiciona a segunda barra após 4 dígitos (se houver mais que 4 dígitos)
-  if (limitedValue.length > 4) {
+    // Adiciona a segunda barra após 4 dígitos (se houver mais que 4 dígitos)
+    if (limitedValue.length > 4) {
       formattedValue = formattedValue.slice(0, 5) + "/" + limitedValue.slice(4);
-  }
+    }
 
-  // Atualiza o estado com a data formatada
-  setAvaliacaoDataPublicacao(formattedValue);
-};
+    // Atualiza o estado com a data formatada
+    setAvaliacaoDataPublicacao(formattedValue);
+  };
 
   useEffect(() => {
     const obterDetalhesTurismo = async () => {
@@ -531,16 +533,73 @@ const handleDate = (value) => {
                     </>
                   )}
                 </div>
+                
+                {/* mexer aqui */}
+                <div className="row mx-8 pt-14 sm:pt-20">
+                  <div className="flex flex-col">
+                    <div className="row mb-3 flex justify-between">
+                      <div className="flex flex-col">
+                        <div className="d-flex justify-content-between">
+                          <div className="flex items-center">
+                            <Star
+                              size={20}
+                              weight="fill"
+                              className={`${avaliacoes.score >= 1
+                                ? "text-[#FFD121]"
+                                : "text-gray-300"
+                                }`}
+                            />
+                            <Star
+                              size={20}
+                              weight="fill"
+                              className={`${avaliacoes.score >= 2
+                                ? "text-[#FFD121]"
+                                : "text-gray-300"
+                                }`}
+                            />
+                            <Star
+                              size={20}
+                              weight="fill"
+                              className={`${avaliacoes.score >= 3
+                                ? "text-[#FFD121]"
+                                : "text-gray-300"
+                                }`}
+                            />
+                            <Star
+                              size={20}
+                              weight="fill"
+                              className={`${avaliacoes.score >= 4
+                                ? "text-[#FFD121]"
+                                : "text-gray-300"
+                                }`}
+                            />
+                            <Star
+                              size={20}
+                              weight="fill"
+                              className={`${avaliacoes.score === 5
+                                ? "text-[#FFD121]"
+                                : "text-gray-300"
+                                }`}
+                            />
+                            <h3 className="text-gray-800 text-xs pl-2">
+                              {avaliacoes.avaliacoes} avaliações
+                            </h3>
+                          </div>
 
-                <div className="flex flex-row w-full justify-start items-center text-[#ED7833] ml-6">
-                  <Star size={20} />
-                  <Star size={20} />
-                  <Star size={20} />
-                  <Star size={20} />
-                  <Star size={20} />
-                  <h3 className="text-gray-800 text-xs pl-2">14 avaliações</h3>
+                          <div
+                            className="btn btn-warning"
+                            onClick={abrirFecharModalAvaliacao}
+                          >
+                            <button>Avaliar</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                 
                 </div>
 
+                {/* ate aqui  */}
                 <div className="flex w-full justify-center items-center pt-2">
                   <hr className="w-11/12 mb-2 h-[1px] text-[#58AFAE] rounded" />
                 </div>
@@ -592,175 +651,113 @@ const handleDate = (value) => {
               </div>
             </div>
 
-                <div className="pb-12">
-                <div className="row mx-8 pt-14 sm:pt-20">
-                    <div className="flex flex-col">
-                        <div className="row mb-3 flex justify-between">
-                            <div className="flex flex-col">
-                                <div className="d-flex justify-content-between">
-                                    <div className="flex items-center">
-                                        <Star
-                                            size={20}
-                                            weight="fill"
-                                            className={`${avaliacoes.score >= 1
-                                                ? "text-[#FFD121]"
-                                                : "text-gray-300"
-                                                }`}
-                                        />
-                                        <Star
-                                            size={20}
-                                            weight="fill"
-                                            className={`${avaliacoes.score >= 2
-                                                ? "text-[#FFD121]"
-                                                : "text-gray-300"
-                                                }`}
-                                        />
-                                        <Star
-                                            size={20}
-                                            weight="fill"
-                                            className={`${avaliacoes.score >= 3
-                                                ? "text-[#FFD121]"
-                                                : "text-gray-300"
-                                                }`}
-                                        />
-                                        <Star
-                                            size={20}
-                                            weight="fill"
-                                            className={`${avaliacoes.score >= 4
-                                                ? "text-[#FFD121]"
-                                                : "text-gray-300"
-                                                }`}
-                                        />
-                                        <Star
-                                            size={20}
-                                            weight="fill"
-                                            className={`${avaliacoes.score === 5
-                                                ? "text-[#FFD121]"
-                                                : "text-gray-300"
-                                                }`}
-                                        />
-                                        <h3 className="text-gray-800 text-xs pl-2">
-                                            {avaliacoes.avaliacoes} avaliações
-                                        </h3>
-                                    </div>
+            <div className="pb-12">
 
-                                    <div
-                                        className="btn btn-warning"
-                                        onClick={abrirFecharModalAvaliacao}
-                                    >
-                                        <button>Avaliar</button>
-                                    </div>
-                                </div>
+
+              <div className="flex justify-center m-6">
+                <h1 className="text-[#FFD121] sm:text-2xl text-sm font-bold sm:pl-6 pl-3 mb-2">
+                  Avaliações do Turismo
+                </h1>
+              </div>
+
+              {/* Avaliações */}
+
+
+              <div className="container">
+                <div className="row d-flex justify-content-center g-4">
+                  {displayedAvaliacoes.length > 0 ? (
+                    displayedAvaliacoes.map((avaliacaoCompleta, index) => (
+                      <div className="col-md-3 justify-center" key={index}>
+                        <div className="card m-1 justify-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
+                          <article>
+                            <div className="flex items-center mb-3">
+                              <div className="w-10 h-10 me-3 rounded-full">
+                                {avaliacaoCompleta.usuario.imagemPerfilUsuario ? (
+                                  <img
+                                    src={
+                                      avaliacaoCompleta.usuario.imagemPerfilUsuario
+                                    }
+                                    alt="Avatar"
+                                    className="rounded-full"
+                                  />
+                                ) : (
+                                  <Xadrez />
+                                )}
+                              </div>
+                              <div className="font-medium dark:text-black">
+                                <p>
+                                  @{avaliacaoCompleta.usuario.nome}
+                                  <time
+                                    dateTime={
+                                      avaliacaoCompleta.avaliacao.dataAvaliacao
+                                    }
+                                    className="block text-sm text-gray-500 dark:text-gray-400"
+                                  >
+                                    {formatarDataParaExibicao(
+                                      avaliacaoCompleta.avaliacao.dataAvaliacao
+                                    )}
+                                  </time>
+                                </p>
+                              </div>
                             </div>
+                            <div className="flex items-center">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  size={20}
+                                  weight="fill"
+                                  className={`${i < parseInt(avaliacaoCompleta.avaliacao.nota)
+                                    ? "text-[#FFD121]"
+                                    : "text-gray-300"
+                                    }`}
+                                />
+                              ))}
+                            </div>
+                            <p className="mt-7 text-gray-500 dark:text-gray-400">
+                              {avaliacaoCompleta.avaliacao.comentario}
+                            </p>
+                          </article>
                         </div>
-                    </div>
-                    <hr className="border-[1.5px] border-[#000000]" />
+                      </div>
+                    ))
+                  ) : (
+                    <p>Nenhuma avaliação disponível.</p>
+                  )}
                 </div>
 
-                <div className="flex justify-center mb-3">
-                    <h1 className="text-[#FFD121] sm:text-2xl text-sm font-bold sm:pl-6 pl-3 mb-2">
-                        Avaliações da Atração
-                    </h1>
+                {/* Navegação das avaliações */}
+                <div className="flex justify-center mt-4">
+                  <button
+                    onClick={prevAvaliacoes}
+                    className="mx-2 px-4 py-2 bg-gray-200 rounded-lg"
+                    disabled={currentPage === 0}
+                  >
+                    <CaretLeft size={24} />
+                  </button>
+                  <button
+                    onClick={nextAvaliacoes}
+                    className="mx-2 px-4 py-2 bg-gray-200 rounded-lg"
+                    disabled={
+                      (currentPage + 1) * itemsPerPage >= avaliacoesCompletas.length
+                    }
+                  >
+                    <CaretRight size={24} />
+                  </button>
                 </div>
+              </div>
+              <div className="flex justify-end mr-12 pt-8">
+                <div className="items-left">
 
-                {/* Avaliações */}
+                  <span
+                    onClick={abrirFecharModalAvaliacoes}
+                    className="mt-2 ml-5 text-gray-500 dark:text-gray-400 cursor-pointer hover:text-blue-500"
+                  >
+                    Mais Avaliações
+                  </span>
 
-
-                <div className="container">
-                    <div className="row d-flex justify-content-center g-4">
-                        {displayedAvaliacoes.length > 0 ? (
-                            displayedAvaliacoes.map((avaliacaoCompleta, index) => (
-                                <div className="col-md-3 justify-center" key={index}>
-                                    <div className="card m-1 justify-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
-                                        <article>
-                                            <div className="flex items-center mb-3">
-                                                <div className="w-10 h-10 me-3 rounded-full">
-                                                    {avaliacaoCompleta.usuario.imagemPerfilUsuario ? (
-                                                        <img
-                                                            src={
-                                                                avaliacaoCompleta.usuario.imagemPerfilUsuario
-                                                            }
-                                                            alt="Avatar"
-                                                            className="rounded-full"
-                                                        />
-                                                    ) : (
-                                                        <Xadrez />
-                                                    )}
-                                                </div>
-                                                <div className="font-medium dark:text-black">
-                                                    <p>
-                                                        @{avaliacaoCompleta.usuario.nome}
-                                                        <time
-                                                            dateTime={
-                                                                avaliacaoCompleta.avaliacao.dataAvaliacao
-                                                            }
-                                                            className="block text-sm text-gray-500 dark:text-gray-400"
-                                                        >
-                                                            {formatarDataParaExibicao(
-                                                                avaliacaoCompleta.avaliacao.dataAvaliacao
-                                                            )}
-                                                        </time>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-center">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <Star
-                                                        key={i}
-                                                        size={20}
-                                                        weight="fill"
-                                                        className={`${i < parseInt(avaliacaoCompleta.avaliacao.nota)
-                                                            ? "text-[#FFD121]"
-                                                            : "text-gray-300"
-                                                            }`}
-                                                    />
-                                                ))}
-                                            </div>
-                                            <p className="mt-7 text-gray-500 dark:text-gray-400">
-                                                {avaliacaoCompleta.avaliacao.comentario}
-                                            </p>
-                                        </article>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <p>Nenhuma avaliação disponível.</p>
-                        )}
-                    </div>
-
-                    {/* Navegação das avaliações */}
-                    <div className="flex justify-center mt-4">
-                        <button
-                            onClick={prevAvaliacoes}
-                            className="mx-2 px-4 py-2 bg-gray-200 rounded-lg"
-                            disabled={currentPage === 0}
-                        >
-                            <CaretLeft size={24} />
-                        </button>
-                        <button
-                            onClick={nextAvaliacoes}
-                            className="mx-2 px-4 py-2 bg-gray-200 rounded-lg"
-                            disabled={
-                                (currentPage + 1) * itemsPerPage >= avaliacoesCompletas.length
-                            }
-                        >
-                            <CaretRight size={24} />
-                        </button>
-                    </div>
                 </div>
-                <div className="flex justify-end mr-12 pt-8">
-                    <div className="items-left">
-
-                        <span
-                            onClick={abrirFecharModalAvaliacoes}
-                            className="mt-2 ml-5 text-gray-500 dark:text-gray-400 cursor-pointer hover:text-blue-500"
-                        >
-                            Mais Avaliações
-                        </span>
-
-                    </div>
-                </div>
-                {/* <div>
+              </div>
+              {/* <div>
                     <div className="inline-flex items-center justify-center w-full p-4">
                         <hr className="w-full h-1 my-6 opacity-100 bg-[#FFD121] border-0 rounded" />
                         <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">
@@ -847,7 +844,7 @@ const handleDate = (value) => {
 
             </div>
 
- 
+
 
             <div className="flex w-full justify-center items-center mt-3 mb-4 bg-[#064D56]  h-[330px]">
               <div className="flex flex-col w-full">
@@ -914,198 +911,198 @@ const handleDate = (value) => {
         )}
       </div>
       <FooterUsr />
-            <Modal isOpen={modalInserir}>
-                <ModalBody>
-                    <div className="m-2">
-                        <div className="flex items-center mb-2">
-                            <div className="w-10 h-10 mr-3 rounded-full">
-                                {usuario?.imagemPerfilUsuario ? (
-                                    <img
-                                        src={usuario.imagemPerfilUsuario}
-                                        alt="Avatar"
-                                        className="rounded-full"
-                                    />
-                                ) : (
-                                    <Xadrez />
-                                )}
-                            </div>
+      <Modal isOpen={modalInserir}>
+        <ModalBody>
+          <div className="m-2">
+            <div className="flex items-center mb-2">
+              <div className="w-10 h-10 mr-3 rounded-full">
+                {usuario?.imagemPerfilUsuario ? (
+                  <img
+                    src={usuario.imagemPerfilUsuario}
+                    alt="Avatar"
+                    className="rounded-full"
+                  />
+                ) : (
+                  <Xadrez />
+                )}
+              </div>
 
-                            <div className="font-medium text-gray-500 ml-1">
-                                <p>@{usuario?.nome}</p>
-                            </div>
-                            <div className="ml-auto">
-                                <Comtur />
-                            </div>
-                        </div>
+              <div className="font-medium text-gray-500 ml-1">
+                <p>@{usuario?.nome}</p>
+              </div>
+              <div className="ml-auto">
+                <Comtur />
+              </div>
+            </div>
 
-                        <div className="flex flex-col mt-4">
-                            <label>Comentário:</label>
-                            <textarea
-                                className="form-control text-sm mt-2 "
-                                onChange={(e) => setAvaliacaoComentario(e.target.value)}
-                                placeholder="Deixe seu Comentário"
+            <div className="flex flex-col mt-4">
+              <label>Comentário:</label>
+              <textarea
+                className="form-control text-sm mt-2 "
+                onChange={(e) => setAvaliacaoComentario(e.target.value)}
+                placeholder="Deixe seu Comentário"
+              />
+
+              <br />
+
+              {/* Campo de Data removido da exibição */}
+              <input
+                hidden
+                type="text"
+                className="form-control text-sm"
+                readOnly
+                value={format(new Date(), "dd/MM/yyyy", { locale: ptBR })} // Mostra apenas a data
+              />
+
+              <h1 className="mb-2 text-black">Faça uma avaliação!</h1>
+              <h2 className="mb-2  text-gray-500">
+                Compartilhe sua experiência para ajudar outras pessoas
+              </h2>
+
+              <div className="flex items-center mt-2">
+                <div className="flex flex-row w-full justify-start items-center text-[#FFD121]">
+                  {[1, 2, 3, 4, 5].map((starIndex) => (
+                    <Star
+                      key={starIndex}
+                      size={30}
+                      weight="fill"
+                      className={
+                        starIndex <= avaliacaoNota
+                          ? "text-yellow-400"
+                          : "text-gray-300"
+                      }
+                      onClick={() => handleStarClick(starIndex)}
+                      style={{ cursor: "pointer" }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end mt-4">
+              <button
+                className="btn btnavaliar bg-yellow-400 rounded-md mr-1 "
+                onClick={pedidoPostAvaliacao} // Chama a função diretamente
+              >
+                Avaliar
+              </button>
+
+              <button
+                className="btn btncancelarmodal"
+                onClick={abrirFecharModalAvaliacao}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </ModalBody>
+      </Modal>
+
+
+      {/* todas as avaliações/editar/excluir */}
+
+      <Modal className="modal-xl-gridxl" style={{ maxWidth: "500px" }} isOpen={modalAvaliacoes} toggle={abrirFecharModalAvaliacoes}>
+        <ModalBody style={{ maxHeight: '90vh', overflowY: 'auto' }}>
+          <div className="container">
+            {avaliacoesCompletas.length > 0 ? (
+              avaliacoesCompletas.map((avaliacaoCompleta, index) => (
+                <div className="col-md-12" key={index}>
+                  <div className="card-auto">
+                    <div className="card-body">
+                      <div className="d-flex">
+                        <div className="mr-3">
+                          {avaliacaoCompleta.usuario.imagemPerfilUsuario ? (
+                            <img
+                              src={avaliacaoCompleta.usuario.imagemPerfilUsuario}
+                              alt="Avatar"
+                              className="rounded-full w-10 h-10"
                             />
-
-                            <br />
-
-                            {/* Campo de Data removido da exibição */}
-                            <input
-                                hidden
-                                type="text"
-                                className="form-control text-sm"
-                                readOnly
-                                value={format(new Date(), "dd/MM/yyyy", { locale: ptBR })} // Mostra apenas a data
+                          ) : (
+                            <Xadrez />
+                          )}
+                        </div>
+                        <div>
+                          <h5 className="mb-0">@{avaliacaoCompleta.usuario.nome}</h5>
+                          <small className="text-muted">
+                            {formatarDataParaExibicao(avaliacaoCompleta.avaliacao.dataAvaliacao)}
+                          </small>
+                        </div>
+                        {/* Verificação do ID do usuário logado */}
+                        {localStorage.getItem("id") == avaliacaoCompleta.usuario.id && (
+                          <div className="ml-auto d-flex">
+                            <NotePencil
+                              size={18}
+                              className="me-2 cursor-pointer"
+                              onClick={() => toggleEdit(index)}
                             />
-
-                            <h1 className="mb-2 text-black">Faça uma avaliação!</h1>
-                            <h2 className="mb-2  text-gray-500">
-                                Compartilhe sua experiência para ajudar outras pessoas
-                            </h2>
-
-                            <div className="flex items-center mt-2">
-                                <div className="flex flex-row w-full justify-start items-center text-[#FFD121]">
-                                    {[1, 2, 3, 4, 5].map((starIndex) => (
-                                        <Star
-                                            key={starIndex}
-                                            size={30}
-                                            weight="fill"
-                                            className={
-                                                starIndex <= avaliacaoNota
-                                                    ? "text-yellow-400"
-                                                    : "text-gray-300"
-                                            }
-                                            onClick={() => handleStarClick(starIndex)}
-                                            style={{ cursor: "pointer" }}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex justify-end mt-4">
-                            <button
-                                className="btn btnavaliar bg-yellow-400 rounded-md mr-1"
-                                onClick={pedidoPostAvaliacao} // Chama a função diretamente
-                            >
-                                Avaliar
-                            </button>
-
-                            <button
-                                className="btn btncancelarmodal"
-                                onClick={abrirFecharModalAvaliacao}
-                            >
-                                Cancelar
-                            </button>
-                        </div>
-                    </div>
-                </ModalBody>
-            </Modal>
-
-
-            {/* todas as avaliações/editar/excluir */}
-
-            <Modal className="modal-xl-gridxl" style={{ maxWidth: "500px" }} isOpen={modalAvaliacoes} toggle={abrirFecharModalAvaliacoes}>
-                <ModalBody style={{ maxHeight: '90vh', overflowY: 'auto' }}>
-                    <div className="container">
-                        {avaliacoesCompletas.length > 0 ? (
-                            avaliacoesCompletas.map((avaliacaoCompleta, index) => (
-                                <div className="col-md-12" key={index}>
-                                    <div className="card-auto">
-                                        <div className="card-body">
-                                            <div className="d-flex">
-                                                <div className="mr-3">
-                                                    {avaliacaoCompleta.usuario.imagemPerfilUsuario ? (
-                                                        <img
-                                                            src={avaliacaoCompleta.usuario.imagemPerfilUsuario}
-                                                            alt="Avatar"
-                                                            className="rounded-full w-10 h-10"
-                                                        />
-                                                    ) : (
-                                                        <Xadrez />
-                                                    )}
-                                                </div>
-                                                <div>
-                                                    <h5 className="mb-0">@{avaliacaoCompleta.usuario.nome}</h5>
-                                                    <small className="text-muted">
-                                                        {formatarDataParaExibicao(avaliacaoCompleta.avaliacao.dataAvaliacao)}
-                                                    </small>
-                                                </div>
-                                                {/* Verificação do ID do usuário logado */}
-                                                {localStorage.getItem("id") == avaliacaoCompleta.usuario.id && (
-                                                    <div className="ml-auto d-flex">
-                                                        <NotePencil
-                                                            size={18}
-                                                            className="me-2 cursor-pointer"
-                                                            onClick={() => toggleEdit(index)}
-                                                        />
-                                                        <Trash
-                                                            size={18}
-                                                            className="cursor-pointer"
-                                                            onClick={() => pedidoDeletar(avaliacaoCompleta.avaliacao.id)}
-                                                        />
-                                                    </div>
-                                                )}
-                                            </div>
-                                            {avaliacaoCompleta.editMode ? (
-                                                <>
-                                                    <textarea
-                                                        className="form-control text-sm mt-2"
-                                                        value={avaliacaoCompleta.avaliacao.comentario}
-                                                        onChange={(e) => handleComentarioChange(index, e.target.value)}
-                                                        placeholder="Deixe seu Comentário"
-                                                    />
-                                                    <div className="flex items-center mt-2">
-                                                        {[1, 2, 3, 4, 5].map((starIndex) => (
-                                                            <Star
-                                                                key={starIndex}
-                                                                weight="fill"
-                                                                size={20}
-                                                                className={starIndex <= avaliacaoCompleta.avaliacao.nota ? "text-yellow-400" : "text-gray-300"}
-                                                                onClick={() => handleStarClickEdit(index, starIndex)} // Chama a função para atualizar a nota
-                                                                style={{ cursor: "pointer" }}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                    <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                                                        <button type="button" className="btn bg-yellow-400 btn-sm rounded-md" onClick={() => selecionarAvaliacao(avaliacaoCompleta.avaliacao.id)}>
-                                                            Salvar
-                                                        </button>
-                                                        <button type="button" className="btn bg-gray-300 btn-sm rounded-md" onClick={() => cancelarEdicao(index)}>
-                                                            Cancelar
-                                                        </button>
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <div className="mt-3 ml-3 flex">
-                                                        {[...Array(5)].map((_, i) => (
-                                                            <Star
-                                                                key={i}
-                                                                size={12}
-                                                                weight="fill"
-                                                                className={`${i < parseInt(avaliacaoCompleta.avaliacao.nota) ? "text-[#FFD121]" : "text-gray-300"}`}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                    <p className="mt-2 ml-3">{avaliacaoCompleta.avaliacao.comentario}</p>
-                                                </>
-                                            )}
-                                            <hr className="pb-3 border-[1.5px] border-[#000000] mt-2" />
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <p>Nenhuma avaliação disponível.</p>
+                            <Trash
+                              size={18}
+                              className="cursor-pointer"
+                              onClick={() => pedidoDeletar(avaliacaoCompleta.avaliacao.id)}
+                            />
+                          </div>
                         )}
+                      </div>
+                      {avaliacaoCompleta.editMode ? (
+                        <>
+                          <textarea
+                            className="form-control text-sm mt-2"
+                            value={avaliacaoCompleta.avaliacao.comentario}
+                            onChange={(e) => handleComentarioChange(index, e.target.value)}
+                            placeholder="Deixe seu Comentário"
+                          />
+                          <div className="flex items-center mt-2">
+                            {[1, 2, 3, 4, 5].map((starIndex) => (
+                              <Star
+                                key={starIndex}
+                                weight="fill"
+                                size={20}
+                                className={starIndex <= avaliacaoCompleta.avaliacao.nota ? "text-yellow-400" : "text-gray-300"}
+                                onClick={() => handleStarClickEdit(index, starIndex)} // Chama a função para atualizar a nota
+                                style={{ cursor: "pointer" }}
+                              />
+                            ))}
+                          </div>
+                          <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" className="btn bg-yellow-400 btn-sm rounded-md" onClick={() => selecionarAvaliacao(avaliacaoCompleta.avaliacao.id)}>
+                              Salvar
+                            </button>
+                            <button type="button" className="btn bg-gray-300 btn-sm rounded-md" onClick={() => cancelarEdicao(index)}>
+                              Cancelar
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="mt-3 ml-3 flex">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                size={12}
+                                weight="fill"
+                                className={`${i < parseInt(avaliacaoCompleta.avaliacao.nota) ? "text-[#FFD121]" : "text-gray-300"}`}
+                              />
+                            ))}
+                          </div>
+                          <p className="mt-2 ml-3">{avaliacaoCompleta.avaliacao.comentario}</p>
+                        </>
+                      )}
+                      <hr className="pb-3 border-[1.5px] border-[#000000] mt-2" />
                     </div>
-                </ModalBody>
-                <ModalFooter>
-                    <button className="btn bg-yellow-400 rounded-md" onClick={abrirFecharModalAvaliacoes}>
-                        Fechar
-                    </button>
-                </ModalFooter>
-            </Modal>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Nenhuma avaliação disponível.</p>
+            )}
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <button className="btn bg-yellow-400 rounded-md" onClick={abrirFecharModalAvaliacoes}>
+            Fechar
+          </button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 }

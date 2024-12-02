@@ -325,8 +325,8 @@ namespace COMTUR.Migrations
                 {
                     table.PrimaryKey("PK_avaliacaoTurismo", x => x.avaliacaoturismoid);
                     table.ForeignKey(
-                        name: "FK_avaliacaoTurismo_avaliacao_idturismo",
-                        column: x => x.idturismo,
+                        name: "FK_avaliacaoTurismo_avaliacao_idavaliacao",
+                        column: x => x.idavaliacao,
                         principalTable: "avaliacao",
                         principalColumn: "avaliacaoid",
                         onDelete: ReferentialAction.Cascade);
@@ -418,8 +418,8 @@ namespace COMTUR.Migrations
                         principalColumn: "atracaoid",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_avaliacaoAtracao_avaliacao_idatracao",
-                        column: x => x.idatracao,
+                        name: "FK_avaliacaoAtracao_avaliacao_idavaliacao",
+                        column: x => x.idavaliacao,
                         principalTable: "avaliacao",
                         principalColumn: "avaliacaoid",
                         onDelete: ReferentialAction.Cascade);
@@ -618,6 +618,16 @@ namespace COMTUR.Migrations
                 name: "IX_avaliacaoAtracao_idatracao",
                 table: "avaliacaoAtracao",
                 column: "idatracao");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_avaliacaoAtracao_idavaliacao",
+                table: "avaliacaoAtracao",
+                column: "idavaliacao");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_avaliacaoTurismo_idavaliacao",
+                table: "avaliacaoTurismo",
+                column: "idavaliacao");
 
             migrationBuilder.CreateIndex(
                 name: "IX_avaliacaoTurismo_idturismo",

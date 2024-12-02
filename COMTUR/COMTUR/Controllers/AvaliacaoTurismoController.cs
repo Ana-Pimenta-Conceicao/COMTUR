@@ -80,6 +80,7 @@ namespace COMTUR.Controllers
         [HttpPost]
         public async Task<ActionResult<AvaliacaoTurismoModel>> Cadastrar([FromForm] AvaliacaoTurismoModel avaliacaoTurismoModel)
         {
+            avaliacaoTurismoModel.Status = TipoStatus.Analisando;
             AvaliacaoTurismoModel avaliacaoTurismo = await _AvaliacaoTurismoRepositorio.Adicionar(avaliacaoTurismoModel);
 
             return Ok(avaliacaoTurismo);

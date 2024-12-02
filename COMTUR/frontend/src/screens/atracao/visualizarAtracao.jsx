@@ -206,6 +206,8 @@ export default function VisualizarAtracao() {
                     "Content-Type": "multipart/form-data",
                 },
             });
+
+            console.log(response);
             await pedidoPostAvaliacaoAtracao(response.data.id);
 
             abrirFecharModalInserir();
@@ -220,6 +222,7 @@ export default function VisualizarAtracao() {
         const formData = new FormData();
         formData.append("idAvaliacao", idAvaliacao);
         formData.append("idAtracao", id);
+        formData.append("status", 1);
 
         try {
             const response = await axios.post(avaliacaoAtracaoUrl, formData, {
@@ -512,20 +515,20 @@ export default function VisualizarAtracao() {
                             alt={`Imagem ${currentSlide + 1}`}
                             className="object-cover w-full h-full sm:h-full "
                         />
-                        <h3 className="text-xs sm:text-lg font-medium text-center italic ">
+                        <h3 className="text-xs italic font-medium text-center sm:text-lg ">
                             {atracao?.imagemAtracao[currentSlide]?.legendaImagem}
                         </h3>
                     </>
                 )}
-                <h3 className="text-xs sm:text-lg font-medium text-justify italic px-4 ">
+                <h3 className="px-4 text-xs italic font-medium text-justify sm:text-lg ">
                     {atracao?.legendaImagem}
                 </h3>
             </div>
 
             <div className="pb-12">
-                <div className="row mx-8 pt-14 sm:pt-20">
+                <div className="mx-8 row pt-14 sm:pt-20">
                     <div className="flex flex-col">
-                        <div className="row mb-3 flex justify-between">
+                        <div className="flex justify-between mb-3 row">
                             <div className="flex flex-col">
                                 <div className="d-flex justify-content-between">
                                     <div className="flex items-center">
@@ -569,7 +572,7 @@ export default function VisualizarAtracao() {
                                                 : "text-gray-300"
                                                 }`}
                                         />
-                                        <h3 className="text-gray-800 text-xs pl-2">
+                                        <h3 className="pl-2 text-xs text-gray-800">
                                             {avaliacoes.avaliacoes} avaliações
                                         </h3>
                                     </div>
@@ -596,7 +599,7 @@ export default function VisualizarAtracao() {
                         <div className="container px-4 pb-10 text-[#373636] text-sm sm:text-lg font-base sm:pt-6 pt-0 w-full max-w-full">
                             {atracao?.descricao.split("\n").map((paragrafo, index) => (
                                 <React.Fragment key={index}>
-                                    <p className="sm:px-14 pt-1 text-justify break-all">
+                                    <p className="pt-1 text-justify break-all sm:px-14">
                                         {paragrafo}
                                     </p>
                                 </React.Fragment>
@@ -619,11 +622,11 @@ export default function VisualizarAtracao() {
                     <div className="row d-flex justify-content-center g-4">
                         {displayedAvaliacoes.length > 0 ? (
                             displayedAvaliacoes.map((avaliacaoCompleta, index) => (
-                                <div className="col-md-3 justify-center" key={index}>
-                                    <div className="card m-1 justify-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
+                                <div className="justify-center col-md-3" key={index}>
+                                    <div className="justify-center w-full max-w-sm p-4 m-1 bg-white border border-gray-200 rounded-lg shadow card sm:p-6 dark:bg-gray-800 dark:border-gray-700">
                                         <article>
                                             <div className="flex items-center mb-3">
-                                                <div className="w-10 h-10 me-3 rounded-full">
+                                                <div className="w-10 h-10 rounded-full me-3">
                                                     {avaliacaoCompleta.usuario.imagemPerfilUsuario ? (
                                                         <img
                                                             src={
@@ -665,7 +668,7 @@ export default function VisualizarAtracao() {
                                                     />
                                                 ))}
                                             </div>
-                                            <p className="mt-7 text-gray-500 dark:text-gray-400">
+                                            <p className="text-gray-500 mt-7 dark:text-gray-400">
                                                 {avaliacaoCompleta.avaliacao.comentario}
                                             </p>
                                         </article>
@@ -681,14 +684,14 @@ export default function VisualizarAtracao() {
                     <div className="flex justify-center mt-4">
                         <button
                             onClick={prevAvaliacoes}
-                            className="mx-2 px-4 py-2 bg-gray-200 rounded-lg"
+                            className="px-4 py-2 mx-2 bg-gray-200 rounded-lg"
                             disabled={currentPage === 0}
                         >
                             <CaretLeft size={24} />
                         </button>
                         <button
                             onClick={nextAvaliacoes}
-                            className="mx-2 px-4 py-2 bg-gray-200 rounded-lg"
+                            className="px-4 py-2 mx-2 bg-gray-200 rounded-lg"
                             disabled={
                                 (currentPage + 1) * itemsPerPage >= avaliacoesCompletas.length
                             }
@@ -697,12 +700,12 @@ export default function VisualizarAtracao() {
                         </button>
                     </div>
                 </div>
-                <div className="flex justify-end mr-12 pt-8">
+                <div className="flex justify-end pt-8 mr-12">
                     <div className="items-left">
 
                         <span
                             onClick={abrirFecharModalAvaliacoes}
-                            className="mt-2 ml-5 text-gray-500 dark:text-gray-400 cursor-pointer hover:text-blue-500"
+                            className="mt-2 ml-5 text-gray-500 cursor-pointer dark:text-gray-400 hover:text-blue-500"
                         >
                             Mais Avaliações
                         </span>
@@ -712,14 +715,14 @@ export default function VisualizarAtracao() {
                 {/* <div>
                     <div className="inline-flex items-center justify-center w-full p-4">
                         <hr className="w-full h-1 my-6 opacity-100 bg-[#FFD121] border-0 rounded" />
-                        <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">
+                        <div className="absolute items-center justify-center px-4 -translate-x-1/2 bg-white left-1/2">
                             <h1 className="text-[#373636] sm:text-2xl text-sm font-bold sm:pl-6 pl-3">
                                 Mais Atrações
                             </h1>
                         </div>
                     </div>
 
-                    <div className="row justify-center items-center m-2">
+                    <div className="items-center justify-center m-2 row">
                         <div className="card rounded-none w-[352px] m-2">
                             <div className="w-[352px] h-[367px]">
                                 <img src="..." className="card-img-top" alt="..." />
@@ -728,16 +731,16 @@ export default function VisualizarAtracao() {
                                 <h2 className="mt-3 text-[#373636] text-xs sm:text-lg font-semibold">
                                     TÍTULO DO ANÚNCIO
                                 </h2>
-                                <p className="card-text mt-2 text-gray-500 dark:text-gray-400">
+                                <p className="mt-2 text-gray-500 card-text dark:text-gray-400">
                                     breve resumo breve resumo breve resumo breve resumo breve
                                     resumo breve resumo breve resumo breve resumo{" "}
                                 </p>
                             </div>
 
-                            <div className="mt-4 flex justify-center">
+                            <div className="flex justify-center mt-4">
                                 <button
                                     type="button"
-                                    className="btn btn-outline-secondary rounded-none h-10 w-40 text-black mb-6"
+                                    className="w-40 h-10 mb-6 text-black rounded-none btn btn-outline-secondary"
                                 >
                                     Visualizar
                                 </button>
@@ -752,16 +755,16 @@ export default function VisualizarAtracao() {
                                 <h2 className="mt-3 text-[#373636] text-xs sm:text-lg font-semibold">
                                     TÍTULO DO ANÚNCIO
                                 </h2>
-                                <p className="card-text mt-2 text-gray-500 dark:text-gray-400">
+                                <p className="mt-2 text-gray-500 card-text dark:text-gray-400">
                                     breve resumo breve resumo breve resumo breve resumo breve
                                     resumo breve resumo breve resumo breve resumo{" "}
                                 </p>
                             </div>
 
-                            <div className="mt-4 flex justify-center">
+                            <div className="flex justify-center mt-4">
                                 <button
                                     type="button"
-                                    className="btn btn-outline-secondary rounded-none h-10 w-40 text-black mb-6"
+                                    className="w-40 h-10 mb-6 text-black rounded-none btn btn-outline-secondary"
                                 >
                                     Visualizar
                                 </button>
@@ -776,16 +779,16 @@ export default function VisualizarAtracao() {
                                 <h2 className="mt-3 text-[#373636] text-xs sm:text-lg font-semibold">
                                     TÍTULO DO ANÚNCIO
                                 </h2>
-                                <p className="card-text mt-2 text-gray-500 dark:text-gray-400">
+                                <p className="mt-2 text-gray-500 card-text dark:text-gray-400">
                                     breve resumo breve resumo breve resumo breve resumo breve
                                     resumo breve resumo breve resumo breve resumo{" "}
                                 </p>
                             </div>
 
-                            <div className="mt-4 flex justify-center">
+                            <div className="flex justify-center mt-4">
                                 <button
                                     type="button"
-                                    className="btn btn-outline-secondary rounded-none h-10 w-40 text-black mb-6"
+                                    className="w-40 h-10 mb-6 text-black rounded-none btn btn-outline-secondary"
                                 >
                                     Visualizar
                                 </button>
@@ -812,7 +815,7 @@ export default function VisualizarAtracao() {
                                 )}
                             </div>
 
-                            <div className="font-medium text-gray-500 ml-1">
+                            <div className="ml-1 font-medium text-gray-500">
                                 <p>@{usuario?.nome}</p>
                             </div>
                             <div className="ml-auto">
@@ -823,7 +826,7 @@ export default function VisualizarAtracao() {
                         <div className="flex flex-col mt-4">
                             <label>Comentário:</label>
                             <textarea
-                                className="form-control text-sm mt-2 "
+                                className="mt-2 text-sm form-control "
                                 onChange={(e) => setAvaliacaoComentario(e.target.value)}
                                 placeholder="Deixe seu Comentário"
                             />
@@ -834,13 +837,13 @@ export default function VisualizarAtracao() {
                             <input
                                 hidden
                                 type="text"
-                                className="form-control text-sm"
+                                className="text-sm form-control"
                                 readOnly
                                 value={format(new Date(), "dd/MM/yyyy", { locale: ptBR })} // Mostra apenas a data
                             />
 
                             <h1 className="mb-2 text-black">Faça uma avaliação!</h1>
-                            <h2 className="mb-2  text-gray-500">
+                            <h2 className="mb-2 text-gray-500">
                                 Compartilhe sua experiência para ajudar outras pessoas
                             </h2>
 
@@ -866,7 +869,7 @@ export default function VisualizarAtracao() {
 
                         <div className="flex justify-end mt-4">
                             <button
-                                className="btn btnavaliar bg-yellow-400 rounded-md mr-1"
+                                className="mr-1 bg-yellow-400 rounded-md btn btnavaliar"
                                 onClick={pedidoPostAvaliacao} // Chama a função diretamente
                             >
                                 Avaliar
@@ -900,7 +903,7 @@ export default function VisualizarAtracao() {
                                                         <img
                                                             src={avaliacaoCompleta.usuario.imagemPerfilUsuario}
                                                             alt="Avatar"
-                                                            className="rounded-full w-10 h-10"
+                                                            className="w-10 h-10 rounded-full"
                                                         />
                                                     ) : (
                                                         <Xadrez />
@@ -917,7 +920,7 @@ export default function VisualizarAtracao() {
                                                     <div className="ml-auto d-flex">
                                                         <NotePencil
                                                             size={18}
-                                                            className="me-2 cursor-pointer"
+                                                            className="cursor-pointer me-2"
                                                             onClick={() => toggleEdit(index)}
                                                         />
                                                         <Trash
@@ -931,7 +934,7 @@ export default function VisualizarAtracao() {
                                             {avaliacaoCompleta.editMode ? (
                                                 <>
                                                     <textarea
-                                                        className="form-control text-sm mt-2"
+                                                        className="mt-2 text-sm form-control"
                                                         value={avaliacaoCompleta.avaliacao.comentario}
                                                         onChange={(e) => handleComentarioChange(index, e.target.value)}
                                                         placeholder="Deixe seu Comentário"
@@ -948,18 +951,18 @@ export default function VisualizarAtracao() {
                                                             />
                                                         ))}
                                                     </div>
-                                                    <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                                                        <button type="button" className="btn bg-yellow-400 btn-sm rounded-md" onClick={() => selecionarAvaliacao(avaliacaoCompleta.avaliacao.id)}>
+                                                    <div className="gap-2 d-grid d-md-flex justify-content-md-end">
+                                                        <button type="button" className="bg-yellow-400 rounded-md btn btn-sm" onClick={() => selecionarAvaliacao(avaliacaoCompleta.avaliacao.id)}>
                                                             Salvar
                                                         </button>
-                                                        <button type="button" className="btn bg-gray-300 btn-sm rounded-md" onClick={() => cancelarEdicao(index)}>
+                                                        <button type="button" className="bg-gray-300 rounded-md btn btn-sm" onClick={() => cancelarEdicao(index)}>
                                                             Cancelar
                                                         </button>
                                                     </div>
                                                 </>
                                             ) : (
                                                 <>
-                                                    <div className="mt-3 ml-3 flex">
+                                                    <div className="flex mt-3 ml-3">
                                                         {[...Array(5)].map((_, i) => (
                                                             <Star
                                                                 key={i}
@@ -983,7 +986,7 @@ export default function VisualizarAtracao() {
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <button className="btn bg-yellow-400 rounded-md" onClick={abrirFecharModalAvaliacoes}>
+                    <button className="bg-yellow-400 rounded-md btn" onClick={abrirFecharModalAvaliacoes}>
                         Fechar
                     </button>
                 </ModalFooter>

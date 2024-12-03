@@ -217,6 +217,7 @@ export default function VisualizarTurismos() {
     const formData = new FormData();
     formData.append("idAvaliacao", idAvaliacao);
     formData.append("idTurismo", id);
+    formData.append("status", 1);
 
     try {
       const response = await axios.post(avaliacaoTurismoUrl, formData, {
@@ -499,8 +500,8 @@ export default function VisualizarTurismos() {
             <h1 className="text-[#373636] text-lg font-bold pt-4 px-4 m:pt-14 sm:px-16 sm:text-4xl sm:pb-4">
               {turismo.nome}
             </h1>
-            <div className=" px-4 sm:pl-24 sm:pr-24">
-              <div className="container border mt-2 px-0">
+            <div className="px-4  sm:pl-24 sm:pr-24">
+              <div className="container px-0 mt-2 border">
                 <div className="relative w-full h-[200px] sm:h-[400px] lg:h-[500px] mb-8">
                   {turismo.imagemTurismo.length > 1 && (
                     <button
@@ -527,7 +528,7 @@ export default function VisualizarTurismos() {
                         alt={`Imagem ${currentSlide + 1}`}
                         className="object-cover w-full h-full"
                       />
-                      <h3 className="text-xs sm:text-lg font-medium text-center italic pt-1">
+                      <h3 className="pt-1 text-xs italic font-medium text-center sm:text-lg">
                         {turismo.imagemTurismo[currentSlide].legendaImagem}
                       </h3>
                     </>
@@ -535,9 +536,9 @@ export default function VisualizarTurismos() {
                 </div>
                 
                 {/* mexer aqui */}
-                <div className="row mx-8 pt-14 sm:pt-20">
+                <div className="mx-8 row pt-14 sm:pt-20">
                   <div className="flex flex-col">
-                    <div className="row mb-3 flex justify-between">
+                    <div className="flex justify-between mb-3 row">
                       <div className="flex flex-col">
                         <div className="d-flex justify-content-between">
                           <div className="flex items-center">
@@ -581,7 +582,7 @@ export default function VisualizarTurismos() {
                                 : "text-gray-300"
                                 }`}
                             />
-                            <h3 className="text-gray-800 text-xs pl-2">
+                            <h3 className="pl-2 text-xs text-gray-800">
                               {avaliacoes.avaliacoes} avaliações
                             </h3>
                           </div>
@@ -600,12 +601,12 @@ export default function VisualizarTurismos() {
                 </div>
 
                 {/* ate aqui  */}
-                <div className="flex w-full justify-center items-center pt-2">
+                <div className="flex items-center justify-center w-full pt-2">
                   <hr className="w-11/12 mb-2 h-[1px] text-[#58AFAE] rounded" />
                 </div>
 
                 <div className="sm:px-16 ">
-                  <div className="flex flex-row ml-6 gap-2 items-center text-sm text-white">
+                  <div className="flex flex-row items-center gap-2 ml-6 text-sm text-white">
                     <a
                       href={`https://www.google.com/maps/search/?api=1&query=${turismo.local}`}
                       target="_blank"
@@ -616,33 +617,33 @@ export default function VisualizarTurismos() {
                       </button>
                     </a>
                     <button
-                      className="flex flex-start justify-start items-center text-gray-900 w-full h-6 text-xs pl-1"
+                      className="flex items-center justify-start w-full h-6 pl-1 text-xs text-gray-900 flex-start"
                       onClick={() => abrirGoogleMaps(turismo.local)}
                     >
                       {turismo.local}
                     </button>
                   </div>
 
-                  <div className="flex flex-row ml-6 pt-2 gap-2   text-white items-center">
+                  <div className="flex flex-row items-center gap-2 pt-2 ml-6 text-white">
                     <button className="flex justify-center items-center w-[30px]  bg-[#064D56] h-6 rounded-md">
                       <CalendarCheck size={18} />
                     </button>
-                    <button className="flex flex-start justify-start text-gray-900 items-center w-full h-6 text-xs pl-1">
+                    <button className="flex items-center justify-start w-full h-6 pl-1 text-xs text-gray-900 flex-start">
                       {turismo.diaFuncionamento}
                     </button>
                   </div>
 
-                  <div className="flex flex-row ml-6 pt-2 gap-2 pb-4  text-white  items-center">
+                  <div className="flex flex-row items-center gap-2 pt-2 pb-4 ml-6 text-white">
                     <button className="flex justify-center items-center w-[30px]  bg-[#064D56] h-6 rounded-md">
                       <Clock size={18} />
                     </button>
-                    <button className="flex flex-start justify-start text-gray-900  items-center w-full h-6 text-xs pl-1">
+                    <button className="flex items-center justify-start w-full h-6 pl-1 text-xs text-gray-900 flex-start">
                       {turismo.horario}
                     </button>
                   </div>
                 </div>
                 <hr className="flex float-right w-3/4 pb-4 text-[#58AFAE]  border-[1.5px]" />
-                <h3 className="flex w-full mt-4 font-semibold sm:font-bold text-sm sm:text-lg pl-3 sm:pl-6">
+                <h3 className="flex w-full pl-3 mt-4 text-sm font-semibold sm:font-bold sm:text-lg sm:pl-6">
                   Mais informações sobre o(a) {turismo.nome}{" "}
                 </h3>
                 <p className="pt-1 sm:pt-6 pl-4 sm:pl-8 pb-3 text-[#373636] text-xs sm:text-lg font-base  text-justify">
@@ -667,11 +668,11 @@ export default function VisualizarTurismos() {
                 <div className="row d-flex justify-content-center g-4">
                   {displayedAvaliacoes.length > 0 ? (
                     displayedAvaliacoes.map((avaliacaoCompleta, index) => (
-                      <div className="col-md-3 justify-center" key={index}>
-                        <div className="card m-1 justify-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
+                      <div className="justify-center col-md-3" key={index}>
+                        <div className="justify-center w-full max-w-sm p-4 m-1 bg-white border border-gray-200 rounded-lg shadow card sm:p-6 dark:bg-gray-800 dark:border-gray-700">
                           <article>
                             <div className="flex items-center mb-3">
-                              <div className="w-10 h-10 me-3 rounded-full">
+                              <div className="w-10 h-10 rounded-full me-3">
                                 {avaliacaoCompleta.usuario.imagemPerfilUsuario ? (
                                   <img
                                     src={
@@ -713,7 +714,7 @@ export default function VisualizarTurismos() {
                                 />
                               ))}
                             </div>
-                            <p className="mt-7 text-gray-500 dark:text-gray-400">
+                            <p className="text-gray-500 mt-7 dark:text-gray-400">
                               {avaliacaoCompleta.avaliacao.comentario}
                             </p>
                           </article>
@@ -729,14 +730,14 @@ export default function VisualizarTurismos() {
                 <div className="flex justify-center mt-4">
                   <button
                     onClick={prevAvaliacoes}
-                    className="mx-2 px-4 py-2 bg-gray-200 rounded-lg"
+                    className="px-4 py-2 mx-2 bg-gray-200 rounded-lg"
                     disabled={currentPage === 0}
                   >
                     <CaretLeft size={24} />
                   </button>
                   <button
                     onClick={nextAvaliacoes}
-                    className="mx-2 px-4 py-2 bg-gray-200 rounded-lg"
+                    className="px-4 py-2 mx-2 bg-gray-200 rounded-lg"
                     disabled={
                       (currentPage + 1) * itemsPerPage >= avaliacoesCompletas.length
                     }
@@ -745,12 +746,12 @@ export default function VisualizarTurismos() {
                   </button>
                 </div>
               </div>
-              <div className="flex justify-end mr-12 pt-8">
+              <div className="flex justify-end pt-8 mr-12">
                 <div className="items-left">
 
                   <span
                     onClick={abrirFecharModalAvaliacoes}
-                    className="mt-2 ml-5 text-gray-500 dark:text-gray-400 cursor-pointer hover:text-blue-500"
+                    className="mt-2 ml-5 text-gray-500 cursor-pointer dark:text-gray-400 hover:text-blue-500"
                   >
                     Mais Avaliações
                   </span>
@@ -760,14 +761,14 @@ export default function VisualizarTurismos() {
               {/* <div>
                     <div className="inline-flex items-center justify-center w-full p-4">
                         <hr className="w-full h-1 my-6 opacity-100 bg-[#FFD121] border-0 rounded" />
-                        <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">
+                        <div className="absolute items-center justify-center px-4 -translate-x-1/2 bg-white left-1/2">
                             <h1 className="text-[#373636] sm:text-2xl text-sm font-bold sm:pl-6 pl-3">
                                 Mais Atrações
                             </h1>
                         </div>
                     </div>
 
-                    <div className="row justify-center items-center m-2">
+                    <div className="items-center justify-center m-2 row">
                         <div className="card rounded-none w-[352px] m-2">
                             <div className="w-[352px] h-[367px]">
                                 <img src="..." className="card-img-top" alt="..." />
@@ -776,16 +777,16 @@ export default function VisualizarTurismos() {
                                 <h2 className="mt-3 text-[#373636] text-xs sm:text-lg font-semibold">
                                     TÍTULO DO ANÚNCIO
                                 </h2>
-                                <p className="card-text mt-2 text-gray-500 dark:text-gray-400">
+                                <p className="mt-2 text-gray-500 card-text dark:text-gray-400">
                                     breve resumo breve resumo breve resumo breve resumo breve
                                     resumo breve resumo breve resumo breve resumo{" "}
                                 </p>
                             </div>
 
-                            <div className="mt-4 flex justify-center">
+                            <div className="flex justify-center mt-4">
                                 <button
                                     type="button"
-                                    className="btn btn-outline-secondary rounded-none h-10 w-40 text-black mb-6"
+                                    className="w-40 h-10 mb-6 text-black rounded-none btn btn-outline-secondary"
                                 >
                                     Visualizar
                                 </button>
@@ -800,16 +801,16 @@ export default function VisualizarTurismos() {
                                 <h2 className="mt-3 text-[#373636] text-xs sm:text-lg font-semibold">
                                     TÍTULO DO ANÚNCIO
                                 </h2>
-                                <p className="card-text mt-2 text-gray-500 dark:text-gray-400">
+                                <p className="mt-2 text-gray-500 card-text dark:text-gray-400">
                                     breve resumo breve resumo breve resumo breve resumo breve
                                     resumo breve resumo breve resumo breve resumo{" "}
                                 </p>
                             </div>
 
-                            <div className="mt-4 flex justify-center">
+                            <div className="flex justify-center mt-4">
                                 <button
                                     type="button"
-                                    className="btn btn-outline-secondary rounded-none h-10 w-40 text-black mb-6"
+                                    className="w-40 h-10 mb-6 text-black rounded-none btn btn-outline-secondary"
                                 >
                                     Visualizar
                                 </button>
@@ -824,16 +825,16 @@ export default function VisualizarTurismos() {
                                 <h2 className="mt-3 text-[#373636] text-xs sm:text-lg font-semibold">
                                     TÍTULO DO ANÚNCIO
                                 </h2>
-                                <p className="card-text mt-2 text-gray-500 dark:text-gray-400">
+                                <p className="mt-2 text-gray-500 card-text dark:text-gray-400">
                                     breve resumo breve resumo breve resumo breve resumo breve
                                     resumo breve resumo breve resumo breve resumo{" "}
                                 </p>
                             </div>
 
-                            <div className="mt-4 flex justify-center">
+                            <div className="flex justify-center mt-4">
                                 <button
                                     type="button"
-                                    className="btn btn-outline-secondary rounded-none h-10 w-40 text-black mb-6"
+                                    className="w-40 h-10 mb-6 text-black rounded-none btn btn-outline-secondary"
                                 >
                                     Visualizar
                                 </button>
@@ -848,7 +849,7 @@ export default function VisualizarTurismos() {
 
             <div className="flex w-full justify-center items-center mt-3 mb-4 bg-[#064D56]  h-[330px]">
               <div className="flex flex-col w-full">
-                <h2 className="text-white text-base font-bold text-center pb-3">
+                <h2 className="pb-3 text-base font-bold text-center text-white">
                   GALERIA DE ATRAÇÕES
                 </h2>
                 <GaleriaAtracao identi={turismo.id} />
@@ -857,13 +858,13 @@ export default function VisualizarTurismos() {
 
             <div className="inline-flex items-center justify-center w-full">
               <hr className="w-full h-1 my-8 opacity-100 bg-[#FFD121] border-0 rounded" />
-              <div className="absolute justify-center items-center px-4 -translate-x-1/2 bg-white left-1/2">
+              <div className="absolute items-center justify-center px-4 -translate-x-1/2 bg-white left-1/2">
                 <h1 className="text-[#373636] text-2xl font-bold pl-6">MAIS</h1>
                 <h1 className="text-[#373636] text-2xl font-bold">TURISMOS</h1>
               </div>
             </div>
 
-            <div className="flex justify-center items-center">
+            <div className="flex items-center justify-center">
               <div className="pt-5 pb-5 px-2 text-xs sm:pl-32 sm:pr-32 sm:min-w-[320px] lg:w-[90%] xl:w-[80%] 2xl:w-[70%]">
                 {outrosTurismos.map((outroTurismo) => (
                   <div key={outroTurismo.id} className="p-4">
@@ -875,7 +876,7 @@ export default function VisualizarTurismos() {
                           className="w-full h-[140px] sm:h-[296px] object-cover"
                         />
                       )}
-                      <div className="pl-6 pt-3">
+                      <div className="pt-3 pl-6">
                         <h2 className="truncate pr-6 text-[#373636] text-ellipsis overflow-hidden font-semibold text-xs sm:text-base uppercase">
                           {outroTurismo.nome}
                         </h2>
@@ -927,7 +928,7 @@ export default function VisualizarTurismos() {
                 )}
               </div>
 
-              <div className="font-medium text-gray-500 ml-1">
+              <div className="ml-1 font-medium text-gray-500">
                 <p>@{usuario?.nome}</p>
               </div>
               <div className="ml-auto">
@@ -938,7 +939,7 @@ export default function VisualizarTurismos() {
             <div className="flex flex-col mt-4">
               <label>Comentário:</label>
               <textarea
-                className="form-control text-sm mt-2 "
+                className="mt-2 text-sm form-control "
                 onChange={(e) => setAvaliacaoComentario(e.target.value)}
                 placeholder="Deixe seu Comentário"
               />
@@ -949,13 +950,13 @@ export default function VisualizarTurismos() {
               <input
                 hidden
                 type="text"
-                className="form-control text-sm"
+                className="text-sm form-control"
                 readOnly
                 value={format(new Date(), "dd/MM/yyyy", { locale: ptBR })} // Mostra apenas a data
               />
 
               <h1 className="mb-2 text-black">Faça uma avaliação!</h1>
-              <h2 className="mb-2  text-gray-500">
+              <h2 className="mb-2 text-gray-500">
                 Compartilhe sua experiência para ajudar outras pessoas
               </h2>
 
@@ -981,7 +982,7 @@ export default function VisualizarTurismos() {
 
             <div className="flex justify-end mt-4">
               <button
-                className="btn btnavaliar bg-yellow-400 rounded-md mr-1 "
+                className="mr-1 bg-yellow-400 rounded-md btn btnavaliar "
                 onClick={pedidoPostAvaliacao} // Chama a função diretamente
               >
                 Avaliar
@@ -1015,7 +1016,7 @@ export default function VisualizarTurismos() {
                             <img
                               src={avaliacaoCompleta.usuario.imagemPerfilUsuario}
                               alt="Avatar"
-                              className="rounded-full w-10 h-10"
+                              className="w-10 h-10 rounded-full"
                             />
                           ) : (
                             <Xadrez />
@@ -1032,7 +1033,7 @@ export default function VisualizarTurismos() {
                           <div className="ml-auto d-flex">
                             <NotePencil
                               size={18}
-                              className="me-2 cursor-pointer"
+                              className="cursor-pointer me-2"
                               onClick={() => toggleEdit(index)}
                             />
                             <Trash
@@ -1046,7 +1047,7 @@ export default function VisualizarTurismos() {
                       {avaliacaoCompleta.editMode ? (
                         <>
                           <textarea
-                            className="form-control text-sm mt-2"
+                            className="mt-2 text-sm form-control"
                             value={avaliacaoCompleta.avaliacao.comentario}
                             onChange={(e) => handleComentarioChange(index, e.target.value)}
                             placeholder="Deixe seu Comentário"
@@ -1063,18 +1064,18 @@ export default function VisualizarTurismos() {
                               />
                             ))}
                           </div>
-                          <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button type="button" className="btn bg-yellow-400 btn-sm rounded-md" onClick={() => selecionarAvaliacao(avaliacaoCompleta.avaliacao.id)}>
+                          <div className="gap-2 d-grid d-md-flex justify-content-md-end">
+                            <button type="button" className="bg-yellow-400 rounded-md btn btn-sm" onClick={() => selecionarAvaliacao(avaliacaoCompleta.avaliacao.id)}>
                               Salvar
                             </button>
-                            <button type="button" className="btn bg-gray-300 btn-sm rounded-md" onClick={() => cancelarEdicao(index)}>
+                            <button type="button" className="bg-gray-300 rounded-md btn btn-sm" onClick={() => cancelarEdicao(index)}>
                               Cancelar
                             </button>
                           </div>
                         </>
                       ) : (
                         <>
-                          <div className="mt-3 ml-3 flex">
+                          <div className="flex mt-3 ml-3">
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
@@ -1098,7 +1099,7 @@ export default function VisualizarTurismos() {
           </div>
         </ModalBody>
         <ModalFooter>
-          <button className="btn bg-yellow-400 rounded-md" onClick={abrirFecharModalAvaliacoes}>
+          <button className="bg-yellow-400 rounded-md btn" onClick={abrirFecharModalAvaliacoes}>
             Fechar
           </button>
         </ModalFooter>

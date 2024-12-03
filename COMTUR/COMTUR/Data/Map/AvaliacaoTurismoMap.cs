@@ -14,7 +14,7 @@ namespace COMTUR.Data.Map
 
 
             // Relacionamento de AvaliacaoTurismoModel para Avaliacao
-            builder.HasOne(at => at.AvaliacaoModel).WithMany(a => a.AvaliacaoTurismoModels).HasForeignKey(at => at.IdTurismo);
+            builder.HasOne(at => at.AvaliacaoModel).WithMany(a => a.AvaliacaoTurismoModels).HasForeignKey(at => at.IdAvaliacao);
 
             // Relacionamento de AvaliacaoTurismoModel para Turismo
             builder.HasOne(at => at.TurismoModel).WithMany(t => t.AvaliacoesTurismo).HasForeignKey(at => at.IdTurismo);

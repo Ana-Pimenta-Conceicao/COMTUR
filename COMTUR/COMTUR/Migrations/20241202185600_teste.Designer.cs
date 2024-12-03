@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace COMTUR.Migrations
 {
     [DbContext(typeof(ComturDBContext))]
-    [Migration("20241127121942_teste")]
+    [Migration("20241202185600_teste")]
     partial class teste
     {
         /// <inheritdoc />
@@ -215,6 +215,8 @@ namespace COMTUR.Migrations
 
                     b.HasIndex("IdAtracao");
 
+                    b.HasIndex("IdAvaliacao");
+
                     b.ToTable("avaliacaoAtracao");
                 });
 
@@ -279,6 +281,8 @@ namespace COMTUR.Migrations
                         .HasColumnName("statusavaliacaoturismo");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdAvaliacao");
 
                     b.HasIndex("IdTurismo");
 
@@ -1154,7 +1158,7 @@ namespace COMTUR.Migrations
 
                     b.HasOne("COMTUR.Models.AvaliacaoModel", "AvaliacaoModel")
                         .WithMany("AvaliacaoAtracoes")
-                        .HasForeignKey("IdAtracao")
+                        .HasForeignKey("IdAvaliacao")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1178,7 +1182,7 @@ namespace COMTUR.Migrations
                 {
                     b.HasOne("COMTUR.Models.AvaliacaoModel", "AvaliacaoModel")
                         .WithMany("AvaliacaoTurismoModels")
-                        .HasForeignKey("IdTurismo")
+                        .HasForeignKey("IdAvaliacao")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

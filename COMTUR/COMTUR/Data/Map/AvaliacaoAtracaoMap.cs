@@ -14,7 +14,7 @@ namespace COMTUR.Data.Map
 
 
             // Relacionamento de AvaliacaoAtracaoModel para Avaliacao
-            builder.HasOne(aa => aa.AvaliacaoModel).WithMany(a => a.AvaliacaoAtracoes).HasForeignKey(aa => aa.IdAtracao);
+            builder.HasOne(aa => aa.AvaliacaoModel).WithMany(a => a.AvaliacaoAtracoes).HasForeignKey(aa => aa.IdAvaliacao);
 
             // Relacionamento de AvaliacaoAtracaoModel para Atracao
             builder.HasOne(aa => aa.AtracaoModel).WithMany(a => a.AvaliacoesAtracao).HasForeignKey(aa => aa.IdAtracao);

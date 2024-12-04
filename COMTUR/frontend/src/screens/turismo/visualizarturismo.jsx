@@ -4,8 +4,9 @@ import NavbarUsr from "../../components/user/navbarUsr.jsx";
 import FooterUsr from "../../components/user/footerUsr.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 import BtnAcao from "../../components/botoes/btnAcao.jsx";
-import { CaretRight, CaretLeft, Star, MapPinLine, Clock, CalendarCheck, NotePencil, Trash } from "@phosphor-icons/react";
+import { CaretRight, CaretLeft, Star, MapPinLine, Clock, CalendarCheck, NotePencil, Trash, X } from "@phosphor-icons/react";
 import GaleriaAtracao from "../../components/cards/GaleriaAtracao";
+import iconemodallogin from '../../assets/loginmodal.svg';
 
 import Xadrez from "../../assets/xadrez";
 import Comtur from "../../assets/Comtur";
@@ -30,6 +31,13 @@ export default function VisualizarTurismos() {
   const [atualizarScoreAvaliacoes, setAtualizarScoreAvaliacoes] = useState(true);
 
   const baseUrl = "https://localhost:7256/api/Turismo";
+
+  //aqui 
+  const [modalLogin, setModalLogin] = useState(false);
+  const abrirModalLogin = () => setModalLogin(true);
+  const fecharModalLogin = () => setModalLogin(false);
+
+  //ate aqui
 
   const abrirFecharModalAvaliacao = () => {
     if (modalInserir) {
@@ -59,6 +67,11 @@ export default function VisualizarTurismos() {
 
   const abrirFecharModalAvaliacoes = () => {
     setModalAvaliacoes(!modalAvaliacoes);
+  };
+
+  // Função para verificar se o usuário está logado
+  const isUserLoggedIn = () => {
+    return localStorage.getItem("id") !== null; // Ajuste conforme sua lógica de autenticação
   };
 
   useEffect(() => {
@@ -317,12 +330,12 @@ export default function VisualizarTurismos() {
 
   const pedidoDeletar = async (id) => {
     const avaliacaoIdFinal = id || avaliacaoId;
-  
+
     if (!avaliacaoIdFinal) {
       console.error("ID inválido para exclusão.");
       return;
     }
-  
+
     try {
       await axios.delete(`${avaliacaoUrl}/${avaliacaoIdFinal}`);
       console.log("Avaliação excluída com sucesso.");
@@ -495,6 +508,7 @@ export default function VisualizarTurismos() {
     <div>
       <NavbarUsr />
       <div className="flex flex-col ">
+
         {turismo ? (
           <>
             <h1 className="text-[#373636] text-lg font-bold pt-4 px-4 m:pt-14 sm:px-16 sm:text-4xl sm:pb-4">
@@ -534,9 +548,9 @@ export default function VisualizarTurismos() {
                     </>
                   )}
                 </div>
-                
+
                 {/* mexer aqui */}
-                <div className="mx-8 row pt-14 sm:pt-20">
+                <div className="mx-8 row pt-3 sm:pt-20">
                   <div className="flex flex-col">
                     <div className="flex justify-between mb-3 row">
                       <div className="flex flex-col">
@@ -589,7 +603,13 @@ export default function VisualizarTurismos() {
 
                           <div
                             className="btn btn-warning"
-                            onClick={abrirFecharModalAvaliacao}
+                            onClick={() => {
+                              if (isUserLoggedIn()) {
+                                abrirFecharModalAvaliacao();
+                              } else {
+                                abrirModalLogin(); // Função para abrir a modal de login
+                              }
+                            }}
                           >
                             <button>Avaliar</button>
                           </div>
@@ -597,7 +617,7 @@ export default function VisualizarTurismos() {
                       </div>
                     </div>
                   </div>
-                 
+
                 </div>
 
                 {/* ate aqui  */}
@@ -745,17 +765,18 @@ export default function VisualizarTurismos() {
                     <CaretRight size={24} />
                   </button>
                 </div>
-              </div>
-              <div className="flex justify-end pt-8 mr-12">
-                <div className="items-left">
 
-                  <span
-                    onClick={abrirFecharModalAvaliacoes}
-                    className="mt-2 ml-5 text-gray-500 cursor-pointer dark:text-gray-400 hover:text-blue-500"
-                  >
-                    Mais Avaliações
-                  </span>
+                <div className="flex justify-end pt-8 mr-12">
+                  <div className="items-left">
 
+                    <span
+                      onClick={abrirFecharModalAvaliacoes}
+                      className="mt-2 ml-5 text-gray-500 cursor-pointer dark:text-gray-400 hover:text-blue-500"
+                    >
+                      Mais Avaliações
+                    </span>
+
+                  </div>
                 </div>
               </div>
               {/* <div>
@@ -982,8 +1003,21 @@ export default function VisualizarTurismos() {
 
             <div className="flex justify-end mt-4">
               <button
-                className="mr-1 bg-yellow-400 rounded-md btn btnavaliar "
-                onClick={pedidoPostAvaliacao} // Chama a função diretamente
+                className="mr-1 bg-yellow-400 rounded-md btn btnavaliar"
+                onClick={() => {
+                  if (!avaliacaoComentario && !avaliacaoNota) {
+                    // Caso ambos os campos estejam vazios
+                    alert("Por favor, deixe seu comentário e selecione a quantidade de estrelas!");
+                  } else if (!avaliacaoComentario) {
+                    // Caso apenas o comentário esteja vazio
+                    alert("Por favor, deixe um comentário!");
+                  } else if (!avaliacaoNota) {
+                    // Caso apenas a nota esteja vazia
+                    alert("Por favor, selecione a quantidade de estrelas!");
+                  } else {
+                    pedidoPostAvaliacao(); // Se ambos os campos estiverem preenchidos
+                  }
+                }}
               >
                 Avaliar
               </button>
@@ -1103,6 +1137,39 @@ export default function VisualizarTurismos() {
             Fechar
           </button>
         </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={modalLogin} toggle={fecharModalLogin}>
+        <ModalBody>
+          <div className="flex justify-end w-full">
+            {/* Botão de Fechar */}
+            <button
+              onClick={fecharModalLogin} // Usa a função de fechamento
+              aria-label="Fechar"
+              className="bg-transparent border-0"
+            >
+              <X size={22} />
+            </button>
+          </div>
+          <div className="flex justify-center w-full">
+            <img className="" src={iconemodallogin} alt="icone login" />
+          </div>
+          <h3 className="text-center mt-2">É necessário fazer login</h3>
+          <p className="text-center">
+            Para avaliar, acesse sua conta ou cadastre-se!
+          </p>
+          <div className="flex justify-center mt-4">
+            <button
+              className="btn btn-warning"
+              onClick={() => {
+                fecharModalLogin();
+                navigate("/login"); // Redireciona para a página de login
+              }}
+            >
+              Continuar
+            </button>
+          </div>
+        </ModalBody>
       </Modal>
     </div>
   );

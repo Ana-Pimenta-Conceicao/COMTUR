@@ -20,11 +20,11 @@ export default function Noticia() {
   const baseUrlImagem = "https://localhost:7256/api/ImagemNoticia";
   const [data, setData] = useState([]);
   const [atualizarData, setAtualizarData] = useState(true);
-  
+
   const [modalInserir, setModalInserir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
- 
+
   const [modalCadastrado, setModalCadastrado] = useState(false);
   const [modalExcluido, setModalExcluido] = useState(false);
   const [modalEditado, setModalEditado] = useState(false);
@@ -356,49 +356,49 @@ export default function Noticia() {
     4: "bg-gray-400 text-white", // Cinza claro para Desativado
   };
 
- 
+
 
   const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((noticia) => {
-        const titulo = noticia.titulo && typeof noticia.titulo === 'string'
-          ? (noticia.titulo.length > 20
-            ? `${noticia.titulo.slice(0, 20)}...`
-            : noticia.titulo)
-          : '';
+      const titulo = noticia.titulo && typeof noticia.titulo === 'string'
+        ? (noticia.titulo.length > 20
+          ? `${noticia.titulo.slice(0, 20)}...`
+          : noticia.titulo)
+        : '';
 
-          const subtitulo = noticia.subtitulo && typeof noticia.subtitulo === 'string'
-          ? (noticia.subtitulo.length > 20
-            ? `${noticia.subtitulo.slice(0, 20)}...`
-            : noticia.subtitulo)
-          : '';
-        return {
-          id: noticia.id,
-          titulo: titulo,
-          subtitulo: subtitulo,
-          dataPublicacao: formatarDataParaExibicao(noticia.dataPublicacao),
-          status: (
-            <div className={`px-3 py-1 rounded-md ${statusColors[noticia.status]}`}>
-              {statusOptions.find(option => option.value === noticia.status.toString())?.label}
-            </div>
-          ),
-          acoes: (
-            <div className="flex items-center justify-center">
-              <BtnAcao
-                funcao={() => NoticiaSet(noticia, "Editar")}
-                acao="Editar"
-              />
-              <BtnAcao
-                funcao={() => NoticiaSet(noticia, "Excluir")}
-                acao="Excluir"
-              />
-              <BtnAcao
-                funcao={() => NoticiaSet(noticia, "Visualizar")}
-                acao="Visualizar"
-              />
-            </div>
-          ),
-        };
-      })
+      const subtitulo = noticia.subtitulo && typeof noticia.subtitulo === 'string'
+        ? (noticia.subtitulo.length > 20
+          ? `${noticia.subtitulo.slice(0, 20)}...`
+          : noticia.subtitulo)
+        : '';
+      return {
+        id: noticia.id,
+        titulo: titulo,
+        subtitulo: subtitulo,
+        dataPublicacao: formatarDataParaExibicao(noticia.dataPublicacao),
+        status: (
+          <div className={`px-3 py-1 rounded-md ${statusColors[noticia.status]}`}>
+            {statusOptions.find(option => option.value === noticia.status.toString())?.label}
+          </div>
+        ),
+        acoes: (
+          <div className="flex items-center justify-center">
+            <BtnAcao
+              funcao={() => NoticiaSet(noticia, "Editar")}
+              acao="Editar"
+            />
+            <BtnAcao
+              funcao={() => NoticiaSet(noticia, "Excluir")}
+              acao="Excluir"
+            />
+            <BtnAcao
+              funcao={() => NoticiaSet(noticia, "Visualizar")}
+              acao="Visualizar"
+            />
+          </div>
+        ),
+      };
+    })
     : [];
 
   if (userType === "1" || userType === "3") {
@@ -593,9 +593,9 @@ export default function Noticia() {
         </Modal>
 
         <PopupCadastrado isOpen={modalCadastrado} toggle={toggleModalCadastro} objeto="Notícia" />
-        <PopupExcluido isOpen={modalExcluido} toggle={toggleModalExclui} objeto="Notícia"/>
-        <PopupEditado isOpen={modalEditado} toggle={toggleModalEdita}  objeto="Notícia"/>
-        
+        <PopupExcluido isOpen={modalExcluido} toggle={toggleModalExclui} objeto="Notícia" />
+        <PopupEditado isOpen={modalEditado} toggle={toggleModalEdita} objeto="Notícia" />
+
         <Modal className="modal-xl-gridxl" isOpen={modalEditar} style={{ maxWidth: "1000px" }} >
           <ModalHeader>Editar Noticia</ModalHeader>
           <ModalBody>

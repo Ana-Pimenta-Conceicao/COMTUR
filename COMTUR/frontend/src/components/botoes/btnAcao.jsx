@@ -1,6 +1,6 @@
 import React from "react";
 import { tv } from "tailwind-variants";
-import { Pencil, Trash, Eye, FilePlus, Plus, PresentationChart, FileText } from "@phosphor-icons/react";
+import { Pencil, Trash, Eye, FilePlus, Plus, PresentationChart, FileText, GearSix } from "@phosphor-icons/react";
 
 const BtnAcao = ({ funcao, acao, objeto }) => {
   const style = tv({
@@ -10,9 +10,10 @@ const BtnAcao = ({ funcao, acao, objeto }) => {
       Excluir: "bg-[#D30000] hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800",
       Visualizar: "bg-[#3F3F3F] hover:bg-[#222222] dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
       Publicados: "bg-[#1F9D93] hover:bg-[#00847A]",
-      Cadastrar: "bg-[#FFD121] hover:bg-[#EEBB4D] px-3",
+      Cadastrar: "bg-[#FABC0B] hover:bg-[#EEBB4D] px-3",
       VisualizarMais: "bg-[#FFD121] hover:bg-[#EEBB4D] px-3",
-      CadastrarTipo: "bg-black hover:bg-[#EEBB4D] px-3"
+      CadastrarTipo: "bg-black hover:bg-[#EEBB4D] px-3",
+      Parametros: "bg-gray-600 hover:bg-[#EEBB4D]  px-3 hover:bg-black",
     }
   });
 
@@ -23,7 +24,8 @@ const BtnAcao = ({ funcao, acao, objeto }) => {
     "Publicados": { icone: PresentationChart, texto: "Publicados" },
     "Cadastrar": { icone: FilePlus, texto: "Cadastrar" },
     "VisualizarMais": { icone: Plus, texto: "Visualizar Mais" },
-    "CadastrarTipo": { icone: FileText, texto: "" }
+    "CadastrarTipo": { icone: FileText, texto: "" },
+    "Parametros": {icone: GearSix }
   };
 
   const Acao = Acoes[acao];
@@ -40,7 +42,7 @@ const BtnAcao = ({ funcao, acao, objeto }) => {
         className={`${style.base} ${style.variants[acao]} mr-2`}
         onClick={funcao}
       >
-        {Icone && <Icone className="mr-1" size={16} />}
+        {Icone && (acao === "Parametros" ? <Icone className="mr-1" size={40} /> : <Icone className="mr-1" size={16} />)}
         <span className={isVisualizarMais ? "2xl:inline" : "hidden 2xl:inline"}>{Texto}</span>
         {!isVisualizarMais && (
           <span className="lg:hidden absolute  flex items-center justify-center">
@@ -52,7 +54,7 @@ const BtnAcao = ({ funcao, acao, objeto }) => {
         {Texto}
       </div>
     </div>
-  );
+  );  
 };
 
 export default BtnAcao;

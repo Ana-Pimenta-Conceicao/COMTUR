@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Modal, ModalBody, ModalFooter } from "reactstrap";
 import { CaretDown } from "@phosphor-icons/react";
 import BtnModais from "../../components/botoes/btnModais.jsx";
@@ -9,6 +9,7 @@ const StatusDropdown = ({ currentStatus, onUpdateStatus }) => {
   const [pendingStatus, setPendingStatus] = useState(null); // Status que será confirmado
   const [modalOpen, setModalOpen] = useState(false);
 
+  const dropdownRef = useRef(null); // Referência para o item que ativa o dropdown
   const statusOptions = {
     1: "Analisando",
     2: "Aprovado",
@@ -46,16 +47,33 @@ const StatusDropdown = ({ currentStatus, onUpdateStatus }) => {
     setModalOpen(false); // Fecha a modal
   };
 
+  // Função para calcular a posição do dropdown
+  const calculateDropdownPosition = () => {
+    if (dropdownRef.current) {
+      const rect = dropdownRef.current.getBoundingClientRect();
+      // Calculando a posição do dropdown com relação ao item clicado
+      return {
+        top: rect.bottom + window.scrollY,  // Abaixo do item clicado
+        left: rect.left + window.scrollX,   // Alinhado com o item clicado
+      };
+    }
+    return { top: 0, left: 0 };
+  };
+
   return (
     <div className="relative">
       <div
+        ref={dropdownRef}
         onClick={toggleDropdown}
         className={`cursor-pointer inline-block px-3 py-1 border border-gray-300 rounded-md ${statusColors[selectedStatus]} flex items-center`}
       >
         {statusOptions[selectedStatus]} <CaretDown size={20} className="ml-2" />
       </div>
       {dropdownOpen && (
-        <div className="fixed bg-white border border-gray-200 rounded-md mt-2 shadow-lg z-50 max-h-20 overflow-y-auto">
+        <div
+          className="fixed bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-20 overflow-y-auto"
+          style={calculateDropdownPosition()} // Aplica a posição calculada
+        >
           {Object.entries(statusOptions).map(([value, label]) => (
             <div
               key={value}
@@ -67,7 +85,6 @@ const StatusDropdown = ({ currentStatus, onUpdateStatus }) => {
           ))}
         </div>
       )}
-
 
       <Modal isOpen={modalOpen} toggle={cancelStatusChange}>
         <ModalBody>

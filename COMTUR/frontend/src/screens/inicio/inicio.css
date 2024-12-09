@@ -18,18 +18,18 @@
 
 .btncard {
     border-radius: 0;
-    background-color: #FFD121 !important;
+    background-color: #58afae !important;
 
 }
 
 .retanguloamarelo {
-    background-color: #FFD121 !important;
+    background-color: #58afae !important;
 }
 
 /********** Template CSS **********/
 :root {
-    --primary: #FFD121;
-    --secondary: #EDDD5E;
+    --primary: #fabc0b;
+    --secondary: #58afae;
     --light: #F7F7F7;
     --dark: #000000;
 }
@@ -100,8 +100,8 @@
     width: 3rem;
     height: 3rem;
     border-radius: 3rem;
-    background-color: var(--primary);
-    border: 10px solid var(--primary);
+    background-color: #fabc0b !important;
+    border: 10px #fabc0b !important ; 
 }
 
 @media (max-width: 768px) {
@@ -290,7 +290,7 @@
 }
 
 .btnmais {
-    background-color: #ffd121;
+    background-color: #58AFAE;
     color: #373636;
     border: none;
     border-radius: 50px;
@@ -318,4 +318,41 @@
 
 .cardconteudo {
     border: none;
+}
+
+.carousel-item {
+    transition: transform 0.5s ease;
+  }
+  
+  .carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5); /* Cor de fundo para as setas de navegação */
+    border-radius: 50%;
+  }
+  
+  .card {
+    width: 150px; /* Ajustar o tamanho do card */
+  }
+.carousel-item {
+  transition: transform 0.5s ease;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5); /* Cor de fundo para as setas de navegação */
+  border-radius: 50%;
+}
+
+.card {
+  width: 150px; /* Ajustar o tamanho do card */
+}
+
+.cardlaranja{
+    background-color: #ED7833 !important;
+    border: none;
+    cursor: pointer;
+}
+.cardazul{
+    background-color: #58AFAE !important;
+    border: none;
+    cursor: pointer;
+    
 }

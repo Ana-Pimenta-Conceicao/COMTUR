@@ -117,8 +117,6 @@ namespace COMTUR
 			services.AddScoped<ITipoTurismoRepositorio, TipoTurismoRepositorio>();
 			// Dependência: Usuario
 			services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
-			// Dependência: ImagemEmpresa
-			services.AddScoped<IImagemEmpresaRepositorio, ImagemEmpresaRepositorio>();
 			// Dependência: ImagemTurismo
 			services.AddScoped<IImagemTurismoRepositorio, ImagemTurismoRepositorio>();
 			// Dependência: Sessão
@@ -129,11 +127,15 @@ namespace COMTUR
 			services.AddScoped<IAvaliacaoRepositorio, AvaliacaoRepositorio>();
             // Dependência: AvaliacaoAtracao
             services.AddScoped<IAvaliacaoAtracaoRepositorio, AvaliacaoAtracaoRepositorio>();
-            // Dependência: AvaliacaoEmpresa
-            services.AddScoped<IAvaliacaoEmpresaRepositorio, AvaliacaoEmpresaRepositorio>();
             // Dependência: AvaliacaoTurismo
             services.AddScoped<IAvaliacaoTurismoRepositorio, AvaliacaoTurismoRepositorio>();
-        }
+            // Dependência: Membro
+            services.AddScoped<IMembroRepositorio, MembroRepositorio>();
+            // Dependência: Parametro
+            services.AddScoped<IParametroRepositorio,ParametroRepositorio>();
+			// Dependência: Ata
+			services.AddScoped<IAtaRepositorio, AtaRepositorio>();
+		}
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

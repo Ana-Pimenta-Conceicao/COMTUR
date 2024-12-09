@@ -4,7 +4,7 @@ import { Clock, Envelope, FacebookLogo, InstagramLogo, MapPinLine, Phone, Youtub
 
 const FooterUsr = () => {
     return (
-        <footer className=" bg-black">
+        <footer className=" bg-[#58AFAE]">
             <div className=" mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
                 <div className="md:flex ">
                     <div className="pb-6 pl-24 pt-5 pr-28">
@@ -87,7 +87,7 @@ const FooterUsr = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex w-full bg-[#FFD121] h-6 justify-center items-center text-xs' >
+            <div className='flex w-full bg-[#064D56] text-white h-6 justify-center items-center text-xs' >
                 © COPYRIGHT 2023
             </div>
         </footer>

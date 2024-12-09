@@ -26,20 +26,13 @@ namespace COMTUR.Repositorios
 
 		public async Task<EmpresaModel> BuscarPorId(int id)
 		{
-			return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).FirstOrDefaultAsync(x => x.Id == id);
+			return await _dbContext.Empresa.FirstOrDefaultAsync(x => x.Id == id);
 		}
 
-		public async Task<EmpresaModel> GetById(int id)
+		public async Task<EmpresaModel> GetByIdUsuario(int id)
 		{
 			return await _dbContext.Empresa.Include(objeto => objeto.UsuarioModel).Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
-
-		/*public async Task<List<EmpresaModel>> ListarPorTipoStatus(int tipoStatus)
-		{
-			return await _dbContext.Empresa
-				.Where(x => (int)x.TipoStatus == tipoStatus)
-				.ToListAsync();
-		}*/
 
 		public async Task<EmpresaModel> GetByIdTipoTurismo(int id)
 		{
@@ -48,20 +41,10 @@ namespace COMTUR.Repositorios
 
 		public async Task<List<EmpresaModel>> BuscarEmpresa()
 		{
-			return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).ToListAsync();
+			return await _dbContext.Empresa.ToListAsync();
 		}
-
-        public async Task<List<EmpresaModel>> BuscarPorIdUsuario(int idUsuario)
-        {
-            return await _dbContext.Empresa.Include(n => n.ImagemEmpresa).Where(empresa => empresa.IdUsuario == idUsuario).ToListAsync();
-        }
-
         public async Task<EmpresaModel> Adicionar(EmpresaModel empresaModel)
 		{
-			/*if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
-			{
-				throw new ArgumentException("Tipo de status inválido");
-			}*/
 
 			await _dbContext.Empresa.AddAsync(empresaModel);
 			await _dbContext.SaveChangesAsync();
@@ -73,11 +56,6 @@ namespace COMTUR.Repositorios
 		{
 			EmpresaModel empresaPorId = await BuscarPorId(id);
 
-			/*if (!Enum.IsDefined(typeof(TipoStatus), empresaModel.TipoStatus))
-			{
-				throw new ArgumentException("Tipo de status inválido");
-			}*/
-
 			if (empresaPorId == null)
 			{
 				throw new Exception($"Empresa {id} nao foi encontrada no banco de dados. ");
@@ -87,10 +65,8 @@ namespace COMTUR.Repositorios
 			empresaPorId.Nome = empresaModel.Nome;
 			empresaPorId.CNPJ = empresaModel.CNPJ;
 			empresaPorId.Endereco = empresaModel.Endereco;
-			empresaPorId.Descricao = empresaModel.Descricao;
             empresaPorId.IdUsuario = empresaModel.IdUsuario;
 			empresaPorId.IdTipoTurismo = empresaModel.IdTipoTurismo;
-			//empresaPorId.TipoStatus = empresaModel.TipoStatus;
 
 			_dbContext.Empresa.Update(empresaPorId);
 			await _dbContext.SaveChangesAsync();
@@ -111,15 +87,6 @@ namespace COMTUR.Repositorios
 			await _dbContext.SaveChangesAsync();
 
 			return true;
-		}
-
-		public async Task<List<ImagemEmpresaModel>> BuscarImagensPorEmpresaId(int EmpresaId)
-		{
-			// Use o Entity Framework para consultar as imagens associadas a uma empresa específica
-			var imagens = await _dbContext.ImagemEmpresa
-										   .Where(imagem => imagem.IdEmpresa == EmpresaId)
-										   .ToListAsync();
-			return imagens;
 		}
 	}
 }

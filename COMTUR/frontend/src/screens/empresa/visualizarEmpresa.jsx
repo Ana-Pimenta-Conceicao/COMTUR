@@ -12,12 +12,16 @@ import Comtur from "../../assets/Comtur";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import BtnModaisIMG from "../../components/botoes/btnModaisIMG.jsx";
 import BtnModais from "../../components/botoes/btnModais.jsx";
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
 
 export default function VisualizarEmpresa() {
     const { id } = useParams();
     const [empresa, setEmpresa] = useState(null);
     const baseUrl = "https://localhost:7256/api/Empresa";
     const imagensUrl = `https://localhost:7256/api/ImagemEmpresa/${id}`;
+    const usuarioUrl = "https://localhost:7256/api/Usuario";
     const avaliacaoUrl = "https://localhost:7256/api/Avaliacao";
     const avaliacaoEmpresaUrl = "https://localhost:7256/api/AvaliacaoEmpresa";
     const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -46,6 +50,61 @@ export default function VisualizarEmpresa() {
     const [idUsuario, setIdUsuario] = useState(0);
 
     const [avaliacoes, setAvaliacoes] = useState("");
+
+    const [avaliacoesEmpresa, setAvaliacoesEmpresa] = useState([]);
+    //const [avaliacao, setAvaliacao] = useState({});
+    //const [usuario, setUsuario] = useState({});
+
+    const [avaliacoesCompletas, setAvaliacoesCompletas] = useState([]);
+
+    useEffect(() => {
+        const fetchAvaliacoes = async () => {
+            const avaliacoesData = await Promise.all(avaliacoesEmpresa.map(async avaliacaoEmpresa => {
+                const avaliacao = await pedidoGetAvaliacao(avaliacaoEmpresa.idAvaliacao);
+
+                if (avaliacao && Object.keys(avaliacao).length > 0) {
+                    const usuario = await pedidoGetUsuario(avaliacao.idUsuario);
+                    if (usuario && Object.keys(usuario).length > 0) {
+                        return {
+                            avaliacao,
+                            usuario,
+                        };
+                    }
+                }
+                return null;
+            }));
+
+            setAvaliacoesCompletas(avaliacoesData.filter(avaliacao => avaliacao !== null));
+        };
+
+        if (avaliacoesEmpresa.length > 0) {
+            fetchAvaliacoes();
+        }
+    }, [avaliacoesEmpresa]);
+
+    // Layout em 3 avaliações
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 3; // Define quantas avaliações serão mostradas por vez
+
+    const displayedAvaliacoes = avaliacoesCompletas.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
+    const nextAvaliacoes = () => {
+        if ((currentPage + 1) * itemsPerPage < avaliacoesCompletas.length) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const prevAvaliacoes = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+
+
+    // aqui acaba o layout 
+
 
     const limparDados = () => {
         setAvaliacaoNota("");
@@ -98,12 +157,18 @@ export default function VisualizarEmpresa() {
     };
 
     const pedidoPostAvaliacao = async () => {
+        const currentDate = new Date();
+
+        // Formata a data apenas para o formato desejado (DD/MM/YYYY)
+        const formattedDate = format(currentDate, 'yyyy-MM-dd', { locale: ptBR }); // Formato para o banco de dados
+
         const formData = new FormData();
         formData.append("nota", avaliacaoNota);
-        formData.append("dataPublicacao", inverterDataParaFormatoBanco(avaliacaoDataPublicacao));
+        formData.append("dataAvaliacao", formattedDate);
         formData.append("comentario", avaliacaoComentario);
         formData.append("status", 1);
         formData.append("idUsuario", idUsuario);
+
 
         try {
             const response = await axios.post(avaliacaoUrl, formData, {
@@ -121,6 +186,7 @@ export default function VisualizarEmpresa() {
             console.log(error);
         }
     };
+
 
     const pedidoPostAvaliacaoEmpresa = async (idAvaliacao) => {
         const formData = new FormData();
@@ -190,6 +256,48 @@ export default function VisualizarEmpresa() {
             });
     };
 
+    const pedidoGetAvaliacoesEmpresa = async () => {
+        await axios
+            .get(`${avaliacaoEmpresaUrl}/Empresa/${id}`)
+            .then((response) => {
+                setAvaliacoesEmpresa(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const pedidoGetAvaliacao = async (idAvaliacao) => {
+        var avaliacao = null;
+
+        await axios
+            .get(`${avaliacaoUrl}/${idAvaliacao}`)
+            .then((response) => {
+                avaliacao = response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+                return {};
+            });
+
+        return avaliacao;
+    };
+
+    const pedidoGetUsuario = async (idUsuario) => {
+        var usuario = null;
+
+        await axios
+            .get(`${usuarioUrl}/${idUsuario}`)
+            .then((response) => {
+                usuario = response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        return usuario;
+    };
+
     useEffect(() => {
         const buscarEmpresa = async () => {
             try {
@@ -206,6 +314,8 @@ export default function VisualizarEmpresa() {
     useEffect(() => {
         if (atualizarScoreAvaliacoes) {
             pedidoAtualizarAvaliacoes();
+            pedidoGetAvaliacoesEmpresa();
+
             setAtualizarScoreAvaliacoes(false);
         }
     }, [atualizarScoreAvaliacoes]);
@@ -214,6 +324,8 @@ export default function VisualizarEmpresa() {
         const idTipoUsuarioAPI = localStorage.getItem("id");
         setIdUsuario(idTipoUsuarioAPI);
     }, []);
+
+
 
     if (!empresa) {
         return <h2>Carregando...</h2>;
@@ -257,6 +369,7 @@ export default function VisualizarEmpresa() {
         // Atualiza o estado com a data formatada
         setAvaliacaoDataPublicacao(formattedValue);
     };
+
 
     return (
         <div>
@@ -314,11 +427,11 @@ export default function VisualizarEmpresa() {
                             <div className="flex flex-col">
                                 <div className="d-flex justify-content-between mt-2">
                                     <div className="flex flex-row w-full justify-start items-center">
-                                        <Star size={20} className={`${avaliacoes.score >= 1 ? "text-[#FFD121]" : ""}`} />
-                                        <Star size={20} className={`${avaliacoes.score >= 2 ? "text-[#FFD121]" : ""}`} />
-                                        <Star size={20} className={`${avaliacoes.score >= 3 ? "text-[#FFD121]" : ""}`} />
-                                        <Star size={20} className={`${avaliacoes.score >= 4 ? "text-[#FFD121]" : ""}`} />
-                                        <Star size={20} className={`${avaliacoes.score === 5 ? "text-[#FFD121]" : ""}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score >= 1 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score >= 2 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score >= 3 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score >= 4 ? "text-[#FFD121]" : "text-gray-300"}`} />
+                                        <Star size={20} weight="fill" className={`${avaliacoes.score === 5 ? "text-[#FFD121]" : "text-gray-300"}`} />
                                         <h3 className="text-gray-800 text-xs pl-2">{avaliacoes.avaliacoes} avaliações</h3>
                                     </div>
                                 </div>
@@ -362,6 +475,63 @@ export default function VisualizarEmpresa() {
                 </div>
             </div>
 
+            {/* Avaliações */}
+
+            <div className="flex justify-center mb-3">
+                <h1 className="text-[#FFD121] sm:text-2xl text-sm font-bold sm:pl-6 pl-3 mt-4">Avaliações</h1>
+            </div>
+
+            <div className="container">
+                <div className="row d-flex justify-content-center g-4">
+                    {displayedAvaliacoes.length > 0 ? (
+                        displayedAvaliacoes.map((avaliacaoCompleta, index) => (
+                            <div className="col-md-4" key={index}>
+                                <div className="card m-2 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
+                                    <article>
+                                        <div className="flex items-center mb-3">
+                                            <div className="w-10 h-10 me-4 rounded-full">
+                                                {avaliacaoCompleta.usuario.imagemPerfilUsuario ? (
+                                                    <img src={avaliacaoCompleta.usuario.imagemPerfilUsuario} alt="Avatar" className="rounded-full" />
+                                                ) : (
+                                                    <Xadrez />
+                                                )}
+                                            </div>
+                                            <div className="font-medium dark:text-black">
+                                                <p>
+                                                    @{avaliacaoCompleta.usuario.nome}
+                                                    <time dateTime={avaliacaoCompleta.avaliacao.dataAvaliacao} className="block text-sm text-gray-500 dark:text-gray-400">
+                                                        {formatarDataParaExibicao(avaliacaoCompleta.avaliacao.dataAvaliacao)}
+                                                    </time>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center">
+                                            {[...Array(5)].map((_, i) => (
+                                                i < parseInt(avaliacaoCompleta.avaliacao.nota) ? <Estrela key={i} /> : <Estrelasemcor key={i} />
+                                            ))}
+                                        </div>
+                                        <p className="mt-7 text-gray-500 dark:text-gray-400">
+                                            {avaliacaoCompleta.avaliacao.comentario}
+                                        </p>
+                                    </article>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p>Nenhuma avaliação disponível.</p>
+                    )}
+                </div>
+
+                {/* Navegação das avaliações */}
+                <div className="flex justify-center mt-4">
+                    <button onClick={prevAvaliacoes} className="mx-2 px-4 py-2 bg-gray-200 rounded-lg" disabled={currentPage === 0}>
+                        <CaretLeft size={24} />
+                    </button>
+                    <button onClick={nextAvaliacoes} className="mx-2 px-4 py-2 bg-gray-200 rounded-lg" disabled={(currentPage + 1) * itemsPerPage >= avaliacoesCompletas.length}>
+                        <CaretRight size={24} />
+                    </button>
+                </div>
+            </div>
 
 
 
@@ -447,7 +617,7 @@ export default function VisualizarEmpresa() {
                 <ModalBody>
                     <div className="m-2">
                         <div className="flex items-center mb-2">
-                            <div className="w-10 h-10 mr-2 rounded-full">
+                            <div className="w-10 h-10 mr-3 rounded-full">
                                 <Xadrez />
                             </div>
                             <div className="font-medium text-gray-500 ml-1">
@@ -456,28 +626,25 @@ export default function VisualizarEmpresa() {
                             <div className="ml-auto"><Comtur /></div>
                         </div>
 
-                        <div className="flex flex-col items-center justify-center mb-8">
+                        <div className="flex flex-col mt-4">
                             <label>Comentário:</label>
                             <textarea
-                                className="form-control text-sm"
+                                className="form-control text-sm mt-2"
                                 onChange={(e) => setAvaliacaoComentario(e.target.value)}
                                 placeholder="Deixe seu Comentário"
                             />
                             <br />
 
-                            <label htmlFor="avaliacaoDataPublicacao">Data:</label>
-                            <input
+                            {/* Campo de Data removido da exibição */}
+                            <input hidden
                                 type="text"
                                 className="form-control text-sm"
-                                id="avaliacaoDataPublicacao"
-                                onChange={(e) => handleDate(e.target.value)}
-                                placeholder="Digite apenas números"
-                                value={avaliacaoDataPublicacao}
+                                readOnly
+                                value={format(new Date(), 'dd/MM/yyyy', { locale: ptBR })} // Mostra apenas a data
                             />
-                            <br />
 
-                            <h1 className="m-2 text-black">Faça uma avaliação!</h1>
-                            <h2 className="m-2 text-gray-500">Compartilhe sua experiência para ajudar outras pessoas</h2>
+                            <h1 className="mb-2 text-black">Faça uma avaliação!</h1>
+                            <h2 className="mb-2  text-gray-500">Compartilhe sua experiência para ajudar outras pessoas</h2>
 
                             <div className="flex items-center mt-2">
                                 <div className="flex flex-row w-full justify-start items-center text-[#FFD121]">
@@ -485,6 +652,7 @@ export default function VisualizarEmpresa() {
                                         <Star
                                             key={starIndex}
                                             size={30}
+                                            weight="fill"
                                             className={starIndex <= avaliacaoNota ? "text-yellow-400" : "text-gray-300"}
                                             onClick={() => handleStarClick(starIndex)}
                                             style={{ cursor: "pointer" }}
@@ -494,19 +662,17 @@ export default function VisualizarEmpresa() {
                             </div>
                         </div>
 
-                        <div className="flex justify-end">
+                        <div className="flex justify-end mt-4">
                             <button
                                 className="btn btnavaliar bg-yellow-400 rounded-md mr-1"
-                                onClick={() => {
-                                    pedidoPostAvaliacao(); // Chamando diretamente a função para cadastrar
-                                }}
+                                onClick={pedidoPostAvaliacao} // Chama a função diretamente
                             >
                                 Avaliar
                             </button>
 
                             <button
                                 className="btn btncancelarmodal"
-                                onClick={() => abrirFecharModalAvaliacao()}
+                                onClick={abrirFecharModalAvaliacao}
                             >
                                 Cancelar
                             </button>
@@ -515,8 +681,9 @@ export default function VisualizarEmpresa() {
                 </ModalBody>
             </Modal>
 
+
             <Modal className="modal-xl-gridxl" isOpen={modalEditar} style={{ maxWidth: "1000px" }} >
-                <ModalHeader>Editar Noticia</ModalHeader>
+                <ModalHeader>Editar Avaliação</ModalHeader>
                 <ModalBody>
                     <div className="m-2">
                         <div className="flex items-center mb-2">
@@ -589,6 +756,6 @@ export default function VisualizarEmpresa() {
                     />
                 </ModalFooter>
             </Modal>
-        </div>
+        </div >
     );
 }

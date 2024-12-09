@@ -1,5 +1,4 @@
 ﻿using COMTUR.Models.Enum;
-using COMTUR.Models.Relational;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
@@ -25,9 +24,6 @@ namespace COMTUR.Models
 		[Column("endereco")]
 		public string Endereco { get; set; }
 
-		[Column("descricao")]
-		public string Descricao { get; set; }
-
 		// Relacionamento com tipoTurismo e Empresa
 		[JsonIgnore]
 		public TipoTurismoModel? TipoTurismoModel { get; set; }
@@ -36,24 +32,12 @@ namespace COMTUR.Models
 		[ForeignKey("tipoturismoid")]
 		public int IdTipoTurismo { get; set; }
 
-
-		// relação com Avaliacao
-		[JsonIgnore]
-        public ICollection<AvaliacaoEmpresaModel>? AvaliacoesEmpresa { get; set; }
-
         // relação com Empresario
-
         [JsonIgnore]
-    public UsuarioModel? UsuarioModel { get; set; }
-
-		// relação com ImagemEmpresa
-		public ICollection<ImagemEmpresaModel>? ImagemEmpresa { get; set; }
+        public UsuarioModel? UsuarioModel { get; set; }
 
 		[Column("usuarioid")]
 		[ForeignKey("usuarioid")]
-
-
-
 		public int IdUsuario { get; set; }
 
 		[Column("statusatracao")]

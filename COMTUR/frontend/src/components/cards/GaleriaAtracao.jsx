@@ -76,13 +76,13 @@ const GaleriaAtracao = (identi) => {
   }
 
   return (
-    <div className="flex flex-row justify-center gap-3 w-full overflow-hidden">
+    <div className="flex flex-row justify-center  gap-3 w-full overflow-hidden">
       {atracoes.length > 0 && (
-        <button className="text-[#FFD121] hover:text-white" onClick={prevSlide}>
+        <button className="text-[#ED7833] hover:text-white" onClick={prevSlide}>
           <CaretDoubleLeft size={32} />
         </button>
       )}
-      <div className="flex flex-wrap justify-center gap-4 sm:gap-8 md:gap-12">
+      <div className="flex flex-wrap justify-center bg-black rounded-md gap-4 sm:gap-8 md:gap-12">
         {visibleAtracoes.map((atracao, index) => {
           const imagemUrl = atracao.imagemAtracao[0]?.imagem; // Assumindo que a primeira imagem é a que você quer usar
           return (
@@ -104,7 +104,7 @@ const GaleriaAtracao = (identi) => {
                 <h2 className="text-sm font-semibold text-white">
                   {atracao.nome}
                 </h2>
-                <button className="mt-2 px-4 py-1 border-2 border-[#FFD121] text-xs font-medium text-white hover:bg-[#FFD121] transition-colors duration-300 rounded-sm"
+                <button className="mt-2 px-4 py-1 border-2 border-[#58AFAE] text-xs font-medium text-white hover:bg-[#58AFAE] transition-colors duration-300 rounded-sm"
                 onClick={() => {navigate(`/visualizarAtracao/${atracao.id}`)}}>
                   Leia Mais
                 </button>
@@ -114,7 +114,7 @@ const GaleriaAtracao = (identi) => {
         })}
       </div>
       {atracoes.length > 0 && (
-        <button className="text-[#FFD121] hover:text-white" onClick={nextSlide}>
+        <button className="text-[#ED7833] hover:text-white" onClick={nextSlide}>
           <CaretDoubleRight size={32} />
         </button>
       )}

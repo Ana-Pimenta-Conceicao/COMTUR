@@ -187,10 +187,6 @@ function TipoAtracao() {
             funcao={() => TipoAtracaoSet(tipoatracao, "Excluir")}
             acao="Excluir"
           />
-          <BtnAcao
-            funcao={() => TipoAtracaoSet(tipoatracao, "Visualizar")}
-            acao="Visualizar"
-          />
         </div>
       ),
     }));

@@ -40,9 +40,6 @@ export default function Empresa() {
   const [empresaNome, setNome] = useState("");
   const [empresaCNPJ, setCNPJ] = useState("");
   const [empresaEndereco, setEndereco] = useState("");
-  const [imagensEmpresa, setImagensEmpresa] = useState([]);
-  const [empresaLegendaImagem, setEmpresaLegendaImagem] = useState([]);
-  const [empresaDescricao, setDescricao] = useState([]);
   const [empresaId, setEmpresaId] = useState("");
   const [userType, setUserType] = useState(null);
   const [usuarioId, setUsuarioId] = useState("");
@@ -59,9 +56,6 @@ export default function Empresa() {
     setNome("");
     setCNPJ("");
     setEndereco("");
-    setImagensEmpresa("");
-    setEmpresaLegendaImagem("");
-    setDescricao("");
     setEmpresaId("");
   };
 
@@ -71,9 +65,6 @@ export default function Empresa() {
     setNome(empresa.nome);
     setCNPJ(empresa.cnpj);
     setEndereco(empresa.endereco);
-    setDescricao(empresa.descricao);
-    setEmpresaLegendaImagem(empresa.legendaImagem);
-    setImagensEmpresa(empresa.imagemEmpresa);
     setUsuarioId(empresa.idUsuario);
     setTipoTurismoId(empresa.idTipoTurismo);
 
@@ -143,8 +134,6 @@ export default function Empresa() {
       });
   };
 
-
-
   const pedidoGet = async () => {
     await axios
       .get(baseUrl)
@@ -192,12 +181,10 @@ export default function Empresa() {
     formData.append("nome", empresaNome);
     formData.append("cnpj", empresaCNPJ);
     formData.append("endereco", empresaEndereco);
-    formData.append("descricao", empresaDescricao);
     formData.append("idtipoturismo", tipoTurismoSelecionado);
-    // formData.append("idUsuario", parseInt(usuarioSelecionado.value));
     formData.append("idUsuario", idUsuario);
     formData.append("status", 1);
-    
+
     console.log(tipoTurismoSelecionado);
 
     try {
@@ -206,11 +193,7 @@ export default function Empresa() {
           "Content-Type": "multipart/form-data",
         },
       });
-
       setData(data.concat(response.data));
-
-      if (imagensEmpresa.length !== 0) await pedidoPostImagens(response.data.id);
-
       abrirFecharModalInserir();
       limparDados();
       setAtualizarData(true);
@@ -220,36 +203,6 @@ export default function Empresa() {
     }
   };
 
-  const pedidoPostImagens = async (idEmpresa) => {
-    const formData = new FormData();
-
-    let todasImagens = [];
-    let todasLegendas = [];
-
-    imagensEmpresa?.forEach((imagem) => {
-      todasImagens = [...todasImagens, imagem.imagem];
-      todasLegendas = [...todasLegendas, imagem.legendaImagem];
-    });
-
-    todasImagens.forEach((imagem) => formData.append("imagens", imagem));
-    todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
-    console.log(idUsuario);
-    formData.append("idUsuario",idUsuario);
-
-    try {
-      const response = await axios.post(
-        baseUrlImagem + `/${idEmpresa}/CadastrarImagensEmpresa`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   async function pedidoAtualizar() {
     const formData = new FormData();
@@ -257,9 +210,6 @@ export default function Empresa() {
     formData.append("nome", empresaNome);
     formData.append("cnpj", empresaCNPJ);
     formData.append("endereco", empresaEndereco);
-    formData.append("descricao", empresaDescricao);
-    formData.append("imagemEmpresa", imagensEmpresa);
-    formData.append("idUsuario", parseInt(usuarioSelecionado.value));
     formData.append("idtipoturismo", tipoTurismoSelecionado);
     formData.append("idUsuario", idUsuario);
 
@@ -281,10 +231,6 @@ export default function Empresa() {
         });
       });
 
-      if (imagensEmpresa.lenght !== 0) {
-        await pedidoPutImagens();
-      }
-
       abrirFecharModalEditar();
       limparDados();
       setAtualizarData(true);
@@ -293,47 +239,6 @@ export default function Empresa() {
       console.log(error);
     }
   }
-
-  const pedidoPutImagens = async () => {
-    const formData = new FormData();
-
-    let todasImagens = [];
-    let todasLegendas = [];
-
-    imagensEmpresa?.forEach((imagem) => {
-      todasImagens = [...todasImagens, imagem.imagem];
-      todasLegendas = [...todasLegendas, imagem.legendaImagem];
-    });
-
-    todasImagens.forEach((imagem) => formData.append("imagens", imagem));
-    todasLegendas.forEach((legenda) => formData.append("legendas", legenda));
-    formData.append("idUsuario", idUsuario);
-
-    console.log(todasImagens);
-    console.log(todasLegendas);
-
-    try {
-      const response = await axios.put(
-        baseUrlImagem + `/${empresaId}/AtualizarImagensEmpresa`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const removeImagemByIndex = (indexToRemove) => {
-    setImagensEmpresa((prevImagens) =>
-      prevImagens.filter((_, index) => index !== indexToRemove)
-    );
-  };
 
   const pedidoDeletar = async () => {
     await axios
@@ -438,41 +343,41 @@ export default function Empresa() {
     callback(filterOptions(inputValue));
   }
 
-    const customStyles = {
-      control: (provided, state) => ({
-        ...provided,
-        borderRadius: '0.375rem', // remove o arredondamento dos cantos
-        borderColor: state.isFocused ? '#DEE2E6' : '#DEE2E6', // cor da borda quando está focado ou não
-        boxShadow: state.isFocused ? '0 0 0 0.2rem rgba(0, 123, 255, 0.25)' : null, // sombra quando está focado
-        '&:hover': {
-          borderColor: state.isFocused ? '#80bdff' : '#ced4da' // cor da borda ao passar o mouse
-        },
-        minHeight: 'calc(2.25rem + 2px)', // ajuste de altura
-        fontFamily: 'inherit', // herda a fonte do elemento pai
-        fontSize: '0.875rem', // text-sm do Tailwind
-        lineHeight: '1.25rem', // line height correspondente do Tailwind
-        paddingLeft: '2px', // padding-left ajustado
-        paddingRight: '8px', // padding-right ajustado
-        color: '#7D7F82' // cor do texto
-      }),
-      singleValue: (provided) => ({
-        ...provided,
-        color: '#7D7F82' // cor do texto selecionado
-      }),
-      placeholder: (provided) => ({
-        ...provided,
-        color: '#7D7F82' // cor do texto do placeholder
-      }),
-      option: (provided, state) => ({
-        ...provided,
-        backgroundColor: state.isSelected ? '#007bff' : '#fff', // cor de fundo do item selecionado ou não
-        color: state.isSelected ? '#fff' : '#495057', // cor do texto do item selecionado ou não
-        fontFamily: 'inherit', // herda a fonte do elemento pai
-        fontSize: '0.875rem', // text-sm do Tailwind
-        lineHeight: '1.25rem' // line height correspondente do Tailwind
-      })
-    };
-    
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      borderRadius: '0.375rem', // remove o arredondamento dos cantos
+      borderColor: state.isFocused ? '#DEE2E6' : '#DEE2E6', // cor da borda quando está focado ou não
+      boxShadow: state.isFocused ? '0 0 0 0.2rem rgba(0, 123, 255, 0.25)' : null, // sombra quando está focado
+      '&:hover': {
+        borderColor: state.isFocused ? '#80bdff' : '#ced4da' // cor da borda ao passar o mouse
+      },
+      minHeight: 'calc(2.25rem + 2px)', // ajuste de altura
+      fontFamily: 'inherit', // herda a fonte do elemento pai
+      fontSize: '0.875rem', // text-sm do Tailwind
+      lineHeight: '1.25rem', // line height correspondente do Tailwind
+      paddingLeft: '2px', // padding-left ajustado
+      paddingRight: '8px', // padding-right ajustado
+      color: '#7D7F82' // cor do texto
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: '#7D7F82' // cor do texto selecionado
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: '#7D7F82' // cor do texto do placeholder
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? '#007bff' : '#fff', // cor de fundo do item selecionado ou não
+      color: state.isSelected ? '#fff' : '#495057', // cor do texto do item selecionado ou não
+      fontFamily: 'inherit', // herda a fonte do elemento pai
+      fontSize: '0.875rem', // text-sm do Tailwind
+      lineHeight: '1.25rem' // line height correspondente do Tailwind
+    })
+  };
+
   const statusOptions = [
     { value: '', label: 'Todos' },
     { value: '1', label: 'Em Análise' },
@@ -488,48 +393,49 @@ export default function Empresa() {
     4: "bg-gray-400 text-white", // Cinza claro para Desativado
   };
 
-    const apresentaDados = Array.isArray(currentItems)
+  const apresentaDados = Array.isArray(currentItems)
     ? currentItems.map((empresa) => {
       const tipoTurismo = dataTipoTurismo.find(
         (tipo) => tipo.id === empresa.idTipoTurismo
       );
+      const nome = empresa.nome && typeof empresa.nome === 'string'
+          ? (empresa.nome.length > 20 
+            ? `${empresa.nome.slice(0, 20)}...`
+            : empresa.nome)
+          : '';
       const tipoTurismoNome = tipoTurismo
         ? tipoTurismo.nome
         : "Tipo não encontrado";
-        return {
-          id: empresa.id,
-          nome: empresa.nome,
-          cnpj: empresa.cnpj,
-          tipo: tipoTurismoNome,
-          status: (
-            <div className={`px-3 py-1 rounded-md ${statusColors[empresa.status]}`}>
-              {statusOptions.find(option => option.value === empresa.status.toString())?.label}
-            </div>
-          ),
-          acoes: (
-            <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
-              <BtnAcao
-                funcao={() => EmpresaSet(empresa, "Editar")}
-                acao="Editar"
-              />
-              <BtnAcao
-                funcao={() => EmpresaSet(empresa, "Excluir")}
-                acao="Excluir"
-              />
-              <BtnAcao
-                funcao={() => EmpresaSet(empresa, "Visualizar")}
-                acao="Visualizar"
-              />
-            </div>
-          ),
-        };
-      })
+      return {
+        id: empresa.id,
+        nome: nome,
+        cnpj: empresa.cnpj,
+        tipo: tipoTurismoNome,
+        status: (
+          <div className={`px-3 py-1 rounded-md ${statusColors[empresa.status]}`}>
+            {statusOptions.find(option => option.value === empresa.status.toString())?.label}
+          </div>
+        ),
+        acoes: (
+          <div className="flex items-center justify-center border-t-[1px] gap-2 border-gray-100 py-2">
+            <BtnAcao
+              funcao={() => EmpresaSet(empresa, "Editar")}
+              acao="Editar"
+            />
+            <BtnAcao
+              funcao={() => EmpresaSet(empresa, "Excluir")}
+              acao="Excluir"
+            />
+          </div>
+        ),
+      };
+    })
     : [];
 
-    if (userType === "1" || userType === "3") {
-      return <Navigate to="/notfound" />;
-    } else {
-      return (
+  if (userType === "1" || userType === "3") {
+    return <Navigate to="/notfound" />;
+  } else {
+    return (
       <div className="home">
         <div className="h-screen flex fixed">
           <SidebarAdm setOpen={setSidebarOpen} open={sidebarOpen} />
@@ -551,11 +457,16 @@ export default function Empresa() {
               formatarData={""}
               numColunas={6}
             />
-            <div className="float-right flex-auto py-6">
-            <BtnAcao
+            <div className="inline-flex float-right py-6 ">
+              <BtnAcao
+                funcao={() => VisualizarTodasEmpresas()}
+                acao="Publicados"
+              />
+              <BtnAcao
                 funcao={() => abrirFecharModalInserir("Cadastrar")}
                 acao="Cadastrar"
               />
+
             </div>
           </div>
         </div>
@@ -598,13 +509,6 @@ export default function Empresa() {
                     placeholder="Digite o Endereço"
                   />
                   <br />
-                  <label>Descrição:</label>
-                  <textarea
-                    className="form-control text-sm"
-                    onChange={(e) => setDescricao(e.target.value)}
-                    placeholder="Descrição Empresa"
-                  />
-                  <br />
                   <label>Tipo:</label>
                   <select
                     className="form-control"
@@ -618,125 +522,6 @@ export default function Empresa() {
                     ))}
                   </select>
                   <br />
-                  {/* <label>Usuario: </label> */}
-                  {/* <Select className="form-control text-sm"
-                  value={usuarioSelecionado}
-                  onChange={(option) => setUsuarioSelecionado(option)}
-                  loadOptions={loadOptions}
-                  options={usuarioOptions}
-                  placeholder="Pesquisar empresário "
-                  isClearable
-                  isSearchable
-                  noOptionsMessage={() => {
-                    if (usuarioOptions.length === 0) {
-                      return "Nenhum Empresário cadastrado!";
-                    } else {
-                      return "Nenhuma opção encontrada!";
-                    }
-                  }}
-                /> */}
-                  <label>Usuario: </label>
-                  <Select
-                    className="text-sm "
-                    value={usuarioSelecionado}
-                    onChange={(option) => setUsuarioSelecionado(option)}
-                    loadOptions={loadOptions}
-                    options={usuarioOptions}
-                    placeholder="Pesquisar Empresário"
-                    isClearable
-                    isSearchable
-                    styles={customStyles} // aplica os estilos personalizados
-                    noOptionsMessage={() => {
-                      if (usuarioOptions.length === 0) {
-                        return "Nenhum Empresário cadastrado!";
-                      } else {
-                        return "Nenhuma opção encontrada!";
-                      }
-                    }}
-                  />
-                  <br />
-                </div>
-              </div>
-
-              <div className="flex flex-col col-span-1 pl-4  border-l-[1px]">
-                <label>Imagem:</label>
-                <div>
-                  {/* Campo para seleção de imagem */}
-                  <input
-                    type="file"
-                    className="form-control "
-                    onChange={(e) => {
-                      convertImageToBase64(e.target.files[0], (result) => {
-                        if (result) {
-                          const objetoImagem = {
-                            imagem: result,
-                            legendaImagem: "",
-                          };
-                          setImagensEmpresa((prevImagens) => [
-                            ...prevImagens,
-                            objetoImagem,
-                          ]);
-                        }
-                        // Limpa o campo de entrada de arquivo após a seleção
-                        e.target.value = null;
-                      });
-                    }}
-                    multiple
-                  />
-
-                  {(Array.isArray(imagensEmpresa) ? imagensEmpresa : []).map(
-                    (imagem, index) =>
-                      index % 1 === 0 && (
-                        <div
-                          className="flex pt-3 justify-end "
-                          key={`row-${index}`}
-                        >
-                          {Array.from(
-                            {
-                              length: Math.min(
-                                1,
-                                imagensEmpresa.length - index
-                              ),
-                            },
-                            (_, i) => (
-                              <div key={index} className="flex flex-col  pr-5 ">
-                                <div className="flex w-[140px] justify-end">
-                                  <img
-                                    className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
-                                    src={imagensEmpresa[index + i].imagem}
-                                    alt={`Imagem ${index}`}
-                                  />
-                                  <div className="flex flex-col pl-3 justify-end">
-                                    <label>Legenda:</label>
-                                    <input
-                                      type="text"
-                                      className="form-control text-sm w-[286px] mb-0 "
-                                      onChange={(e) =>
-                                        setImagensEmpresa((prevImagens) => {
-                                          const novasImagens = [...prevImagens];
-                                          novasImagens[
-                                            index + i
-                                          ].legendaImagem = e.target.value;
-                                          return novasImagens;
-                                        })
-                                      }
-                                      placeholder="Digite a legenda"
-                                    />
-                                    <br />
-                                    <button
-                                      className="w-[140px] rounded-md text-md text-white  bg-red-800 hover:bg-red-900"
-                                      onClick={() => removeImagemByIndex(index)}
-                                    >
-                                      Remover
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            )
-                          )}
-                        </div>
-                      )
-                  )}
                 </div>
               </div>
             </div>
@@ -750,9 +535,9 @@ export default function Empresa() {
           </ModalBody>
         </Modal>
         <PopupCadastrado isOpen={modalCadastrado} toggle={fecharModalCadastrado} objeto="Empresa" />
-        <PopupExcluido isOpen={modalExcluido} toggle={fecharModaExcluido} objeto="Empresa"/>
-        <PopupEditado isOpen={modalEditado} toggle={fecharModaEditado} objeto="Empresa"  />
-        <Modal className="modal-xl-gridxl"  isOpen={modalEditar} style={{ maxWidth: "1000px" }}>
+        <PopupExcluido isOpen={modalExcluido} toggle={fecharModaExcluido} objeto="Empresa" />
+        <PopupEditado isOpen={modalEditado} toggle={fecharModaEditado} objeto="Empresa" />
+        <Modal className="modal-xl-gridxl" isOpen={modalEditar} style={{ maxWidth: "1000px" }}>
           <ModalHeader>Editar Empresa</ModalHeader>
           <ModalBody>
             <div className="grid grid-cols-2 ">
@@ -786,14 +571,6 @@ export default function Empresa() {
                     value={empresaEndereco}
                   />
                   <br />
-                  <label>Descrição:</label>
-                  <textarea
-                    className="form-control  text-sm"
-                    name="empresaEndereco"
-                    onChange={(e) => setDescricao(e.target.value)}
-                    value={empresaDescricao}
-                  />
-                  <br />
                   <label>Tipo:</label>
                   <select
                     className="form-control"
@@ -806,126 +583,8 @@ export default function Empresa() {
                       </option>
                     ))}
                   </select>
-
                   <br />
-                  <label>Usuario: </label>
-                  <Select
-                    className="text-sm "
-                    value={usuarioSelecionado}
-                    onChange={(option) => setUsuarioSelecionado(option)}
-                    loadOptions={loadOptions}
-                    options={usuarioOptions}
-                    placeholder="Pesquisar Empresário"
-                    isClearable
-                    isSearchable
-                    styles={customStyles} // aplica os estilos personalizados
-                    noOptionsMessage={() => {
-                      if (usuarioOptions.length === 0) {
-                        return "Nenhum Empresário cadastrado!";
-                      } else {
-                        return "Nenhuma opção encontrada!";
-                      }
-                    }}
-                  />
-                  <br />
-
-
                 </div>
-              </div>
-
-              <div className="flex flex-col col-span-1  pl-4  border-l-[1px]">
-                <label>Imagem:</label>
-                <input
-                  type="file"
-                  className="form-control"
-                  onChange={(e) => {
-                    Array.from(e.target.files).forEach((file) => {
-                      convertImageToBase64(file, (result) => {
-                        if (result) {
-                          const objetoImagem = {
-                            imagem: result,
-                            legendaImagem: "",
-                          };
-                          setImagensEmpresa((prevImagens) => [
-                            ...prevImagens,
-                            objetoImagem,
-                          ]);
-                        }
-                      });
-                    });
-                    // Limpa o campo de entrada de arquivo após a seleção
-                    e.target.value = null;
-                  }}
-                  multiple
-                />
-
-                {modalEditar && (
-                  <div>
-                    {(Array.isArray(imagensEmpresa) ? imagensEmpresa : []).map(
-                      (imagem, index) =>
-                        index % 1 === 0 && (
-                          <div
-                            className="flex pt-3 justify-end "
-                            key={`row-${index}`}
-                          >
-                            {Array.from(
-                              {
-                                length: Math.min(
-                                  1,
-                                  imagensEmpresa.length - index
-                                ),
-                              },
-                              (_, i) => (
-                                <div
-                                  key={index + i}
-                                  className="flex flex-col items-start pr-5"
-                                >
-                                  <div className="flex w-[140px] justify-end">
-                                    <img
-                                      className="w-min-[140px] h-[100px] mr-2 mt-2 justify-center rounded-md"
-                                      src={imagensEmpresa[index + i].imagem}
-                                    />
-                                    <div className="flex flex-col pl-3 justify-end">
-                                      <label>Legenda:</label>
-                                      <input
-                                        type="text"
-                                        className="form-control  text-sm w-[286px]"
-                                        onChange={(e) =>
-                                          setImagensEmpresa((prevImagens) => {
-                                            const novasImagens = [
-                                              ...prevImagens,
-                                            ];
-                                            novasImagens[
-                                              index + i
-                                            ].legendaImagem = e.target.value;
-                                            return novasImagens;
-                                          })
-                                        }
-                                        value={
-                                          imagensEmpresa[index + i]
-                                            .legendaImagem
-                                        }
-                                      />
-                                      <br />
-
-                                      <button
-                                        className="w-[140px] rounded-md  mt-[2px] mb-3 text-md text-white p-[0.2px]  bg-red-800 hover:bg-red-900"
-                                        onClick={() =>
-                                          removeImagemByIndex(index + i)
-                                        }
-                                      >
-                                        Remover
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              )
-                            )}
-                          </div>
-                        )
-                    )}
-                  </div>
-                )}
               </div>
             </div>
             <div className="flex justify-between items-center px-[395px] pt-5">
@@ -940,9 +599,10 @@ export default function Empresa() {
           </ModalBody>
           <ModalFooter>
             <BtnModais funcao={() => pedidoDeletar()} acao="Excluir" />
-            <BtnModais funcao={() => abrirFecharModalDeletar()}acao="Cancelar" />
+            <BtnModais funcao={() => abrirFecharModalDeletar()} acao="Cancelar" />
           </ModalFooter>
         </Modal>
       </div>
     );
-  }}
+  }
+}

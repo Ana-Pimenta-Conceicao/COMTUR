@@ -17,13 +17,6 @@ namespace COMTUR.Data.Map
 
 			// Relacionamento de Empresa com TipoTurismo
 			builder.HasOne(x => x.TipoTurismoModel).WithMany().HasForeignKey(x => x.IdTipoTurismo);
-
-			// Relacionamento Empresa com ImagemEmpresa
-			builder.HasMany(n => n.ImagemEmpresa)
-				   .WithOne(im => im.EmpresaModel)
-				   .HasForeignKey(im => im.IdEmpresa)
-				   .IsRequired()
-				   .OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

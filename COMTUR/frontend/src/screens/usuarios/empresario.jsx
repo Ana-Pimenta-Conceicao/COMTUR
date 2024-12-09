@@ -366,10 +366,6 @@ export default function Empresario() {
                   funcao={() => UserSet(usuario, "Excluir")}
                   acao="Excluir"
                 />
-                <BtnAcao
-                  funcao={() => UserSet(usuario, "Visualizar")}
-                  acao="Visualizar"
-                />
               </div>
             ),
           };

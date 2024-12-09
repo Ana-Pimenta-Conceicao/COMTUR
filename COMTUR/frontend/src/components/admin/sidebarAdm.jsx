@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { CaretRight } from "@phosphor-icons/react";
+import { CaretRight, UserGear } from "@phosphor-icons/react";
 import Login from "../../assets/login.png";
 import axios from "axios";
 
@@ -62,6 +62,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
       ],
     },
     { title: "Empresas", src: "empresa", iconSrc: "Empresa" },
+    { title: "Membros", src: "membro", iconSrc: "user-focus" },
     { title: "Eventos", src: "Eventos", iconSrc: "Eventos" },
     {
       title: "Turismos",
@@ -85,6 +86,7 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
       ],
     },
     { title: "Status", src: "status", iconSrc: "Dashboard" },
+    { title: "Visualizar", src: " ", iconSrc: "Dashboard" },
   ];
 
   const toggleSubmenu = (index) => {
@@ -98,17 +100,17 @@ const SidebarAdm = ({ setOpen, open, nomeUsuario }) => {
     <div className="sidebar fixed pr-20" style={{ height: "100vh" }}>
       <div
         className={` ${open ? "w-52" : "w-20"
-          } bg-black h-screen pl-5 pr-5 pt-8 relative duration-300`}
+          } bg-[#064D56] h-screen pl-5 pr-5 pt-8 relative duration-300`}
       >
         <img
           src="../src/assets/control.png"
-          className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
+          className={`absolute cursor-pointer -right-3 top-9 w-7 border-[#064D56]
            border-2 rounded-full  ${!open && "rotate-180 "}`}
           onClick={() => setOpen(!open)}
         />
         <div className="flex gap-x-4 items-center">
           <img
-            src="../src/assets/logoComturSF.png"
+            src="../src/assets/logoComturR.png"
             className={`cursor-pointer duration-500 ${open && "rotate-[360deg]"
               }`}
           />

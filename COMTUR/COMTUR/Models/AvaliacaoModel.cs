@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using COMTUR.Models.Enum;
-using COMTUR.Models.Relational;
 
 namespace COMTUR.Models
 {
@@ -20,7 +19,7 @@ namespace COMTUR.Models
 		public string Nota { get; set; }
 
 		[Column("dataAvaliacao")]
-		public DateOnly DataAvaliacao { get; set; }
+		public string DataAvaliacao { get; set; }
 
 		[Column("comentarioAvaliacao")]
 		public string Comentario { get; set; }
@@ -38,9 +37,6 @@ namespace COMTUR.Models
 
         [JsonIgnore]
         public ICollection<AvaliacaoAtracaoModel>? AvaliacaoAtracoes { get; set; }
-
-        [JsonIgnore]
-        public ICollection<AvaliacaoEmpresaModel>? AvaliacaoEmpresaModels { get; set; }
 
         [JsonIgnore]
         public ICollection<AvaliacaoTurismoModel>? AvaliacaoTurismoModels { get; set; }

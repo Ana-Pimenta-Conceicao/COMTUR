@@ -39,13 +39,6 @@ namespace COMTUR.Repositorios
 			return await _dbContext.Turismo.Include(objeto => objeto.TipoTurismoModel).Where(x => x.Id == id).FirstOrDefaultAsync();
 		}
 
-		/*public async Task<List<TurismoModel>> ListarPorTipoStatus(int tipoStatus)
-		{
-			return await _dbContext.Turismo
-				.Where(x => (int)x.TipoStatus == tipoStatus)
-				.ToListAsync();
-		}*/
-
 		public async Task<List<TurismoModel>> BuscarTurismo()
 		{
 			return await _dbContext.Turismo.Include(n => n.ImagemTurismo).ToListAsync();
@@ -53,10 +46,6 @@ namespace COMTUR.Repositorios
 
 		public async Task<TurismoModel> Adicionar(TurismoModel TurismoModel)
 		{
-			/*if (!Enum.IsDefined(typeof(TipoStatus), TurismoModel.TipoStatus))
-			{
-				throw new ArgumentException("Tipo de status inválido");
-			}*/
 
 			await _dbContext.Turismo.AddAsync(TurismoModel);
 			await _dbContext.SaveChangesAsync();
@@ -67,11 +56,6 @@ namespace COMTUR.Repositorios
 		public async Task<TurismoModel> Atualizar(TurismoModel TurismoModel, int id)
 		{
 			TurismoModel TurismoPorId = await BuscarPorId(id);
-
-			/*if (!Enum.IsDefined(typeof(TipoStatus), TurismoModel.TipoStatus))
-			{
-				throw new ArgumentException("Tipo de status inválido");
-			}*/
 
 			if (TurismoPorId == null)
 			{
@@ -87,7 +71,6 @@ namespace COMTUR.Repositorios
 			TurismoPorId.DiaFuncionamento = TurismoModel.DiaFuncionamento;
 			TurismoPorId.IdUsuario = TurismoModel.IdUsuario;
 			TurismoPorId.IdTipoTurismo = TurismoModel.IdTipoTurismo;
-			//TurismoPorId.TipoStatus = TurismoModel.TipoStatus;
 
 			_dbContext.Turismo.Update(TurismoPorId);
 			await _dbContext.SaveChangesAsync();

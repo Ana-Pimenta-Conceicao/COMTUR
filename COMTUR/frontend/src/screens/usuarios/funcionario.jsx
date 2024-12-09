@@ -357,10 +357,6 @@ export default function Funcionario() {
                 funcao={() => UserSet(usuario, "Excluir")}
                 acao="Excluir"
               />
-              <BtnAcao
-                funcao={() => UserSet(usuario, "Visualizar")}
-                acao="Visualizar"
-              />
             </div>
           ),
         };
